@@ -1,7 +1,8 @@
 {% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
 {% set dark = block.bg == 'primary' %}
 <div class="cover {{ dark ? 'bg-primary' : (block.bg == 'soft' ? 'bg-soft' : '') }}" style="{% if block.bg != 'white' %}margin:-6mm -8mm 0;padding:10mm 8mm 8mm;border-radius:{{ t.r }};{% endif %}page-break-after:always;">
-  {% if block.logo == 'auto' and (dark ? brand.logo_dark_data : brand.logo_data) %}
+  {# the header line already carries the logo on every page; the cover shows it only without a header #}
+  {% if block.logo == 'auto' and not t.header and (dark ? brand.logo_dark_data : brand.logo_data) %}
     <div style="margin-bottom:10mm"><img src="{{ dark ? brand.logo_dark_data : brand.logo_data }}" alt="" style="height:10mm"></div>
   {% elseif block.logo == 'auto' and not t.header %}
     <div style="margin-bottom:10mm;font-weight:bold;font-size:12pt;color:{{ dark ? t.primary_ink : t.primary }}">{{ brand.name }}</div>

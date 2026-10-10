@@ -60,6 +60,39 @@ final class ScreenshotStore
     }
 
     /**
+     * The first screen of a full-page screenshot (what a visitor sees without
+     * scrolling). Lighthouse's "final screenshot" is a 250/500 px thumbnail;
+     * the full-page capture has the real resolution, so the cover images are
+     * cut from it.
+     *
+     * @return array{file: string, width: int, height: int, scale: float}|null
+     */
+    public function saveFirstScreen(int $checkId, string $name, string $dataUrl, int $cssWidth, int $cssHeight, int $maxWidth = 1400): array|null
+    {
+        $binary = $this->decode($dataUrl);
+        $img = null === $binary ? false : @imagecreatefromstring($binary);
+
+        if (false === $img || $cssWidth <= 0 || $cssHeight <= 0) {
+            return null;
+        }
+
+        $scale = imagesx($img) / $cssWidth;
+        $img = $this->cropRaw($img, 0, 0, imagesx($img), min(imagesy($img), (int) round($cssHeight * $scale)));
+        $factor = min(1.0, $maxWidth / max(1, imagesx($img)));
+
+        if ($factor < 1.0) {
+            $img = imagescale($img, (int) round(imagesx($img) * $factor), (int) round(imagesy($img) * $factor), IMG_BICUBIC) ?: $img;
+        }
+
+        $w = imagesx($img);
+        $h = imagesy($img);
+        $file = $this->write($checkId, $name, $img);
+        imagedestroy($img);
+
+        return null === $file ? null : ['file' => $file, 'width' => $w, 'height' => $h, 'scale' => $scale * $factor];
+    }
+
+    /**
      * Cuts an excerpt around a DOM rectangle (CSS px) out of a stored screenshot
      * and draws a red frame around the element.
      *

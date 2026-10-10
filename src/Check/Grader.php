@@ -281,8 +281,15 @@ final class Grader
         foreach ($home['a11y'] as $id => $audit) {
             $items = [];
 
+            [$open, $close] = str_starts_with($this->locale, 'de') ? ['„', '“'] : ['“', '”'];
+
             foreach ($audit['items'] as $item) {
-                $items[] = trim(($item['text'] ?? '') !== '' ? '„'.$item['text'].'“' : ($item['selector'] ?? ''));
+                // icon-font ligatures ("cleaning_services") are not what the visitor reads
+                if (PageSpeedClient::isIconGlyph($item)) {
+                    continue;
+                }
+
+                $items[] = trim(($item['text'] ?? '') !== '' ? $open.$item['text'].$close : ($item['selector'] ?? ''));
             }
 
             $effort = \in_array($id, ['color-contrast', 'image-alt', 'link-name', 'button-name', 'html-has-lang', 'document-title', 'label'], true) ? 'small' : 'medium';

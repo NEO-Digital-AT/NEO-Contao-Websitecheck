@@ -361,13 +361,16 @@ final class CheckRunner
         $data['pins'] = [];
         $data['crops'] = [];
 
-        $final = $this->screenshots->saveDataUrl($id, 'home-mobile', $mobile['screenshots']['final'], 0, 900);
+        $full = $mobile['screenshots']['full'];
+        $viewport = $mobile['screenshots']['viewport'] ?? ['width' => 412, 'height' => 823];
+        // first screen in full resolution from the full-page capture; Google's thumbnail only as a fallback
+        $final = null !== $full && '' !== $full['data'] ? $this->screenshots->saveFirstScreen($id, 'home-mobile', $full['data'], (int) ($full['width'] ?: $viewport['width']), (int) $viewport['height'], 900) : null;
+        $final ??= $this->screenshots->saveDataUrl($id, 'home-mobile', $mobile['screenshots']['final'], 0, 900);
 
         if (null !== $final) {
             $data['screenshots']['mobile'] = $final;
         }
 
-        $full = $mobile['screenshots']['full'];
         $fullSaved = null;
 
         if (null !== $full && '' !== $full['data']) {
@@ -379,7 +382,10 @@ final class CheckRunner
         }
 
         if (!isset($desktop['error'])) {
-            $deskFinal = $this->screenshots->saveDataUrl($id, 'home-desktop', $desktop['screenshots']['final'], 0, 1400);
+            $deskFull = $desktop['screenshots']['full'] ?? null;
+            $deskViewport = $desktop['screenshots']['viewport'] ?? ['width' => 1350, 'height' => 940];
+            $deskFinal = null !== $deskFull && '' !== $deskFull['data'] ? $this->screenshots->saveFirstScreen($id, 'home-desktop', $deskFull['data'], (int) ($deskFull['width'] ?: $deskViewport['width']), (int) $deskViewport['height'], 1400) : null;
+            $deskFinal ??= $this->screenshots->saveDataUrl($id, 'home-desktop', $desktop['screenshots']['final'], 0, 1400);
 
             if (null !== $deskFinal) {
                 $data['screenshots']['desktop'] = $deskFinal;
@@ -389,22 +395,31 @@ final class CheckRunner
         // Marked excerpts for the accessibility page (contrast first) + pins for the live preview.
         if (null !== $fullSaved) {
             $n = 0;
-            $viewportCss = isset($final['height'], $fullSaved['scale']) ? $final['height'] / max(0.01, $fullSaved['scale'] * ($final['width'] / max(1, $fullSaved['width']))) : 800;
+            $viewportCss = (int) $viewport['height'];
+
+            $tops = [];
 
             foreach ($mobile['a11y'] as $auditId => $audit) {
+                $perAudit = 0;
+
                 foreach ($audit['items'] as $item) {
                     $rect = $item['rect'] ?? null;
 
-                    if (null === $rect || $rect['width'] <= 0 || $rect['height'] <= 0 || $rect['top'] > 4500) {
+                    if (null === $rect || $rect['width'] <= 0 || $rect['height'] <= 0 || $rect['top'] > 4500 || PageSpeedClient::isIconGlyph($item)) {
                         continue;
                     }
 
-                    if ($n < 4) {
+                    // at most two excerpts per audit and none overlapping an earlier one: variety instead of four times the same row
+                    $overlaps = array_filter($tops, static fn (int $top): bool => abs($top - $rect['top']) < 60);
+
+                    if ($n < 4 && $perAudit < 2 && [] === $overlaps) {
                         $crop = $this->screenshots->cropMarked($id, 'home-mobile-full.jpg', $fullSaved['scale'], $rect, 'finding-'.($n + 1));
 
                         if (null !== $crop) {
                             $data['crops'][] = ['file' => $crop['file'], 'width' => $crop['width'], 'height' => $crop['height'], 'auditId' => $auditId, 'title' => $audit['title'], 'text' => (string) ($item['text'] ?? ''), 'explanation' => (string) ($item['explanation'] ?? ''), 'ratio' => preg_match('/contrast of ([0-9.]+)/', (string) ($item['explanation'] ?? ''), $cm) ? (float) $cm[1] : null];
+                            $tops[] = $rect['top'];
                             ++$n;
+                            ++$perAudit;
                         }
                     }
 

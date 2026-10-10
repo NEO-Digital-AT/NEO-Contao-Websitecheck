@@ -222,6 +222,11 @@ final class PageSpeedClient
                     'height' => (int) ($full['screenshot']['height'] ?? 0),
                 ] : null,
                 'nodes' => \is_array($full) ? (array) ($full['nodes'] ?? []) : [],
+                // emulated screen (CSS px) to cut the first screen out of the full-page capture
+                'viewport' => [
+                    'width' => (int) ($lr['configSettings']['screenEmulation']['width'] ?? ('desktop' === $strategy ? 1350 : 412)),
+                    'height' => (int) ($lr['configSettings']['screenEmulation']['height'] ?? ('desktop' === $strategy ? 940 : 823)),
+                ],
             ],
         ];
     }
@@ -275,5 +280,31 @@ final class PageSpeedClient
             'items' => $items,
             'count' => \count($all),
         ];
+    }
+
+    /**
+     * An icon-font glyph (Material Icons/Symbols, Font Awesome …): Lighthouse
+     * reports its ligature text ("cleaning_services", "search"), and Google's
+     * screenshot often shows that text because the icon font was not loaded
+     * yet. A marked excerpt of it would show a word the visitor never sees.
+     *
+     * @param array<string, mixed> $item
+     */
+    public static function isIconGlyph(array $item): bool
+    {
+        $text = trim((string) ($item['text'] ?? ''));
+        $snippet = (string) ($item['snippet'] ?? '');
+
+        if (preg_match('/material-(icons|symbols)|\bfa-|\b(icon|icons|ico|glyph|symbol)\b/i', $snippet) && preg_match('/^[a-z0-9_]+$/', $text)) {
+            return true;
+        }
+
+        // an icon button: its only text is one lower-case word, the accessible name comes from aria-label
+        if (preg_match('/^[a-z]+$/', $text) && preg_match('/aria-label="[^"]+"/i', $snippet)) {
+            return true;
+        }
+
+        // ligature names: lower case words joined by underscores ("arrow_forward")
+        return 1 === preg_match('/^[a-z]+(_[a-z]+)+$/', $text);
     }
 }

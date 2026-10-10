@@ -21,6 +21,9 @@ All notable changes to this bundle are documented here. The format follows
 - Default report: the second column of area cards ran past the right page margin; measure rows showed a seam between number and text; legend chips were off-centre.
 - Google rings in the PDF were missing (Dompdf ignores inline SVG): the ring is now an SVG image with the number centred on top.
 - The *Standard* template printed "At a glance" twice; areas of a grade-less area showed "Grade – · –".
+- Screenshots in the report were Google's thumbnails (250 px mobile, 500 px desktop). The first screen is now cut from the full-page capture in full resolution (412 px / 1350 px).
+- Marked excerpts skipped nothing: icon-font glyphs ("cleaning_services", "search") were cut out and listed as examples. They are now left out, at most two excerpts per audit are taken and overlapping excerpts are skipped.
+- The cover repeated the logo already shown in the header line.
 
 ### Fixed
 - JSON endpoints (`start`, `claim`) answered 400 for visitors with any cookie: Contao's request-token check applied to them. Routes now set `_token_check: false` and the script sends `X-Requested-With`.
