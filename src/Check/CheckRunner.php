@@ -403,7 +403,7 @@ final class CheckRunner
                         $crop = $this->screenshots->cropMarked($id, 'home-mobile-full.jpg', $fullSaved['scale'], $rect, 'finding-'.($n + 1));
 
                         if (null !== $crop) {
-                            $data['crops'][] = ['file' => $crop['file'], 'width' => $crop['width'], 'height' => $crop['height'], 'auditId' => $auditId, 'title' => $audit['title'], 'text' => (string) ($item['text'] ?? ''), 'explanation' => (string) ($item['explanation'] ?? '')];
+                            $data['crops'][] = ['file' => $crop['file'], 'width' => $crop['width'], 'height' => $crop['height'], 'auditId' => $auditId, 'title' => $audit['title'], 'text' => (string) ($item['text'] ?? ''), 'explanation' => (string) ($item['explanation'] ?? ''), 'ratio' => preg_match('/contrast of ([0-9.]+)/', (string) ($item['explanation'] ?? ''), $cm) ? (float) $cm[1] : null];
                             ++$n;
                         }
                     }

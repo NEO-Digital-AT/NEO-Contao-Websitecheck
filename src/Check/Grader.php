@@ -271,6 +271,12 @@ final class Grader
         $good = [];
         $contrast = $home['a11y']['color-contrast'] ?? null;
 
+        // Lighthouse weights contrast lightly; for real visitors it is the most
+        // common barrier, so every finding costs a point (at most 15).
+        if (null !== $contrast) {
+            $score = max(0, $score - min(15, 3 + (int) ($contrast['count'] ?? 0)));
+        }
+
         // Our own weighting: contrast and names are what real visitors stumble over.
         foreach ($home['a11y'] as $id => $audit) {
             $items = [];
@@ -305,7 +311,7 @@ final class Grader
             $good[] = $this->good('a11y.good.lang');
         }
 
-        if (!isset($home['a11y']['heading-order']) && !isset($home['a11y']['link-name']) && !isset($home['a11y']['button-name'])) {
+        if (!isset($home['a11y']['heading-order']) && !isset($home['a11y']['link-name']) && !isset($home['a11y']['button-name']) && !isset($home['a11y']['label-content-name-mismatch'])) {
             $good[] = $this->good('a11y.good.names');
         }
 

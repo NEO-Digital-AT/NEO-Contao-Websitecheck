@@ -153,6 +153,10 @@ a11y:
             title: '%count% tap targets too small'
             text: 'Links or buttons smaller than 24 px are easily missed with a thumb.'
             fix: 'Enlarge the clickable area (padding) to at least 44 × 44 px.'
+        label_content_name_mismatch:
+            title: '%count% controls whose spoken name differs from their label'
+            text: 'Icon buttons (search, arrows, call) carry an accessible name that does not match the visible text, so voice control and screen readers announce something else.'
+            fix: 'Make the aria-label start with the visible text, or let the icon''s text be the name.'
     good:
         contrast:
             title: 'Contrasts are fine'
@@ -485,7 +489,10 @@ report:
     a11y_title: 'Accessibility & contrasts'
     a11y_intro: 'Checked with Lighthouse (the same tests Google uses) on the start page and the sub-pages. Marked excerpts show where the findings are.'
     a11y_no_findings_caption: 'Start page, phone. No marked findings.'
-    a11y_why: 'Why it matters: roughly every twelfth man sees colours differently, many people read in sunlight, and a button nobody can read is a button nobody presses.'
+    contrast_label: 'Contrast %ratio%:1 · required 4.5:1'
+    a11y_why_title: 'Why it matters'
+    a11y_why: 'Roughly every twelfth man sees colours differently, many people read in sunlight, and a button nobody can read is a button nobody presses.'
+    findings: 'findings'
     speed_title: 'Loading speed & mobile'
     speed_intro: 'Measured with Google PageSpeed Insights, profile "phone, slow 4G" — the same numbers Google uses for ranking.'
     what_works: 'What works'

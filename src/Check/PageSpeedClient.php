@@ -198,7 +198,9 @@ final class PageSpeedClient
 
         uasort($a11y, static fn (array $a, array $b): int => $b['weight'] <=> $a['weight']);
 
-        $full = $audits['full-page-screenshot']['details'] ?? null;
+        // Lighthouse ≥ 10 reports the full-page screenshot at the top level,
+        // older versions as an audit.
+        $full = $lr['fullPageScreenshot'] ?? $audits['full-page-screenshot']['details'] ?? null;
 
         return [
             'url' => (string) ($lr['finalDisplayedUrl'] ?? $lr['finalUrl'] ?? ($lr['requestedUrl'] ?? '')),
@@ -229,6 +231,15 @@ final class PageSpeedClient
      *
      * @return array{score: float|null, title: string, description: string, displayValue: string, items: list<array<string, mixed>>, count: int}
      */
+    /** Lighthouse texts carry markdown links and "[Learn more]" tails that mean nothing in a report. */
+    private function plain(string $text): string
+    {
+        $text = preg_replace('/\[([^\]]*)\]\([^)]*\)/u', '$1', $text) ?? $text;
+        $text = preg_replace('/\s*\((Learn more|Weitere Informationen)[^)]*\)\.?/iu', '', $text) ?? $text;
+
+        return trim(strip_tags($text));
+    }
+
     private function compactAudit(array $audit, int $maxItems): array
     {
         $items = [];
@@ -248,7 +259,7 @@ final class PageSpeedClient
                 $compact['selector'] = (string) ($node['selector'] ?? '');
                 $compact['snippet'] = mb_substr((string) ($node['snippet'] ?? ''), 0, 300);
                 $compact['text'] = mb_substr((string) ($node['nodeLabel'] ?? ''), 0, 120);
-                $compact['explanation'] = mb_substr((string) ($node['explanation'] ?? ''), 0, 400);
+                $compact['explanation'] = mb_substr($this->plain((string) ($node['explanation'] ?? '')), 0, 400);
                 $compact['lhId'] = (string) ($node['lhId'] ?? '');
                 $compact['rect'] = isset($node['boundingRect']) ? array_map('intval', array_intersect_key($node['boundingRect'], array_flip(['top', 'left', 'width', 'height']))) : null;
             }
@@ -259,7 +270,7 @@ final class PageSpeedClient
         return [
             'score' => isset($audit['score']) ? (float) $audit['score'] : null,
             'title' => (string) ($audit['title'] ?? ''),
-            'description' => mb_substr(strip_tags((string) ($audit['description'] ?? '')), 0, 300),
+            'description' => mb_substr($this->plain((string) ($audit['description'] ?? '')), 0, 220),
             'displayValue' => (string) ($audit['displayValue'] ?? ''),
             'items' => $items,
             'count' => \count($all),

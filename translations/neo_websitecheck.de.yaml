@@ -153,6 +153,10 @@ a11y:
             title: '%count% Tippziele zu klein'
             text: 'Links oder Knöpfe unter 24 px trifft man mit dem Daumen leicht daneben.'
             fix: 'Die Klickfläche (Innenabstand) auf mindestens 44 × 44 px vergrößern.'
+        label_content_name_mismatch:
+            title: '%count% Bedienelemente mit abweichendem Namen'
+            text: 'Icon-Knöpfe (Suche, Pfeile, Anruf) haben einen barrierefreien Namen, der nicht zum sichtbaren Text passt, Sprachsteuerung und Vorlesesoftware sagen deshalb etwas anderes an.'
+            fix: 'Das aria-label mit dem sichtbaren Text beginnen lassen oder den Icon-Text selbst als Namen verwenden.'
     good:
         contrast:
             title: 'Kontraste in Ordnung'
@@ -485,7 +489,10 @@ report:
     a11y_title: 'Barrierefreiheit & Kontraste'
     a11y_intro: 'Geprüft mit Lighthouse (dieselben Tests, die Google verwendet) auf der Startseite und den Unterseiten. Markierte Ausschnitte zeigen, wo die Fundstellen liegen.'
     a11y_no_findings_caption: 'Startseite, Handy. Keine markierten Fundstellen.'
-    a11y_why: 'Warum das zählt: Rund jeder zwölfte Mann sieht Farben anders, viele Menschen lesen im Sonnenlicht, und ein Knopf, den niemand lesen kann, wird nicht gedrückt.'
+    contrast_label: 'Kontrast %ratio%:1 · Soll 4,5:1'
+    a11y_why_title: 'Warum das zählt'
+    a11y_why: 'Rund jeder zwölfte Mann sieht Farben anders, viele Menschen lesen im Sonnenlicht, und ein Knopf, den niemand lesen kann, wird nicht gedrückt.'
+    findings: 'Fundstellen'
     speed_title: 'Ladezeit & Mobil'
     speed_intro: 'Gemessen mit Google PageSpeed Insights, Profil „Handy, langsames 4G“, dieselben Zahlen, die Google fürs Ranking heranzieht.'
     what_works: 'Was gut läuft'
