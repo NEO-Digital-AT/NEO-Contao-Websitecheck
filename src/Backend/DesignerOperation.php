@@ -47,7 +47,7 @@ final class DesignerOperation
     public function preview(DataContainer $dc): string
     {
         [$kind, $design, $row] = $this->draft();
-        $html = $this->renderer->renderDesign($kind, $design, $row);
+        $html = $this->renderer->renderDesign($kind, $design, $row, true);
 
         // Preview helpers: block selection (postMessage), page breaks and fixed header/footer as plain blocks.
         $inject = '<style>'

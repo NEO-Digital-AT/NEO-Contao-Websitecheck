@@ -40,18 +40,6 @@
       }
     },
     {
-      "id": "gauges",
-      "type": "gauges",
-      "props": {
-        "perf": true,
-        "a11y": true,
-        "bp": true,
-        "seo": true,
-        "show_kpis": false,
-        "space": "l"
-      }
-    },
-    {
       "id": "ov-areas",
       "type": "areas",
       "props": {
@@ -59,11 +47,6 @@
         "legend": true,
         "space": "l"
       }
-    },
-    {
-      "id": "pb1",
-      "type": "page_break",
-      "props": {}
     },
     {
       "id": "m-head",
@@ -115,12 +98,34 @@
       "props": {}
     },
     {
+      "id": "speed-head",
+      "type": "heading",
+      "props": {
+        "eyebrow": "",
+        "text": "@report.speed_title",
+        "level": "h2",
+        "space": "s"
+      }
+    },
+    {
+      "id": "gauges",
+      "type": "gauges",
+      "props": {
+        "perf": true,
+        "a11y": true,
+        "bp": true,
+        "seo": true,
+        "show_kpis": false,
+        "space": "m"
+      }
+    },
+    {
       "id": "speed",
       "type": "area_detail",
       "props": {
         "area": "speed",
-        "show_grade": true,
-        "title": "@report.speed_title",
+        "show_grade": false,
+        "title": "@report.what_works_short",
         "intro": "@report.speed_intro",
         "show_kpis": true,
         "max_issues": 3,

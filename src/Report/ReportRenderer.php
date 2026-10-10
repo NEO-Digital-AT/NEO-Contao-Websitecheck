@@ -62,13 +62,13 @@ final class ReportRenderer
      * @param array<string, mixed>             $row
      * @param array<string, mixed>|string|null $design
      */
-    public function renderDesign(string $kind, array|string|null $design, array $row): string
+    public function renderDesign(string $kind, array|string|null $design, array $row, bool $markers = false): string
     {
-        return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($kind, $design, $row): string {
+        return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($kind, $design, $row, $markers): string {
             $context = $this->context($row);
             $context += $context['vars'];
 
-            return $this->designs->render($kind, $design, $context);
+            return $this->designs->render($kind, $design, $context, $markers);
         });
     }
 

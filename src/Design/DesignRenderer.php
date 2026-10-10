@@ -25,7 +25,7 @@ final class DesignRenderer
      * @param array<string, mixed>|string|null $raw     stored design JSON
      * @param array<string, mixed>             $context ReportRenderer::context() (+ vars at top level)
      */
-    public function render(string $kind, array|string|null $raw, array $context): string
+    public function render(string $kind, array|string|null $raw, array $context, bool $markers = false): string
     {
         $design = Design::prepare($raw, $kind, (array) ($context['vars'] ?? []));
         $context['t'] = $this->theme($design['theme'], $context);
@@ -33,7 +33,7 @@ final class DesignRenderer
         $html = '';
 
         foreach ($design['blocks'] as $block) {
-            $html .= $this->renderBlock($kind, $block, $context);
+            $html .= $this->renderBlock($kind, $block, $context, $markers);
         }
 
         return $this->twig->render('@Contao/neo_websitecheck/'.$kind.'_frame.html.twig', $context + ['content' => $html]);
@@ -43,15 +43,31 @@ final class DesignRenderer
      * @param array{id: string, type: string, props: array<string, mixed>} $block
      * @param array<string, mixed>                                          $context
      */
-    public function renderBlock(string $kind, array $block, array $context): string
+    public function renderBlock(string $kind, array $block, array $context, bool $markers = false): string
     {
         $inner = $this->twig->render(
             '@Contao/neo_websitecheck/blocks/'.$kind.'/'.$block['type'].'.html.twig',
             $context + ['block' => $block['props'], 'block_id' => $block['id'], 'block_type' => $block['type']],
         );
 
-        // Wrapper the designer uses to map clicks in the preview to blocks.
-        return '<div class="nwc-b nwc-b--'.$block['type'].'" data-nwc-block="'.htmlspecialchars($block['id'], ENT_QUOTES).'">'.$inner.'</div>';
+        if (!$markers) {
+            return $inner;
+        }
+
+        // Markers the designer preview uses to map clicks to blocks (never in the real e-mail/PDF).
+        $attr = 'data-nwc-block="'.htmlspecialchars($block['id'], ENT_QUOTES).'"';
+
+        if (BlockRegistry::KIND_MAIL === $kind) {
+            // Mail blocks are table rows: a <div> around a <tr> is moved out of the table by the browser,
+            // so the marker goes onto the block's first cell.
+            if ('' === trim($inner)) {
+                return '';
+            }
+
+            return (string) preg_replace('/<td\b/', '<td class="nwc-b nwc-b--'.$block['type'].'" '.$attr, $inner, 1);
+        }
+
+        return '<div class="nwc-b nwc-b--'.$block['type'].'" '.$attr.'>'.$inner.'</div>';
     }
 
     /**
