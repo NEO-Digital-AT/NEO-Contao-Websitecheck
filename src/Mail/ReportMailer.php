@@ -9,6 +9,7 @@ use Neo\WebsitecheckBundle\Check\CheckRepository;
 use Neo\WebsitecheckBundle\Report\PdfGenerator;
 use Neo\WebsitecheckBundle\Report\ReportRenderer;
 use Neo\WebsitecheckBundle\Settings;
+use Neo\WebsitecheckBundle\Text\TextProvider;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
@@ -30,6 +31,7 @@ final class ReportMailer
         private readonly Settings $settings,
         private readonly TranslatorInterface $translator,
         private readonly ContaoFramework $framework,
+        private readonly TextProvider $texts,
     ) {
     }
 
@@ -43,7 +45,8 @@ final class ReportMailer
         $pdfPath = $this->pdf->generate($row);
         $from = $this->from();
 
-        $subject = $this->translator->trans('mail.subject', ['%domain%' => $row['domain'], '%grade%' => $result['grade'] ?? '', '%word%' => $result['gradeWord'] ?? ''], 'neo_websitecheck', $locale);
+        $vars = $this->renderer->context($row)['vars'];
+        $subject = $this->texts->get('mail.subject', $locale, $vars);
 
         $email = (new Email())
             ->from($from)
@@ -69,7 +72,7 @@ final class ReportMailer
                 ->from($from)
                 ->to($notify)
                 ->replyTo(new Address((string) $row['email'], trim($row['firstname'].' '.$row['lastname'])))
-                ->subject($this->translator->trans('mail.owner_subject', ['%domain%' => $row['domain'], '%grade%' => $result['grade'] ?? '', '%name%' => trim($row['firstname'].' '.$row['lastname']), '%newsletter%' => '1' === (string) $row['newsletter'] ? '+NL' : ''], 'neo_websitecheck', $locale))
+                ->subject($this->texts->get('mail.owner_subject', $locale, $vars + ['firstname' => trim($row['firstname'].' '.$row['lastname'])]))
                 ->html($this->renderer->renderMail($row, 'mail_owner'))
                 ->text($this->plain($row, $locale, true));
 
@@ -108,7 +111,8 @@ final class ReportMailer
     private function plain(array $row, string $locale, bool $owner = false): string
     {
         $result = (array) $row['result'];
-        $t = fn (string $key, array $p = []): string => $this->translator->trans($key, $p, 'neo_websitecheck', $locale);
+        $vars = $this->renderer->context($row)['vars'];
+        $t = fn (string $key, array $p = []): string => TextProvider::isEditable($key) ? $this->texts->get($key, $locale, $vars) : $this->translator->trans($key, $p, 'neo_websitecheck', $locale);
         $lines = [];
 
         if ($owner) {
@@ -136,7 +140,7 @@ final class ReportMailer
         $lines[] = $t('mail.pdf_note');
         $lines[] = '';
         $lines[] = $t('mail.offer');
-        $contact = $this->settings->brand()['contact_url'] ?: $this->settings->brand()['website_url'];
+        $contact = (string) ($this->renderer->context($row)['contact_url'] ?? '');
 
         if ('' !== $contact) {
             $lines[] = $contact;

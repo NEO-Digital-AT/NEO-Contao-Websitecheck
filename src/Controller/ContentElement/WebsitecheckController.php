@@ -40,20 +40,24 @@ final class WebsitecheckController extends AbstractContentElementController
         $page = $request->attributes->get('pageModel');
         $lang = $page instanceof PageModel ? (string) $page->language : ($request->getLocale() ?: 'en');
 
-        $contactUrl = $this->settings->brand()['contact_url'];
+        $brand = $this->settings->brand();
+        $contactUrl = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
+        $privacyUrl = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
 
         $jumpTo = (int) ($model->row()['jumpTo'] ?? 0);
 
         if ($jumpTo > 0) {
-            $target = PageModel::findPublishedById($jumpTo);
+            $contactUrl = $this->pageUrl($jumpTo) ?: $contactUrl;
+        }
 
-            if (null !== $target) {
-                try {
-                    $contactUrl = $this->urlGenerator->generate($target);
-                } catch (\Throwable) {
-                    // keep the configured fallback
-                }
-            }
+        $style = '';
+
+        if ('' !== (string) $brand['color_accent']) {
+            $style .= '--nwc-accent:'.$brand['color_accent'].';';
+        }
+
+        if ('' !== (string) $brand['color_primary']) {
+            $style .= '--nwc-bg:'.$brand['color_primary'].';--nwc-bg-2:'.$brand['color_primary'].';';
         }
 
         $config = [
@@ -72,12 +76,29 @@ final class WebsitecheckController extends AbstractContentElementController
         $template->set('lang', $lang);
         $template->set('text', (string) ($model->row()['text'] ?? ''));
         $template->set('contact_url', $contactUrl);
-        $template->set('privacy_url', $this->settings->brand()['privacy_url']);
+        $template->set('privacy_url', $privacyUrl);
+        $template->set('style', $style);
+        $template->set('vars', ['company' => (string) $brand['name'], 'owner' => (string) $brand['owner_name'], 'phone' => (string) $brand['phone'], 'website' => (string) $brand['website_url'], 'days' => (string) $this->settings->retentionDays()]);
         $template->set('newsletter', $this->settings->newsletterEnabled());
         $template->set('newsletter_label', (string) ($this->settings->newsletter()['label'] ?? ''));
         $template->set('altcha', null !== $this->altcha);
         $template->set('element_id', 'wc'.(int) ($model->row()['id'] ?? 0));
 
         return $template->getResponse();
+    }
+
+    private function pageUrl(int $id): string
+    {
+        if ($id <= 0) {
+            return '';
+        }
+
+        try {
+            $page = PageModel::findPublishedById($id);
+
+            return null === $page ? '' : $this->urlGenerator->generate($page);
+        } catch (\Throwable) {
+            return '';
+        }
     }
 }

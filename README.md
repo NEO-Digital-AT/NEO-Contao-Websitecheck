@@ -159,6 +159,19 @@ Reports go through Contao's mailer (`MAILER_DSN` in `.env`). The visitor receive
 
 Only when the visitor ticks the box, the bundle calls Brevo's double-opt-in endpoint; the visitor becomes a subscriber after clicking the confirmation link.
 
+## Back-end settings (brand, design, texts)
+
+Everything a visitor sees can be changed in the back end under **NEO › Website check settings**, without touching `config.yaml` (back-end values win, empty fields fall back to the YAML):
+
+- **Who sends the report:** company/agency, contact person, phone, website, contact page (target of the "talk about it" buttons), privacy policy page.
+- **Design:** logo (PNG/JPG/SVG), logo for dark backgrounds, portrait photo, primary and accent colour. The colours are applied to the report, the e-mail and the element on the page.
+- **E-mail:** sender name and address, reply-to, copy address for the operator.
+- **Limits:** checks per visitor and day, cache hours, retention days, pages per check.
+- **Texts (per language):** the customer-facing texts of the PDF report, the e-mail and the element — cover title, offer, promise, subject, greeting, intro, button labels, footer, lead form, disclaimer. Empty fields keep the bundle's text. Placeholders work in every field: `{{firstname}}`, `{{lastname}}`, `{{domain}}`, `{{grade}}`, `{{grade_word}}`, `{{pages}}`, `{{company}}`, `{{owner}}`, `{{phone}}`, `{{website}}`, `{{days}}`, `{{date}}`.
+- **Preview PDF / Preview e-mail:** render the templates with the newest finished check or, before the first check, with bundled demo data — in a new tab, right after saving.
+
+API keys, the PDF engine and the newsletter provider stay in `config.yaml` (they are technical, not editorial). Non-admin groups need the module and the tables `tl_neo_websitecheck_settings` and `tl_neo_websitecheck_text`.
+
 ## Usage
 
 1. Back end → *Articles* → add the content element **Website check** (group *NEO*).
@@ -325,6 +338,19 @@ Kosten je Check meist wenige Cent. Ohne Schlüssel läuft der Check ohne KI.
 - Versand über Contaos Mailer (`MAILER_DSN`). Der Besucher bekommt den Bericht mit PDF; `notify_email` bekommt eine zweite E-Mail mit demselben PDF plus Name, E-Mail, Domain, Note und Newsletter-Entscheidung.
 - PDF: `dompdf` (reines PHP), `gotenberg` (Chromium-Container, `docker run --rm -p 3000:3000 gotenberg/gotenberg:8`) oder `none`.
 - Newsletter: In Brevo die Listen-ID und eine Double-Opt-in-Vorlage anlegen, IDs eintragen, `provider: brevo`. Nur bei gesetztem Häkchen ruft das Bundle den Double-Opt-in-Endpunkt auf; angemeldet ist der Besucher erst nach dem Klick auf den Bestätigungslink.
+
+## Backend-Einstellungen (Marke, Design, Texte)
+
+Alles, was ein Besucher sieht, lässt sich im Backend unter **NEO › Website-Check Einstellungen** ändern, ohne `config.yaml` anzufassen (Backend-Werte gewinnen, leere Felder fallen auf die YAML zurück):
+
+- **Wer den Bericht verschickt:** Firma/Agentur, Ansprechperson, Telefon, Website, Kontaktseite (Ziel der Knöpfe „Ergebnis besprechen“), Datenschutzseite.
+- **Design:** Logo (PNG/JPG/SVG), Logo für dunklen Hintergrund, Porträtfoto, Haupt- und Akzentfarbe. Die Farben gelten für Bericht, E-Mail und das Element auf der Seite.
+- **E-Mail:** Absendername und -adresse, Antwortadresse, Kopie an den Betreiber.
+- **Grenzen:** Checks je Besucher und Tag, Zwischenspeicher, Aufbewahrung, Seiten je Check.
+- **Texte (je Sprache):** die kundensichtbaren Texte von PDF-Bericht, E-Mail und Element: Deckblatt-Titel, Angebot, Zusage, Betreff, Anrede, Einleitung, Knöpfe, Fußzeile, Kontaktformular, Hinweis. Leere Felder behalten den mitgelieferten Text. Platzhalter in jedem Feld: `{{firstname}}`, `{{lastname}}`, `{{domain}}`, `{{grade}}`, `{{grade_word}}`, `{{pages}}`, `{{company}}`, `{{owner}}`, `{{phone}}`, `{{website}}`, `{{days}}`, `{{date}}`.
+- **Vorschau PDF / Vorschau E-Mail:** rendern die Vorlagen mit dem neuesten fertigen Check oder, vor dem ersten Check, mit Beispieldaten, in einem neuen Tab direkt nach dem Speichern.
+
+API-Schlüssel, PDF-Engine und Newsletter-Anbieter bleiben in der `config.yaml` (technisch, nicht redaktionell). Nicht-Admin-Gruppen brauchen das Modul und die Tabellen `tl_neo_websitecheck_settings` und `tl_neo_websitecheck_text`.
 
 ## Verwendung
 

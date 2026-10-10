@@ -130,6 +130,18 @@ final class CheckRepository
         return false === $row ? null : $this->hydrate($row);
     }
 
+    /**
+     * Newest finished check (for previews).
+     *
+     * @return array<string, mixed>|null
+     */
+    public function findLatestDone(): array|null
+    {
+        $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck WHERE status = ? ORDER BY finished DESC LIMIT 1', [self::STATUS_DONE]);
+
+        return false === $row ? null : $this->hydrate($row);
+    }
+
     public function countForIp(string $ipHash, int $seconds): int
     {
         return (int) $this->db->fetchOne(

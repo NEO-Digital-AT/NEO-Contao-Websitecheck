@@ -14,7 +14,7 @@
 
 {% block content %}
 {% set i = element_id %}
-<div class="nwc" id="{{ i }}" data-nwc data-state="idle" data-config="{{ config|json_encode|e('html_attr') }}"
+<div class="nwc" id="{{ i }}" data-nwc data-state="idle"{% if style %} style="{{ style }}"{% endif %} data-config="{{ config|json_encode|e('html_attr') }}"
      data-i18n="{{ {
         eta: 'fe.eta'|trans, eta_soon: 'fe.eta_soon'|trans, err_url: 'fe.err_url'|trans, err_limit: 'fe.err_limit'|trans({'%limit%': config.limit}),
         err_spam: 'fe.err_spam'|trans, err_generic: 'fe.err_generic'|trans, err_failed: 'fe.err_failed'|trans, status_idle: 'fe.status_idle'|trans,
@@ -46,11 +46,11 @@
 
     {# ---- idle: URL form ---- #}
     <form class="nwc__url" data-nwc-pane="idle" novalidate>
-      <label for="{{ i }}-url" class="nwc__label">{{ 'fe.url_label'|trans }}</label>
+      <label for="{{ i }}-url" class="nwc__label">{{ wc_text('fe.url_label', vars, lang) }}</label>
       <div class="nwc__bar">
         <span class="nwc__proto" aria-hidden="true">https://</span>
         <input id="{{ i }}-url" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="{{ 'fe.placeholder_domain'|trans }}" aria-describedby="{{ i }}-url-err" required>
-        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ 'fe.submit'|trans }}</span></button>
+        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ wc_text('fe.submit', vars, lang) }}</span></button>
       </div>
       <p id="{{ i }}-url-err" class="nwc__err" role="status" hidden></p>
       {# Honeypot for installations without ALTCHA; invisible for people. #}
@@ -87,19 +87,19 @@
     {# ---- gate: lead form ---- #}
     <div class="nwc__gate" data-nwc-pane="gate" hidden>
       <form class="nwc__lead" data-nwc-lead novalidate tabindex="-1" aria-labelledby="{{ i }}-gate-title">
-        <h3 id="{{ i }}-gate-title" class="nwc__h">{{ 'fe.gate_title'|trans }}</h3>
-        <p class="nwc__note">{{ 'fe.gate_text'|trans }}</p>
+        <h3 id="{{ i }}-gate-title" class="nwc__h">{{ wc_text('fe.gate_title', vars, lang) }}</h3>
+        <p class="nwc__note">{{ wc_text('fe.gate_text', vars, lang) }}</p>
         <div class="nwc__fields">
           <div class="nwc__field"><label for="{{ i }}-fn">{{ 'fe.firstname'|trans }}*</label><input id="{{ i }}-fn" name="firstname" required autocomplete="given-name" aria-describedby="{{ i }}-fn-err"><p id="{{ i }}-fn-err" class="nwc__err" hidden>{{ 'fe.err_firstname'|trans }}</p></div>
           <div class="nwc__field"><label for="{{ i }}-ln">{{ 'fe.lastname'|trans }}*</label><input id="{{ i }}-ln" name="lastname" required autocomplete="family-name" aria-describedby="{{ i }}-ln-err"><p id="{{ i }}-ln-err" class="nwc__err" hidden>{{ 'fe.err_lastname'|trans }}</p></div>
           <div class="nwc__field nwc__field--full"><label for="{{ i }}-em">{{ 'fe.email'|trans }}*</label><input id="{{ i }}-em" name="email" type="email" required autocomplete="email" aria-describedby="{{ i }}-em-err"><p id="{{ i }}-em-err" class="nwc__err" hidden>{{ 'fe.err_email'|trans }}</p></div>
         </div>
         {% if newsletter %}
-          <label class="nwc__check"><input type="checkbox" id="{{ i }}-nl" name="newsletter" value="1"><span>{{ newsletter_label ?: 'fe.newsletter'|trans }} <small>{{ 'fe.optional'|trans }}</small></span></label>
+          <label class="nwc__check"><input type="checkbox" id="{{ i }}-nl" name="newsletter" value="1"><span>{{ newsletter_label ?: wc_text('fe.newsletter', vars, lang) }} <small>{{ 'fe.optional'|trans }}</small></span></label>
         {% endif %}
-        <p class="nwc__legal">{{ 'fe.gate_legal'|trans }}{% if privacy_url %} <a href="{{ privacy_url }}">{{ 'fe.privacy'|trans }}</a>{% endif %}</p>
+        <p class="nwc__legal">{{ wc_text('fe.gate_legal', vars, lang) }}{% if privacy_url %} <a href="{{ privacy_url }}">{{ 'fe.privacy'|trans }}</a>{% endif %}</p>
         <p class="nwc__err" role="status" data-nwc-lead-err hidden></p>
-        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ 'fe.gate_submit'|trans }}</span></button>
+        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ wc_text('fe.gate_submit', vars, lang) }}</span></button>
       </form>
     </div>
 
@@ -125,9 +125,9 @@
         <p class="nwc__blocklabel">{{ 'fe.strengths_title'|trans }}</p>
         <ul class="nwc__strengths" data-nwc-strengths></ul>
       </div>
-      <p class="nwc__disc">{{ 'fe.disclaimer'|trans }}</p>
+      <p class="nwc__disc">{{ wc_text('fe.disclaimer', vars, lang) }}</p>
       <div class="nwc__cta">
-        {% if contact_url %}<a class="nwc__btn nwc__btn--primary" href="{{ contact_url }}"><span>{{ 'fe.cta'|trans }}</span></a>{% endif %}
+        {% if contact_url %}<a class="nwc__btn nwc__btn--primary" href="{{ contact_url }}"><span>{{ wc_text('fe.cta', vars, lang) }}</span></a>{% endif %}
         <button type="button" class="nwc__btn nwc__btn--ghost" data-nwc-reset>{{ 'fe.reset'|trans }}</button>
       </div>
     </div>

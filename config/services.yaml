@@ -16,6 +16,7 @@ services:
         arguments:
             $config: '%neo_websitecheck.config%'
             $projectDir: '%kernel.project_dir%'
+            $db: '@Neo\WebsitecheckBundle\Check\SettingsRepository'
 
     # Dedicated HTTP clients: the visitor's website must never stall the
     # request for long, PageSpeed and the AI endpoint legitimately take longer.
@@ -70,4 +71,14 @@ services:
         public: true
 
     Neo\WebsitecheckBundle\Backend\ResendOperation:
+        public: true
+
+    # DCA callbacks and key= operations are resolved by class name from the container.
+    Neo\WebsitecheckBundle\Backend\SettingsCallbacks:
+        public: true
+
+    Neo\WebsitecheckBundle\Backend\PreviewOperation:
+        public: true
+
+    Neo\WebsitecheckBundle\Text\TextProvider:
         public: true

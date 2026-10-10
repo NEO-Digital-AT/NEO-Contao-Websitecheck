@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Neo\WebsitecheckBundle\Report;
 
 use Contao\CoreBundle\Framework\ContaoFramework;
+use Contao\CoreBundle\Routing\ContentUrlGenerator;
+use Contao\PageModel;
 use Neo\WebsitecheckBundle\Check\CheckRepository;
 use Neo\WebsitecheckBundle\Settings;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Environment;
 
 /**
  * Renders the HTML of the PDF report and the e-mails from the Contao Twig
  * templates (overridable in the app's templates/neo_websitecheck/ folder).
  * Images are embedded as data URIs so the same HTML works in Dompdf,
- * Gotenberg and e-mail clients.
+ * Gotenberg and e-mail clients. Texts come from wc_text() in the templates
+ * (back-end override or translation) with the placeholder values in "vars".
  */
 final class ReportRenderer
 {
@@ -22,6 +26,7 @@ final class ReportRenderer
         private readonly ContaoFramework $framework,
         private readonly CheckRepository $repository,
         private readonly Settings $settings,
+        private readonly ContentUrlGenerator $urlGenerator,
     ) {
     }
 
@@ -53,30 +58,35 @@ final class ReportRenderer
         $this->framework->initialize();
 
         $result = (array) $row['result'];
+        $locale = (string) ($row['locale'] ?: 'en');
         $brand = $this->settings->brand();
         $brand['name'] = $brand['name'] ?: $this->siteTitle();
-        $brand['logo_data'] = $this->dataUri($this->settings->projectDir().'/'.ltrim($brand['logo'], '/'));
-        $brand['portrait_data'] = $this->dataUri($this->settings->projectDir().'/'.ltrim($brand['portrait'], '/'));
+        $brand['contact_url'] = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
+        $brand['privacy_url'] = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
+        $brand['logo_data'] = $this->dataUri($this->projectFile((string) $brand['logo']));
+        $brand['logo_dark_data'] = $this->dataUri($this->projectFile((string) $brand['logo_dark'])) ?? $brand['logo_data'];
+        $brand['portrait_data'] = $this->dataUri($this->projectFile((string) $brand['portrait']));
 
+        $dir = isset($row['_demo_dir']) ? (string) $row['_demo_dir'] : $this->repository->dir((int) $row['id']);
         $images = [];
 
         foreach (['desktop', 'mobile', 'mobileFull'] as $key) {
             $file = $result['screenshots'][$key] ?? null;
-            $images[$key] = null !== $file ? $this->dataUri($this->repository->dir((int) $row['id']).'/'.$file) : null;
+            $images[$key] = null !== $file ? $this->dataUri($dir.'/'.$file) : null;
         }
 
         $crops = [];
 
         foreach ((array) ($result['crops'] ?? []) as $crop) {
-            $data = $this->dataUri($this->repository->dir((int) $row['id']).'/'.$crop['file']);
+            $data = $this->dataUri($dir.'/'.$crop['file']);
 
             if (null !== $data) {
                 $crops[] = $crop + ['data' => $data];
             }
         }
 
-        $locale = (string) ($row['locale'] ?: 'en');
         $date = 'de' === substr($locale, 0, 2) ? date('d.m.Y', (int) ($result['checkedAt'] ?? time())) : date('Y-m-d', (int) ($result['checkedAt'] ?? time()));
+        $contactUrl = $brand['contact_url'] ?: (string) $brand['website_url'];
 
         return [
             'check' => $row,
@@ -88,12 +98,28 @@ final class ReportRenderer
             'locale' => $locale,
             'lang' => substr($locale, 0, 2),
             'date' => $date,
-            'contact_url' => $brand['contact_url'] ?: $brand['website_url'],
+            'contact_url' => $contactUrl,
             'first_name' => (string) $row['firstname'],
             'last_name' => (string) $row['lastname'],
             'email' => (string) $row['email'],
             'newsletter' => '1' === (string) $row['newsletter'],
             'retention_days' => $this->settings->retentionDays(),
+            // Placeholder values for wc_text() ({{firstname}}, {{domain}}, …).
+            'vars' => [
+                'firstname' => (string) $row['firstname'],
+                'lastname' => (string) $row['lastname'],
+                'domain' => (string) ($result['domain'] ?? $row['domain']),
+                'grade' => (string) ($result['grade'] ?? ''),
+                'grade_word' => (string) ($result['gradeWord'] ?? ''),
+                'pages' => (string) ($result['pagesChecked'] ?? ''),
+                'company' => (string) $brand['name'],
+                'owner' => (string) $brand['owner_name'],
+                'phone' => (string) $brand['phone'],
+                'website' => (string) $brand['website_url'],
+                'days' => (string) $this->settings->retentionDays(),
+                'date' => $date,
+                'newsletter' => '1' === (string) $row['newsletter'] ? '+NL' : '',
+            ],
         ];
     }
 
@@ -102,10 +128,33 @@ final class ReportRenderer
         return $this->twig->render($template, $this->context($row));
     }
 
+    /** Absolute URL of a back-end picked page, '' when unset or unpublished. */
+    private function pageUrl(int $id): string
+    {
+        if ($id <= 0) {
+            return '';
+        }
+
+        try {
+            $page = $this->framework->getAdapter(PageModel::class)->findPublishedById($id);
+
+            return null === $page ? '' : $this->urlGenerator->generate($page, [], UrlGeneratorInterface::ABSOLUTE_URL);
+        } catch (\Throwable) {
+            return '';
+        }
+    }
+
+    private function projectFile(string $path): string
+    {
+        $path = trim($path);
+
+        return '' === $path ? '' : $this->settings->projectDir().'/'.ltrim($path, '/');
+    }
+
     private function siteTitle(): string
     {
         try {
-            $roots = $this->framework->getAdapter(\Contao\PageModel::class)->findPublishedRootPages();
+            $roots = $this->framework->getAdapter(PageModel::class)->findPublishedRootPages();
 
             if (null === $roots || null === ($root = $roots->current())) {
                 return '';

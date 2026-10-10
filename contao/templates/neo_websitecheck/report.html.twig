@@ -131,8 +131,8 @@ p { margin: 0 0 3mm; }
 
 <div class="page">
   {{ header }}
-  <p class="eyebrow">{{ 'report.cover_eyebrow'|trans }}</p>
-  <h1>{{ 'report.cover_title'|trans }}</h1>
+  <p class="eyebrow">{{ wc_text('report.cover_eyebrow', vars, locale) }}</p>
+  <h1>{{ wc_text('report.cover_title', vars, locale) }}</h1>
   <div class="domain">{{ result.domain }}</div>
 
   <table class="grade-box"><tr>
@@ -217,7 +217,7 @@ p { margin: 0 0 3mm; }
       {% endfor %}
     </td>
   </tr></table>
-  <p class="note">{{ 'report.a11y_why'|trans }}</p>
+  <p class="note">{{ wc_text('report.a11y_why', vars, locale) }}</p>
   {{ footer|replace({'__N__': 3, '__T__': pagesTotal})|raw }}
 </div>
 
@@ -302,14 +302,14 @@ p { margin: 0 0 3mm; }
     </tbody>
   </table>
 
-  <p class="eyebrow" style="margin-top:8mm">{{ 'report.next_eyebrow'|trans }}</p>
-  <h2>{{ 'report.next_title'|trans }}</h2>
-  <p>{{ 'report.next_text'|trans }}</p>
+  <p class="eyebrow" style="margin-top:8mm">{{ wc_text('report.next_eyebrow', vars, locale) }}</p>
+  <h2>{{ wc_text('report.next_title', vars, locale) }}</h2>
+  <p>{{ wc_text('report.next_text', vars, locale) }}</p>
   <table class="next"><tr>
     {% if brand.portrait_data %}<td class="img"><img src="{{ brand.portrait_data }}" alt=""></td>{% endif %}
     <td>
       <b>{{ brand.owner_name ?: brand.name }}{% if brand.owner_name and brand.name %}, {{ brand.name }}{% endif %}</b>
-      <p>{{ 'report.next_promise'|trans }}</p>
+      <p>{{ wc_text('report.next_promise', vars, locale) }}</p>
       <p class="mono">{{ [brand.phone, contact_url]|filter(v => v)|join(' · ') }}</p>
     </td>
   </tr></table>

@@ -15,7 +15,14 @@ final class Settings
     public function __construct(
         private readonly array $config,
         private readonly string $projectDir,
+        private readonly Check\SettingsRepository|null $db = null,
     ) {
+    }
+
+    /** Back-end settings repository (null in unit tests). */
+    public function db(): Check\SettingsRepository|null
+    {
+        return $this->db;
     }
 
     public function projectDir(): string
@@ -54,36 +61,93 @@ final class Settings
         return '' !== trim((string) $this->config['ai']['api_key']) && '' !== trim((string) $this->config['ai']['model']);
     }
 
-    /** @return array{from_email: string, from_name: string, reply_to: string, notify_email: string} */
+    /**
+     * Sender settings: back end first, config.yaml as fallback.
+     *
+     * @return array{from_email: string, from_name: string, reply_to: string, notify_email: string}
+     */
     public function mail(): array
     {
-        return $this->config['mail'];
+        $mail = $this->config['mail'];
+
+        foreach (['from_email', 'from_name', 'reply_to', 'notify_email'] as $key) {
+            $value = $this->db?->string($key) ?? '';
+
+            if ('' !== $value) {
+                $mail[$key] = $value;
+            }
+        }
+
+        return $mail;
     }
 
-    /** @return array<string, string> */
+    /**
+     * Brand/design settings: back end first (logo and portrait as project-relative
+     * paths, colours with "#"), config.yaml as fallback. Adds contact_page /
+     * privacy_page ids for the controllers to turn into URLs.
+     *
+     * @return array<string, string|int>
+     */
     public function brand(): array
     {
-        return $this->config['brand'];
+        $brand = $this->config['brand'];
+        $brand['logo_dark'] = '';
+        $brand['contact_page'] = 0;
+        $brand['privacy_page'] = 0;
+
+        if (null === $this->db) {
+            return $brand;
+        }
+
+        foreach (['brand_name' => 'name', 'owner_name' => 'owner_name', 'phone' => 'phone', 'website_url' => 'website_url'] as $column => $key) {
+            $value = $this->db->string($column);
+
+            if ('' !== $value) {
+                $brand[$key] = $value;
+            }
+        }
+
+        foreach (['logo' => 'logo', 'logo_dark' => 'logo_dark', 'portrait' => 'portrait'] as $column => $key) {
+            $path = $this->db->filePath($column);
+
+            if ('' !== $path) {
+                $brand[$key] = $path;
+            }
+        }
+
+        foreach (['color_primary', 'color_accent'] as $key) {
+            $color = $this->db->color($key);
+
+            if ('' !== $color) {
+                $brand[$key] = $color;
+            }
+        }
+
+        $brand['contact_page'] = $this->db->int('contact_page');
+        $brand['privacy_page'] = $this->db->int('privacy_page');
+
+        return $brand;
     }
 
     public function checksPerIpPerDay(): int
     {
-        return (int) $this->config['limits']['checks_per_ip_per_day'];
+        return $this->db?->int('checks_per_ip') ?: (int) $this->config['limits']['checks_per_ip_per_day'];
     }
 
     public function cacheHours(): int
     {
-        return (int) $this->config['limits']['cache_hours'];
+        // 0 in the back end means "from config"; the YAML may legitimately be 0.
+        return $this->db?->int('cache_hours') ?: (int) $this->config['limits']['cache_hours'];
     }
 
     public function maxPages(): int
     {
-        return (int) $this->config['limits']['max_pages'];
+        return min(8, $this->db?->int('max_pages') ?: (int) $this->config['limits']['max_pages']);
     }
 
     public function retentionDays(): int
     {
-        return (int) $this->config['limits']['retention_days'];
+        return $this->db?->int('retention_days') ?: (int) $this->config['limits']['retention_days'];
     }
 
     public function pdfEngine(): string

@@ -1,0 +1,818 @@
+{
+ "home": {
+  "domain": "example-hotel.com",
+  "url": "https://www.example-hotel.com/",
+  "status": 200,
+  "https": true,
+  "httpRedirect": true,
+  "www": true
+ },
+ "pages": [
+  {
+   "url": "https://www.example-hotel.com/",
+   "role": "home"
+  },
+  {
+   "url": "https://www.example-hotel.com/rooms",
+   "role": "offer"
+  },
+  {
+   "url": "https://www.example-hotel.com/about",
+   "role": "about"
+  },
+  {
+   "url": "https://www.example-hotel.com/contact",
+   "role": "contact"
+  }
+ ],
+ "html": {
+  "https://www.example-hotel.com/": {
+   "url": "https://www.example-hotel.com/",
+   "title": "Hotel Example \u2013 Rooms & Seminars in the city centre",
+   "titleLength": 52,
+   "description": "Family-run hotel in the city centre: 42 rooms, seminar rooms, breakfast until 11 am. Book directly.",
+   "descriptionLength": 101,
+   "lang": "en",
+   "viewport": "width=device-width, initial-scale=1",
+   "canonical": "https://www.example-hotel.com/",
+   "noindex": false,
+   "h1": [
+    "Welcome to Hotel Example"
+   ],
+   "h1Count": 1,
+   "headingSkips": 1,
+   "headings": [],
+   "imgTotal": 12,
+   "imgNoAlt": 1,
+   "links": {
+    "internal": [],
+    "external": 2,
+    "nav": [],
+    "legal": {
+     "imprint": "https://www.example-hotel.com/imprint",
+     "privacy": "https://www.example-hotel.com/privacy"
+    },
+    "tel": [
+     "tel:+431234567"
+    ],
+    "mailto": 1,
+    "contact": [
+     "https://www.example-hotel.com/contact"
+    ],
+    "social": [
+     "facebook.com"
+    ],
+    "maps": true
+   },
+   "schema": [
+    "Hotel",
+    "PostalAddress"
+   ],
+   "scripts": [],
+   "cmp": [
+    "cookiebot"
+   ],
+   "words": 640,
+   "text": "Welcome to Hotel Example. Since 1962 our family has run the house in the heart of the city \u2026",
+   "openingHours": true,
+   "address": true,
+   "favicon": true,
+   "status": 200,
+   "time": 0.4
+  },
+  "https://www.example-hotel.com/rooms": {
+   "url": "https://www.example-hotel.com/rooms",
+   "title": "Rooms & rates | Hotel Example",
+   "titleLength": 29,
+   "description": "Family-run hotel in the city centre: 42 rooms, seminar rooms, breakfast until 11 am. Book directly.",
+   "descriptionLength": 101,
+   "lang": "en",
+   "viewport": "width=device-width, initial-scale=1",
+   "canonical": "https://www.example-hotel.com/",
+   "noindex": false,
+   "h1": [
+    "Welcome to Hotel Example"
+   ],
+   "h1Count": 1,
+   "headingSkips": 1,
+   "headings": [],
+   "imgTotal": 12,
+   "imgNoAlt": 1,
+   "links": {
+    "internal": [],
+    "external": 2,
+    "nav": [],
+    "legal": {
+     "imprint": "https://www.example-hotel.com/imprint",
+     "privacy": "https://www.example-hotel.com/privacy"
+    },
+    "tel": [
+     "tel:+431234567"
+    ],
+    "mailto": 1,
+    "contact": [
+     "https://www.example-hotel.com/contact"
+    ],
+    "social": [
+     "facebook.com"
+    ],
+    "maps": true
+   },
+   "schema": [
+    "Hotel",
+    "PostalAddress"
+   ],
+   "scripts": [],
+   "cmp": [
+    "cookiebot"
+   ],
+   "words": 640,
+   "text": "Welcome to Hotel Example. Since 1962 our family has run the house in the heart of the city \u2026",
+   "openingHours": true,
+   "address": true,
+   "favicon": true,
+   "status": 200,
+   "time": 0.4
+  },
+  "https://www.example-hotel.com/about": {
+   "url": "https://www.example-hotel.com/about",
+   "title": "About us | Hotel Example",
+   "titleLength": 24,
+   "description": "Family-run hotel in the city centre: 42 rooms, seminar rooms, breakfast until 11 am. Book directly.",
+   "descriptionLength": 101,
+   "lang": "en",
+   "viewport": "width=device-width, initial-scale=1",
+   "canonical": "https://www.example-hotel.com/",
+   "noindex": false,
+   "h1": [
+    "Welcome to Hotel Example"
+   ],
+   "h1Count": 1,
+   "headingSkips": 1,
+   "headings": [],
+   "imgTotal": 12,
+   "imgNoAlt": 1,
+   "links": {
+    "internal": [],
+    "external": 2,
+    "nav": [],
+    "legal": {
+     "imprint": "https://www.example-hotel.com/imprint",
+     "privacy": "https://www.example-hotel.com/privacy"
+    },
+    "tel": [
+     "tel:+431234567"
+    ],
+    "mailto": 1,
+    "contact": [
+     "https://www.example-hotel.com/contact"
+    ],
+    "social": [
+     "facebook.com"
+    ],
+    "maps": true
+   },
+   "schema": [
+    "Hotel",
+    "PostalAddress"
+   ],
+   "scripts": [],
+   "cmp": [
+    "cookiebot"
+   ],
+   "words": 640,
+   "text": "Welcome to Hotel Example. Since 1962 our family has run the house in the heart of the city \u2026",
+   "openingHours": true,
+   "address": true,
+   "favicon": true,
+   "status": 200,
+   "time": 0.4
+  },
+  "https://www.example-hotel.com/contact": {
+   "url": "https://www.example-hotel.com/contact",
+   "title": "Contact | Hotel Example",
+   "titleLength": 23,
+   "description": "Family-run hotel in the city centre: 42 rooms, seminar rooms, breakfast until 11 am. Book directly.",
+   "descriptionLength": 101,
+   "lang": "en",
+   "viewport": "width=device-width, initial-scale=1",
+   "canonical": "https://www.example-hotel.com/",
+   "noindex": false,
+   "h1": [
+    "Welcome to Hotel Example"
+   ],
+   "h1Count": 1,
+   "headingSkips": 1,
+   "headings": [],
+   "imgTotal": 12,
+   "imgNoAlt": 1,
+   "links": {
+    "internal": [],
+    "external": 2,
+    "nav": [],
+    "legal": {
+     "imprint": "https://www.example-hotel.com/imprint",
+     "privacy": "https://www.example-hotel.com/privacy"
+    },
+    "tel": [
+     "tel:+431234567"
+    ],
+    "mailto": 1,
+    "contact": [
+     "https://www.example-hotel.com/contact"
+    ],
+    "social": [
+     "facebook.com"
+    ],
+    "maps": true
+   },
+   "schema": [
+    "Hotel",
+    "PostalAddress"
+   ],
+   "scripts": [],
+   "cmp": [
+    "cookiebot"
+   ],
+   "words": 640,
+   "text": "Welcome to Hotel Example. Since 1962 our family has run the house in the heart of the city \u2026",
+   "openingHours": true,
+   "address": true,
+   "favicon": true,
+   "status": 200,
+   "time": 0.4
+  }
+ },
+ "psi": {
+  "home_mobile": {
+   "url": "https://www.example-hotel.com/",
+   "requestedUrl": "https://www.example-hotel.com/",
+   "strategy": "mobile",
+   "fetchedAt": "2026-10-10T12:00:00Z",
+   "version": "12.6.1",
+   "scores": {
+    "performance": 71,
+    "accessibility": 84,
+    "best-practices": 92,
+    "seo": 92
+   },
+   "metrics": {
+    "lcp": 3400,
+    "cls": 0.04,
+    "tbt": 310,
+    "fcp": 1800,
+    "si": 4200,
+    "ttfb": 900,
+    "bytes": 2900000
+   },
+   "field": {
+    "inp": 180
+   },
+   "network": {
+    "requests": 64,
+    "thirdParties": {
+     "google-analytics.com": 40000,
+     "fonts.googleapis.com": 2000
+    },
+    "largestImage": {
+     "url": "https://www.example-hotel.at/img/hero.jpg",
+     "bytes": 820000
+    },
+    "images": 18,
+    "hosts": []
+   },
+   "audits": {
+    "render-blocking-resources": {
+     "score": 0.4,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 3
+    },
+    "modern-image-formats": {
+     "score": 0.5,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 6
+    },
+    "uses-responsive-images": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "server-response-time": {
+     "score": 0,
+     "title": "",
+     "description": "",
+     "displayValue": "Root document took 900 ms",
+     "items": [],
+     "count": 1
+    },
+    "is-on-https": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "errors-in-console": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "viewport": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "target-size": {
+     "score": 0.6,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 4
+    },
+    "is-crawlable": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    }
+   },
+   "a11y": {
+    "color-contrast": {
+     "score": 0,
+     "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+     "description": "Low-contrast text is difficult or impossible for many users to read.",
+     "displayValue": "",
+     "items": [
+      {
+       "selector": "a.btn",
+       "snippet": "<a class=\"btn\">",
+       "text": "Jetzt buchen",
+       "explanation": "Fix any of the following: Element has insufficient color contrast of 2.3 (foreground color: #ffffff, background color: #f5a623, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+       "lhId": "1-0-A",
+       "rect": {
+        "top": 420,
+        "left": 40,
+        "width": 180,
+        "height": 44
+       }
+      }
+     ],
+     "count": 7,
+     "weight": 7
+    },
+    "target-size": {
+     "score": 0,
+     "title": "Touch targets do not have sufficient size or spacing.",
+     "description": "",
+     "displayValue": "",
+     "items": [
+      {
+       "selector": "nav a",
+       "snippet": "",
+       "text": "Zimmer & Preise",
+       "explanation": "",
+       "lhId": "1-1-A",
+       "rect": {
+        "top": 20,
+        "left": 100,
+        "width": 60,
+        "height": 18
+       }
+      }
+     ],
+     "count": 4,
+     "weight": 7
+    },
+    "aria-hidden-focus": {
+     "score": 0,
+     "title": "[aria-hidden=\"true\"] elements contain focusable descendents",
+     "description": "Focusable descendents within an [aria-hidden=\"true\"] element prevent those interactive elements from being available to users of assistive technologies like screen readers.",
+     "displayValue": "",
+     "items": [],
+     "count": 1,
+     "weight": 7
+    }
+   }
+  },
+  "home_desktop": {
+   "url": "https://www.example-hotel.at/",
+   "requestedUrl": "https://www.example-hotel.at/",
+   "strategy": "desktop",
+   "fetchedAt": "2026-10-10T12:00:00Z",
+   "version": "12.6.1",
+   "scores": {
+    "performance": 71,
+    "accessibility": 84,
+    "best-practices": 92,
+    "seo": 92
+   },
+   "metrics": {
+    "lcp": 3400,
+    "cls": 0.04,
+    "tbt": 310,
+    "fcp": 1800,
+    "si": 4200,
+    "ttfb": 900,
+    "bytes": 2900000
+   },
+   "field": {
+    "inp": 180
+   },
+   "network": {
+    "requests": 64,
+    "thirdParties": {
+     "google-analytics.com": 40000,
+     "fonts.googleapis.com": 2000
+    },
+    "largestImage": {
+     "url": "https://www.example-hotel.at/img/hero.jpg",
+     "bytes": 820000
+    },
+    "images": 18,
+    "hosts": []
+   },
+   "audits": {
+    "render-blocking-resources": {
+     "score": 0.4,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 3
+    },
+    "modern-image-formats": {
+     "score": 0.5,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 6
+    },
+    "uses-responsive-images": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "server-response-time": {
+     "score": 0,
+     "title": "",
+     "description": "",
+     "displayValue": "Root document took 900 ms",
+     "items": [],
+     "count": 1
+    },
+    "is-on-https": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "errors-in-console": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "viewport": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "target-size": {
+     "score": 0.6,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 4
+    },
+    "is-crawlable": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    }
+   },
+   "a11y": {
+    "color-contrast": {
+     "score": 0,
+     "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+     "description": "Low-contrast text is difficult or impossible for many users to read.",
+     "displayValue": "",
+     "items": [
+      {
+       "selector": "a.btn",
+       "snippet": "<a class=\"btn\">",
+       "text": "Jetzt buchen",
+       "explanation": "Fix any of the following: Element has insufficient color contrast of 2.3 (foreground color: #ffffff, background color: #f5a623, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+       "lhId": "1-0-A",
+       "rect": {
+        "top": 420,
+        "left": 40,
+        "width": 180,
+        "height": 44
+       }
+      }
+     ],
+     "count": 7,
+     "weight": 7
+    },
+    "target-size": {
+     "score": 0,
+     "title": "Touch targets do not have sufficient size or spacing.",
+     "description": "",
+     "displayValue": "",
+     "items": [
+      {
+       "selector": "nav a",
+       "snippet": "",
+       "text": "Zimmer & Preise",
+       "explanation": "",
+       "lhId": "1-1-A",
+       "rect": {
+        "top": 20,
+        "left": 100,
+        "width": 60,
+        "height": 18
+       }
+      }
+     ],
+     "count": 4,
+     "weight": 7
+    },
+    "aria-hidden-focus": {
+     "score": 0,
+     "title": "[aria-hidden=\"true\"] elements contain focusable descendents",
+     "description": "Focusable descendents within an [aria-hidden=\"true\"] element prevent those interactive elements from being available to users of assistive technologies like screen readers.",
+     "displayValue": "",
+     "items": [],
+     "count": 1,
+     "weight": 7
+    }
+   }
+  },
+  "page_1": {
+   "url": "https://www.example-hotel.at/",
+   "requestedUrl": "https://www.example-hotel.com/rooms",
+   "strategy": "mobile",
+   "fetchedAt": "2026-10-10T12:00:00Z",
+   "version": "12.6.1",
+   "scores": {
+    "performance": 81,
+    "accessibility": 90,
+    "best-practices": 92,
+    "seo": 100
+   },
+   "metrics": {
+    "lcp": 3400,
+    "cls": 0.04,
+    "tbt": 310,
+    "fcp": 1800,
+    "si": 4200,
+    "ttfb": 900,
+    "bytes": 2900000
+   },
+   "field": {
+    "inp": 180
+   },
+   "network": {
+    "requests": 64,
+    "thirdParties": {
+     "google-analytics.com": 40000,
+     "fonts.googleapis.com": 2000
+    },
+    "largestImage": {
+     "url": "https://www.example-hotel.at/img/hero.jpg",
+     "bytes": 820000
+    },
+    "images": 18,
+    "hosts": []
+   },
+   "audits": {
+    "render-blocking-resources": {
+     "score": 0.4,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 3
+    },
+    "modern-image-formats": {
+     "score": 0.5,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 6
+    },
+    "uses-responsive-images": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "server-response-time": {
+     "score": 0,
+     "title": "",
+     "description": "",
+     "displayValue": "Root document took 900 ms",
+     "items": [],
+     "count": 1
+    },
+    "is-on-https": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "errors-in-console": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "viewport": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    },
+    "target-size": {
+     "score": 0.6,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 4
+    },
+    "is-crawlable": {
+     "score": 1,
+     "title": "",
+     "description": "",
+     "displayValue": "",
+     "items": [],
+     "count": 0
+    }
+   },
+   "a11y": {
+    "color-contrast": {
+     "score": 0,
+     "title": "Background and foreground colors do not have a sufficient contrast ratio.",
+     "description": "Low-contrast text is difficult or impossible for many users to read.",
+     "displayValue": "",
+     "items": [
+      {
+       "selector": "a.btn",
+       "snippet": "<a class=\"btn\">",
+       "text": "Jetzt buchen",
+       "explanation": "Fix any of the following: Element has insufficient color contrast of 2.3 (foreground color: #ffffff, background color: #f5a623, font size: 12.0pt (16px), font weight: bold). Expected contrast ratio of 4.5:1",
+       "lhId": "1-0-A",
+       "rect": {
+        "top": 420,
+        "left": 40,
+        "width": 180,
+        "height": 44
+       }
+      }
+     ],
+     "count": 7,
+     "weight": 7
+    },
+    "target-size": {
+     "score": 0,
+     "title": "Touch targets do not have sufficient size or spacing.",
+     "description": "",
+     "displayValue": "",
+     "items": [
+      {
+       "selector": "nav a",
+       "snippet": "",
+       "text": "Zimmer & Preise",
+       "explanation": "",
+       "lhId": "1-1-A",
+       "rect": {
+        "top": 20,
+        "left": 100,
+        "width": 60,
+        "height": 18
+       }
+      }
+     ],
+     "count": 4,
+     "weight": 7
+    },
+    "aria-hidden-focus": {
+     "score": 0,
+     "title": "[aria-hidden=\"true\"] elements contain focusable descendents",
+     "description": "Focusable descendents within an [aria-hidden=\"true\"] element prevent those interactive elements from being available to users of assistive technologies like screen readers.",
+     "displayValue": "",
+     "items": [],
+     "count": 1,
+     "weight": 7
+    }
+   }
+  }
+ },
+ "screenshots": {
+  "desktop": {
+   "file": "home-desktop.jpg",
+   "width": 1400,
+   "height": 875,
+   "scale": 1
+  },
+  "mobile": {
+   "file": "home-mobile.jpg",
+   "width": 412,
+   "height": 823,
+   "scale": 1
+  },
+  "mobileFull": null
+ },
+ "crops": [],
+ "pins": [],
+ "sitemap": {
+  "found": true,
+  "urls": 14
+ },
+ "legal": {
+  "imprintUrl": "https://www.example-hotel.com/imprint",
+  "imprintOk": true,
+  "privacyUrl": "https://www.example-hotel.com/privacy",
+  "privacyOk": true,
+  "cmp": [
+   "cookiebot"
+  ],
+  "hasCmp": true,
+  "trackingBeforeConsent": [
+   "Google Analytics"
+  ],
+  "embedsBeforeConsent": [
+   "Google Fonts"
+  ],
+  "thirdPartyCount": 3
+ },
+ "aiVisibility": {
+  "llmsTxt": false,
+  "llmsFullTxt": false,
+  "llmsTxtExcerpt": "",
+  "robotsFound": true,
+  "bots": {
+   "GPTBot": true,
+   "ClaudeBot": true,
+   "PerplexityBot": true,
+   "Google-Extended": false,
+   "CCBot": true,
+   "Applebot-Extended": true
+  },
+  "botsBlocked": [
+   "Google-Extended"
+  ],
+  "sitemapInRobots": true,
+  "schemaIdentity": [
+   "Hotel"
+  ],
+  "schemaExtra": [],
+  "firstSentences": "Welcome to Hotel Example."
+ },
+ "ai": null,
+ "errors": {}
+}

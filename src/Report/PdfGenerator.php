@@ -50,16 +50,18 @@ final class PdfGenerator
         }
 
         (new Filesystem())->mkdir($dir);
-        $html = $this->renderer->renderReport($row);
-
-        $pdf = 'gotenberg' === $this->settings->pdfEngine() && '' !== $this->settings->gotenbergUrl()
-            ? $this->viaGotenberg($html)
-            : $this->viaDompdf($html);
-
-        file_put_contents($path, $pdf);
+        file_put_contents($path, $this->render($this->renderer->renderReport($row)));
         $this->repository->update((int) $row['id'], ['pdf_path' => basename($path)]);
 
         return $path;
+    }
+
+    /** Turns report HTML into PDF bytes with the configured engine (Dompdf unless Gotenberg is set). */
+    public function render(string $html): string
+    {
+        return 'gotenberg' === $this->settings->pdfEngine() && '' !== $this->settings->gotenbergUrl()
+            ? $this->viaGotenberg($html)
+            : $this->viaDompdf($html);
     }
 
     /**
