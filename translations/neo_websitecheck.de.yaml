@@ -121,6 +121,10 @@ a11y:
         bad: 'Mehrere Barrieren: %count% Kontrast-Fundstellen, fehlende Beschriftungen oder Beschreibungen. Das kostet auch normale Besucher.'
     meta: 'Lighthouse Barrierefreiheit %score% von 100 · %count% Kontrast-Fundstellen'
     issue:
+        meta_viewport:
+            title: 'Zoomen am Handy ist gesperrt'
+            text: 'Die Seite verbietet das Vergrößern mit zwei Fingern. Wer schlecht sieht, kann Texte dann nicht größer stellen.'
+            fix: 'Im Seitenkopf bei „viewport“ die Angaben user-scalable=no und maximum-scale entfernen, eine Zeile im Template.'
         color_contrast:
             title: 'Text mit zu wenig Kontrast (%count%×)'
             text: 'Helle Schrift auf hellem Grund oder dunkel auf dunkel ist im Sonnenlicht und für rund jeden zwölften Mann (Farbsehen) schwer lesbar. Erforderlich: 4,5:1.'
@@ -526,6 +530,8 @@ report:
     label_mobile: 'Mobil'
     col_lcp: 'LCP'
     sources_plain: 'Quellen: Google PageSpeed Insights (Lighthouse {{lighthouse}}), eigene Prüfungen von HTML, Rechtlichem und KI-Sichtbarkeit, KI-Lesung der Seitentexte · {{date}}'
+    ai_sections_eyebrow: 'Was uns noch aufgefallen ist'
+    ai_sections_title: 'Weitere Beobachtungen'
 
 # ---------------------------------------------------------------- E-Mail
 mail:
@@ -724,6 +730,8 @@ designer:
         col_grade: 'Spalte Note'
         none_text: 'Wort für „keine“'
         badge: 'Kürzel im Kästchen'
+        max_crops: 'Markierte Ausschnitte höchstens'
+        show_intro: 'Einleitung anzeigen'
     theme:
         doc_title: 'Dokumenttitel (PDF-Eigenschaften)'
         page_label: 'Wort vor der Seitenzahl'
@@ -771,6 +779,7 @@ designer:
         strengths: {label: 'Was bereits passt', desc: 'Positive Punkte als Häkchenliste.'}
         area_detail: {label: 'Bereich im Detail', desc: 'Ein Bereich mit Fundstellen, positiven Punkten, bei Barrierefreiheit mit markierten Ausschnitten.'}
         kpis: {label: 'Messwerte Ladezeit', desc: 'LCP, CLS, INP, Leistung, Seitengewicht, Anfragen.'}
+        ai_sections: {label: 'KI-Abschnitte', desc: 'Themen, die die KI zusätzlich zu den sieben Bereichen gefunden hat (z. B. Preise, Buchung, Vertrauen). Erscheint nur, wenn es etwas zu sagen gibt.'}
         pages_table: {label: 'Tabelle der Seiten', desc: 'Alle geprüften Seiten mit Titel, LCP, Kontrast und Note.'}
         sources: {label: 'Quellen', desc: 'Quellenhinweis, Platzhalter {{lighthouse}} und {{date}}.'}
         spacer: {label: 'Abstand', desc: 'Leerraum.'}

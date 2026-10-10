@@ -110,7 +110,7 @@
         renderProgress(j);
         if (typeof j.eta === 'number') setEta(j.eta);
         if (j.status === 'done') { clearInterval(etaTimer); finishRun(); return; }
-        if (j.status === 'failed') { clearInterval(etaTimer); showErr(runErr, (i18n.err_failed || '') + (j.error ? ' (' + j.error + ')' : '')); addResetButton(); return; }
+        if (j.status === 'failed') { clearInterval(etaTimer); showErr(runErr, i18n.err_failed || ''); /* the technical reason stays in the back end */ addResetButton(); return; }
         // A long response means this request executed a step: poll again right away.
         var took = Date.now() - t0;
         pollTimer = setTimeout(poll, took > 3000 ? 300 : 2000);

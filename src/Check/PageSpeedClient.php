@@ -53,16 +53,23 @@ final class PageSpeedClient
                 'url' => $job['url'],
                 'strategy' => $job['strategy'],
                 'locale' => substr($locale, 0, 2),
-                'category' => ['performance', 'accessibility', 'best-practices', 'seo'],
             ];
 
             if ($this->isConfigured()) {
                 $query['key'] = $this->settings->pageSpeedKey();
             }
 
+            // Google expects the category parameter repeated (category=a&category=b). An array in
+            // "query" would be sent as category[0]=…, which Google ignores: only performance is
+            // measured then, and accessibility, best practices and SEO come back empty.
+            $url = self::ENDPOINT.'?'.http_build_query($query, '', '&', PHP_QUERY_RFC3986);
+
+            foreach (['performance', 'accessibility', 'best-practices', 'seo'] as $category) {
+                $url .= '&category='.rawurlencode($category);
+            }
+
             try {
-                $responses[$key] = $this->httpClient->request('GET', self::ENDPOINT, [
-                    'query' => $query,
+                $responses[$key] = $this->httpClient->request('GET', $url, [
                     'timeout' => $this->settings->pageSpeedTimeout(),
                     'max_duration' => $this->settings->pageSpeedTimeout() + 10,
                 ]);

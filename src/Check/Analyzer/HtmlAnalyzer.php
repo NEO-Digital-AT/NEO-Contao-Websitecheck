@@ -179,6 +179,12 @@ final class HtmlAnalyzer
         }
 
         $body = $xp->query('//body')->item(0);
+        // Visible text only: no scripts/styles, no hidden decoration such as icon-font ligatures
+        // ("location_on", "edit_document"), which would otherwise end up in the AI's reading.
+        foreach (iterator_to_array($xp->query('//body//script | //body//style | //body//noscript | //body//template | //body//svg | //body//*[@aria-hidden="true"] | //body//*[contains(concat(" ", normalize-space(@class), " "), " material-icons ") or contains(@class, "material-symbols")]') ?: []) as $node) {
+            $node->parentNode?->removeChild($node);
+        }
+
         $visible = $text($body);
         $words = str_word_count(strip_tags($visible)) ?: \count(preg_split('/\s+/u', $visible, -1, PREG_SPLIT_NO_EMPTY) ?: []);
 

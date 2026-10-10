@@ -14,6 +14,8 @@ All notable changes to this bundle are documented here. The format follows
 - **Advanced mode:** the switch *Visual | Advanced (Twig)* (administrators) shows the whole document as Twig code (frame, CSS, block HTML, all words via `wc_theme()`/`wc_block()`), with live preview, error display with line number and validation on save. The generated code renders identically to the visual design. Replaces "Copy to Twig template" and the separate expert fields for e-mail and PDF.
 - Without a saved design, report and e-mail render the bundled *Standard* template; the old file templates `report.html.twig` and `mail_visitor.html.twig` were removed.
 
+- **The AI prepares the report:** it receives the marked screenshot excerpts cut from Google's measurement (now up to eight candidates), picks the two or three that matter most for the business and writes a plain caption for each. It may add one or two sections of its own for topics the seven areas do not cover (prices, booking, trust, service area, emergency service …); the new PDF block **AI sections** renders them and is part of all PDF templates. Default `ai.max_tokens` raised to 3000.
+
 ### Fixed
 - **Privacy:** a check served from the 24-hour cache copied the source check's folder including its PDF, and that PDF (with the first visitor's name) was sent again. The copy now skips PDFs, and a PDF is only reused when it belongs to the same check.
 - **Numbers in grade badges sat 2–6 mm too high in Dompdf PDFs.** Dompdf only centres text vertically when width, height and `vertical-align: middle` are on the table cell; every badge now uses one measured macro (`_pdf_macros.html.twig`). An automatic check measured all badges in all templates (offset ≤ 0.3 mm).
@@ -24,6 +26,17 @@ All notable changes to this bundle are documented here. The format follows
 - Screenshots in the report were Google's thumbnails (250 px mobile, 500 px desktop). The first screen is now cut from the full-page capture in full resolution (412 px / 1350 px).
 - Marked excerpts skipped nothing: icon-font glyphs ("cleaning_services", "search") were cut out and listed as examples. They are now left out, at most two excerpts per audit are taken and overlapping excerpts are skipped.
 - The cover repeated the logo already shown in the header line.
+- **Google measured only the loading speed:** the four categories were sent as `category[0]=…`, which PageSpeed ignores, so accessibility, best practices and SEO came back empty and were graded 5. The parameter is now repeated as Google expects. A category that is missing anyway counts as "not measured", never as 0.
+- Marked excerpts were limited to the first 5000 px of the page; findings further down were skipped. The full page is now stored (up to 20 000 px).
+- The accessibility line quoted our stricter internal score as "Lighthouse … von 100"; it now shows Google's value.
+- Raw technical error messages (e.g. Google's quota message in English) no longer appear in the visitor's report; they stay in the back end.
+- The page text read by the AI contained inline scripts, styles and icon-font ligatures; only visible text is sent now.
+- Loading speed said "faster than most websites" with grade 1 while the main content needed 3.6 s (high Google score). Google's own LCP limits now cap grade and wording: over 2.5 s at most grade 2, over 4 s at most grade 4.
+- A start page that could not be fetched still produced a report (empty domain, grade 5, AI call, e-mail). The check now stops with the "could not be checked" message; no report, no e-mail, no AI cost.
+- Slow servers: pages may take up to 35 s (was 10–20 s); a tested start page needed 21 s and failed the check.
+- The public status API passed the internal error text (server paths, host names) to the browser; it now only reports that the check failed.
+- PDF layout: area details, strengths and AI sections are now rows of card pairs. A whole area used to be one table row, which Dompdf cannot split, so long areas jumped to the next page and left nearly empty pages. Headings stay with their first row.
+- Findings without tailored wording showed Lighthouse's Markdown code marks; they are removed, and "zoom blocked" (meta-viewport) has its own plain wording.
 
 ### Fixed
 - JSON endpoints (`start`, `claim`) answered 400 for visitors with any cookie: Contao's request-token check applied to them. Routes now set `_token_check: false` and the script sends `X-Requested-With`.

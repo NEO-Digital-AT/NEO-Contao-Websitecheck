@@ -298,13 +298,17 @@ final class BlockRegistry
                 'area' => ['type' => 'select', 'default' => 'accessibility', 'options' => self::AREAS],
                 'show_grade' => $bool(), 'grade_line' => $text('@report.area_grade_line'),
                 'title' => $text(), 'intro' => $area(),
-                'show_crops' => $bool(), 'show_kpis' => $bool(false),
+                'show_crops' => $bool(), 'max_crops' => ['type' => 'number', 'default' => 3, 'min' => 0, 'max' => 4], 'show_kpis' => $bool(false),
                 'works_title' => $text('@report.what_works'), 'improve_title' => $text('@report.what_to_improve'), 'nothing_text' => $text('@report.nothing_to_improve'),
                 'max_issues' => ['type' => 'number', 'default' => 3, 'min' => 0, 'max' => 10],
                 'max_good' => ['type' => 'number', 'default' => 2, 'min' => 0, 'max' => 10],
                 'note' => $area(), 'space' => self::SPACE,
             ]],
             'kpis' => ['group' => 'data', 'props' => ['space' => self::SPACE]],
+            'ai_sections' => ['group' => 'data', 'props' => [
+                'eyebrow' => $text('@report.ai_sections_eyebrow'), 'title' => $text('@report.ai_sections_title'),
+                'show_intro' => $bool(), 'space' => self::SPACE,
+            ]],
             'pages_table' => ['group' => 'data', 'props' => [
                 'eyebrow' => $text('@report.pages_eyebrow_plain'), 'title' => $text('@report.pages_title'), 'intro' => $area('@report.pages_intro'),
                 'col_page' => $text('@report.col_page'), 'col_title' => $text('@report.col_title'), 'col_lcp' => $text('@report.col_lcp'),

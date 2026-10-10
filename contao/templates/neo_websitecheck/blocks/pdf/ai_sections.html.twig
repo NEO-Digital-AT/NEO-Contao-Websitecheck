@@ -1,0 +1,20 @@
+{# Sections the AI added for topics outside the seven areas (result.aiSections). Without AI or without such topics the block prints nothing. #}
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
+{% set sections = result.aiSections ?? [] %}
+{% if sections %}
+<div style="margin-bottom:{{ t.space[block.space] }}">
+  {% if block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+  {% if block.title %}<h2>{{ block.title }}</h2>{% endif %}
+  {% for section in sections %}
+  <div style="margin-bottom:{{ loop.last ? '0' : t.space.m }}">
+    <div style="page-break-after:avoid;page-break-inside:avoid">
+      <h3>{{ section.title }}</h3>
+      {% if block.show_intro and section.intro %}<p class="muted">{{ section.intro }}</p>{% endif %}
+    </div>
+    <table class="two">
+      {% for pair in section.points|batch(2) %}<tr>{% for p in pair %}<td class="{{ loop.first ? 'l' : 'r' }}">{{ pdf.finding(p.kind, p.title, p.text, '') }}</td>{% endfor %}{% if pair|length < 2 %}<td class="r"></td>{% endif %}</tr>{% endfor %}
+    </table>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}

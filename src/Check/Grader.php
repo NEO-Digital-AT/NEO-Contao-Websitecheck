@@ -152,12 +152,43 @@ final class Grader
                 'mobile' => $data['screenshots']['mobile']['file'] ?? null,
                 'mobileFull' => $data['screenshots']['mobileFull']['file'] ?? null,
             ],
-            'crops' => (array) ($data['crops'] ?? []),
+            'crops' => $this->reportCrops((array) ($data['crops'] ?? []), $ai),
+            // sections the AI added for topics outside the seven areas (rendered by the "ai_sections" block)
+            'aiSections' => null !== $ai ? (array) ($ai['sections'] ?? []) : [],
             'ai' => null !== $ai ? ['model' => $ai['model'], 'clarity' => $ai['clarity']] : null,
             'pagesChecked' => \count((array) ($data['pages'] ?? [])),
             'lighthouse' => $homeOk ? $home['version'] : '',
             'errors' => (array) ($data['errors'] ?? []),
         ];
+    }
+
+    /**
+     * Marked excerpts for the report: the AI's picks in its order with its
+     * caption; without AI (or without picks) the first four candidates.
+     *
+     * @param list<array<string, mixed>> $crops
+     * @param array<string, mixed>|null  $ai
+     *
+     * @return list<array<string, mixed>>
+     */
+    private function reportCrops(array $crops, array|null $ai): array
+    {
+        $picks = (array) ($ai['highlights'] ?? []);
+
+        if ([] === $picks) {
+            return \array_slice($crops, 0, 4);
+        }
+
+        $byRef = array_column($crops, null, 'ref');
+        $out = [];
+
+        foreach ($picks as $pick) {
+            if (isset($byRef[$pick['ref']])) {
+                $out[] = $byRef[$pick['ref']] + ['caption' => (string) $pick['caption']];
+            }
+        }
+
+        return [] !== $out ? $out : \array_slice($crops, 0, 4);
     }
 
     public static function gradeFor(float $score): int
@@ -248,6 +279,14 @@ final class Grader
             $good[] = $this->good('speed.good.images');
         }
 
+        // Google's own LCP thresholds (2.5 s good, 4 s poor) limit grade and wording: a high
+        // performance score must not say "faster than most" when the main content takes 3.6 s.
+        if (null !== $lcp && $lcp > 4.0) {
+            $score = min($score, 64.0);
+        } elseif (null !== $lcp && $lcp > 2.5) {
+            $score = min($score, 89.0);
+        }
+
         $summaryKey = $score >= 90 ? 'good' : ($score >= 65 ? 'ok' : 'bad');
 
         return [
@@ -262,11 +301,13 @@ final class Grader
 
     private function accessibility(array $data, array $home, bool $ok, array $htmlPages): array
     {
-        if (!$ok) {
+        // no run, or Google returned no accessibility category: "not measured", never a 5
+        if (!$ok || null === ($home['scores']['accessibility'] ?? null)) {
             return $this->unavailable('accessibility', (string) ($home['error'] ?? ''));
         }
 
         $score = (float) $home['scores']['accessibility'];
+        $lighthouseScore = (int) $score; // what Google reports; $score below is our stricter weighting
         $issues = [];
         $good = [];
         $contrast = $home['a11y']['color-contrast'] ?? null;
@@ -299,7 +340,10 @@ final class Grader
 
             if ($translated === $key.'.title') {
                 // No tailored wording: fall back to the Lighthouse title/description.
-                $issues[] = ['title' => rtrim($audit['title'], '.'), 'text' => $audit['description'], 'fix' => $audit['description'], 'effort' => $effort, 'priority' => $priority, 'count' => $audit['count'], 'examples' => \array_slice(array_filter($items), 0, 3), 'auditId' => $id];
+                // Code marks (`…`) from Lighthouse's Markdown mean nothing to a business owner.
+                $plainTitle = rtrim(str_replace('`', '', $audit['title']), '.');
+                $plainText = str_replace('`', '', $audit['description']);
+                $issues[] = ['title' => $plainTitle, 'text' => $plainText, 'fix' => $plainText, 'effort' => $effort, 'priority' => $priority, 'count' => $audit['count'], 'examples' => \array_slice(array_filter($items), 0, 3), 'auditId' => $id];
             } else {
                 $issues[] = ['title' => $this->t($key.'.title', ['%count%' => $audit['count']]), 'text' => $this->t($key.'.text', ['%count%' => $audit['count']]), 'fix' => $this->t($key.'.fix', ['%count%' => $audit['count']]), 'effort' => $effort, 'priority' => $priority, 'count' => $audit['count'], 'examples' => \array_slice(array_filter($items), 0, 3), 'auditId' => $id];
             }
@@ -332,7 +376,7 @@ final class Grader
         return [
             'score' => $score,
             'summary' => $this->t('a11y.summary.'.$summaryKey, ['%count%' => $contrastCount]),
-            'meta' => $this->t('a11y.meta', ['%score%' => (int) $score, '%count%' => $contrastCount]),
+            'meta' => $this->t('a11y.meta', ['%score%' => $lighthouseScore, '%count%' => $contrastCount]),
             'issues' => $issues,
             'good' => $good,
         ];
@@ -342,7 +386,8 @@ final class Grader
     {
         $issues = [];
         $good = [];
-        $score = $ok ? (float) $home['scores']['seo'] : 80.0;
+        $seoMeasured = $ok && null !== ($home['scores']['seo'] ?? null);
+        $score = $seoMeasured ? (float) $home['scores']['seo'] : 80.0;
         $penalty = 0;
         $titlesOk = true;
         $h1Ok = true;
@@ -440,7 +485,7 @@ final class Grader
         return [
             'score' => $score,
             'summary' => $this->t('seo.summary.'.$summaryKey),
-            'meta' => $this->t('seo.meta', ['%score%' => $ok ? $home['scores']['seo'] : '–', '%pages%' => \count($htmlPages)]),
+            'meta' => $this->t('seo.meta', ['%score%' => $seoMeasured ? $home['scores']['seo'] : '–', '%pages%' => \count($htmlPages)]),
             'issues' => $issues,
             'good' => $good,
         ];
@@ -716,7 +761,8 @@ final class Grader
             $rowScore = null;
 
             if (null !== $psi) {
-                $rowScore = ($psi['scores']['performance'] + $psi['scores']['accessibility'] + $psi['scores']['seo']) / 3;
+                $measured = array_filter([$psi['scores']['performance'] ?? null, $psi['scores']['accessibility'] ?? null, $psi['scores']['seo'] ?? null], static fn ($v): bool => null !== $v);
+                $rowScore = [] !== $measured ? array_sum($measured) / \count($measured) : null;
             }
 
             $rows[] = [
@@ -766,7 +812,8 @@ final class Grader
 
     private function unavailable(string $area, string $error = ''): array
     {
-        return ['score' => null, 'summary' => $this->t('area.unavailable'), 'meta' => $error, 'issues' => [], 'good' => []];
+        // the technical reason stays internal (back end, logs); the visitor's report only says "not measured"
+        return ['score' => null, 'summary' => $this->t('area.unavailable'), 'meta' => '', 'error' => $error, 'issues' => [], 'good' => []];
     }
 
     private function t(string $key, array $params = []): string

@@ -150,6 +150,15 @@
       }
     },
     {
+      "id": "ai-sections",
+      "type": "ai_sections",
+      "props": {
+        "eyebrow": "@report.ai_sections_eyebrow",
+        "title": "@report.ai_sections_title",
+        "space": "l"
+      }
+    },
+    {
       "id": "pages",
       "type": "pages_table",
       "props": {

@@ -121,6 +121,10 @@ a11y:
         bad: 'Several barriers: %count% contrast findings, missing labels or descriptions. These also cost regular visitors.'
     meta: 'Lighthouse accessibility %score% of 100 · %count% contrast findings'
     issue:
+        meta_viewport:
+            title: 'Zooming is blocked on phones'
+            text: 'The page prevents pinch-to-zoom. People with low vision cannot enlarge the text.'
+            fix: 'Remove user-scalable=no and maximum-scale from the viewport tag in the page head, one line in the template.'
         color_contrast:
             title: 'Text with too little contrast (%count%×)'
             text: 'Light text on light background or dark on dark is hard to read in sunlight and for roughly every twelfth man (colour vision). Required: 4.5:1.'
@@ -526,6 +530,8 @@ report:
     label_mobile: 'Mobile'
     col_lcp: 'LCP'
     sources_plain: 'Sources: Google PageSpeed Insights (Lighthouse {{lighthouse}}), own HTML/legal/AI-visibility checks, AI reading of the page texts · {{date}}'
+    ai_sections_eyebrow: 'What else we noticed'
+    ai_sections_title: 'Further observations'
 
 # ---------------------------------------------------------------- e-mail
 mail:
@@ -724,6 +730,8 @@ designer:
         col_grade: 'Column grade'
         none_text: 'Word for "none"'
         badge: 'Short label in the box'
+        max_crops: 'Marked excerpts at most'
+        show_intro: 'Show introduction'
     theme:
         doc_title: 'Document title (PDF properties)'
         page_label: 'Word before the page number'
@@ -771,6 +779,7 @@ designer:
         strengths: {label: 'What already works', desc: 'Positive points as a check list.'}
         area_detail: {label: 'Area in detail', desc: 'One area with findings and positive points; accessibility with marked excerpts.'}
         kpis: {label: 'Speed metrics', desc: 'LCP, CLS, INP, performance, page weight, requests.'}
+        ai_sections: {label: 'AI sections', desc: 'Topics the AI found beyond the seven areas (e.g. prices, booking, trust). Appears only when there is something to say.'}
         pages_table: {label: 'Table of pages', desc: 'All checked pages with title, LCP, contrast and grade.'}
         sources: {label: 'Sources', desc: 'Source note, placeholders {{lighthouse}} and {{date}}.'}
         spacer: {label: 'Spacer', desc: 'Empty space.'}

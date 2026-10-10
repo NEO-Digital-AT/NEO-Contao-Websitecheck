@@ -18,13 +18,13 @@ services:
             $projectDir: '%kernel.project_dir%'
             $db: '@Neo\WebsitecheckBundle\Check\SettingsRepository'
 
-    # Dedicated HTTP clients: the visitor's website must never stall the
-    # request for long, PageSpeed and the AI endpoint legitimately take longer.
+    # Dedicated HTTP clients. Slow small-business servers exist (one tested start
+    # page needed 21 s): wait up to 35 s, the slowness then shows in the report.
     neo_websitecheck.site_client:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
-            - { timeout: 10, max_duration: 20, max_redirects: 5 }
+            - { timeout: 30, max_duration: 35, max_redirects: 5 }
 
     neo_websitecheck.api_client:
         class: Symfony\Contracts\HttpClient\HttpClientInterface

@@ -1,13 +1,96 @@
 {
-  "theme": {"header": true, "footer": true, "footer_text": "{{company}}", "page_numbers": true, "margins": "narrow"},
+  "theme": {
+    "header": true,
+    "footer": true,
+    "footer_text": "{{company}}",
+    "page_numbers": true,
+    "margins": "narrow"
+  },
   "blocks": [
-    {"id": "head", "type": "heading", "props": {"eyebrow": "@report.cover_eyebrow", "text": "@report.cover_title", "level": "h1", "space": "s"}},
-    {"id": "domain", "type": "text", "props": {"html": "<p><b>{{domain}}</b> · {{date}} · {{firstname}} {{lastname}}</p>", "tone": "primary", "space": "m"}},
-    {"id": "grade", "type": "grade_box", "props": {"show_summary": true, "style": "primary", "space": "m"}},
-    {"id": "areas", "type": "areas", "props": {"layout": "list", "legend": true, "space": "l"}},
-    {"id": "measures", "type": "measures", "props": {"eyebrow": "@report.measures_eyebrow", "show_effort": true, "max": 3, "space": "l"}},
-    {"id": "strengths", "type": "strengths", "props": {"title": "@report.what_works", "max": 4, "space": "l"}},
-    {"id": "next", "type": "next_steps", "props": {"eyebrow": "@report.next_eyebrow", "title": "@report.next_title", "html": "<p>@report.next_text</p>", "promise": "@report.next_promise", "show_portrait": true, "show_contact": true, "space": "m"}},
-    {"id": "sources", "type": "sources", "props": {"space": "none"}}
+    {
+      "id": "head",
+      "type": "heading",
+      "props": {
+        "eyebrow": "@report.cover_eyebrow",
+        "text": "@report.cover_title",
+        "level": "h1",
+        "space": "s"
+      }
+    },
+    {
+      "id": "domain",
+      "type": "text",
+      "props": {
+        "html": "<p><b>{{domain}}</b> · {{date}} · {{firstname}} {{lastname}}</p>",
+        "tone": "primary",
+        "space": "m"
+      }
+    },
+    {
+      "id": "grade",
+      "type": "grade_box",
+      "props": {
+        "show_summary": true,
+        "style": "primary",
+        "space": "m"
+      }
+    },
+    {
+      "id": "areas",
+      "type": "areas",
+      "props": {
+        "layout": "list",
+        "legend": true,
+        "space": "l"
+      }
+    },
+    {
+      "id": "measures",
+      "type": "measures",
+      "props": {
+        "eyebrow": "@report.measures_eyebrow",
+        "show_effort": true,
+        "max": 3,
+        "space": "l"
+      }
+    },
+    {
+      "id": "strengths",
+      "type": "strengths",
+      "props": {
+        "title": "@report.what_works",
+        "max": 4,
+        "space": "l"
+      }
+    },
+    {
+      "id": "ai-sections",
+      "type": "ai_sections",
+      "props": {
+        "eyebrow": "@report.ai_sections_eyebrow",
+        "title": "@report.ai_sections_title",
+        "space": "l"
+      }
+    },
+    {
+      "id": "next",
+      "type": "next_steps",
+      "props": {
+        "eyebrow": "@report.next_eyebrow",
+        "title": "@report.next_title",
+        "html": "<p>@report.next_text</p>",
+        "promise": "@report.next_promise",
+        "show_portrait": true,
+        "show_contact": true,
+        "space": "m"
+      }
+    },
+    {
+      "id": "sources",
+      "type": "sources",
+      "props": {
+        "space": "none"
+      }
+    }
   ]
 }

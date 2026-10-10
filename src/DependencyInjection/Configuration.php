@@ -36,7 +36,7 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('base_url')->defaultValue('https://router.requesty.ai/v1')->end()
                         ->scalarNode('api_key')->defaultValue('')->end()
                         ->scalarNode('model')->defaultValue('anthropic/claude-sonnet-4-5')->end()
-                        ->integerNode('max_tokens')->defaultValue(2000)->min(500)->end()
+                        ->integerNode('max_tokens')->defaultValue(3000)->min(500)->info('Upper limit of the answer; the extra sections need room.')->end()
                         ->integerNode('timeout')->defaultValue(90)->min(20)->max(170)->end()
                         ->booleanNode('send_screenshot')->defaultTrue()->info('Attach the mobile screenshot of the start page to the AI request (needs a vision model).')->end()
                     ->end()

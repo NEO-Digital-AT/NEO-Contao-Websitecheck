@@ -1,38 +1,46 @@
 {% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
 {% set ar = areas[block.area]|default(null) %}
 {% if ar %}
+{% set withCrops = block.show_crops and block.max_crops > 0 and block.area == 'accessibility' and crops %}
+{% set goods = ar.good|slice(0, block.max_good) %}
+{% set issues = ar.issues|slice(0, block.max_issues) %}
+{#
+  Layout for Dompdf: one table row per pair of cards, because a table row cannot be split across
+  pages (a whole area as one two-column row would jump to the next page and leave a gap). The
+  heading is kept together with the first row so it never stands alone at the bottom of a page.
+#}
+{% set rows = [] %}
+{% if withCrops %}
+  {% for pair in crops|slice(0, block.max_crops)|batch(2) %}{% set rows = rows|merge([{type: 'crops', items: pair}]) %}{% endfor %}
+  {% set cards = issues|map(i => {kind: 'warn', title: i.title, text: i.text, small: (i.examples ?? [])|join(' · ')})|merge(goods|map(g => {kind: 'good', title: g.title, text: g.text, small: ''})) %}
+  {% for pair in cards|batch(2) %}{% set rows = rows|merge([{type: 'cards', items: pair}]) %}{% endfor %}
+{% else %}
+  {% for n in 0..(max(goods|length, issues|length, 1) - 1) %}
+    {% set rows = rows|merge([{type: 'columns', good: goods[n] ?? null, issue: issues[n] ?? null, first: n == 0}]) %}
+  {% endfor %}
+{% endif %}
+
+
 <div style="margin-bottom:{{ t.space[block.space] }}">
-  <div style="page-break-after:avoid;page-break-inside:avoid">
-  {% if block.show_grade and block.grade_line and ar.grade %}<p class="eyebrow">{{ block.grade_line|replace({'{{area_grade}}': ar.grade, '{{area_grade_word}}': t.labels.grade[ar.grade] ?? ''}) }}</p>{% endif %}
-  <h2>{{ block.title ?: (t.labels.area[block.area] ?? ar.label) }}</h2>
-  {% if block.intro %}<p class="muted">{{ block.intro|nl2br }}</p>{% endif %}
-  </div>
-  {% if block.show_kpis and ar.kpis is defined and ar.kpis %}
-  <table style="width:100%;border-collapse:separate;border-spacing:2.5mm 0;margin:0 -2.5mm 4mm"><tr>
-    {% for k in ar.kpis|slice(0, 3) %}{{ pdf.kpi(t, k) }}{% endfor %}
-  </tr></table>
-  {% endif %}
-  {% set withCrops = block.show_crops and block.area == 'accessibility' and crops %}
-  <table class="two"><tr>
-    {% if withCrops %}
-    <td class="l">
-      {% for crop in crops|slice(0, 2) %}<div class="crop"><img src="{{ crop.data }}" alt=""></div><p class="caption">{{ crop.title }}{% if crop.text %} · <i>{{ crop.text|slice(0, 60) }}</i>{% endif %}</p>{% endfor %}
-    </td>
-    <td class="r">
-      {% for issue in ar.issues|slice(0, block.max_issues) %}<table class="finding"><tr><td class="i"><span class="dot warn">!</span></td><td class="t"><b>{{ issue.title }}</b>{{ issue.text }}{% if issue.examples is defined and issue.examples %}<small>{{ issue.examples|join(' · ') }}</small>{% endif %}</td></tr></table>{% endfor %}
-      {% for good in ar.good|slice(0, block.max_good) %}<table class="finding"><tr><td class="i"><span class="dot good">✓</span></td><td class="t"><b>{{ good.title }}</b>{{ good.text }}</td></tr></table>{% endfor %}
-    </td>
-    {% else %}
-    <td class="l">
-      {% if block.works_title %}<h4>{{ block.works_title }}</h4>{% endif %}
-      {% for good in ar.good|slice(0, block.max_good) %}<table class="finding"><tr><td class="i"><span class="dot good">✓</span></td><td class="t"><b>{{ good.title }}</b>{{ good.text }}</td></tr></table>{% else %}<p class="muted">–</p>{% endfor %}
-    </td>
-    <td class="r">
-      {% if block.improve_title %}<h4>{{ block.improve_title }}</h4>{% endif %}
-      {% for issue in ar.issues|slice(0, block.max_issues) %}<table class="finding"><tr><td class="i"><span class="dot warn">!</span></td><td class="t"><b>{{ issue.title }}</b>{{ issue.text }}{% if issue.examples is defined and issue.examples %}<small>{{ issue.examples|join(' · ') }}</small>{% endif %}</td></tr></table>{% else %}{% if block.nothing_text %}<p class="muted">{{ block.nothing_text }}</p>{% endif %}{% endfor %}
-    </td>
+  <div style="page-break-inside:avoid">
+    {% if block.show_grade and block.grade_line and ar.grade %}<p class="eyebrow">{{ block.grade_line|replace({'{{area_grade}}': ar.grade, '{{area_grade_word}}': t.labels.grade[ar.grade] ?? ''}) }}</p>{% endif %}
+    <h2>{{ block.title ?: (t.labels.area[block.area] ?? ar.label) }}</h2>
+    {% if block.intro %}<p class="muted">{{ block.intro|nl2br }}</p>{% endif %}
+    {% if block.show_kpis and ar.kpis is defined and ar.kpis %}
+    <table style="width:100%;border-collapse:separate;border-spacing:2.5mm 0;margin:0 -2.5mm 4mm"><tr>
+      {% for k in ar.kpis|slice(0, 3) %}{{ pdf.kpi(t, k) }}{% endfor %}
+    </tr></table>
     {% endif %}
-  </tr></table>
+    <table class="two">
+      {% if not withCrops and (block.works_title or block.improve_title) %}<tr><td class="l"><h4>{{ block.works_title }}</h4></td><td class="r"><h4>{{ block.improve_title }}</h4></td></tr>{% endif %}
+      {% if rows|first %}{{ pdf.area_row(rows|first, block, t) }}{% endif %}
+    </table>
+  </div>
+  {% if rows|length > 1 %}
+  <table class="two">
+    {% for r in rows|slice(1) %}{{ pdf.area_row(r, block, t) }}{% endfor %}
+  </table>
+  {% endif %}
   {% if block.area == 'content' and result.firstImpression %}<p class="muted" style="font-size:9pt;font-style:italic">{{ result.firstImpression }}</p>{% endif %}
   {% if block.note %}<p class="note">{{ block.note|nl2br }}</p>{% elseif ar.note is defined and ar.note %}<p class="note">{{ ar.note }}</p>{% endif %}
 </div>

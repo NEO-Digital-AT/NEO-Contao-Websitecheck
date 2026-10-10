@@ -89,7 +89,9 @@ final class CheckRunner
             $data['errors'][$step] = mb_substr($e->getMessage(), 0, 500);
             $update['attempts'] = 0;
 
-            if ('finish' === $step) {
+            // Without a reachable start page every later step would grade nothing (and the visitor
+            // would get a report full of "not measured" plus a 5): stop with a clear failure instead.
+            if ('finish' === $step || 'discover' === $step) {
                 $update['status'] = CheckRepository::STATUS_FAILED;
                 $update['error'] = mb_substr($e->getMessage(), 0, 1000);
             }
@@ -374,7 +376,8 @@ final class CheckRunner
         $fullSaved = null;
 
         if (null !== $full && '' !== $full['data']) {
-            $fullSaved = $this->screenshots->saveDataUrl($id, 'home-mobile-full', $full['data'], (int) $full['width'], 900, 5000);
+            // the whole page (findings often sit far down); only the excerpts go into PDF and e-mail
+            $fullSaved = $this->screenshots->saveDataUrl($id, 'home-mobile-full', $full['data'], (int) $full['width'], 900, 20000);
 
             if (null !== $fullSaved) {
                 $data['screenshots']['mobileFull'] = $fullSaved;
@@ -396,6 +399,8 @@ final class CheckRunner
         if (null !== $fullSaved) {
             $n = 0;
             $viewportCss = (int) $viewport['height'];
+            // CSS px covered by the stored capture: excerpts below it cannot be cut
+            $coveredCss = (int) floor($fullSaved['height'] / max(0.01, $fullSaved['scale']));
 
             $tops = [];
 
@@ -405,18 +410,19 @@ final class CheckRunner
                 foreach ($audit['items'] as $item) {
                     $rect = $item['rect'] ?? null;
 
-                    if (null === $rect || $rect['width'] <= 0 || $rect['height'] <= 0 || $rect['top'] > 4500 || PageSpeedClient::isIconGlyph($item)) {
+                    if (null === $rect || $rect['width'] <= 0 || $rect['height'] <= 0 || $rect['top'] + $rect['height'] > $coveredCss || PageSpeedClient::isIconGlyph($item)) {
                         continue;
                     }
 
-                    // at most two excerpts per audit and none overlapping an earlier one: variety instead of four times the same row
+                    // candidates for the report: at most three per audit and none overlapping an earlier one.
+                    // With the AI step enabled, the AI picks the ones that matter most to a visitor (Grader).
                     $overlaps = array_filter($tops, static fn (int $top): bool => abs($top - $rect['top']) < 60);
 
-                    if ($n < 4 && $perAudit < 2 && [] === $overlaps) {
+                    if ($n < 8 && $perAudit < 3 && [] === $overlaps) {
                         $crop = $this->screenshots->cropMarked($id, 'home-mobile-full.jpg', $fullSaved['scale'], $rect, 'finding-'.($n + 1));
 
                         if (null !== $crop) {
-                            $data['crops'][] = ['file' => $crop['file'], 'width' => $crop['width'], 'height' => $crop['height'], 'auditId' => $auditId, 'title' => $audit['title'], 'text' => (string) ($item['text'] ?? ''), 'explanation' => (string) ($item['explanation'] ?? ''), 'ratio' => preg_match('/contrast of ([0-9.]+)/', (string) ($item['explanation'] ?? ''), $cm) ? (float) $cm[1] : null];
+                            $data['crops'][] = ['ref' => 'f'.($n + 1), 'file' => $crop['file'], 'width' => $crop['width'], 'height' => $crop['height'], 'auditId' => $auditId, 'title' => $audit['title'], 'text' => (string) ($item['text'] ?? ''), 'explanation' => (string) ($item['explanation'] ?? ''), 'ratio' => preg_match('/contrast of ([0-9.]+)/', (string) ($item['explanation'] ?? ''), $cm) ? (float) $cm[1] : null];
                             $tops[] = $rect['top'];
                             ++$n;
                             ++$perAudit;
@@ -537,7 +543,7 @@ final class CheckRunner
             }
 
             $shot = isset($data['screenshots']['mobile']['file']) ? $this->screenshots->path($id, $data['screenshots']['mobile']['file']) : null;
-            $data['ai'] = $this->aiReviewer->review((string) $data['home']['domain'], $pages, $shot, $locale);
+            $data['ai'] = $this->aiReviewer->review((string) $data['home']['domain'], $pages, $shot, $locale, (array) ($data['crops'] ?? []));
 
             if (isset($data['ai']['error'])) {
                 $this->logger?->warning(sprintf('Website check #%d: AI review failed: %s', $id, $data['ai']['error']));

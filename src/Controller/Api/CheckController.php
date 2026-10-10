@@ -122,7 +122,7 @@ final class CheckController
 
         if (CheckRepository::STATUS_DONE !== $row['status']) {
             if (CheckRepository::STATUS_FAILED === $row['status']) {
-                return $this->json(['error' => 'failed', 'message' => $row['error']], 409);
+                return $this->json(['error' => 'failed'], 409); // the reason stays in the back end
             }
 
             return $this->json(['error' => 'not_ready'] + $this->statusPayload($row), 409);
@@ -214,7 +214,8 @@ final class CheckController
             'claimed' => (int) $row['claimed'] > 0,
             'screenshot' => null !== $shot ? $this->router->generate('neo_websitecheck_image', ['id' => $row['id'], 'name' => $shot, 'token' => $row['token']]) : null,
             'pins' => \array_slice((array) ($row['data']['pins'] ?? []), 0, 5),
-            'error' => CheckRepository::STATUS_FAILED === $row['status'] ? (string) $row['error'] : null,
+            // only the fact; the technical reason (paths, hosts, messages) stays in the back end
+            'error' => CheckRepository::STATUS_FAILED === $row['status'] ? 'failed' : null,
         ];
     }
 
