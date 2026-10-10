@@ -177,7 +177,7 @@ Everything a visitor sees is edited in the back end under **NEO › Website chec
 - **PDF report:** file name with placeholders (`website-check-{{domain}}-{{date}}.pdf`) and the **PDF designer**.
 - **Your copy:** subject of the operator copy.
 - **Texts of the element on the page:** labels of the form, lead form and result.
-- **Expert mode (administrators only):** complete Twig templates for e-mail, copy and report. A filled Twig template takes precedence over the design. "Copy to Twig template" in the designer produces the starting point.
+- **Internal copy (administrators only):** an optional Twig template for the operator copy.
 
 **The designer** (same for e-mail and PDF) has three panes:
 
@@ -185,6 +185,10 @@ Everything a visitor sees is edited in the back end under **NEO › Website chec
 - **Centre:** live preview with the latest finished check or demo data. Click a block in the preview to edit it.
 - **Right:** the properties of the selected block: texts with placeholders (`{{firstname}}`, `{{domain}}`, `{{grade}}` …), rich text, images from the file manager or uploaded directly, alignment, spacing, background, what to show.
 - **Templates:** "Load template" sets a ready-made layout (*Standard*, *With cover page*, *Compact*; e-mail: *Standard*, *Short*) in the language of the configuration. "PDF preview" opens the real PDF of the current draft.
+
+**Every word is the customer's.** Apart from what the check finds (the AI reading, findings, area summaries, measures and measured values), everything in the e-mail and the PDF comes from the design: headings, labels, table columns, legend, grade words, area names, effort labels, the names of the measured values, header, footer and the word before the page number. Each block carries its words as properties; words used by several blocks are under *Design › Wording*. The templates arrive prefilled in the configuration's language (German and English included); for any other language the customer simply overwrites them.
+
+**Advanced mode (administrators):** the switch *Visual | Advanced (Twig)* above the designer shows the complete document as Twig code: the frame with its CSS, every block's HTML and every word (in `wc_theme()` / `wc_block()` maps). Changes show in the live preview; syntax errors are shown there with the line and block saving. While code is stored it is used instead of the visual design; switching back to *Visual* discards the code after a confirmation.
 
 **Languages the Contao way:** the content element has a **Configuration** field. *Automatic* uses the configuration whose language matches the page; or pick one explicitly (e.g. a second German configuration for a campaign). The check remembers its configuration, so the e-mail and PDF match the page the visitor used.
 
@@ -232,10 +236,10 @@ Results are cached for `cache_hours`: a second visitor entering the same domain 
 
 ## Customising
 
-- **Templates:** copy any file from `contao/templates/` of the bundle to `templates/` of your project and adapt it: the element (`content_element/neo_websitecheck.html.twig`, the AJAX flow stays intact as long as the `data-nwc-*` hooks remain), a designer block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), the frames (`pdf_frame`, `mail_frame`) or the fallback templates used before any design is saved (`report`, `mail_visitor`, `mail_owner`). Templates receive `result`, `areas`, `brand`, `images`, `crops`, `date`, `vars`, and blocks additionally `block` (its properties) and `t` (theme).
+- **Templates:** copy any file from `contao/templates/` of the bundle to `templates/` of your project and adapt it: the element (`content_element/neo_websitecheck.html.twig`, the AJAX flow stays intact as long as the `data-nwc-*` hooks remain), a designer block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), the frames (`pdf_frame`, `mail_frame`) or the operator copy (`mail_owner`). Without a saved design, report and e-mail use the bundled *Standard* template in the check's language. Templates receive `result`, `areas`, `brand`, `images`, `crops`, `date`, `vars`, and blocks additionally `block` (its properties) and `t` (theme).
 - **PDF badges:** use the `badge()` macro from `_pdf_macros.html.twig` for numbers in coloured boxes; Dompdf only centres text vertically with that structure.
 - **Styles:** the element uses CSS custom properties (`--nwc-bg`, `--nwc-accent`, `--nwc-fg`, `--nwc-radius`, …). Override them on `.content-neo-websitecheck .nwc` in your theme.
-- **Texts:** every string lives in `translations/neo_websitecheck.{en,de}.yaml`. Override single keys in your project's `translations/` folder.
+- **Texts:** the words of e-mail and PDF are edited in the designer. `translations/neo_websitecheck.{en,de}.yaml` holds the prefilled template words, the texts of the check findings and the back end; override single keys in your project's `translations/` folder (for example to deliver findings in another language).
 - **Grading:** `Check\Grader` holds the scoring; `Check\CheckRunner` the steps. Decorate or replace the services as usual in Symfony.
 
 ## Analytics events
@@ -396,7 +400,7 @@ Alles, was ein Besucher sieht, wird im Backend unter **NEO › Website-Check Ein
 - **PDF-Bericht:** Dateiname mit Platzhaltern (`website-check-{{domain}}-{{date}}.pdf`) und den **PDF-Designer**.
 - **Ihre Kopie:** Betreff der Kopie an den Betreiber.
 - **Texte des Elements auf der Seite:** Beschriftungen von Formular, Kontaktformular und Ergebnis.
-- **Experten-Modus (nur Administratoren):** komplette Twig-Vorlagen für E-Mail, Kopie und Bericht. Eine ausgefüllte Twig-Vorlage hat Vorrang vor der Gestaltung. „Als Twig-Vorlage übernehmen“ im Designer erzeugt den Startpunkt.
+- **Interne Kopie (nur Administratoren):** optionale Twig-Vorlage für die Kopie an den Betreiber.
 
 **Der Designer** (gleich für E-Mail und PDF) hat drei Bereiche:
 
@@ -404,6 +408,10 @@ Alles, was ein Besucher sieht, wird im Backend unter **NEO › Website-Check Ein
 - **Mitte:** Live-Vorschau mit dem letzten fertigen Check oder Demo-Daten. Ein Klick auf einen Block in der Vorschau öffnet ihn zum Bearbeiten.
 - **Rechts:** die Eigenschaften des gewählten Blocks: Texte mit Platzhaltern (`{{firstname}}`, `{{domain}}`, `{{grade}}` …), formatierter Text, Bilder aus der Dateiverwaltung oder direkt hochgeladen, Ausrichtung, Abstand, Hintergrund, was angezeigt wird.
 - **Vorlagen:** „Vorlage laden“ setzt einen fertigen Aufbau (*Standard*, *Mit Deckblatt*, *Kompakt*; E-Mail: *Standard*, *Kurz*) in der Sprache der Konfiguration. „PDF-Vorschau“ öffnet das echte PDF des aktuellen Entwurfs.
+
+**Jedes Wort gehört dem Kunden.** Außer dem, was der Check findet (KI-Lesung, Fundstellen, Zusammenfassungen der Bereiche, Maßnahmen und Messwerte), kommt alles in E-Mail und PDF aus der Gestaltung: Überschriften, Beschriftungen, Tabellenspalten, Legende, Notenwörter, Namen der Bereiche, Aufwand, Bezeichnungen der Messwerte, Kopf- und Fußzeile und das Wort vor der Seitenzahl. Jeder Block trägt seine Wörter als Eigenschaften; Wörter, die mehrere Blöcke nutzen, stehen unter *Design › Bezeichnungen*. Die Vorlagen kommen vorausgefüllt in der Sprache der Konfiguration (Deutsch und Englisch dabei); für jede andere Sprache überschreibt der Kunde sie einfach.
+
+**Erweiterter Modus (Administratoren):** Der Schalter *Visuell | Erweitert (Twig)* über dem Designer zeigt das komplette Dokument als Twig-Code: Rahmen mit CSS, das HTML jedes Blocks und jedes Wort (in `wc_theme()`- / `wc_block()`-Listen). Änderungen erscheinen in der Live-Vorschau; Syntaxfehler zeigt sie mit Zeilennummer an und verhindern das Speichern. Solange Code gespeichert ist, gilt er statt der visuellen Gestaltung; zurück auf *Visuell* verwirft den Code nach einer Rückfrage.
 
 **Mehrsprachig nach Contao-Prinzip:** Das Inhaltselement hat ein Feld **Konfiguration**. *Automatisch* nimmt die Konfiguration mit der Sprache der Seite; oder man wählt ausdrücklich eine (z. B. eine zweite deutsche Konfiguration für eine Kampagne). Der Check merkt sich seine Konfiguration, damit E-Mail und PDF zur Seite passen, auf der der Besucher war.
 
@@ -449,10 +457,10 @@ Ergebnisse werden `cache_hours` lang gespeichert: Wer dieselbe Domain noch einma
 
 ## Anpassen
 
-- **Vorlagen:** Dateien aus `contao/templates/` des Bundles nach `templates/` im Projekt kopieren und anpassen: das Element (`content_element/neo_websitecheck.html.twig`, der AJAX-Ablauf bleibt erhalten, solange die `data-nwc-*`-Haken bleiben), einen Designer-Block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), die Rahmen (`pdf_frame`, `mail_frame`) oder die Ersatzvorlagen vor der ersten gespeicherten Gestaltung (`report`, `mail_visitor`, `mail_owner`).
+- **Vorlagen:** Dateien aus `contao/templates/` des Bundles nach `templates/` im Projekt kopieren und anpassen: das Element (`content_element/neo_websitecheck.html.twig`, der AJAX-Ablauf bleibt erhalten, solange die `data-nwc-*`-Haken bleiben), einen Designer-Block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), die Rahmen (`pdf_frame`, `mail_frame`) oder die Kopie an den Betreiber (`mail_owner`). Ohne gespeicherte Gestaltung nutzen Bericht und E-Mail die mitgelieferte Vorlage *Standard* in der Sprache des Checks.
 - **Noten-Kästchen im PDF:** das Makro `badge()` aus `_pdf_macros.html.twig` verwenden; nur mit dieser Struktur zentriert Dompdf die Ziffer senkrecht.
 - **Stile:** CSS-Variablen (`--nwc-bg`, `--nwc-accent`, `--nwc-fg`, `--nwc-radius`, …) auf `.content-neo-websitecheck .nwc` überschreiben.
-- **Texte:** alle Texte in `translations/neo_websitecheck.{en,de}.yaml`; einzelne Schlüssel im Projekt unter `translations/` überschreiben.
+- **Texte:** Die Wörter von E-Mail und PDF bearbeitet man im Designer. `translations/neo_websitecheck.{en,de}.yaml` enthält die Vorbelegung der Vorlagen, die Texte der Check-Befunde und das Backend; einzelne Schlüssel im Projekt unter `translations/` überschreiben (z. B. für Befunde in einer weiteren Sprache).
 
 ## Tracking-Ereignisse
 

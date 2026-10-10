@@ -14,6 +14,7 @@ use Neo\WebsitecheckBundle\Design\Presets;
 use Neo\WebsitecheckBundle\Report\PdfGenerator;
 use Neo\WebsitecheckBundle\Report\ReportRenderer;
 use Neo\WebsitecheckBundle\Settings;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,26 +42,32 @@ final class DesignerOperation
         private readonly PdfGenerator $pdf,
         private readonly Settings $settings,
         private readonly TranslatorInterface $translator,
+        private readonly Security $security,
     ) {
     }
 
     public function preview(DataContainer $dc): string
     {
-        [$kind, $design, $row] = $this->draft();
-        $html = $this->renderer->renderDesign($kind, $design, $row, true);
+        [$kind, $design, $row, $twig] = $this->draft();
 
-        // Preview helpers: block selection (postMessage), page breaks and fixed header/footer as plain blocks.
+        // advanced mode: the Twig source as it stands in the editor (no block markers, no selection)
+        $html = null !== $twig ? $this->renderTwigOrError($twig, $row) : $this->renderer->renderDesign($kind, $design, $row, true);
+
+        // Preview helpers: fixed header/footer as plain blocks, page breaks visible, block selection (postMessage).
         $inject = '<style>'
-            .'.pdf-head,.pdf-foot{position:static!important;left:auto;right:auto;top:auto;bottom:auto;margin:0 0 6mm}.pdf-foot{margin:8mm 0 0}'
+            .'.pdf-head,.pdf-foot{position:static!important;left:auto;right:auto;top:auto;bottom:auto;margin:0 0 6mm}.pdf-foot{margin:8mm 0 0}.pdf-foot .r{display:none}'
             .'body{padding:10mm 12mm}.nwc-b{position:relative;cursor:pointer;outline:2px solid transparent;outline-offset:3px;border-radius:3px;transition:outline-color .12s}'
             .'.nwc-b:hover{outline-color:#9aa8ff}.nwc-b.is-selected{outline-color:#4a5cff}'
             .'.nwc-b--page_break>div{border-top:2px dashed #b9b4cc;height:0;margin:4mm 0;position:relative}.nwc-b--page_break>div:after{content:attr(data-label);position:absolute;right:0;top:-9px;font:11px/1 sans-serif;color:#8a86a0;background:#fff;padding:0 6px}'
-            .'</style>'
-            .'<script>(function(){var cur=null;document.addEventListener("click",function(e){var b=e.target.closest("[data-nwc-block]");if(!b)return;e.preventDefault();if(e.target.closest("a"))e.preventDefault();select(b.getAttribute("data-nwc-block"));parent.postMessage({nwd:"select",id:b.getAttribute("data-nwc-block")},"*");});'
-            .'function select(id){if(cur)cur.classList.remove("is-selected");cur=document.querySelector(\'[data-nwc-block="\'+id+\'"]\');if(cur){cur.classList.add("is-selected");}}'
-            .'window.addEventListener("message",function(e){if(!e.data||e.data.nwd!=="select")return;select(e.data.id);if(cur&&e.data.scroll)cur.scrollIntoView({block:"center",behavior:"smooth"});});'
-            .'document.querySelectorAll(".nwc-b--page_break>div").forEach(function(d){d.setAttribute("data-label","'.addslashes($this->translator->trans('designer.block.page_break.label', [], 'neo_websitecheck', $this->locale(''))).'");});'
-            .'parent.postMessage({nwd:"ready",height:document.body.scrollHeight},"*");})();</script>';
+            .'</style>';
+
+        if (null === $twig) {
+            $inject .= '<script>(function(){var cur=null;document.addEventListener("click",function(e){var b=e.target.closest("[data-nwc-block]");if(!b)return;e.preventDefault();if(e.target.closest("a"))e.preventDefault();select(b.getAttribute("data-nwc-block"));parent.postMessage({nwd:"select",id:b.getAttribute("data-nwc-block")},"*");});'
+                .'function select(id){if(cur)cur.classList.remove("is-selected");cur=document.querySelector(\'[data-nwc-block="\'+id+\'"]\');if(cur){cur.classList.add("is-selected");}}'
+                .'window.addEventListener("message",function(e){if(!e.data||e.data.nwd!=="select")return;select(e.data.id);if(cur&&e.data.scroll)cur.scrollIntoView({block:"center",behavior:"smooth"});});'
+                .'document.querySelectorAll(".nwc-b--page_break>div").forEach(function(d){d.setAttribute("data-label","'.addslashes($this->translator->trans('designer.block.page_break.label', [], 'neo_websitecheck', $this->locale(''))).'");});'
+                .'parent.postMessage({nwd:"ready",height:document.body.scrollHeight},"*");})();</script>';
+        }
 
         $html = str_contains($html, '</body>') ? str_replace('</body>', $inject.'</body>', $html) : $html.$inject;
 
@@ -69,8 +76,9 @@ final class DesignerOperation
 
     public function pdf(DataContainer $dc): string
     {
-        [$kind, $design, $row] = $this->draft();
-        $bytes = $this->pdf->render($this->renderer->renderDesign(BlockRegistry::KIND_PDF, $design, $row));
+        [$kind, $design, $row, $twig] = $this->draft();
+        $html = null !== $twig ? $this->renderTwigOrError($twig, $row) : $this->renderer->renderDesign(BlockRegistry::KIND_PDF, $design, $row);
+        $bytes = $this->pdf->render($html);
 
         throw new ResponseException(new Response($bytes, 200, ['Content-Type' => 'application/pdf', 'Content-Disposition' => 'inline; filename="'.$this->pdf->fileName($row).'"', 'Cache-Control' => 'no-store']));
     }
@@ -85,11 +93,32 @@ final class DesignerOperation
         throw new ResponseException(new JsonResponse(null === $design ? ['error' => 'unknown_preset'] : $design, null === $design ? 404 : 200));
     }
 
+    /** Twig source of the visual design (switch to the advanced mode, administrators only). */
     public function twig(DataContainer $dc): string
     {
-        [$kind, $design] = $this->draft(false);
+        if (!$this->security->isGranted('ROLE_ADMIN')) {
+            throw new ResponseException(new Response('', 403));
+        }
 
-        throw new ResponseException(new Response($this->designs->toTwig($kind, $design), 200, ['Content-Type' => 'text/plain; charset=utf-8']));
+        [$kind, $design] = $this->draft(false);
+        $locale = $this->locale((string) (json_decode((string) $this->request()->getContent(), true)['lang'] ?? ''));
+
+        throw new ResponseException(new Response($this->designs->toTwig($kind, $design, $locale), 200, ['Content-Type' => 'text/plain; charset=utf-8']));
+    }
+
+    /** Rendered Twig draft, or a readable error page with message and line for the preview. */
+    private function renderTwigOrError(string $twig, array $row): string
+    {
+        try {
+            return $this->renderer->renderTwig($twig, $row);
+        } catch (\Twig\Error\Error $e) {
+            $title = $this->translator->trans('designer.ui.twig_error', [], 'neo_websitecheck', $this->locale(''));
+            $line = $e->getTemplateLine() > 0 ? ' (line '.$e->getTemplateLine().')' : '';
+
+            return '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font:14px/1.5 sans-serif;padding:24px;color:#8a1c1c">'
+                .'<h2 style="margin:0 0 8px;font-size:16px">'.htmlspecialchars($title).htmlspecialchars($line).'</h2>'
+                .'<pre style="white-space:pre-wrap;background:#fff5f5;border:1px solid #f3c2c2;border-radius:6px;padding:12px;color:#5a1010">'.htmlspecialchars($e->getRawMessage()).'</pre></body></html>';
+        }
     }
 
     /** Stores an uploaded image below files/neo-websitecheck and registers it in the DBAFS. */
@@ -125,7 +154,10 @@ final class DesignerOperation
     }
 
     /**
-     * @return array{0: string, 1: array<string, mixed>, 2: array<string, mixed>}
+     * Draft posted by the designer. The Twig source (advanced mode) is only
+     * accepted from administrators, like the field it comes from.
+     *
+     * @return array{0: string, 1: array<string, mixed>, 2: array<string, mixed>, 3: string|null}
      */
     private function draft(bool $withRow = true): array
     {
@@ -147,7 +179,9 @@ final class DesignerOperation
             $row = $this->previews->sampleRow();
         }
 
-        return [$kind, $design, $row];
+        $twig = isset($payload['twig']) && \is_string($payload['twig']) && '' !== trim($payload['twig']) && $this->security->isGranted('ROLE_ADMIN') ? $payload['twig'] : null;
+
+        return [$kind, $design, $row, $twig];
     }
 
     private function kind(string $kind): string
@@ -166,5 +200,4 @@ final class DesignerOperation
     {
         return $this->requestStack->getCurrentRequest() ?? Request::createFromGlobals();
     }
-
 }

@@ -518,6 +518,14 @@ report:
     measures_title: 'The most important measures'
     what_works_short: 'Speed in detail'
     pages_eyebrow_plain: 'Pages checked'
+    title_plain: 'Website check for {{domain}}'
+    header_plain: 'Website check · {{date}}'
+    grade_line_plain: 'Overall grade {{grade}} · {{grade_word}}'
+    area_grade_line: 'Grade {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Desktop'
+    label_mobile: 'Mobile'
+    col_lcp: 'LCP'
+    sources_plain: 'Sources: Google PageSpeed Insights (Lighthouse {{lighthouse}}), own HTML/legal/AI-visibility checks, AI reading of the page texts · {{date}}'
 
 # ---------------------------------------------------------------- e-mail
 mail:
@@ -574,7 +582,7 @@ designer:
         mail_preview: 'Open in new tab'
         export_twig: 'Copy to Twig template'
         export_confirm: 'The Twig template (expert mode) will be overwritten with this design. Continue?'
-        twig_active: 'Note: a Twig template is set in expert mode. It takes precedence, this design is then not used.'
+        twig_active: 'This configuration has Twig code from the advanced mode. It takes precedence, so this design is not used. An administrator can change it.'
         loading: 'Rendering preview …'
         error: 'The preview could not be rendered.'
         bold: 'Bold'
@@ -584,6 +592,17 @@ designer:
         list: 'List'
         drag: 'Drag to reorder'
         demo_hint: 'The preview uses the latest finished check or demo data.'
+        labels: 'Wording'
+        labels_hint: 'Words several blocks use: grade words, area names, effort and the names of the measured values. What you write here is what the document says.'
+        mode_visual: 'Visual'
+        mode_twig: 'Advanced (Twig)'
+        mode_label: 'Editing mode'
+        twig_intro: 'This is the complete document as Twig code: frame, every block and every word. Changes show in the preview right away and are stored with "Save". As long as there is code here, it is used instead of the visual design.'
+        twig_generate: 'Regenerate code from the visual design'
+        twig_generate_confirm: 'The Twig code will be replaced by the current visual design. Your own code changes are lost. Continue?'
+        twig_leave_confirm: 'Back to visual mode: the Twig code is discarded and the visual design applies again. Continue?'
+        twig_error: 'Error in the Twig code'
+        twig_refresh: 'Refresh preview'
     opt:
         none: 'None'
         s: 'Small'
@@ -628,6 +647,9 @@ designer:
         content: 'Content & clarity'
         legal: 'Legal & privacy'
         mobile_area: 'Mobile'
+        effort_small: 'small'
+        effort_medium: 'medium'
+        effort_large: 'large'
     prop:
         eyebrow: 'Small line above'
         title: 'Title'
@@ -680,7 +702,36 @@ designer:
         a11y: 'Accessibility'
         bp: 'Best practices'
         seo: 'SEO'
+        grade_line: 'Grade line'
+        label_pages: 'Label "Pages checked"'
+        label_date: 'Label "Date"'
+        label_for: 'Label "For"'
+        label_desktop: 'Label desktop'
+        label_mobile: 'Label mobile'
+        label_perf: 'Label performance'
+        label_a11y: 'Label accessibility'
+        label_bp: 'Label best practices'
+        label_seo: 'Label SEO'
+        legend_title: 'Legend title'
+        legend_text: 'Legend text'
+        works_title: 'Title "What works"'
+        improve_title: 'Title "Room to improve"'
+        nothing_text: 'Text when nothing needs improving'
+        col_page: 'Column page'
+        col_title: 'Column title'
+        col_lcp: 'Column load time'
+        col_contrast: 'Column contrast'
+        col_grade: 'Column grade'
+        none_text: 'Word for "none"'
+        badge: 'Short label in the box'
     theme:
+        doc_title: 'Document title (PDF properties)'
+        page_label: 'Word before the page number'
+        grade_word: 'Grade word %s'
+        area_name: 'Area: %s'
+        effort_word: 'Effort %s'
+        kpi_name: 'Measured value: %s'
+        kpi_note: 'Note on: %s'
         primary: 'Primary colour (empty = settings)'
         accent: 'Accent colour (empty = settings)'
         text: 'Text colour'
@@ -689,7 +740,7 @@ designer:
         radius: 'Corner radius'
         margins: 'Page margins'
         header: 'Header on every page'
-        header_text: 'Header text (empty = “Website check · date”)'
+        header_text: 'Header text'
         footer: 'Footer on every page'
         footer_text: 'Footer text'
         page_numbers: 'Page numbers'
@@ -715,13 +766,13 @@ designer:
         meta_cards: {label: 'Key figures', desc: 'Pages checked, date, recipient.'}
         screenshots: {label: 'Screenshots', desc: 'Start page on desktop and phone.'}
         gauges: {label: 'Google rings', desc: 'The PageSpeed scores as rings, optionally with metrics.'}
-        areas: {label: 'Areas at a glance', desc: 'The seven areas with grade and short text.'}
+        areas: {label: 'Areas at a glance', desc: 'The seven areas with grade and short text.', show_meta: 'Show measurement details'}
         measures: {label: 'Measures', desc: 'The most important measures, numbered, with effort.'}
         strengths: {label: 'What already works', desc: 'Positive points as a check list.'}
         area_detail: {label: 'Area in detail', desc: 'One area with findings and positive points; accessibility with marked excerpts.'}
         kpis: {label: 'Speed metrics', desc: 'LCP, CLS, INP, performance, page weight, requests.'}
         pages_table: {label: 'Table of pages', desc: 'All checked pages with title, LCP, contrast and grade.'}
-        sources: {label: 'Sources', desc: 'Automatic source note with Lighthouse version and date.'}
+        sources: {label: 'Sources', desc: 'Source note, placeholders {{lighthouse}} and {{date}}.'}
         spacer: {label: 'Spacer', desc: 'Empty space.'}
         divider: {label: 'Divider', desc: ''}
         page_break: {label: 'Page break', desc: 'The next block starts on a new page.'}

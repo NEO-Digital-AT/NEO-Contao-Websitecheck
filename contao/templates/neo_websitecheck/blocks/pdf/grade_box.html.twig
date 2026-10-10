@@ -1,12 +1,11 @@
 {% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
-{% trans_default_domain 'neo_websitecheck' %}
 {% set dark = block.style == 'primary' %}
 <table style="width:100%;border-collapse:separate;border-spacing:0;background:{{ dark ? t.primary : t.soft }};color:{{ dark ? t.primary_ink : t.text }};border-radius:{{ t.r }};margin-bottom:{{ t.space[block.space] }};page-break-inside:avoid"><tr>
   <td style="width:38mm;padding:6mm;vertical-align:middle">
     {{ pdf.badge(result.grade ?: '–', 26, 30, t.grade_bg[result.grade], t.grade_ink[result.grade], t.r) }}
   </td>
   <td style="padding:6mm 6mm 6mm 0;vertical-align:middle">
-    <div style="font-size:14pt;font-weight:bold;margin-bottom:2mm;color:{{ dark ? t.primary_ink : t.primary }}">{{ 'report.grade_line'|trans({'%grade%': result.grade, '%word%': result.gradeWord}) }}</div>
+    <div style="font-size:14pt;font-weight:bold;margin-bottom:2mm;color:{{ dark ? t.primary_ink : t.primary }}">{{ block.grade_line }}</div>
     {% if block.show_summary %}<p style="margin:0;font-size:10pt">{{ result.summary }}</p>{% endif %}
   </td>
 </tr></table>

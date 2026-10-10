@@ -11,6 +11,8 @@ use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Neo\WebsitecheckBundle\Design\Presets;
 use Symfony\Bundle\SecurityBundle\Security;
+use Twig\Environment;
+use Twig\Error\Error;
 
 /**
  * DCA callbacks of the settings module (public service, resolved by class name).
@@ -21,7 +23,29 @@ final class SettingsCallbacks
         private readonly Connection $db,
         private readonly Security $security,
         private readonly Presets $presets,
+        private readonly Environment $twig,
     ) {
+    }
+
+    /**
+     * Save callback of the Twig fields (advanced mode): a syntax error, an
+     * unknown function or filter is reported on the field instead of breaking
+     * the next e-mail or PDF.
+     */
+    public function validateTwig(mixed $value, DataContainer $dc): mixed
+    {
+        if ('' === trim((string) $value)) {
+            return $value;
+        }
+
+        try {
+            // compiles the source (syntax, unknown functions/filters/tags) without rendering it
+            $this->twig->createTemplate((string) $value, (string) $dc->field);
+        } catch (Error $e) {
+            throw new \RuntimeException(sprintf('Twig: %s%s', $e->getRawMessage(), $e->getTemplateLine() > 0 ? ' (line '.$e->getTemplateLine().')' : ''));
+        }
+
+        return $value;
     }
 
     /**
@@ -76,7 +100,7 @@ final class SettingsCallbacks
         }
 
         $palette = (string) $GLOBALS['TL_DCA']['tl_neo_websitecheck_config']['palettes']['default'];
-        $GLOBALS['TL_DCA']['tl_neo_websitecheck_config']['palettes']['default'] = str_replace(';{expert_legend:hide},mail_body,owner_body,pdf_body', '', $palette);
+        $GLOBALS['TL_DCA']['tl_neo_websitecheck_config']['palettes']['default'] = str_replace([',mail_body', ',pdf_body', ';{expert_legend:hide},owner_body'], '', $palette);
     }
 
     /**

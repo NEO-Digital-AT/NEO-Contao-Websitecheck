@@ -19,22 +19,14 @@
       }
     },
     {
-      "id": "ov-head",
-      "type": "heading",
-      "props": {
-        "eyebrow": "@report.overview_eyebrow",
-        "text": "@report.overview_title",
-        "level": "h2",
-        "space": "s"
-      }
-    },
-    {
       "id": "ov-areas",
       "type": "areas",
       "props": {
         "layout": "cards",
         "legend": true,
-        "space": "m"
+        "space": "m",
+        "eyebrow": "@report.overview_eyebrow",
+        "title": "@report.overview_title"
       }
     },
     {

@@ -73,11 +73,15 @@
     function postJson(url, body) {
       return fetch(url, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'Accept': '*/*', 'X-Requested-With': 'XMLHttpRequest' }, body: JSON.stringify(body) });
     }
-    function draft() { return { kind: kind, design: design, lang: language(), config: cfg.recordId }; }
+    function draft() {
+      var d = { kind: kind, design: design, lang: language(), config: cfg.recordId };
+      if (mode === 'twig') d.twig = twigValue();
+      return d;
+    }
 
     // ---------- layout --------------------------------------------------
     var shell = el('div', { class: 'nwd-shell' });
-    var left = el('div', { class: 'nwd-pane' });
+    var left = el('div', { class: 'nwd-pane nwd-pane--left' });
     var leftHead = el('div', { class: 'nwd-pane__head' });
     var leftBody = el('div', { class: 'nwd-pane__body' });
     var center = el('div', { class: 'nwd-pane' });
@@ -85,7 +89,7 @@
     var previewWrap = el('div', { class: 'nwd-preview' });
     var iframe = el('iframe', { title: t('preview'), sandbox: 'allow-scripts allow-same-origin' });
     var status = el('span', { class: 'nwd-preview__status' });
-    var right = el('div', { class: 'nwd-pane' });
+    var right = el('div', { class: 'nwd-pane nwd-pane--props' });
     var rightHead = el('div', { class: 'nwd-pane__head' }, [el('span', { text: t('properties') })]);
     var rightBody = el('div', { class: 'nwd-pane__body nwd-props' });
 
@@ -98,28 +102,44 @@
     previewWrap.appendChild(iframe); previewWrap.appendChild(status);
     center.appendChild(centerHead); center.appendChild(previewWrap);
     right.appendChild(rightHead); right.appendChild(rightBody);
-    shell.appendChild(left); shell.appendChild(center); shell.appendChild(right);
+    // advanced mode: the complete document as Twig code (the record's *_body field, moved in here)
+    var codePane = el('div', { class: 'nwd-pane nwd-code' });
+    var codeBody = el('div', { class: 'nwd-pane__body' });
+    codePane.appendChild(el('div', { class: 'nwd-pane__head' }, [el('span', { text: t('mode_twig') })]));
+    codePane.appendChild(codeBody);
+    codePane.hidden = true;
+    shell.appendChild(left); shell.appendChild(codePane); shell.appendChild(center); shell.appendChild(right);
 
-    // toolbar above the shell: presets, preview buttons, twig export
+    // toolbar above the shell: mode switch (admins), presets, preview buttons
     var toolbar = el('div', { class: 'nwd-toolbar' });
+    var twigTa = document.getElementById(cfg.twigField);
+    var mode = 'visual';
+    var modeBtns = {};
+    if (cfg.isAdmin && twigTa) {
+      var modeBar = el('div', { class: 'nwd-mode', role: 'group', 'aria-label': t('mode_label') });
+      [['visual', t('mode_visual')], ['twig', t('mode_twig')]].forEach(function (pair) {
+        modeBtns[pair[0]] = el('button', { type: 'button', class: 'nwd-mode__btn', 'aria-pressed': 'false', text: pair[1], onclick: function () { switchMode(pair[0]); } });
+        modeBar.appendChild(modeBtns[pair[0]]);
+      });
+      toolbar.appendChild(modeBar);
+    }
+    var visualTools = el('span', { class: 'nwd-row' });
     var presetSel = el('select', {});
     Object.keys(cfg.presets || {}).forEach(function (name) { presetSel.appendChild(el('option', { value: name, text: cfg.presets[name] })); });
-    toolbar.appendChild(presetSel);
-    toolbar.appendChild(el('button', { type: 'button', class: 'nwd-btn', text: t('presets'), onclick: function () {
+    visualTools.appendChild(presetSel);
+    visualTools.appendChild(el('button', { type: 'button', class: 'nwd-btn', text: t('presets'), onclick: function () {
       if (design.blocks.length && !window.confirm(t('preset_confirm'))) return;
       loadPreset(presetSel.value);
     } }));
+    toolbar.appendChild(visualTools);
     toolbar.appendChild(el('button', { type: 'button', class: 'nwd-btn nwd-btn--primary', text: kind === 'pdf' ? t('pdf_preview') : t('mail_preview'), onclick: openFull }));
-    if (cfg.isAdmin) {
-      toolbar.appendChild(el('button', { type: 'button', class: 'nwd-btn', text: t('export_twig'), onclick: exportTwig }));
-    }
     toolbar.appendChild(el('span', { class: 'nwd-hint', text: t('demo_hint') }));
     var warn = el('div', { class: 'nwd-warn', text: t('twig_active') });
-    warn.hidden = true;
+    // editors without the Twig field: tell them the visual design is not what goes out
+    warn.hidden = !(cfg.twigActive && !(cfg.isAdmin && twigTa));
     root.appendChild(toolbar);
     root.appendChild(warn);
     root.appendChild(shell);
-    checkTwigActive();
 
     // ---------- left pane -----------------------------------------------
     function renderLeft() {
@@ -185,12 +205,19 @@
       }
     }
     function renderThemeForm() {
-      leftBody.appendChild(el('div', { class: 'nwd-group', text: t('theme') }));
-      var form = el('div', { class: 'nwd-props' });
-      Object.keys(schema.theme).forEach(function (name) {
-        form.appendChild(propEditor(schema.theme[name], design.theme[name], function (v) { design.theme[name] = v; commit(); }));
+      // two groups: the design (colours, font, header/footer) and the shared words (grade words, area names, …)
+      var groups = schema.themeGroups || { design: t('theme') };
+      Object.keys(groups).forEach(function (g) {
+        var names = Object.keys(schema.theme).filter(function (name) { return (schema.theme[name].group || 'design') === g; });
+        if (!names.length) return;
+        leftBody.appendChild(el('div', { class: 'nwd-group', text: groups[g] }));
+        if (g === 'labels') leftBody.appendChild(el('p', { class: 'nwd-hint', text: t('labels_hint') }));
+        var form = el('div', { class: 'nwd-props' });
+        names.forEach(function (name) {
+          form.appendChild(propEditor(schema.theme[name], design.theme[name], function (v) { design.theme[name] = v; commit(); }));
+        });
+        leftBody.appendChild(form);
       });
-      leftBody.appendChild(form);
     }
 
     // ---------- blocks ----------------------------------------------------
@@ -306,7 +333,7 @@
           input = el('input', { type: 'text' }); input.value = value == null ? '' : value;
           input.addEventListener('input', debounce(function () { onChange(input.value); }, 350));
           wrap.appendChild(label); wrap.appendChild(input);
-          if (prop.type === 'text') wrap.appendChild(placeholderBar(function (ph) { insertAtCursor(input, '{{' + ph + '}}'); onChange(input.value); }));
+          if (prop.type === 'text' && prop.group !== 'labels') wrap.appendChild(placeholderBar(function (ph) { insertAtCursor(input, '{{' + ph + '}}'); onChange(input.value); }));
           return wrap;
       }
       wrap.appendChild(label); wrap.appendChild(input);
@@ -414,25 +441,68 @@
         .catch(function () { window.alert(t('error')); });
     }
 
-    // ---------- Twig export (admins) ------------------------------------
-    function twigTextarea() { return document.getElementById(cfg.twigField); }
-    function checkTwigActive() {
-      var ta = twigTextarea();
-      warn.hidden = !(ta && ta.value.trim());
+    // ---------- advanced mode (Twig, admins) ------------------------------
+    function aceEditor() {
+      var d = twigTa && document.getElementById(twigTa.id + '_div');
+      return (d && d.env && d.env.editor) || null;
     }
-    function exportTwig() {
-      var ta = twigTextarea();
-      if (!ta) return;
-      if (ta.value.trim() && !window.confirm(t('export_confirm'))) return;
-      postJson(cfg.endpoints.twig, draft()).then(function (r) { return r.text(); }).then(function (src) {
-        ta.value = src;
-        try { if (window.ace) { var ed = ace.edit(document.getElementById(cfg.twigField + '_div') || document.getElementById(cfg.twigField.replace('ctrl_', '') + '_div')); if (ed) ed.setValue(src, -1); } } catch (e) {}
-        checkTwigActive();
-        var legend = ta.closest('fieldset'); if (legend) { legend.classList.remove('collapsed'); legend.scrollIntoView({ behavior: 'smooth' }); }
-      }).catch(function () { window.alert(t('error')); });
+    function twigValue() { var ed = aceEditor(); return ed ? ed.getValue() : (twigTa ? twigTa.value : ''); }
+    function setTwig(v) {
+      if (!twigTa) return;
+      twigTa.value = v;
+      var ed = aceEditor();
+      if (ed) ed.setValue(v, -1);
+      lastTwig = v;
     }
-    var twigTa = twigTextarea();
-    if (twigTa) twigTa.addEventListener('input', checkTwigActive);
+    function generateTwig() {
+      return postJson(cfg.endpoints.twig, { kind: kind, design: design, lang: language(), config: cfg.recordId })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then(function (src) { setTwig(src); });
+    }
+    function switchMode(next) {
+      if (next === mode) return;
+      if (next === 'visual') {
+        if (twigValue().trim() && !window.confirm(t('twig_leave_confirm'))) return;
+        setTwig('');
+        applyMode('visual');
+        return;
+      }
+      (twigValue().trim() ? Promise.resolve() : generateTwig())
+        .then(function () { applyMode('twig'); })
+        .catch(function () { window.alert(t('error')); });
+    }
+    function applyMode(next) {
+      mode = next;
+      var twig = mode === 'twig';
+      shell.classList.toggle('is-twig', twig);
+      codePane.hidden = !twig; left.hidden = twig; right.hidden = twig; visualTools.hidden = twig;
+      Object.keys(modeBtns).forEach(function (k) { modeBtns[k].classList.toggle('is-active', k === mode); modeBtns[k].setAttribute('aria-pressed', k === mode ? 'true' : 'false'); });
+      var ed = aceEditor();
+      if (twig && ed) { ed.setOptions({ maxLines: 48, minLines: 30 }); ed.resize(); }
+      schedulePreview();
+    }
+    var lastTwig = null;
+    if (cfg.isAdmin && twigTa) {
+      // the field lives in the record's palette (works without JavaScript); with JavaScript it moves in here
+      var widget = twigTa.closest('.widget') || twigTa.parentNode;
+      codeBody.appendChild(el('p', { class: 'nwd-hint', text: t('twig_intro') }));
+      codeBody.appendChild(el('div', { class: 'nwd-row' }, [
+        el('button', { type: 'button', class: 'nwd-btn nwd-btn--sm', text: t('twig_refresh'), onclick: renderPreview }),
+        el('button', { type: 'button', class: 'nwd-btn nwd-btn--sm', text: t('twig_generate'), onclick: function () {
+          if (twigValue().trim() && !window.confirm(t('twig_generate_confirm'))) return;
+          generateTwig().then(renderPreview).catch(function () { window.alert(t('error')); });
+        } })
+      ]));
+      codeBody.appendChild(widget);
+      widget.classList.add('nwd-code__field');
+      // Ace (Contao's code editor) keeps the textarea in sync; poll the value for the live preview
+      setInterval(function () {
+        if (mode !== 'twig') return;
+        var v = twigValue();
+        if (lastTwig === null) { lastTwig = v; return; }
+        if (v !== lastTwig) { lastTwig = v; schedulePreview(); }
+      }, 700);
+    }
 
     function debounce(fn, ms) { var h; return function () { var a = arguments, s = this; clearTimeout(h); h = setTimeout(function () { fn.apply(s, a); }, ms); }; }
 
@@ -443,6 +513,12 @@
       loadPreset('standard');
     } else {
       renderLeft(); renderProps(); commit();
+    }
+    if (cfg.isAdmin && twigTa) {
+      // stored Twig code means the advanced mode is what goes out: open it there
+      applyMode(twigTa.value.trim() ? 'twig' : 'visual');
+      // Ace is created on domready; resize once it exists
+      window.addEventListener('load', function () { if (mode === 'twig') applyMode('twig'); });
     }
   }
 

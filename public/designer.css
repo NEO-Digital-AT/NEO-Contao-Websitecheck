@@ -63,5 +63,18 @@
 .nwd-block-title { font-size: 13px; font-weight: 700; margin: 0 0 2px; }
 .nwd-block-desc { font-size: 11px; color: var(--nwd-muted); margin: 0 0 6px; line-height: 1.4; }
 .nwd-unit { font-size: 11px; color: var(--nwd-muted); margin-left: 4px; }
+.nwd-pane[hidden], .nwd-row[hidden] { display: none; }
+.nwd-shell.is-twig { grid-template-columns: minmax(420px, 1.1fr) minmax(380px, 1fr); }
+.nwd-code .nwd-pane__body { display: flex; flex-direction: column; gap: 8px; }
+.nwd-code .nwd-hint { margin: 0; }
+.nwd-code__field { margin: 0; padding: 0; float: none; width: auto; }
+.nwd-code__field h3 { margin: 0 0 4px; font-size: 12px; }
+.nwd-code__field .tl_help { display: none; }
+.nwd-code__field textarea { width: 100%; min-height: 520px; font: 12px/1.45 Menlo, Consolas, monospace; box-sizing: border-box; }
+.nwd-mode { display: inline-flex; border: 1px solid var(--nwd-line); border-radius: 6px; overflow: hidden; margin-right: 6px; }
+.nwd-mode__btn { border: 0; background: #fff; padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; color: var(--nwd-muted); }
+.nwd-mode__btn + .nwd-mode__btn { border-left: 1px solid var(--nwd-line); }
+.nwd-mode__btn.is-active { background: var(--nwd-acc); color: #fff; }
+.nwd-mode__btn:focus-visible, .nwd-btn:focus-visible, .nwd-tab:focus-visible { outline: 2px solid var(--nwd-acc); outline-offset: 2px; }
 @media (max-width: 1280px) { .nwd-shell { grid-template-columns: 200px minmax(320px, 1fr) 260px; } }
-@media (max-width: 1000px) { .nwd-shell { grid-template-columns: 1fr; } .nwd-preview { min-height: 480px; } }
+@media (max-width: 1000px) { .nwd-shell, .nwd-shell.is-twig { grid-template-columns: 1fr; } .nwd-preview { min-height: 480px; } }

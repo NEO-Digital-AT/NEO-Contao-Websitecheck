@@ -1,7 +1,7 @@
-{% trans_default_domain 'neo_websitecheck' %}
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
 {% set items = [] %}
-{% for key, label in {perf: 'fe.gauge_perf'|trans, a11y: 'fe.gauge_a11y'|trans, bp: 'fe.gauge_bp'|trans, seo: 'fe.gauge_seo'|trans} %}
-  {% if attribute(block, key) %}{% set items = items|merge([{key: key, label: label, v: result.scores[key] ?? null}]) %}{% endif %}
+{% for key in ['perf', 'a11y', 'bp', 'seo'] %}
+  {% if attribute(block, key) %}{% set items = items|merge([{key: key, label: attribute(block, 'label_' ~ key), v: result.scores[key] ?? null}]) %}{% endif %}
 {% endfor %}
 {% if items %}
 <table style="width:100%;border-collapse:separate;border-spacing:3mm 0;margin:0 -3mm {{ block.show_kpis ? '3mm' : t.space[block.space] }};page-break-inside:avoid"><tr>
@@ -10,14 +10,19 @@
   {% set col = it.v is null ? '#cccccc' : (v >= 90 ? '#0cce6b' : (v >= 50 ? '#ffa400' : '#ff4e42')) %}
   {% set r = 24 %}{% set c = 2 * 3.14159 * r %}
   <td style="width:{{ (100 / items|length)|round }}%;text-align:center;padding:4mm 2mm;background:{{ t.soft }};border:1px solid {{ t.line }};border-radius:{{ t.r }}">
-    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="{{ r }}" fill="none" stroke="{{ col }}" stroke-opacity=".18" stroke-width="7"/><circle cx="32" cy="32" r="{{ r }}" fill="none" stroke="{{ col }}" stroke-width="7" stroke-linecap="round" stroke-dasharray="{{ (c * v / 100)|round(2) }} {{ c|round(2) }}" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" font-size="16" font-weight="bold" font-family="DejaVu Sans, Helvetica, sans-serif" fill="{{ t.text }}">{{ it.v is null ? '–' : v }}</text></svg>
+    {# Dompdf draws SVG only as an image: the ring is an <img>, the number a table cell on top (centred like the badges). #}
+    {% set ring %}<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><circle cx="32" cy="32" r="{{ r }}" fill="none" stroke="{{ col }}" stroke-opacity=".18" stroke-width="7"/>{% if v > 0 %}<circle cx="32" cy="32" r="{{ r }}" fill="none" stroke="{{ col }}" stroke-width="7" stroke-linecap="round" stroke-dasharray="{{ (c * v / 100)|round(2) }} {{ c|round(2) }}" transform="rotate(-90 32 32)"/>{% endif %}</svg>{% endset %}
+    <div style="position:relative;width:17mm;height:17mm;margin:0 auto;text-align:left">
+      <img src="data:image/svg+xml;charset=utf-8,{{ ring|trim|url_encode }}" alt="" style="position:absolute;left:0;top:0;width:17mm;height:17mm">
+      <table style="position:absolute;left:0;top:0;border-collapse:collapse"><tr><td style="width:17mm;height:17mm;padding:0 0 {{ it.v is null ? '0.9' : '0' }}mm;border:0;text-align:center;vertical-align:middle;font-weight:bold;font-size:12pt;line-height:1;color:{{ t.text }}">{{ it.v is null ? '–' : v }}</td></tr></table>
+    </div>
     <div style="font-size:8pt;color:{{ t.muted }};margin-top:1mm">{{ it.label }}</div>
   </td>
 {% endfor %}
 </tr></table>
 {% if block.show_kpis and areas.speed.kpis is defined %}
 <table style="width:100%;border-collapse:separate;border-spacing:2.5mm 0;margin:0 -2.5mm {{ t.space[block.space] }};page-break-inside:avoid"><tr>
-  {% for k in areas.speed.kpis|slice(0, 3) %}<td style="width:33%;padding:3mm;background:#fff;border:1px solid {{ t.line }};border-radius:{{ t.r }};vertical-align:top"><small style="display:block;font-size:6.8pt;letter-spacing:.08em;text-transform:uppercase;color:{{ t.muted }}">{{ k.label }}</small><b style="display:block;font-size:13pt;color:{{ t.primary }};margin:.5mm 0">{{ k.value }}</b><em style="font-style:normal;font-size:8pt;color:{{ k.ok ? '#2d7a2d' : '#8a5a00' }}">{{ k.note }}</em></td>{% endfor %}
+  {% for k in areas.speed.kpis|slice(0, 3) %}{{ pdf.kpi(t, k, '#fff') }}{% endfor %}
 </tr></table>
 {% endif %}
 {% endif %}

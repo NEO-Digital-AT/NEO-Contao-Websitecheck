@@ -37,9 +37,7 @@ final class ReportMailer
 
     /**
      * @param array<string, mixed> $row
-     */
-    /**
-     * @param bool $freshPdf render the PDF again (resend from the back end: current design and texts)
+     * @param bool                 $freshPdf render the PDF again (resend from the back end: current design and texts)
      */
     public function send(array $row, bool $freshPdf = false): void
     {
@@ -51,12 +49,13 @@ final class ReportMailer
         $subject = $this->texts->get('mail.subject', $locale, $vars);
         $from = $this->from($locale, $this->renderer->configFor($row));
 
+        $html = $this->renderer->renderMail($row, 'mail_visitor');
         $email = (new Email())
             ->from($from)
             ->to(new Address((string) $row['email'], trim($row['firstname'].' '.$row['lastname'])))
             ->subject($subject)
-            ->html($this->renderer->renderMail($row, 'mail_visitor'))
-            ->text($this->plain($row, $locale));
+            ->html($html)
+            ->text($this->plain($row, $locale, false, $html));
 
         $config = $this->renderer->configFor($row);
         $replyTo = trim((string) ($config['mail_reply_to'] ?? '')) ?: $this->settings->mail()['reply_to'];
@@ -80,7 +79,7 @@ final class ReportMailer
                 ->replyTo(new Address((string) $row['email'], trim($row['firstname'].' '.$row['lastname'])))
                 ->subject($this->texts->get('mail.owner_subject', $locale, $vars + ['firstname' => trim($row['firstname'].' '.$row['lastname'])]))
                 ->html($this->renderer->renderMail($row, 'mail_owner'))
-                ->text($this->plain($row, $locale, true));
+                ->text($this->plain($row, $locale, true, $html));
 
             if (null !== $pdfPath) {
                 $copy->attachFromPath($pdfPath, basename($pdfPath), 'application/pdf');
@@ -111,51 +110,49 @@ final class ReportMailer
     }
 
     /**
-     * Plain-text alternative (also what text-only clients and spam filters read).
+     * Plain-text alternative (also what text-only clients and spam filters
+     * read). Derived from the HTML that was actually designed, so it carries
+     * the customer's words and nothing else; the operator copy is prefixed
+     * with the lead line.
      *
      * @param array<string, mixed> $row
      */
-    private function plain(array $row, string $locale, bool $owner = false): string
+    private function plain(array $row, string $locale, bool $owner = false, string|null $html = null): string
     {
-        $result = (array) $row['result'];
-        $vars = $this->renderer->context($row)['vars'];
-        $t = fn (string $key, array $p = []): string => TextProvider::isEditable($key) ? $this->texts->get($key, $locale, $vars) : $this->translator->trans($key, $p, 'neo_websitecheck', $locale);
-        $lines = [];
+        $text = self::htmlToText($html ?? $this->renderer->renderMail($row, 'mail_visitor'));
 
-        if ($owner) {
-            $lines[] = $t('mail.owner_lead', ['%name%' => trim($row['firstname'].' '.$row['lastname']), '%email%' => $row['email'], '%domain%' => $row['domain'], '%newsletter%' => $t('1' === (string) $row['newsletter'] ? 'word.yes' : 'word.no')]);
-            $lines[] = '';
+        if (!$owner) {
+            return $text;
         }
 
-        $lines[] = $t('mail.greeting', ['%name%' => $row['firstname']]);
-        $lines[] = '';
-        $lines[] = $t('mail.intro', ['%domain%' => $row['domain'], '%pages%' => $result['pagesChecked'] ?? 1]);
-        $lines[] = '';
-        $lines[] = $t('mail.grade_line', ['%grade%' => $result['grade'] ?? '', '%word%' => $result['gradeWord'] ?? '']).' '.($result['summary'] ?? '');
-        $lines[] = '';
+        $lead = $this->translator->trans('mail.owner_lead', [
+            '%name%' => trim($row['firstname'].' '.$row['lastname']),
+            '%email%' => $row['email'],
+            '%domain%' => $row['domain'],
+            '%newsletter%' => $this->translator->trans('1' === (string) $row['newsletter'] ? 'word.yes' : 'word.no', [], 'neo_websitecheck', $locale),
+        ], 'neo_websitecheck', $locale);
 
-        if ([] !== ($result['measures'] ?? [])) {
-            $lines[] = $t('mail.measures_title');
+        return $lead."\n\n".$text;
+    }
 
-            foreach ($result['measures'] as $i => $m) {
-                $lines[] = sprintf('%d. %s: %s', $i + 1, $m['title'], $m['text']);
-            }
+    /** Readable text version of an HTML e-mail: block ends become line breaks, links keep their address. */
+    public static function htmlToText(string $html): string
+    {
+        $html = (string) preg_replace('#<(head|style|script|title)\b.*?</\1>#is', '', $html);
+        $html = (string) preg_replace_callback('#<a\b[^>]*href=(["\'])(.*?)\1[^>]*>(.*?)</a>#is', static function (array $m): string {
+            $label = trim(strip_tags($m[3]));
+            $href = html_entity_decode($m[2], ENT_QUOTES | ENT_HTML5, 'UTF-8');
 
-            $lines[] = '';
-        }
+            return '' === $label || $label === $href || str_starts_with($href, 'mailto:') ? $label : $label.' ('.$href.')';
+        }, $html);
+        $html = (string) preg_replace('#<br\s*/?>#i', "\n", $html);
+        $html = (string) preg_replace('#<li\b[^>]*>#i', "\n- ", $html);
+        $html = (string) preg_replace('#</(p|div|h[1-6]|tr|ol|ul|table)>#i', "\n\n", $html);
+        $html = (string) preg_replace('#</td>#i', ' ', $html);
+        $text = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = str_replace("\u{a0}", ' ', $text);
+        $lines = array_map(static fn (string $l): string => trim((string) preg_replace('/[ \t]+/', ' ', $l)), explode("\n", $text));
 
-        $lines[] = $t('mail.pdf_note');
-        $lines[] = '';
-        $lines[] = $t('mail.offer');
-        $contact = (string) ($this->renderer->context($row)['contact_url'] ?? '');
-
-        if ('' !== $contact) {
-            $lines[] = $contact;
-        }
-
-        $lines[] = '';
-        $lines[] = trim($this->settings->brand()['owner_name'].' · '.($this->settings->brand()['name'] ?: '').' · '.$this->settings->brand()['phone'], ' ·');
-
-        return implode("\n", $lines);
+        return trim((string) preg_replace("/\n{3,}/", "\n\n", implode("\n", $lines)));
     }
 }

@@ -1,4 +1,3 @@
-{% trans_default_domain 'neo_websitecheck' %}
 {#
   Frame of the designed PDF report. Written for Dompdf (tables, no flex/grid,
   fixed header/footer repeat on every page) and renders the same in
@@ -13,7 +12,7 @@
 <html lang="{{ lang }}">
 <head>
 <meta charset="utf-8">
-<title>{{ 'report.title'|trans({'%domain%': result.domain}) }}</title>
+<title>{{ t.doc_title ?: result.domain }}</title>
 <style>
 @page { size: A4; margin: {{ t.page_margin }}; }
 * { box-sizing: border-box; }
@@ -79,11 +78,11 @@ table.badge td { text-align: center; vertical-align: middle; font-weight: bold; 
 {% if t.header %}
 <div class="pdf-head"><table><tr>
   <td>{% if brand.logo_data %}<img src="{{ brand.logo_data }}" alt="">{% else %}<span class="brand">{{ brand.name }}</span>{% endif %}</td>
-  <td style="text-align:right">{{ t.header_text ?: ('report.header'|trans ~ ' · ' ~ date) }}</td>
+  <td style="text-align:right">{{ t.header_text }}</td>
 </tr></table></div>
 {% endif %}
 {% if t.footer %}
-<div class="pdf-foot">{{ t.footer_text ?: brand.name }}{% if t.page_numbers %}<span class="r">{{ 'report.page_short'|trans }} <span class="pn"></span></span>{% endif %}</div>
+<div class="pdf-foot">{{ t.footer_text }}{% if t.page_numbers %}<span class="r">{% if t.page_label %}{{ t.page_label }} {% endif %}<span class="pn"></span></span>{% endif %}</div>
 {% endif %}
 {% block content %}{{ content|raw }}{% endblock %}
 </body>

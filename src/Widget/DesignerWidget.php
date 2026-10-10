@@ -51,7 +51,7 @@ class DesignerWidget extends Widget
 
         $ui = [];
 
-        foreach (['blocks', 'structure', 'properties', 'theme', 'preview', 'presets', 'preset_confirm', 'add', 'duplicate', 'remove', 'up', 'down', 'empty', 'select_hint', 'placeholders', 'insert_placeholder', 'choose_image', 'upload_image', 'remove_image', 'pdf_preview', 'mail_preview', 'export_twig', 'export_confirm', 'twig_active', 'loading', 'error', 'bold', 'italic', 'link', 'link_prompt', 'list', 'drag', 'demo_hint'] as $key) {
+        foreach (['blocks', 'structure', 'properties', 'theme', 'preview', 'presets', 'preset_confirm', 'add', 'duplicate', 'remove', 'up', 'down', 'empty', 'select_hint', 'placeholders', 'insert_placeholder', 'choose_image', 'upload_image', 'remove_image', 'pdf_preview', 'mail_preview', 'export_twig', 'export_confirm', 'twig_active', 'loading', 'error', 'bold', 'italic', 'link', 'link_prompt', 'list', 'drag', 'demo_hint', 'labels', 'labels_hint', 'mode_visual', 'mode_twig', 'mode_label', 'twig_intro', 'twig_generate', 'twig_generate_confirm', 'twig_leave_confirm', 'twig_error', 'twig_refresh'] as $key) {
             $ui[$key] = $translator->trans('designer.ui.'.$key, [], 'neo_websitecheck', $locale);
         }
 
@@ -64,6 +64,8 @@ class DesignerWidget extends Widget
             'languageField' => 'ctrl_language',
             'twigField' => 'ctrl_'.(BlockRegistry::KIND_MAIL === $kind ? 'mail_body' : 'pdf_body'),
             'isAdmin' => $container->get('security.helper')->isGranted('ROLE_ADMIN'),
+            // a stored Twig source (advanced mode) is used instead of the visual design
+            'twigActive' => '' !== trim((string) ($this->activeRecord->{BlockRegistry::KIND_MAIL === $kind ? 'mail_body' : 'pdf_body'} ?? '')),
             'endpoints' => [
                 'preview' => $base.'&key=designer_preview',
                 'pdf' => $base.'&key=designer_pdf',
@@ -73,7 +75,8 @@ class DesignerWidget extends Widget
             ],
             'requestToken' => $container->get('contao.csrf.token_manager')->getDefaultTokenValue(),
             'pickerUrl' => $container->get('contao.picker.builder')->getUrl('file', ['fieldType' => 'radio', 'filesOnly' => true, 'extensions' => 'jpg,jpeg,png,gif,webp,svg']),
-            'schema' => $registry->schema($kind, $locale),
+            // UI labels in the back-end language, default words of new blocks in the configuration's language
+            'schema' => $registry->schema($kind, $locale, (string) ($this->activeRecord->language ?? '')),
             'presets' => $presets->available($kind, $locale),
             'placeholders' => TextProvider::PLACEHOLDERS,
             'ui' => $ui,

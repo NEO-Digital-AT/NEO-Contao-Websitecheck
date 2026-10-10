@@ -2,13 +2,13 @@
 <div style="margin-bottom:{{ t.space[block.space] }};page-break-inside:avoid">
 {% if block.layout == 'montage' %}
   <div style="position:relative;width:100%;height:112mm">
-    {% if images.desktop %}<div style="position:absolute;left:0;top:0;width:78%;border:1px solid #ddd;border-radius:{{ t.r }};overflow:hidden;background:#fff"><div class="mono" style="padding:2mm 3mm;background:#eeedf4;font-size:7pt;color:#777">{{ result.domain }} · Desktop</div><img src="{{ images.desktop }}" alt="" style="width:100%;display:block"></div>{% endif %}
+    {% if images.desktop %}<div style="position:absolute;left:0;top:0;width:78%;border:1px solid #ddd;border-radius:{{ t.r }};overflow:hidden;background:#fff"><div class="mono" style="padding:2mm 3mm;background:#eeedf4;font-size:7pt;color:#777">{{ result.domain }}{% if block.label_desktop %} · {{ block.label_desktop }}{% endif %}</div><img src="{{ images.desktop }}" alt="" style="width:100%;display:block"></div>{% endif %}
     {% if images.mobile %}<div style="position:absolute;right:0;bottom:0;width:27%;border:4px solid #1a1a1a;border-radius:5mm;overflow:hidden;background:#fff"><img src="{{ images.mobile }}" alt="" style="width:100%;display:block"></div>{% endif %}
   </div>
 {% elseif block.layout == 'side' %}
   <table class="two"><tr>
-    <td class="l">{% if images.desktop %}<div class="crop"><img src="{{ images.desktop }}" alt=""></div><p class="caption">Desktop</p>{% endif %}</td>
-    <td class="r" style="text-align:center">{% if images.mobile %}<div style="display:inline-block;width:45mm;border:4px solid #1a1a1a;border-radius:5mm;overflow:hidden"><img src="{{ images.mobile }}" alt="" style="width:100%;display:block"></div><p class="caption">Mobil</p>{% endif %}</td>
+    <td class="l">{% if images.desktop %}<div class="crop"><img src="{{ images.desktop }}" alt=""></div>{% if block.label_desktop %}<p class="caption">{{ block.label_desktop }}</p>{% endif %}{% endif %}</td>
+    <td class="r" style="text-align:center">{% if images.mobile %}<div style="display:inline-block;width:45mm;border:4px solid #1a1a1a;border-radius:5mm;overflow:hidden"><img src="{{ images.mobile }}" alt="" style="width:100%;display:block"></div>{% if block.label_mobile %}<p class="caption">{{ block.label_mobile }}</p>{% endif %}{% endif %}</td>
   </tr></table>
 {% elseif block.layout == 'desktop' and images.desktop %}
   <div class="crop"><img src="{{ images.desktop }}" alt=""></div>

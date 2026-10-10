@@ -1,4 +1,3 @@
-{% trans_default_domain 'neo_websitecheck' %}
 {% if result.measures %}
 {% set dark = block.style == 'primary' %}
 <div style="margin-bottom:{{ t.space[block.space] }}">
@@ -8,7 +7,7 @@
 <table style="width:100%;border-collapse:collapse;background:{{ dark ? t.primary : t.soft }};border-radius:{{ t.r }};margin-bottom:2.5mm;page-break-inside:avoid"><tr>
   <td style="width:11mm;padding:2.6mm 0 2.6mm 4mm;vertical-align:top;font-family:{{ t.mono|raw }};font-weight:bold;font-size:9.5pt;line-height:1.3;color:{{ dark ? t.accent : t.primary }}">{{ '%02d'|format(loop.index) }}</td>
   <td style="padding:2.6mm 4mm 2.6mm 2mm;vertical-align:top;color:{{ dark ? t.primary_ink : t.text }}"><b style="display:block;font-size:9.5pt;line-height:1.3;margin-bottom:.8mm">{{ m.title }}</b><p style="margin:0;font-size:8.5pt;line-height:1.4">{{ m.text }}</p></td>
-  {% if block.show_effort %}<td style="width:30mm;padding:2.6mm 4mm 2.6mm 0;vertical-align:top;text-align:right"><span style="display:inline-block;padding:1mm 2.5mm;border:1px solid {{ dark ? t.accent : t.primary }};border-radius:3mm;color:{{ dark ? t.accent : t.primary }};font-size:7pt;line-height:1;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap">{{ ('measure.effort.' ~ m.effort)|trans }}</span></td>{% endif %}
+  {% if block.show_effort and (t.labels.effort[m.effort] ?? '') %}<td style="width:30mm;padding:2.6mm 4mm 2.6mm 0;vertical-align:top;text-align:right"><span style="display:inline-block;padding:1mm 2.5mm;border:1px solid {{ dark ? t.accent : t.primary }};border-radius:3mm;color:{{ dark ? t.accent : t.primary }};font-size:7pt;line-height:1;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap">{{ t.labels.effort[m.effort] ?? m.effort }}</span></td>{% endif %}
 </tr></table>
 {% endfor %}
 </div>

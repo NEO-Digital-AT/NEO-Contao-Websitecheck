@@ -25,7 +25,7 @@ final class Design
      *
      * @return array{v: int, theme: array<string, mixed>, blocks: list<array{id: string, type: string, props: array<string, mixed>}>}
      */
-    public static function normalise(array|string|null $raw, string $kind): array
+    public static function normalise(array|string|null $raw, string $kind, callable|null $resolve = null): array
     {
         if (\is_string($raw)) {
             $decoded = json_decode($raw, true);
@@ -36,7 +36,7 @@ final class Design
         $theme = [];
 
         foreach (BlockRegistry::theme($kind) as $name => $prop) {
-            $theme[$name] = self::value($prop, $raw['theme'][$name] ?? null);
+            $theme[$name] = self::resolve(self::value($prop, $raw['theme'][$name] ?? null), $resolve);
         }
 
         $blocks = [];
@@ -51,7 +51,7 @@ final class Design
             $props = [];
 
             foreach ($definitions[$type]['props'] as $name => $prop) {
-                $props[$name] = self::value($prop, $block['props'][$name] ?? null);
+                $props[$name] = self::resolve(self::value($prop, $block['props'][$name] ?? null), $resolve);
             }
 
             $id = preg_replace('/[^a-z0-9_-]/i', '', (string) ($block['id'] ?? ''));
@@ -70,9 +70,9 @@ final class Design
      *
      * @return array{v: int, theme: array<string, mixed>, blocks: list<array{id: string, type: string, props: array<string, mixed>}>}
      */
-    public static function prepare(array|string|null $raw, string $kind, array $vars): array
+    public static function prepare(array|string|null $raw, string $kind, array $vars, callable|null $resolve = null): array
     {
-        $design = self::normalise($raw, $kind);
+        $design = self::normalise($raw, $kind, $resolve);
         $definitions = BlockRegistry::blocks($kind);
         $themeDefs = BlockRegistry::theme($kind);
 
@@ -115,12 +115,31 @@ final class Design
         return (string) preg_replace_callback(
             '/\{\{\s*([a-z_]+)\s*\}\}/',
             static function (array $m) use ($vars, $html): string {
-                $value = (string) ($vars[$m[1]] ?? '');
+                if (!\array_key_exists($m[1], $vars)) {
+                    return $m[0]; // not a global placeholder: a block may fill it (e.g. {{area_grade}})
+                }
+
+                $value = (string) $vars[$m[1]];
 
                 return $html ? htmlspecialchars($value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') : $value;
             },
             $text,
         );
+    }
+
+    /**
+     * Resolves "@translation.key" tokens (whole value or embedded, e.g. in
+     * "<p>@report.next_text</p>") with the given resolver. Bundled presets and
+     * block defaults are written this way so they arrive in the language of the
+     * configuration; once stored, the text is the customer's own.
+     */
+    public static function resolve(mixed $value, callable|null $resolve): mixed
+    {
+        if (null === $resolve || !\is_string($value) || !str_contains($value, '@')) {
+            return $value;
+        }
+
+        return (string) preg_replace_callback('/(?<=^|>|\s)@([a-z][a-z0-9_]*(?:\.[a-z0-9_]+)+)/i', static fn (array $m): string => (string) $resolve($m[1]), $value);
     }
 
     /** Reduces editor HTML to a safe subset (tags whitelist, no event handlers, http(s)/mailto links only). */

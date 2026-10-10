@@ -518,6 +518,14 @@ report:
     measures_title: 'Die wichtigsten Maßnahmen'
     what_works_short: 'Ladezeit im Detail'
     pages_eyebrow_plain: 'Geprüfte Seiten'
+    title_plain: 'Website-Check für {{domain}}'
+    header_plain: 'Website-Check · {{date}}'
+    grade_line_plain: 'Gesamtnote {{grade}} · {{grade_word}}'
+    area_grade_line: 'Note {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Desktop'
+    label_mobile: 'Mobil'
+    col_lcp: 'LCP'
+    sources_plain: 'Quellen: Google PageSpeed Insights (Lighthouse {{lighthouse}}), eigene Prüfungen von HTML, Rechtlichem und KI-Sichtbarkeit, KI-Lesung der Seitentexte · {{date}}'
 
 # ---------------------------------------------------------------- E-Mail
 mail:
@@ -574,7 +582,7 @@ designer:
         mail_preview: 'In neuem Tab öffnen'
         export_twig: 'Als Twig-Vorlage übernehmen'
         export_confirm: 'Die Twig-Vorlage (Experten-Modus) wird mit dieser Gestaltung überschrieben. Fortfahren?'
-        twig_active: 'Achtung: Im Experten-Modus ist eine Twig-Vorlage hinterlegt. Sie hat Vorrang, diese Gestaltung wird dann nicht verwendet.'
+        twig_active: 'Für diese Konfiguration ist im erweiterten Modus Twig-Code hinterlegt. Er hat Vorrang, diese Gestaltung wird dann nicht verwendet. Ändern kann ihn ein Administrator.'
         loading: 'Vorschau wird erzeugt …'
         error: 'Die Vorschau konnte nicht erzeugt werden.'
         bold: 'Fett'
@@ -584,6 +592,17 @@ designer:
         list: 'Liste'
         drag: 'Ziehen zum Verschieben'
         demo_hint: 'Die Vorschau verwendet den letzten fertigen Check oder Demo-Daten.'
+        labels: 'Bezeichnungen'
+        labels_hint: 'Wörter, die mehrere Blöcke verwenden: Notenwörter, Namen der Bereiche, Aufwand und die Bezeichnungen der Messwerte. Was hier steht, steht im Dokument.'
+        mode_visual: 'Visuell'
+        mode_twig: 'Erweitert (Twig)'
+        mode_label: 'Bearbeitungsmodus'
+        twig_intro: 'Hier steht das komplette Dokument als Twig-Code: Rahmen, jeder Block und jedes Wort. Änderungen wirken sofort in der Vorschau, gespeichert wird mit „Speichern“. Solange hier Code steht, wird er statt der visuellen Gestaltung verwendet.'
+        twig_generate: 'Code aus der visuellen Gestaltung neu erzeugen'
+        twig_generate_confirm: 'Der Twig-Code wird durch die aktuelle visuelle Gestaltung ersetzt. Eigene Änderungen am Code gehen verloren. Fortfahren?'
+        twig_leave_confirm: 'Zurück zum visuellen Modus: Der Twig-Code wird verworfen, ab dann gilt wieder die visuelle Gestaltung. Fortfahren?'
+        twig_error: 'Fehler im Twig-Code'
+        twig_refresh: 'Vorschau aktualisieren'
     opt:
         none: 'Keine'
         s: 'Klein'
@@ -628,6 +647,9 @@ designer:
         content: 'Inhalte & Klarheit'
         legal: 'Recht & Datenschutz'
         mobile_area: 'Mobil'
+        effort_small: 'klein'
+        effort_medium: 'mittel'
+        effort_large: 'groß'
     prop:
         eyebrow: 'Kleine Zeile darüber'
         title: 'Titel'
@@ -680,7 +702,36 @@ designer:
         a11y: 'Barrierefreiheit'
         bp: 'Technik'
         seo: 'SEO'
+        grade_line: 'Zeile zur Note'
+        label_pages: 'Bezeichnung „Geprüfte Seiten“'
+        label_date: 'Bezeichnung „Datum“'
+        label_for: 'Bezeichnung „Für“'
+        label_desktop: 'Bezeichnung Desktop'
+        label_mobile: 'Bezeichnung Handy'
+        label_perf: 'Bezeichnung Leistung'
+        label_a11y: 'Bezeichnung Barrierefreiheit'
+        label_bp: 'Bezeichnung Technik'
+        label_seo: 'Bezeichnung SEO'
+        legend_title: 'Titel der Legende'
+        legend_text: 'Text der Legende'
+        works_title: 'Titel „Was gut läuft“'
+        improve_title: 'Titel „Wo noch Luft ist“'
+        nothing_text: 'Text, wenn nichts zu verbessern ist'
+        col_page: 'Spalte Seite'
+        col_title: 'Spalte Titel'
+        col_lcp: 'Spalte Ladezeit'
+        col_contrast: 'Spalte Kontrast'
+        col_grade: 'Spalte Note'
+        none_text: 'Wort für „keine“'
+        badge: 'Kürzel im Kästchen'
     theme:
+        doc_title: 'Dokumenttitel (PDF-Eigenschaften)'
+        page_label: 'Wort vor der Seitenzahl'
+        grade_word: 'Notenwort %s'
+        area_name: 'Bereich: %s'
+        effort_word: 'Aufwand %s'
+        kpi_name: 'Messwert: %s'
+        kpi_note: 'Hinweis zu: %s'
         primary: 'Hauptfarbe (leer = Einstellungen)'
         accent: 'Akzentfarbe (leer = Einstellungen)'
         text: 'Textfarbe'
@@ -689,7 +740,7 @@ designer:
         radius: 'Rundung'
         margins: 'Seitenränder'
         header: 'Kopfzeile auf jeder Seite'
-        header_text: 'Text in der Kopfzeile (leer = „Website-Check · Datum“)'
+        header_text: 'Text in der Kopfzeile'
         footer: 'Fußzeile auf jeder Seite'
         footer_text: 'Text in der Fußzeile'
         page_numbers: 'Seitenzahlen'
@@ -715,13 +766,13 @@ designer:
         meta_cards: {label: 'Kennzahlen', desc: 'Geprüfte Seiten, Datum, Empfänger.'}
         screenshots: {label: 'Screenshots', desc: 'Startseite am Desktop und am Handy.'}
         gauges: {label: 'Google-Ringe', desc: 'Die PageSpeed-Werte als Ringe, optional mit Messwerten.'}
-        areas: {label: 'Bereiche im Überblick', desc: 'Die sieben Bereiche mit Note und Kurztext.'}
+        areas: {label: 'Bereiche im Überblick', desc: 'Die sieben Bereiche mit Note und Kurztext.', show_meta: 'Messdetails anzeigen'}
         measures: {label: 'Maßnahmen', desc: 'Die wichtigsten Maßnahmen, nummeriert, mit Aufwand.'}
         strengths: {label: 'Was bereits passt', desc: 'Positive Punkte als Häkchenliste.'}
         area_detail: {label: 'Bereich im Detail', desc: 'Ein Bereich mit Fundstellen, positiven Punkten, bei Barrierefreiheit mit markierten Ausschnitten.'}
         kpis: {label: 'Messwerte Ladezeit', desc: 'LCP, CLS, INP, Leistung, Seitengewicht, Anfragen.'}
         pages_table: {label: 'Tabelle der Seiten', desc: 'Alle geprüften Seiten mit Titel, LCP, Kontrast und Note.'}
-        sources: {label: 'Quellen', desc: 'Automatischer Quellenhinweis mit Lighthouse-Version und Datum.'}
+        sources: {label: 'Quellen', desc: 'Quellenhinweis, Platzhalter {{lighthouse}} und {{date}}.'}
         spacer: {label: 'Abstand', desc: 'Leerraum.'}
         divider: {label: 'Trennlinie', desc: ''}
         page_break: {label: 'Seitenumbruch', desc: 'Der nächste Block beginnt auf einer neuen Seite.'}

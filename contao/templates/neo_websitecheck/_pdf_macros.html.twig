@@ -25,3 +25,8 @@
   {% endfor %}
 </table>
 {%- endmacro %}
+
+{# One measured value (speed area) as a table cell. Label and note are the design's own words (t.labels), the value comes from the check. #}
+{% macro kpi(t, k, bg) -%}
+<td style="width:33%;padding:3mm;background:{{ bg|default(t.soft) }};border:1px solid {{ t.line }};border-radius:{{ t.r }};vertical-align:top"><small style="display:block;font-size:6.8pt;letter-spacing:.08em;text-transform:uppercase;color:{{ t.muted }}">{{ t.labels.kpi[k.key] ?? k.label }}</small><b style="display:block;font-size:13pt;color:{{ t.primary }};margin:.5mm 0">{{ k.value }}</b><em style="font-style:normal;font-size:8pt;color:{{ k.ok ? '#2d7a2d' : '#8a5a00' }}">{{ t.labels.kpi_note[k.key] ?? k.note }}</em></td>
+{%- endmacro %}

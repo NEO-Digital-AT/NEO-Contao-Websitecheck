@@ -11,7 +11,7 @@ $l['pdf_legend'] = 'PDF report';
 $l['pdf_design_legend'] = 'Design the PDF report';
 $l['owner_legend'] = 'Your copy';
 $l['element_legend'] = 'Texts of the element on the page';
-$l['expert_legend'] = 'Expert mode: Twig templates (take precedence over the design)';
+$l['expert_legend'] = 'Internal copy as Twig template';
 
 $l['title'] = ['Name', 'Internal name, e.g. “German” or “English – hotels”.'];
 $l['language'] = ['Language', 'An element without an explicit assignment uses the configuration whose language matches its page.'];
@@ -23,9 +23,9 @@ $l['mail_owner_subject'] = ['Subject of your copy', 'Default: “[Website check]
 $l['mail_design'] = ['E-mail', 'Add blocks on the left, click them in the preview and edit on the right. “Load template” sets a ready-made structure.'];
 $l['pdf_filename'] = ['PDF file name', 'With placeholders, e.g. website-check-{{domain}}-{{date}}.pdf ({{grade}}, {{firstname}}, {{lastname}}, {{company}} work too).'];
 $l['pdf_design'] = ['PDF report', 'Compose page by page: cover, data blocks, your own texts and images, page breaks. The preview uses the latest finished check or demo data.'];
-$l['mail_body'] = ['E-mail as Twig template', 'Administrators only. When filled, this template replaces the design above. “Copy to Twig template” in the designer produces the starting point.'];
+$l['mail_body'] = ['E-mail as Twig code (advanced mode)', 'Administrators only. Edited in the designer via “Advanced (Twig)”. When filled, this code is used instead of the visual design.'];
 $l['owner_body'] = ['Your copy as Twig template', 'Empty = bundled template.'];
-$l['pdf_body'] = ['PDF report as Twig template', 'Administrators only. When filled, this template replaces the design above.'];
+$l['pdf_body'] = ['PDF report as Twig code (advanced mode)', 'Administrators only. Edited in the designer via “Advanced (Twig)”. When filled, this code is used instead of the visual design.'];
 
 $l['fe_url_label'] = ['Label above the address field', 'Default: “Address of your website”'];
 $l['fe_submit'] = ['“Check now” button', ''];

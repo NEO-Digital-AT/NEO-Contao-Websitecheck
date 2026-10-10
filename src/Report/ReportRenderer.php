@@ -9,6 +9,7 @@ use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Neo\WebsitecheckBundle\Check\CheckRepository;
 use Neo\WebsitecheckBundle\Design\DesignRenderer;
+use Neo\WebsitecheckBundle\Design\Presets;
 use Neo\WebsitecheckBundle\Settings;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\LocaleAwareInterface;
@@ -32,6 +33,7 @@ final class ReportRenderer
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly DesignRenderer $designs,
         private readonly TranslatorInterface $translator,
+        private readonly Presets $presets,
     ) {
     }
 
@@ -40,7 +42,7 @@ final class ReportRenderer
      */
     public function renderReport(array $row): string
     {
-        return $this->render('@Contao/neo_websitecheck/report.html.twig', $row, 'pdf_body', 'pdf_design', 'pdf');
+        return $this->render('', $row, 'pdf_body', 'pdf_design', 'pdf');
     }
 
     /**
@@ -49,7 +51,7 @@ final class ReportRenderer
     public function renderMail(array $row, string $template): string
     {
         return match ($template) {
-            'mail_visitor' => $this->render('@Contao/neo_websitecheck/mail_visitor.html.twig', $row, 'mail_body', 'mail_design', 'mail'),
+            'mail_visitor' => $this->render('', $row, 'mail_body', 'mail_design', 'mail'),
             'mail_owner' => $this->render('@Contao/neo_websitecheck/mail_owner.html.twig', $row, 'owner_body', null, null),
             default => $this->render('@Contao/neo_websitecheck/'.$template.'.html.twig', $row, null, null, null),
         };
@@ -69,6 +71,22 @@ final class ReportRenderer
             $context += $context['vars'];
 
             return $this->designs->render($kind, $design, $context, $markers);
+        });
+    }
+
+    /**
+     * Renders a Twig source of the advanced mode (draft from the designer)
+     * with the same context as a stored one.
+     *
+     * @param array<string, mixed> $row
+     */
+    public function renderTwig(string $source, array $row): string
+    {
+        return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($source, $row): string {
+            $context = $this->context($row);
+            $context += $context['vars'];
+
+            return $this->twig->createTemplate($source)->render($context);
         });
     }
 
@@ -187,10 +205,12 @@ final class ReportRenderer
 
     /**
      * Resolution order: the expert Twig template of the configuration (when
-     * filled), then the designed blocks of the configuration, then the file
-     * template of the bundle (overridable in the project). The template
-     * context is the same everywhere; {{firstname}} etc. work in the Twig
-     * source as plain placeholders because the vars are exposed at top level.
+     * filled), then the designed blocks of the configuration, then the
+     * bundled "standard" design in the check's language (a configuration that
+     * was never opened in the designer). Report and visitor e-mail therefore
+     * always come out of the designer blocks; only the internal operator copy
+     * uses a file template. {{firstname}} etc. work in Twig sources as plain
+     * placeholders because the vars are exposed at top level.
      */
     private function render(string $template, array $row, string|null $twigColumn, string|null $designColumn, string|null $kind): string
     {
@@ -203,8 +223,10 @@ final class ReportRenderer
                 return $this->twig->createTemplate((string) $config[$twigColumn])->render($context);
             }
 
-            if (null !== $designColumn && null !== $kind && '' !== trim((string) ($config[$designColumn] ?? ''))) {
-                return $this->designs->render($kind, (string) $config[$designColumn], $context);
+            if (null !== $designColumn && null !== $kind) {
+                $design = trim((string) ($config[$designColumn] ?? ''));
+
+                return $this->designs->render($kind, '' !== $design ? $design : $this->presets->default($kind, (string) $context['locale']), $context);
             }
 
             return $this->twig->render($template, $context);

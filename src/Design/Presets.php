@@ -56,7 +56,11 @@ final class Presets
             return null;
         }
 
-        return Design::normalise($this->resolve($raw, $locale), $kind);
+        return Design::normalise($this->resolve($raw, $locale), $kind, function (string $key) use ($locale): string {
+            $translated = $this->translator->trans($key, [], 'neo_websitecheck', $locale);
+
+            return $translated === $key ? '' : $translated;
+        });
     }
 
     public function default(string $kind, string $locale): array
@@ -74,16 +78,11 @@ final class Presets
             return $value;
         }
 
-        if (\is_string($value) && str_contains($value, '@')) {
-            // "@report.title" as a whole value or embedded in HTML ("<p>@mail.intro</p>")
-            return (string) preg_replace_callback('/(?<=^|>|\s)@([a-z][a-z0-9_]*(?:\.[a-z0-9_]+)+)/i', function (array $m) use ($locale): string {
-                $translated = $this->translator->trans($m[1], [], 'neo_websitecheck', $locale);
+        return Design::resolve($value, function (string $key) use ($locale): string {
+            $translated = $this->translator->trans($key, [], 'neo_websitecheck', $locale);
 
-                return $translated === $m[1] ? '' : $translated;
-            }, $value);
-        }
-
-        return $value;
+            return $translated === $key ? '' : $translated;
+        });
     }
 
     private function dir(string $kind): string

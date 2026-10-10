@@ -40,10 +40,11 @@ $fields = [
     // --- PDF ---------------------------------------------------------------
     'pdf_filename' => ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'long clr'], 'sql' => "varchar(255) NOT NULL default ''"],
     'pdf_design' => ['inputType' => 'neoDesigner', 'eval' => ['kind' => 'pdf', 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
-    // --- expert: complete Twig templates (administrators only, see onload) ---
-    'mail_body' => ['inputType' => 'textarea', 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
-    'owner_body' => ['inputType' => 'textarea', 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
-    'pdf_body' => ['inputType' => 'textarea', 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
+    // --- advanced mode: complete Twig templates (administrators only, see onload).
+    // mail_body/pdf_body are edited inside the designer (switch "Advanced (Twig)"); owner_body is the internal copy.
+    'mail_body' => ['inputType' => 'textarea', 'save_callback' => [[SettingsCallbacks::class, 'validateTwig']], 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
+    'owner_body' => ['inputType' => 'textarea', 'save_callback' => [[SettingsCallbacks::class, 'validateTwig']], 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
+    'pdf_body' => ['inputType' => 'textarea', 'save_callback' => [[SettingsCallbacks::class, 'validateTwig']], 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
 ];
 
 // Texts of the front-end element (short snippets, placeholders allowed).
@@ -84,12 +85,12 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_config'] = [
     'palettes' => [
         'default' => '{title_legend},title,language;'
             .'{mail_legend},mail_subject,mail_from_name,mail_from_email,mail_reply_to;'
-            .'{mail_design_legend},mail_design;'
+            .'{mail_design_legend},mail_design,mail_body;'
             .'{pdf_legend},pdf_filename;'
-            .'{pdf_design_legend},pdf_design;'
+            .'{pdf_design_legend},pdf_design,pdf_body;'
             .'{owner_legend:hide},mail_owner_subject;'
             .'{element_legend:hide},'.implode(',', TextProvider::columns('fe')).';'
-            .'{expert_legend:hide},mail_body,owner_body,pdf_body',
+            .'{expert_legend:hide},owner_body',
     ],
     'fields' => $fields,
 ];

@@ -45,7 +45,9 @@
       "props": {
         "layout": "cards",
         "legend": true,
-        "space": "l"
+        "space": "l",
+        "eyebrow": "",
+        "title": ""
       }
     },
     {
