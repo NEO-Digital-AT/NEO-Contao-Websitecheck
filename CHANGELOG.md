@@ -8,6 +8,7 @@ All notable changes to this bundle are documented here. The format follows
 
 ### Added
 - Back-end module **Website check settings**: brand, design (logo, portrait, colours), sender addresses, limits, and the customer-facing texts per language with placeholders; "Preview PDF" and "Preview e-mail" with the newest check or demo data.
+- Complete e-mail, owner-copy and PDF templates per language (HTML/Twig, prefilled, administrators only), per-language sender and reply-to, PDF file name with placeholders, language-specific previews.
 
 ## [1.0.0] – 2026-10-10
 

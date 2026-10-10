@@ -168,7 +168,9 @@ Everything a visitor sees can be changed in the back end under **NEO › Website
 - **E-mail:** sender name and address, reply-to, copy address for the operator.
 - **Limits:** checks per visitor and day, cache hours, retention days, pages per check.
 - **Texts (per language):** the customer-facing texts of the PDF report, the e-mail and the element — cover title, offer, promise, subject, greeting, intro, button labels, footer, lead form, disclaimer. Empty fields keep the bundle's text. Placeholders work in every field: `{{firstname}}`, `{{lastname}}`, `{{domain}}`, `{{grade}}`, `{{grade_word}}`, `{{pages}}`, `{{company}}`, `{{owner}}`, `{{phone}}`, `{{website}}`, `{{days}}`, `{{date}}`.
-- **Preview PDF / Preview e-mail:** render the templates with the newest finished check or, before the first check, with bundled demo data — in a new tab, right after saving.
+- **Complete templates (advanced):** each language record also holds the *whole* e-mail, your copy and the *whole* PDF report as HTML/Twig, prefilled with the current template when the record is created. Change layout, colours, wording — anything. An emptied field falls back to the bundle template. These three fields are Twig code and therefore visible to **administrators only** (like Contao's template editor); editors see the snippets. Also per language: sender name/address, reply-to and the **PDF file name** with placeholders (`website-check-{{domain}}-{{date}}.pdf`).
+- **Preview PDF / Preview e-mail:** render the templates with the newest finished check or, before the first check, with bundled demo data — in a new tab, right after saving (also per language from the texts record).
+- **Languages the Contao way:** one texts record per site language; the page language of the element decides which one is used, missing languages fall back to the bundle texts.
 
 API keys, the PDF engine and the newsletter provider stay in `config.yaml` (they are technical, not editorial). Non-admin groups need the module and the tables `tl_neo_websitecheck_settings` and `tl_neo_websitecheck_text`.
 
@@ -348,7 +350,9 @@ Alles, was ein Besucher sieht, lässt sich im Backend unter **NEO › Website-Ch
 - **E-Mail:** Absendername und -adresse, Antwortadresse, Kopie an den Betreiber.
 - **Grenzen:** Checks je Besucher und Tag, Zwischenspeicher, Aufbewahrung, Seiten je Check.
 - **Texte (je Sprache):** die kundensichtbaren Texte von PDF-Bericht, E-Mail und Element: Deckblatt-Titel, Angebot, Zusage, Betreff, Anrede, Einleitung, Knöpfe, Fußzeile, Kontaktformular, Hinweis. Leere Felder behalten den mitgelieferten Text. Platzhalter in jedem Feld: `{{firstname}}`, `{{lastname}}`, `{{domain}}`, `{{grade}}`, `{{grade_word}}`, `{{pages}}`, `{{company}}`, `{{owner}}`, `{{phone}}`, `{{website}}`, `{{days}}`, `{{date}}`.
-- **Vorschau PDF / Vorschau E-Mail:** rendern die Vorlagen mit dem neuesten fertigen Check oder, vor dem ersten Check, mit Beispieldaten, in einem neuen Tab direkt nach dem Speichern.
+- **Komplette Vorlagen (fortgeschritten):** Jeder Sprach-Datensatz enthält zusätzlich die *ganze* E-Mail, Ihre Kopie und den *ganzen* PDF-Bericht als HTML/Twig, beim Anlegen mit der aktuellen Vorlage vorbefüllt. Layout, Farben, Wortlaut: alles änderbar. Ein geleertes Feld fällt auf die mitgelieferte Vorlage zurück. Diese drei Felder sind Twig-Code und daher nur für **Administratoren** sichtbar (wie Contaos Template-Editor); Redakteure sehen die Textbausteine. Ebenfalls je Sprache: Absendername/-adresse, Antwortadresse und der **PDF-Dateiname** mit Platzhaltern (`website-check-{{domain}}-{{date}}.pdf`).
+- **Vorschau PDF / Vorschau E-Mail:** rendern die Vorlagen mit dem neuesten fertigen Check oder, vor dem ersten Check, mit Beispieldaten, in einem neuen Tab direkt nach dem Speichern (auch je Sprache aus dem Text-Datensatz).
+- **Mehrsprachig nach Contao-Prinzip:** ein Text-Datensatz je Seitensprache; die Seitensprache des Elements entscheidet, fehlende Sprachen fallen auf die mitgelieferten Texte zurück.
 
 API-Schlüssel, PDF-Engine und Newsletter-Anbieter bleiben in der `config.yaml` (technisch, nicht redaktionell). Nicht-Admin-Gruppen brauchen das Modul und die Tabellen `tl_neo_websitecheck_settings` und `tl_neo_websitecheck_text`.
 

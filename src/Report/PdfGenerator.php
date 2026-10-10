@@ -69,9 +69,21 @@ final class PdfGenerator
      */
     public function fileName(array $row): string
     {
-        $domain = preg_replace('/[^a-z0-9.-]/', '-', strtolower((string) $row['domain'])) ?: 'website';
+        $pattern = $this->settings->db()?->text(substr((string) ($row['locale'] ?: 'en'), 0, 2), 'pdf_filename') ?: 'website-check-{{domain}}-{{date}}.pdf';
+        $result = (array) ($row['result'] ?? []);
+        $vars = [
+            'domain' => (string) ($result['domain'] ?? $row['domain'] ?? 'website'),
+            'date' => date('Y-m-d', (int) (($row['finished'] ?? 0) ?: time())),
+            'grade' => (string) ($result['grade'] ?? ''),
+            'firstname' => (string) ($row['firstname'] ?? ''),
+            'lastname' => (string) ($row['lastname'] ?? ''),
+            'company' => (string) ($this->settings->brand()['name'] ?? ''),
+        ];
+        $name = (string) preg_replace_callback('/\{\{\s*([a-z_]+)\s*\}\}/', static fn (array $m): string => $vars[$m[1]] ?? '', $pattern);
+        $name = preg_replace('/[^A-Za-z0-9._-]+/', '-', str_replace(['ä', 'ö', 'ü', 'ß', 'Ä', 'Ö', 'Ü'], ['ae', 'oe', 'ue', 'ss', 'Ae', 'Oe', 'Ue'], $name)) ?? 'website-check.pdf';
+        $name = trim($name, '-.') ?: 'website-check';
 
-        return sprintf('website-check-%s-%s.pdf', $domain, date('Y-m-d', (int) ($row['finished'] ?: time())));
+        return str_ends_with(strtolower($name), '.pdf') ? $name : $name.'.pdf';
     }
 
     private function viaDompdf(string $html): string

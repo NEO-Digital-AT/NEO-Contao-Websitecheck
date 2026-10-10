@@ -6,8 +6,19 @@ $l = &$GLOBALS['TL_LANG']['tl_neo_websitecheck_text'];
 
 $l['language_legend'] = 'Language';
 $l['placeholders_legend'] = 'Placeholders';
-$l['report_legend'] = 'PDF report';
 $l['mail_legend'] = 'E-mail to the visitor';
+$l['mail_body_legend'] = 'Complete e-mail template (advanced)';
+$l['owner_legend'] = 'Your copy';
+$l['pdf_legend'] = 'PDF report';
+$l['pdf_body_legend'] = 'Complete PDF template (advanced)';
+
+$l['mail_from_name'] = ['Sender name for this language', 'Empty = settings / company name.'];
+$l['mail_from_email'] = ['Sender address for this language', 'Empty = settings / config.yaml.'];
+$l['mail_reply_to'] = ['Reply-to for this language', 'Empty = settings.'];
+$l['mail_body'] = ['E-mail (complete HTML/Twig template)', 'The whole e-mail. Prefilled with the current template; placeholders like {{firstname}} and all template variables (result, brand, vars …) are available. Empty = bundle template, which then uses the text snippets above.'];
+$l['owner_body'] = ['Your copy (complete template)', 'The e-mail you receive with the lead data. Same rules as the visitor e-mail.'];
+$l['pdf_filename'] = ['PDF file name', 'With placeholders, e.g. website-check-{{domain}}-{{date}}.pdf ({{grade}}, {{firstname}}, {{lastname}}, {{company}} also work).'];
+$l['pdf_body'] = ['PDF report (complete HTML/Twig template)', 'The whole six-page report as HTML/Twig. Prefilled with the current template so you can change layout, colours and texts freely. Empty = bundle template with the snippets above.'];
 $l['element_legend'] = 'Element on the page';
 
 $l['language'] = ['Language', 'One record per site language. Empty fields keep the bundle\'s default text.'];

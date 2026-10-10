@@ -35,12 +35,29 @@ foreach (TextProvider::KEYS as $key => $def) {
     ];
 }
 
+// Full templates (Twig/HTML) and per-language sender/file name. Prefilled with
+// the bundle (or project override) template when a language record is created,
+// so editing starts from the complete design; an emptied field falls back to it.
+$code = ['inputType' => 'textarea', 'eval' => ['rte' => 'ace|html', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'];
+$fields['mail_from_name'] = ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"];
+$fields['mail_from_email'] = ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"];
+$fields['mail_reply_to'] = ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"];
+$fields['mail_body'] = $code;
+$fields['owner_body'] = $code;
+$fields['pdf_filename'] = ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'decodeEntities' => true, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"];
+$fields['pdf_body'] = $code;
+
 $GLOBALS['TL_DCA']['tl_neo_websitecheck_text'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
         'ptable' => 'tl_neo_websitecheck_settings',
         'enableVersioning' => true,
+        'onload_callback' => [[SettingsCallbacks::class, 'restrictTemplatesToAdmins']],
+        'oncreate_callback' => [[SettingsCallbacks::class, 'prefillTemplates']],
         'sql' => ['keys' => ['id' => 'primary', 'pid,language' => 'index']],
+    ],
+    'edit' => [
+        'buttons_callback' => [[SettingsCallbacks::class, 'addPreviewButtonsForLanguage']],
     ],
     'list' => [
         'sorting' => ['mode' => DataContainer::MODE_PARENT, 'fields' => ['language'], 'headerFields' => ['brand_name'], 'panelLayout' => '', 'child_record_callback' => [SettingsCallbacks::class, 'textRecordLabel']],
@@ -54,8 +71,11 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_text'] = [
     'palettes' => [
         'default' => '{language_legend},language;'
             .'{placeholders_legend},placeholders_info;'
-            .'{report_legend},'.implode(',', TextProvider::columns('report')).';'
-            .'{mail_legend},'.implode(',', TextProvider::columns('mail')).';'
+            .'{mail_legend},mail_subject,mail_from_name,mail_from_email,mail_reply_to,'.implode(',', array_diff(TextProvider::columns('mail'), ['mail_subject', 'mail_owner_subject'])).';'
+            .'{mail_body_legend:hide},mail_body;'
+            .'{owner_legend:hide},mail_owner_subject,owner_body;'
+            .'{pdf_legend},pdf_filename,'.implode(',', TextProvider::columns('report')).';'
+            .'{pdf_body_legend:hide},pdf_body;'
             .'{element_legend},'.implode(',', TextProvider::columns('fe')),
     ],
     'fields' => $fields + [
@@ -63,4 +83,4 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_text'] = [
     ],
 ];
 
-unset($fields);
+unset($fields, $code);

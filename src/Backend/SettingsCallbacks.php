@@ -5,19 +5,86 @@ declare(strict_types=1);
 namespace Neo\WebsitecheckBundle\Backend;
 
 use Contao\Backend;
+use Contao\BackendUser;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Neo\WebsitecheckBundle\Text\TextProvider;
+use Twig\Environment;
 
 /**
  * DCA callbacks of the settings module (public service, resolved by class name).
  */
 final class SettingsCallbacks
 {
-    public function __construct(private readonly Connection $db)
+    public function __construct(
+        private readonly Connection $db,
+        private readonly Environment $twig,
+    ) {
+    }
+
+    /**
+     * New language record: start from the complete templates (the effective
+     * ones, i.e. a project override wins over the bundle file) and a sensible
+     * file name, so "fully individual" means editing, not writing from scratch.
+     *
+     * @param array<string, mixed> $set
+     */
+    public function prefillTemplates(string $table, int $insertId, array $set): void
     {
+        $update = ['pdf_filename' => 'website-check-{{domain}}-{{date}}.pdf'];
+
+        foreach (['mail_body' => 'mail_visitor', 'owner_body' => 'mail_owner', 'pdf_body' => 'report'] as $column => $template) {
+            try {
+                $update[$column] = $this->twig->getLoader()->getSourceContext('@Contao/neo_websitecheck/'.$template.'.html.twig')->getCode();
+            } catch (\Throwable) {
+                // keep empty → bundle template
+            }
+        }
+
+        $this->db->update('tl_neo_websitecheck_text', $update, ['id' => $insertId]);
+    }
+
+    /**
+     * The complete templates are Twig code: whoever edits them can run
+     * template logic, so — like Contao's own template editor — only
+     * administrators get these fields; editors keep the snippets.
+     */
+    public function restrictTemplatesToAdmins(): void
+    {
+        $user = BackendUser::getInstance();
+
+        if ($user->isAdmin) {
+            return;
+        }
+
+        foreach (['mail_body', 'owner_body', 'pdf_body'] as $field) {
+            unset($GLOBALS['TL_DCA']['tl_neo_websitecheck_text']['fields'][$field]);
+        }
+
+        $palette = (string) $GLOBALS['TL_DCA']['tl_neo_websitecheck_text']['palettes']['default'];
+        $palette = str_replace(['{mail_body_legend:hide},mail_body;', ',owner_body', '{pdf_body_legend:hide},pdf_body;'], ['', '', ''], $palette);
+        $GLOBALS['TL_DCA']['tl_neo_websitecheck_text']['palettes']['default'] = $palette;
+    }
+
+    /**
+     * Preview links in the language record (preview in that language).
+     *
+     * @param array<string, string> $buttons
+     *
+     * @return array<string, string>
+     */
+    public function addPreviewButtonsForLanguage(array $buttons, DataContainer $dc): array
+    {
+        $lang = $GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
+        $language = (string) $this->db->fetchOne('SELECT language FROM tl_neo_websitecheck_text WHERE id = ?', [(int) $dc->id]);
+
+        foreach (['preview_pdf', 'preview_mail'] as $key) {
+            $buttons[$key] = sprintf('<a href="%s" class="tl_submit" target="_blank" rel="noopener">%s</a>', Backend::addToUrl('key='.$key.'&lang='.$language, true, ['act', 'id', 'table']), StringUtil::specialchars($lang[$key][0] ?? $key));
+        }
+
+        return $buttons;
     }
 
     /** Creates the single settings row on the first back-end visit. */

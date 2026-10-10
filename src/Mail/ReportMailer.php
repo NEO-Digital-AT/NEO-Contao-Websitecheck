@@ -43,10 +43,10 @@ final class ReportMailer
         $locale = (string) ($row['locale'] ?: 'en');
         $result = (array) $row['result'];
         $pdfPath = $this->pdf->generate($row);
-        $from = $this->from();
 
         $vars = $this->renderer->context($row)['vars'];
         $subject = $this->texts->get('mail.subject', $locale, $vars);
+        $from = $this->from($locale);
 
         $email = (new Email())
             ->from($from)
@@ -55,8 +55,10 @@ final class ReportMailer
             ->html($this->renderer->renderMail($row, 'mail_visitor'))
             ->text($this->plain($row, $locale));
 
-        if ('' !== $this->settings->mail()['reply_to']) {
-            $email->replyTo($this->settings->mail()['reply_to']);
+        $replyTo = $this->settings->db()?->text(substr($locale, 0, 2), 'mail_reply_to') ?: $this->settings->mail()['reply_to'];
+
+        if ('' !== $replyTo) {
+            $email->replyTo($replyTo);
         }
 
         if (null !== $pdfPath) {
@@ -86,10 +88,12 @@ final class ReportMailer
         $this->repository->update((int) $row['id'], ['mail_sent' => time()]);
     }
 
-    private function from(): Address
+    private function from(string $locale = 'en'): Address
     {
         $mail = $this->settings->mail();
-        $address = trim($mail['from_email']);
+        $lang = substr($locale, 0, 2);
+        $address = trim($this->settings->db()?->text($lang, 'mail_from_email') ?: $mail['from_email']);
+        $mail['from_name'] = $this->settings->db()?->text($lang, 'mail_from_name') ?: $mail['from_name'];
 
         if ('' === $address) {
             $this->framework->initialize();

@@ -35,7 +35,7 @@ final class ReportRenderer
      */
     public function renderReport(array $row): string
     {
-        return $this->render('@Contao/neo_websitecheck/report.html.twig', $row);
+        return $this->render('@Contao/neo_websitecheck/report.html.twig', $row, 'pdf_body');
     }
 
     /**
@@ -43,7 +43,7 @@ final class ReportRenderer
      */
     public function renderMail(array $row, string $template): string
     {
-        return $this->render('@Contao/neo_websitecheck/'.$template.'.html.twig', $row);
+        return $this->render('@Contao/neo_websitecheck/'.$template.'.html.twig', $row, 'mail_visitor' === $template ? 'mail_body' : ('mail_owner' === $template ? 'owner_body' : null));
     }
 
     /**
@@ -123,9 +123,26 @@ final class ReportRenderer
         ];
     }
 
-    private function render(string $template, array $row): string
+    /**
+     * Renders the file template — or, when the operator saved a complete
+     * template for the language in the back end, that one (Twig source with
+     * the same variables; {{firstname}} etc. work there as plain placeholders
+     * because the vars are also exposed at top level).
+     */
+    private function render(string $template, array $row, string|null $customColumn): string
     {
-        return $this->twig->render($template, $this->context($row));
+        $context = $this->context($row);
+        $context += $context['vars'];
+
+        if (null !== $customColumn) {
+            $custom = $this->settings->db()?->text(substr((string) ($row['locale'] ?: 'en'), 0, 2), $customColumn) ?? '';
+
+            if ('' !== $custom) {
+                return $this->twig->createTemplate($custom)->render($context);
+            }
+        }
+
+        return $this->twig->render($template, $context);
     }
 
     /** Absolute URL of a back-end picked page, '' when unset or unpublished. */

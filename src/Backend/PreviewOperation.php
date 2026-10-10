@@ -58,10 +58,23 @@ final class PreviewOperation
      */
     private function sampleRow(): array
     {
-        $locale = $this->requestStack->getCurrentRequest()?->getLocale() ?: 'en';
+        $request = $this->requestStack->getCurrentRequest();
+        $locale = $request?->getLocale() ?: 'en';
+        $forced = strtolower(trim((string) $request?->query->get('lang', '')));
+
+        if (preg_match('/^[a-z]{2}$/', $forced)) {
+            $locale = $forced;
+        }
+
         $row = $this->repository->findLatestDone();
 
         if (null !== $row && '' !== (string) $row['email']) {
+            // Re-grade in the requested language so a language preview shows that language.
+            if (substr((string) $row['locale'], 0, 2) !== $locale) {
+                $row['locale'] = $locale;
+                $row['result'] = $this->grader->grade((array) $row['data'], $locale) + ['crops' => $row['result']['crops'] ?? [], 'screenshots' => $row['result']['screenshots'] ?? []];
+            }
+
             return $row;
         }
 

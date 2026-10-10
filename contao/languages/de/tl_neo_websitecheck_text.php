@@ -6,8 +6,19 @@ $l = &$GLOBALS['TL_LANG']['tl_neo_websitecheck_text'];
 
 $l['language_legend'] = 'Sprache';
 $l['placeholders_legend'] = 'Platzhalter';
-$l['report_legend'] = 'PDF-Bericht';
 $l['mail_legend'] = 'E-Mail an den Besucher';
+$l['mail_body_legend'] = 'Komplette E-Mail-Vorlage (fortgeschritten)';
+$l['owner_legend'] = 'Ihre Kopie';
+$l['pdf_legend'] = 'PDF-Bericht';
+$l['pdf_body_legend'] = 'Komplette PDF-Vorlage (fortgeschritten)';
+
+$l['mail_from_name'] = ['Absendername für diese Sprache', 'Leer = Einstellungen / Firmenname.'];
+$l['mail_from_email'] = ['Absenderadresse für diese Sprache', 'Leer = Einstellungen / config.yaml.'];
+$l['mail_reply_to'] = ['Antwortadresse für diese Sprache', 'Leer = Einstellungen.'];
+$l['mail_body'] = ['E-Mail (komplette HTML/Twig-Vorlage)', 'Die ganze E-Mail. Vorbefüllt mit der aktuellen Vorlage; Platzhalter wie {{firstname}} und alle Vorlagen-Variablen (result, brand, vars …) stehen zur Verfügung. Leer = mitgelieferte Vorlage, die dann die Textbausteine oben verwendet.'];
+$l['owner_body'] = ['Ihre Kopie (komplette Vorlage)', 'Die E-Mail, die Sie mit den Kontaktdaten bekommen. Gleiche Regeln wie bei der Besucher-E-Mail.'];
+$l['pdf_filename'] = ['PDF-Dateiname', 'Mit Platzhaltern, z. B. website-check-{{domain}}-{{date}}.pdf ({{grade}}, {{firstname}}, {{lastname}}, {{company}} gehen auch).'];
+$l['pdf_body'] = ['PDF-Bericht (komplette HTML/Twig-Vorlage)', 'Der ganze sechsseitige Bericht als HTML/Twig. Vorbefüllt mit der aktuellen Vorlage, damit Layout, Farben und Texte frei änderbar sind. Leer = mitgelieferte Vorlage mit den Bausteinen oben.'];
 $l['element_legend'] = 'Element auf der Seite';
 
 $l['language'] = ['Sprache', 'Ein Datensatz je Seitensprache. Leere Felder behalten den mitgelieferten Text.'];
