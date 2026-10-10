@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Neo\WebsitecheckBundle\Backend;
 
 use Contao\Backend;
-use Contao\BackendUser;
 use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
 use Neo\WebsitecheckBundle\Text\TextProvider;
+use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Environment;
 
 /**
@@ -21,6 +21,7 @@ final class SettingsCallbacks
     public function __construct(
         private readonly Connection $db,
         private readonly Environment $twig,
+        private readonly Security $security,
     ) {
     }
 
@@ -53,9 +54,7 @@ final class SettingsCallbacks
      */
     public function restrictTemplatesToAdmins(): void
     {
-        $user = BackendUser::getInstance();
-
-        if ($user->isAdmin) {
+        if ($this->security->isGranted('ROLE_ADMIN')) {
             return;
         }
 
