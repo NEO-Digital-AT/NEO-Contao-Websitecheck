@@ -161,7 +161,7 @@ p { margin: 0 0 3mm; }
   {% set legendCell %}
     <td class="first" style="background:#f5f3fb"><span class="chip" style="background:{{ p }};color:{{ a }};font-size:9pt">?</span></td>
     <td class="last" style="background:#f5f3fb"><b>{{ 'report.legend_title'|trans }}</b><p>{{ 'report.legend'|trans }}</p>
-      <small style="font-family:inherit"><i class="lg" style="background:{{ a }};color:{{ p }}">1</i>{{ 'grade.1'|trans }} <i class="lg" style="background:{{ a }};color:{{ p }}">2</i>{{ 'grade.2'|trans }} <i class="lg" style="background:#ffb020">3</i>{{ 'grade.3'|trans }} <i class="lg" style="background:#ff6b73">4</i>{{ 'grade.4'|trans }} <i class="lg" style="background:#ff6b73">5</i>{{ 'grade.5'|trans }}</small></td>
+      <small style="font-family:inherit"><span style="white-space:nowrap"><i class="lg" style="background:{{ a }};color:{{ p }}">1</i>{{ 'grade.1'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:{{ a }};color:{{ p }}">2</i>{{ 'grade.2'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:#ffb020">3</i>{{ 'grade.3'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:#ff6b73">4</i>{{ 'grade.4'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:#ff6b73">5</i>{{ 'grade.5'|trans }}</span></small></td>
   {% endset %}
   <table class="areas areas--two">
     {% for row in result.areas|batch(2) %}

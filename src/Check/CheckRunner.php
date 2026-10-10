@@ -588,7 +588,7 @@ final class CheckRunner
         return [$urls, $children];
     }
 
-    private function plainSummary(array $result): string
+    public function plainSummary(array $result): string
     {
         $lines = [sprintf('%s: %s %d (%s)', $result['domain'], 'Grade', $result['grade'], $result['gradeWord'])];
 

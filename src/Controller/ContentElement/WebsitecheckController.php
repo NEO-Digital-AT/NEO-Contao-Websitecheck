@@ -8,6 +8,7 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Altcha\Altcha;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
+use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\PageModel;
@@ -28,6 +29,7 @@ final class WebsitecheckController extends AbstractContentElementController
         private readonly Settings $settings,
         private readonly RouterInterface $router,
         private readonly ContentUrlGenerator $urlGenerator,
+        private readonly InsertTagParser $insertTagParser,
         private readonly Altcha|null $altcha = null,
     ) {
     }
@@ -44,10 +46,11 @@ final class WebsitecheckController extends AbstractContentElementController
         $contactUrl = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
         $privacyUrl = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
 
-        $jumpTo = (int) ($model->row()['jumpTo'] ?? 0);
+        // Core "url" field: {{link_url::42}} from the page picker or a typed address
+        $elementUrl = trim((string) ($model->row()['url'] ?? ''));
 
-        if ($jumpTo > 0) {
-            $contactUrl = $this->pageUrl($jumpTo) ?: $contactUrl;
+        if ('' !== $elementUrl) {
+            $contactUrl = trim($this->insertTagParser->replaceInline($elementUrl)) ?: $contactUrl;
         }
 
         $style = '';

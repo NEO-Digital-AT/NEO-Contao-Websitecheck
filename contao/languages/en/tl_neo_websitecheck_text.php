@@ -57,6 +57,7 @@ $l['fe_cta'] = ['Result: button', 'Default: "Talk about the result — free of c
 
 $l['new'] = ['New language', 'Add texts for another language'];
 $l['edit'] = ['Edit', 'Edit texts ID %s'];
+$l['recordLabel'] = 'Language %s';
 $l['copy'] = ['Duplicate', 'Duplicate texts ID %s'];
 $l['delete'] = ['Delete', 'Delete texts ID %s'];
 $l['show'] = ['Details', 'Show details of ID %s'];

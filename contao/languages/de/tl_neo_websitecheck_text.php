@@ -57,6 +57,7 @@ $l['fe_cta'] = ['Ergebnis: Knopf', 'Standard: „Ergebnis besprechen, kostenlos�
 
 $l['new'] = ['Neue Sprache', 'Texte für eine weitere Sprache anlegen'];
 $l['edit'] = ['Bearbeiten', 'Texte ID %s bearbeiten'];
+$l['recordLabel'] = 'Sprache %s';
 $l['copy'] = ['Duplizieren', 'Texte ID %s duplizieren'];
 $l['delete'] = ['Löschen', 'Texte ID %s löschen'];
 $l['show'] = ['Details', 'Details von ID %s anzeigen'];

@@ -136,7 +136,7 @@ final class SettingsCallbacks
         $lang = $GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
         $rows = $this->db->fetchAllAssociative('SELECT language FROM tl_neo_websitecheck_text WHERE pid = ? ORDER BY language', [(int) $dc->id]);
         $languages = array_column($rows, 'language');
-        $href = Backend::addToUrl('table=tl_neo_websitecheck_text', true, ['act', 'id']);
+        $href = Backend::addToUrl('table=tl_neo_websitecheck_text', true, ['act']);
 
         $info = [] === $languages
             ? ($lang['textsNone'] ?? '')
@@ -154,9 +154,9 @@ final class SettingsCallbacks
     public function placeholdersInfo(): string
     {
         $text = $GLOBALS['TL_LANG']['tl_neo_websitecheck_text']['placeholdersText'] ?? '%s';
-        $list = implode(', ', array_map(static fn (string $p): string => '<code>{{'.$p.'}}</code>', TextProvider::PLACEHOLDERS));
+        $list = implode(' ', array_map(static fn (string $p): string => '<code style="margin-right:.5em">{{'.$p.'}}</code>', TextProvider::PLACEHOLDERS));
 
-        return '<div class="widget clr"><p class="tl_help tl_tip">'.sprintf(StringUtil::specialchars($text), $list).'</p></div>';
+        return '<div class="widget clr"><div class="tl_info" style="margin:0;line-height:1.7">'.sprintf(StringUtil::specialchars($text), $list).'</div></div>';
     }
 
     /**

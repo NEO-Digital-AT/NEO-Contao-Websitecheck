@@ -38,7 +38,7 @@ foreach (TextProvider::KEYS as $key => $def) {
 // Full templates (Twig/HTML) and per-language sender/file name. Prefilled with
 // the bundle (or project override) template when a language record is created,
 // so editing starts from the complete design; an emptied field falls back to it.
-$code = ['inputType' => 'textarea', 'eval' => ['rte' => 'ace|html', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'];
+$code = ['inputType' => 'textarea', 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'];
 $fields['mail_from_name'] = ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"];
 $fields['mail_from_email'] = ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"];
 $fields['mail_reply_to'] = ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'rgxp' => 'email', 'decodeEntities' => true, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"];

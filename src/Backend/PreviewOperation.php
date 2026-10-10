@@ -7,6 +7,7 @@ namespace Neo\WebsitecheckBundle\Backend;
 use Contao\CoreBundle\Exception\ResponseException;
 use Contao\DataContainer;
 use Neo\WebsitecheckBundle\Check\CheckRepository;
+use Neo\WebsitecheckBundle\Check\DemoData;
 use Neo\WebsitecheckBundle\Check\Grader;
 use Neo\WebsitecheckBundle\Report\PdfGenerator;
 use Neo\WebsitecheckBundle\Report\ReportRenderer;
@@ -26,6 +27,7 @@ final class PreviewOperation
         private readonly ReportRenderer $renderer,
         private readonly PdfGenerator $pdf,
         private readonly Grader $grader,
+        private readonly DemoData $demo,
         private readonly RequestStack $requestStack,
     ) {
     }
@@ -78,10 +80,10 @@ final class PreviewOperation
             return $row;
         }
 
-        $demoDir = \dirname(__DIR__, 2).'/resources/demo';
-        $data = json_decode((string) file_get_contents($demoDir.'/data.json'), true) ?: [];
+        $demoDir = $this->demo->dir();
+        $data = $this->demo->data();
         $result = $this->grader->grade($data, $locale);
-        $result['crops'] = [['file' => 'finding-1.jpg', 'width' => 824, 'height' => 300, 'auditId' => 'color-contrast', 'title' => '', 'text' => 'Jetzt buchen', 'explanation' => '', 'ratio' => 2.3]];
+        $result['crops'] = $this->demo->crops();
 
         return [
             'id' => 0,
@@ -90,8 +92,8 @@ final class PreviewOperation
             'locale' => $locale,
             'status' => CheckRepository::STATUS_DONE,
             'finished' => time(),
-            'firstname' => 'de' === substr($locale, 0, 2) ? 'Maria' : 'Jane',
-            'lastname' => 'de' === substr($locale, 0, 2) ? 'Muster' : 'Doe',
+            'firstname' => $this->demo->firstName($locale),
+            'lastname' => $this->demo->lastName($locale),
             'email' => 'maria@example.com',
             'newsletter' => '1',
             'pdf_path' => 'demo.pdf',

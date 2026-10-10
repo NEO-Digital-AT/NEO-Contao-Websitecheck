@@ -1,0 +1,65 @@
+# Local test stand for the NEO Website Check bundle.
+#
+#   cd dev && cp .env.example .env && docker compose up --build
+#
+# First start installs a fresh Contao 5.3 Managed Edition into the "contao"
+# volume, requires this bundle from the mounted repository (symlinked, so edits
+# in the repo are live), runs the migration, creates the admin user and seeds a
+# start page with the content element. Takes a few minutes the first time.
+#
+#   Back end:  http://localhost:8080/contao   (admin / the password from .env)
+#   Website:   http://localhost:8080/
+#   Mailpit:   http://localhost:8025          (every e-mail the check sends)
+#
+# Reset everything: docker compose down -v
+services:
+  db:
+    image: mariadb:10.11
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: contao
+      MARIADB_USER: contao
+      MARIADB_PASSWORD: contao
+    volumes:
+      - db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+    environment:
+      CONTAO_VERSION: ${CONTAO_VERSION:-5.3.*}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-admin12345}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
+      SITE_LANGUAGE: ${SITE_LANGUAGE:-de}
+      NEO_WEBSITECHECK_PSI_KEY: ${NEO_WEBSITECHECK_PSI_KEY:-}
+      NEO_WEBSITECHECK_AI_KEY: ${NEO_WEBSITECHECK_AI_KEY:-}
+      NEO_WEBSITECHECK_AI_BASE_URL: ${NEO_WEBSITECHECK_AI_BASE_URL:-https://router.requesty.ai/v1}
+      NEO_WEBSITECHECK_AI_MODEL: ${NEO_WEBSITECHECK_AI_MODEL:-anthropic/claude-sonnet-4-5}
+      NEO_WEBSITECHECK_NOTIFY: ${NEO_WEBSITECHECK_NOTIFY:-}
+      PDF_ENGINE: ${PDF_ENGINE:-dompdf}
+    volumes:
+      - ..:/bundle:ro
+      - contao:/var/www/html
+
+  # Optional: Chromium PDF rendering. Set PDF_ENGINE=gotenberg in .env.
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    profiles: ["gotenberg"]
+
+volumes:
+  db:
+  contao:

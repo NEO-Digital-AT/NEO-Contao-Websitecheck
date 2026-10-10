@@ -174,6 +174,24 @@ Everything a visitor sees can be changed in the back end under **NEO › Website
 
 API keys, the PDF engine and the newsletter provider stay in `config.yaml` (they are technical, not editorial). Non-admin groups need the module and the tables `tl_neo_websitecheck_settings` and `tl_neo_websitecheck_text`.
 
+## Local test stand (Docker)
+
+`dev/` holds a complete test environment: a fresh Contao Managed Edition with this bundle, MariaDB and [Mailpit](https://mailpit.axllent.org/) to look at every e-mail the check sends.
+
+```bash
+cd dev
+cp .env.example .env        # optional: PageSpeed key, AI key, PDF engine
+docker compose up --build   # first start installs Contao, takes a few minutes
+```
+
+- Back end: <http://localhost:8080/contao> — user `admin`, password from `.env` (default `admin12345`)
+- Website with the check element: <http://localhost:8080/>
+- Mailpit (visitor mail, your copy, PDF attachment): <http://localhost:8025>
+- Chromium PDFs: `PDF_ENGINE=gotenberg` and `docker compose --profile gotenberg up`
+- The first start also stores a **demo check** and sends its e-mails to Mailpit. Repeat any time, also on a real installation: `php vendor/bin/contao-console neo:websitecheck:demo --locale=de --send` (no API keys needed; `--email=` sends the report to you).
+
+The repository is mounted into the container and symlinked by Composer, so template, PHP and translation changes are live (clear the cache with `docker compose exec app php vendor/bin/contao-console cache:clear`). `docker compose down -v` resets everything.
+
 ## Usage
 
 1. Back end → *Articles* → add the content element **Website check** (group *NEO*).
@@ -355,6 +373,24 @@ Alles, was ein Besucher sieht, lässt sich im Backend unter **NEO › Website-Ch
 - **Mehrsprachig nach Contao-Prinzip:** ein Text-Datensatz je Seitensprache; die Seitensprache des Elements entscheidet, fehlende Sprachen fallen auf die mitgelieferten Texte zurück.
 
 API-Schlüssel, PDF-Engine und Newsletter-Anbieter bleiben in der `config.yaml` (technisch, nicht redaktionell). Nicht-Admin-Gruppen brauchen das Modul und die Tabellen `tl_neo_websitecheck_settings` und `tl_neo_websitecheck_text`.
+
+## Lokaler Teststand (Docker)
+
+`dev/` enthält eine komplette Testumgebung: frisches Contao Managed Edition mit diesem Bundle, MariaDB und [Mailpit](https://mailpit.axllent.org/), um jede E-Mail des Checks anzusehen.
+
+```bash
+cd dev
+cp .env.example .env        # optional: PageSpeed-Schlüssel, KI-Schlüssel, PDF-Engine
+docker compose up --build   # der erste Start installiert Contao, dauert einige Minuten
+```
+
+- Backend: <http://localhost:8080/contao> — Benutzer `admin`, Passwort aus `.env` (Standard `admin12345`)
+- Website mit dem Check-Element: <http://localhost:8080/>
+- Mailpit (Besucher-Mail, Ihre Kopie, PDF-Anhang): <http://localhost:8025>
+- Chromium-PDFs: `PDF_ENGINE=gotenberg` und `docker compose --profile gotenberg up`
+- Der erste Start legt außerdem einen **Demo-Check** an und schickt dessen E-Mails an Mailpit. Jederzeit wiederholbar, auch auf einer echten Installation: `php vendor/bin/contao-console neo:websitecheck:demo --locale=de --send` (keine API-Schlüssel nötig; `--email=` schickt den Bericht an Sie).
+
+Das Repository ist in den Container gemountet und per Composer verlinkt, Änderungen an Templates, PHP und Übersetzungen wirken sofort (Cache leeren: `docker compose exec app php vendor/bin/contao-console cache:clear`). `docker compose down -v` setzt alles zurück.
 
 ## Verwendung
 

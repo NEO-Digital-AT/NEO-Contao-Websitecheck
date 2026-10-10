@@ -6,7 +6,12 @@ All notable changes to this bundle are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+- Contao 5.3: templates were not found (missing `.twig-root` marker); content element used the non-existent `jumpTo`/`guests` columns — now the core `url` field with page picker.
+- Breadcrumb shows "Edit settings" / "Language DE" instead of "Edit element ID 1"; texts link keeps the parent id.
+
 ### Added
+- Docker test stand in `dev/` (Contao + MariaDB + Mailpit) and `neo:websitecheck:demo` (finished demo check with PDF and e-mails, no API keys).
 - Back-end module **Website check settings**: brand, design (logo, portrait, colours), sender addresses, limits, and the customer-facing texts per language with placeholders; "Preview PDF" and "Preview e-mail" with the newest check or demo data.
 - Complete e-mail, owner-copy and PDF templates per language (HTML/Twig, prefilled, administrators only), per-language sender and reply-to, PDF file name with placeholders, language-specific previews.
 
