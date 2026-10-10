@@ -80,5 +80,23 @@ services:
     Neo\WebsitecheckBundle\Backend\PreviewOperation:
         public: true
 
+    Neo\WebsitecheckBundle\Backend\DesignerOperation:
+        public: true
+
+    Neo\WebsitecheckBundle\Backend\ContentCallbacks:
+        public: true
+
+    # Fetched by the widget through the container (no DI for Contao widgets).
+    Neo\WebsitecheckBundle\Design\BlockRegistry:
+        public: true
+
+    Neo\WebsitecheckBundle\Design\Presets:
+        public: true
+
+    # Instantiated by Contao (BE_FFL), fetches its services from the container itself.
+    Neo\WebsitecheckBundle\Widget\DesignerWidget:
+        autowire: false
+        autoconfigure: false
+
     Neo\WebsitecheckBundle\Text\TextProvider:
         public: true

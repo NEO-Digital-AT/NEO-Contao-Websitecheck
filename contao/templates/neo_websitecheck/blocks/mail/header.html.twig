@@ -1,0 +1,14 @@
+{% trans_default_domain 'neo_websitecheck' %}
+{% set bg = {primary: t.primary, accent: t.accent, white: '#ffffff'}[block.bg] %}
+{% set ink = {primary: t.primary_ink, accent: t.accent_ink, white: t.primary}[block.bg] %}
+{% set tag = {primary: t.accent, accent: t.accent_ink, white: t.muted}[block.bg] %}
+<tr><td style="background:{{ bg }};padding:20px 28px;">
+  <table role="presentation" width="100%"><tr>
+    <td style="color:{{ ink }};font-weight:bold;font-size:18px;">
+      {% if block.image %}<img src="{{ block.image }}" alt="{{ brand.name }}" style="height:28px;display:block;">
+      {% elseif block.logo == 'auto' and (block.bg == 'white' ? brand.logo_data : brand.logo_dark_data) %}<img src="{{ block.bg == 'white' ? brand.logo_data : brand.logo_dark_data }}" alt="{{ brand.name }}" style="height:26px;display:block;">
+      {% elseif block.logo != 'none' %}{{ brand.name }}{% endif %}
+    </td>
+    {% if block.tagline %}<td align="right" style="color:{{ tag }};font-size:11px;letter-spacing:2px;text-transform:uppercase;font-family:Menlo,Consolas,monospace;">{{ block.tagline }}</td>{% endif %}
+  </tr></table>
+</td></tr>

@@ -1,0 +1,8 @@
+{% if check.pdf_path %}
+<tr><td style="padding:0 28px {{ t.space_px[block.space] }};">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px dashed #b9b4cc;border-radius:{{ t.rpx }};"><tr>
+    <td style="padding:12px 14px;width:38px;"><div style="width:38px;height:38px;border-radius:9px;background:{{ t.primary }};color:{{ t.accent }};font:bold 11px Menlo,Consolas,monospace;text-align:center;line-height:38px;">PDF</div></td>
+    <td style="padding:12px 14px 12px 0;font-size:14px;">{{ block.html }}</td>
+  </tr></table>
+</td></tr>
+{% endif %}

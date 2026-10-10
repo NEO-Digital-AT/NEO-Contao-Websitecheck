@@ -1,0 +1,191 @@
+{
+  "theme": {
+    "header": true,
+    "footer": true,
+    "footer_text": "{{company}} · {{owner}}",
+    "page_numbers": true
+  },
+  "blocks": [
+    {
+      "id": "cover",
+      "type": "cover",
+      "props": {
+        "eyebrow": "@report.cover_eyebrow",
+        "title": "@report.cover_title",
+        "show_domain": true,
+        "show_grade": true,
+        "show_meta": true,
+        "show_screens": true
+      }
+    },
+    {
+      "id": "ov-head",
+      "type": "heading",
+      "props": {
+        "eyebrow": "@report.overview_eyebrow",
+        "text": "@report.overview_title",
+        "level": "h2",
+        "space": "s"
+      }
+    },
+    {
+      "id": "ov-areas",
+      "type": "areas",
+      "props": {
+        "layout": "cards",
+        "legend": true,
+        "space": "m"
+      }
+    },
+    {
+      "id": "ov-measures",
+      "type": "measures",
+      "props": {
+        "eyebrow": "@report.measures_eyebrow",
+        "show_effort": true,
+        "max": 3,
+        "space": "m"
+      }
+    },
+    {
+      "id": "a11y",
+      "type": "area_detail",
+      "props": {
+        "area": "accessibility",
+        "show_grade": true,
+        "title": "@report.a11y_title",
+        "intro": "@report.a11y_intro",
+        "show_crops": true,
+        "max_issues": 3,
+        "max_good": 2,
+        "note": "@report.a11y_why",
+        "space": "l"
+      }
+    },
+    {
+      "id": "pb2",
+      "type": "page_break",
+      "props": {}
+    },
+    {
+      "id": "speed-head",
+      "type": "heading",
+      "props": {
+        "eyebrow": "",
+        "text": "@report.speed_title",
+        "level": "h2",
+        "space": "s"
+      }
+    },
+    {
+      "id": "gauges",
+      "type": "gauges",
+      "props": {
+        "perf": true,
+        "a11y": true,
+        "bp": true,
+        "seo": true,
+        "show_kpis": true,
+        "space": "m"
+      }
+    },
+    {
+      "id": "speed",
+      "type": "area_detail",
+      "props": {
+        "area": "speed",
+        "show_grade": false,
+        "title": "@report.what_works_short",
+        "max_issues": 3,
+        "max_good": 3,
+        "space": "m",
+        "intro": "@report.speed_intro"
+      }
+    },
+    {
+      "id": "mobile",
+      "type": "area_detail",
+      "props": {
+        "area": "mobile",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "seo",
+      "type": "area_detail",
+      "props": {
+        "area": "seo",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "ai",
+      "type": "area_detail",
+      "props": {
+        "area": "ai",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "content",
+      "type": "area_detail",
+      "props": {
+        "area": "content",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "legal",
+      "type": "area_detail",
+      "props": {
+        "area": "legal",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "pages",
+      "type": "pages_table",
+      "props": {
+        "eyebrow": "@report.pages_eyebrow_plain",
+        "title": "@report.pages_title",
+        "intro": "@report.pages_intro",
+        "space": "xl"
+      }
+    },
+    {
+      "id": "next",
+      "type": "next_steps",
+      "props": {
+        "eyebrow": "@report.next_eyebrow",
+        "title": "@report.next_title",
+        "html": "<p>@report.next_text</p>",
+        "promise": "@report.next_promise",
+        "show_portrait": true,
+        "show_contact": true,
+        "space": "m"
+      }
+    },
+    {
+      "id": "sources",
+      "type": "sources",
+      "props": {
+        "space": "none"
+      }
+    }
+  ]
+}

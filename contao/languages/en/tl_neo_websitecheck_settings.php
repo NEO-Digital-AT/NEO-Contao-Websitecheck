@@ -6,7 +6,7 @@ $l = &$GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
 
 $l['brand_legend'] = 'Who sends the report';
 $l['design_legend'] = 'Design';
-$l['texts_legend'] = 'Texts';
+$l['texts_legend'] = 'Configurations (texts, e-mail, PDF per language)';
 $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Limits';
 
@@ -21,7 +21,7 @@ $l['logo_dark'] = ['Logo for dark background', 'Optional variant for the coloure
 $l['portrait'] = ['Portrait photo', 'Optional, shown in the "what happens next" box and the e-mail signature.'];
 $l['color_primary'] = ['Primary colour', 'Headlines, boxes, e-mail header (hex, e.g. 2a025f).'];
 $l['color_accent'] = ['Accent colour', 'Grade badges, buttons, highlights (hex, e.g. a8f20d).'];
-$l['texts_info'] = ['Texts per language', ''];
+$l['texts_info'] = ['Configurations', ''];
 $l['from_name'] = ['Sender name', 'Empty = company name.'];
 $l['from_email'] = ['Sender address', 'Empty = config.yaml or the Contao admin e-mail.'];
 $l['reply_to'] = ['Reply-to address', 'Where replies to the report e-mail go.'];
@@ -32,9 +32,9 @@ $l['retention_days'] = ['Retention in days', 'Checks incl. lead data are deleted
 $l['max_pages'] = ['Pages per check', 'Start page plus key sub-pages, at most 8. 0 = config.yaml (5).'];
 
 $l['edit'] = ['Edit', 'Edit settings'];
-$l['texts'] = ['Edit texts', 'Edit the customer-facing texts per language'];
+$l['configs'] = ['Configurations', 'Design e-mail, PDF and texts per language'];
 $l['preview_pdf'] = ['Preview PDF', 'Render the PDF report with the last finished check (or demo data)'];
 $l['preview_mail'] = ['Preview e-mail', 'Render the report e-mail with the last finished check (or demo data)'];
-$l['textsButton'] = 'Edit texts (%d)';
-$l['textsNone'] = 'No custom texts yet — the bundle\'s texts are used. Click to override single texts per language.';
-$l['textsList'] = 'Custom texts for: %s';
+$l['textsButton'] = 'Edit configurations (%d)';
+$l['textsNone'] = 'No configuration yet. Create one per language: that is where you design the e-mail and the PDF report, subject, sender and the element texts. Until then the bundled templates apply.';
+$l['textsList'] = 'Existing: %s';

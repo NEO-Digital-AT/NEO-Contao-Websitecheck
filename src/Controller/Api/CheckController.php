@@ -75,10 +75,13 @@ final class CheckController
 
         $locale = $this->locale($request, $payload);
         $cached = $this->repository->findRecentDone($normalized['domain'], $this->settings->cacheHours());
+        // Configuration (texts, e-mail, PDF design) chosen by the element; falls back to the language's record.
+        $config = $this->settings->db()?->config((int) ($payload['config'] ?? 0), $locale);
+        $configId = (int) ($config['id'] ?? 0);
 
         $id = null !== $cached
-            ? $this->repository->createFromCache($cached, $locale, $ipHash)
-            : $this->repository->create($normalized['domain'], $normalized['url'], $locale, $ipHash);
+            ? $this->repository->createFromCache($cached, $locale, $ipHash, $configId)
+            : $this->repository->create($normalized['domain'], $normalized['url'], $locale, $ipHash, $configId);
 
         $row = $this->repository->find($id);
 

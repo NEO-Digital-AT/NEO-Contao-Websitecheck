@@ -1,0 +1,9 @@
+{% set href = block.target == 'contact' ? contact_url : (block.target == 'website' ? brand.website_url : block.url) %}
+{% if href and block.label %}
+{% set bg = {accent: t.accent, primary: t.primary, outline: 'transparent'}[block.style] %}
+{% set ink = {accent: t.accent_ink, primary: t.primary_ink, outline: t.primary}[block.style] %}
+<tr><td style="padding:0 28px {{ t.space_px[block.space] }};text-align:{{ block.align }};">
+  <a href="{{ href }}" style="display:inline-block;padding:13px 22px;border-radius:999px;background:{{ bg }};color:{{ ink }};font-weight:bold;text-decoration:none;{% if block.style == 'outline' %}border:2px solid {{ t.primary }};{% endif %}">{{ block.label }}</a>
+  {% if block.alt %} <span style="font-size:14px;color:{{ t.muted }};">&nbsp;{{ block.alt }}</span>{% endif %}
+</td></tr>
+{% endif %}

@@ -512,6 +512,12 @@ report:
     next_text: 'Die Maßnahmen von Seite 2 kann jede Webagentur oder Ihr bestehender Dienstleister umsetzen. Wenn Sie möchten, gehen wir die Liste gemeinsam durch: 20 Minuten am Telefon, kostenlos, kein Verkaufsgespräch.'
     next_promise: 'Dieser Bericht ist kostenlos und verpflichtet Sie zu nichts.'
     sources: 'Quellen: Google PageSpeed Insights (Lighthouse %lighthouse%), eigene Prüfungen von HTML, Rechtlichem und KI-Sichtbarkeit, KI-Lesung der Seitentexte · %date%'
+    page_short: 'Seite'
+    cover_subtitle: 'Ladezeit, Barrierefreiheit, Google und KI-Suchen, Texte, Impressum und Datenschutz: sieben Bereiche, eine Gesamtnote, drei konkrete Maßnahmen.'
+    summary_title: 'Das Ergebnis'
+    measures_title: 'Die wichtigsten Maßnahmen'
+    what_works_short: 'Ladezeit im Detail'
+    pages_eyebrow_plain: 'Geprüfte Seiten'
 
 # ---------------------------------------------------------------- E-Mail
 mail:
@@ -533,3 +539,194 @@ mail:
     cta_alt: 'oder einfach auf diese E-Mail antworten'
     newsletter_note: 'Sie haben das Newsletter-Häkchen gesetzt. Dafür kommt gleich eine eigene E-Mail mit einem Bestätigungslink, erst nach dem Klick sind Sie angemeldet.'
     footer: 'Sie erhalten diese E-Mail, weil Sie den Website-Check für %domain% angefordert haben. Ihre Angaben verwenden wir nur für diesen Bericht und löschen sie nach %days% Tagen, sofern Sie nicht den Newsletter abonniert oder eine Anfrage gesendet haben.'
+    greeting_plain: 'Hallo {{firstname}},'
+    intro_plain: 'danke für Ihr Vertrauen. Wir haben {{pages}} Seiten von {{domain}} geprüft: Ladezeit am Handy, Barrierefreiheit, Auffindbarkeit bei Google und in KI-Suchen, Texte, Impressum und Cookie-Hinweis.'
+    short_intro: 'hier ist Ihr Website-Check für {{domain}}. Die Details stehen im angehängten PDF.'
+    footer_plain: 'Sie erhalten diese E-Mail, weil Sie den Website-Check für {{domain}} angefordert haben. Ihre Angaben verwenden wir nur für diesen Bericht und löschen sie nach {{days}} Tagen, sofern Sie nicht den Newsletter abonniert oder eine Anfrage gesendet haben.'
+
+# ---------------------------------------------------------------- Designer (Backend)
+designer:
+    group:
+        content: 'Inhalt'
+        data: 'Daten aus dem Check'
+        layout: 'Layout'
+    ui:
+        blocks: 'Blöcke'
+        structure: 'Aufbau'
+        properties: 'Eigenschaften'
+        theme: 'Design'
+        preview: 'Vorschau'
+        presets: 'Vorlage laden'
+        preset_confirm: 'Die aktuelle Gestaltung wird durch die Vorlage ersetzt. Fortfahren?'
+        add: 'Hinzufügen'
+        duplicate: 'Duplizieren'
+        remove: 'Entfernen'
+        up: 'Nach oben'
+        down: 'Nach unten'
+        empty: 'Noch keine Blöcke. Links einen Block anklicken oder hierher ziehen, oder eine Vorlage laden.'
+        select_hint: 'Block in der Vorschau oder im Aufbau anklicken, um ihn zu bearbeiten.'
+        placeholders: 'Platzhalter'
+        insert_placeholder: 'Platzhalter einfügen'
+        choose_image: 'Bild wählen'
+        upload_image: 'Hochladen'
+        remove_image: 'Bild entfernen'
+        pdf_preview: 'PDF-Vorschau'
+        mail_preview: 'In neuem Tab öffnen'
+        export_twig: 'Als Twig-Vorlage übernehmen'
+        export_confirm: 'Die Twig-Vorlage (Experten-Modus) wird mit dieser Gestaltung überschrieben. Fortfahren?'
+        twig_active: 'Achtung: Im Experten-Modus ist eine Twig-Vorlage hinterlegt. Sie hat Vorrang, diese Gestaltung wird dann nicht verwendet.'
+        loading: 'Vorschau wird erzeugt …'
+        error: 'Die Vorschau konnte nicht erzeugt werden.'
+        bold: 'Fett'
+        italic: 'Kursiv'
+        link: 'Link'
+        link_prompt: 'Adresse des Links (https://…)'
+        list: 'Liste'
+        drag: 'Ziehen zum Verschieben'
+        demo_hint: 'Die Vorschau verwendet den letzten fertigen Check oder Demo-Daten.'
+    opt:
+        none: 'Keine'
+        s: 'Klein'
+        m: 'Mittel'
+        l: 'Groß'
+        xl: 'Sehr groß'
+        soft: 'Hell'
+        primary: 'Hauptfarbe'
+        accent: 'Akzentfarbe'
+        white: 'Weiß'
+        auto: 'Automatisch (aus den Einstellungen)'
+        text: 'Nur Name'
+        h1: 'Überschrift 1'
+        h2: 'Überschrift 2'
+        h3: 'Überschrift 3'
+        normal: 'Normal'
+        muted: 'Dezent'
+        left: 'Links'
+        center: 'Zentriert'
+        right: 'Rechts'
+        montage: 'Desktop und Handy übereinander'
+        desktop: 'Nur Desktop'
+        mobile: 'Nur Handy'
+        side: 'Nebeneinander'
+        cards: 'Karten (zwei Spalten)'
+        list: 'Liste'
+        contact: 'Kontaktseite'
+        website: 'Website'
+        custom: 'Eigene Adresse'
+        outline: 'Umrandet'
+        sans: 'Serifenlos (DejaVu Sans)'
+        serif: 'Serif (DejaVu Serif)'
+        system: 'Helvetica / Arial'
+        narrow: 'Schmal'
+        wide: 'Breit'
+        '1': 'Eine Spalte'
+        '2': 'Zwei Spalten'
+        speed: 'Ladezeit'
+        accessibility: 'Barrierefreiheit'
+        seo: 'Auffindbarkeit bei Google'
+        ai: 'Sichtbarkeit in KI-Suchen'
+        content: 'Inhalte & Klarheit'
+        legal: 'Recht & Datenschutz'
+        mobile_area: 'Mobil'
+    prop:
+        eyebrow: 'Kleine Zeile darüber'
+        title: 'Titel'
+        subtitle: 'Untertitel'
+        text: 'Text'
+        html: 'Text'
+        intro: 'Einleitung'
+        note: 'Hinweis darunter'
+        level: 'Größe'
+        align: 'Ausrichtung'
+        space: 'Abstand danach'
+        bg: 'Hintergrund'
+        size: 'Schriftgröße'
+        tone: 'Farbe'
+        columns: 'Spalten'
+        src: 'Bild'
+        image: 'Eigenes Bild'
+        width: 'Breite'
+        caption: 'Bildunterschrift'
+        rounded: 'Abgerundete Ecken'
+        height: 'Höhe'
+        style: 'Stil'
+        layout: 'Anordnung'
+        legend: 'Notenlegende anzeigen'
+        max: 'Höchstens Einträge'
+        max_issues: 'Höchstens Fundstellen'
+        max_good: 'Höchstens positive Punkte'
+        area: 'Bereich'
+        show_grade: 'Note anzeigen'
+        show_summary: 'Zusammenfassung anzeigen'
+        show_domain: 'Domain anzeigen'
+        show_meta: 'Seiten, Datum, Empfänger anzeigen'
+        show_screens: 'Screenshots anzeigen'
+        show_pages: 'Geprüfte Seiten'
+        show_date: 'Datum'
+        show_for: 'Empfänger'
+        show_effort: 'Aufwand anzeigen'
+        show_crops: 'Markierte Ausschnitte anzeigen'
+        show_kpis: 'Messwerte anzeigen'
+        show_portrait: 'Porträtfoto anzeigen'
+        show_contact: 'Kontaktzeile anzeigen'
+        logo: 'Logo'
+        tagline: 'Zeile rechts'
+        label: 'Beschriftung'
+        target: 'Ziel'
+        url: 'Eigene Adresse'
+        alt: 'Text neben dem Knopf'
+        promise: 'Zusage im Kontaktkasten'
+        perf: 'Leistung'
+        a11y: 'Barrierefreiheit'
+        bp: 'Technik'
+        seo: 'SEO'
+    theme:
+        primary: 'Hauptfarbe (leer = Einstellungen)'
+        accent: 'Akzentfarbe (leer = Einstellungen)'
+        text: 'Textfarbe'
+        soft: 'Helle Flächen'
+        font: 'Schrift'
+        radius: 'Rundung'
+        margins: 'Seitenränder'
+        header: 'Kopfzeile auf jeder Seite'
+        header_text: 'Text in der Kopfzeile (leer = „Website-Check · Datum“)'
+        footer: 'Fußzeile auf jeder Seite'
+        footer_text: 'Text in der Fußzeile'
+        page_numbers: 'Seitenzahlen'
+        outer: 'Hintergrund um die E-Mail'
+        size: 'Grundschriftgröße'
+    preset:
+        pdf:
+            standard: 'Standard (Deckblatt mit Note, alle Bereiche)'
+            cover: 'Mit Deckblatt (Deckblatt in Hauptfarbe, Ergebnis auf Seite 2)'
+            compact: 'Kompakt (eine Seite)'
+        mail:
+            standard: 'Standard (Note, Maßnahmen, PDF-Hinweis, Knopf)'
+            short: 'Kurz (Note, PDF-Hinweis, Knopf)'
+    block:
+        cover: {label: 'Deckblatt', desc: 'Logo, Titel, Domain, optional Note, Kennzahlen und Screenshots. Danach beginnt eine neue Seite.'}
+        heading: {label: 'Überschrift', desc: 'Überschrift mit optionaler kleiner Zeile darüber.'}
+        text: {label: 'Text', desc: 'Fließtext mit Platzhaltern, optional auf farbiger Fläche.'}
+        image: {label: 'Bild', desc: 'Eigenes Bild aus der Dateiverwaltung oder hochgeladen.'}
+        note: {label: 'Hinweis', desc: 'Kleiner Text mit Randlinie.'}
+        next_steps: {label: 'So geht es weiter', desc: 'Ihr Angebot mit Kontaktkasten, Porträt und Telefon.'}
+        signature: {label: 'Signatur', desc: 'Name, Firma, Telefon, optional Porträt.'}
+        grade_box: {label: 'Gesamtnote', desc: 'Große Note mit Notenwort und Zusammenfassung.'}
+        meta_cards: {label: 'Kennzahlen', desc: 'Geprüfte Seiten, Datum, Empfänger.'}
+        screenshots: {label: 'Screenshots', desc: 'Startseite am Desktop und am Handy.'}
+        gauges: {label: 'Google-Ringe', desc: 'Die PageSpeed-Werte als Ringe, optional mit Messwerten.'}
+        areas: {label: 'Bereiche im Überblick', desc: 'Die sieben Bereiche mit Note und Kurztext.'}
+        measures: {label: 'Maßnahmen', desc: 'Die wichtigsten Maßnahmen, nummeriert, mit Aufwand.'}
+        strengths: {label: 'Was bereits passt', desc: 'Positive Punkte als Häkchenliste.'}
+        area_detail: {label: 'Bereich im Detail', desc: 'Ein Bereich mit Fundstellen, positiven Punkten, bei Barrierefreiheit mit markierten Ausschnitten.'}
+        kpis: {label: 'Messwerte Ladezeit', desc: 'LCP, CLS, INP, Leistung, Seitengewicht, Anfragen.'}
+        pages_table: {label: 'Tabelle der Seiten', desc: 'Alle geprüften Seiten mit Titel, LCP, Kontrast und Note.'}
+        sources: {label: 'Quellen', desc: 'Automatischer Quellenhinweis mit Lighthouse-Version und Datum.'}
+        spacer: {label: 'Abstand', desc: 'Leerraum.'}
+        divider: {label: 'Trennlinie', desc: ''}
+        page_break: {label: 'Seitenumbruch', desc: 'Der nächste Block beginnt auf einer neuen Seite.'}
+        header: {label: 'Kopf', desc: 'Farbiger Kopf mit Logo oder Firmenname.'}
+        button: {label: 'Knopf', desc: 'Aufruf zum Handeln, z. B. Termin vereinbaren.'}
+        pdf_note: {label: 'PDF-Hinweis', desc: 'Hinweis auf den Anhang, nur wenn ein PDF dabei ist.'}
+        newsletter_note: {label: 'Newsletter-Hinweis', desc: 'Nur sichtbar, wenn der Besucher das Häkchen gesetzt hat.'}
+        footer: {label: 'Fußzeile', desc: 'Grauer Abschluss mit Datenschutzhinweis.'}

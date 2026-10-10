@@ -1,0 +1,14 @@
+{% trans_default_domain 'neo_websitecheck' %}
+{# Frame of the designed e-mail: 600 px table skeleton with inline styles (Outlook, Gmail, Apple Mail). #}
+{% set t = t|default(theme is defined ? theme : {}) %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{{ subject|default(result.domain) }}</title></head>
+<body style="margin:0;padding:0;background:{{ t.outer }};font-family:{{ t.font == 'serif' ? 'Georgia, \'Times New Roman\', serif' : 'Helvetica, Arial, sans-serif' }};color:{{ t.text }};">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{{ t.outer }};padding:24px 12px;"><tr><td align="center">
+<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:{{ t.rpx }};overflow:hidden;font-size:{{ t.font_size }};line-height:1.6;">
+{% block content %}{{ content|raw }}{% endblock %}
+</table>
+</td></tr></table>
+</body>
+</html>

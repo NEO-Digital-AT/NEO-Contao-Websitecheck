@@ -1,0 +1,12 @@
+{% set size = {s: '8.5pt', m: '9.5pt', l: '11pt'}[block.size] %}
+{% set color = block.tone == 'muted' ? t.muted : (block.tone == 'primary' ? t.primary : '') %}
+<div class="txt {% if block.bg != 'none' %}box bg-{{ block.bg }}{% endif %}" style="font-size:{{ size }};text-align:{{ block.align }};margin-bottom:{{ t.space[block.space] }};{% if color and block.bg == 'none' %}color:{{ color }};{% endif %}">
+  {% if block.columns == '2' %}
+  {# two text columns: Dompdf has no CSS columns, so split paragraphs across a table #}
+  {% set parts = block.html|split('</p>') %}
+  {% set half = (parts|length / 2)|round(0, 'ceil') %}
+  <table class="two"><tr><td class="l">{{ parts|slice(0, half)|join('</p>')|raw }}</p></td><td class="r">{{ parts|slice(half)|join('</p>')|raw }}</td></tr></table>
+  {% else %}
+  {{ block.html }}
+  {% endif %}
+</div>

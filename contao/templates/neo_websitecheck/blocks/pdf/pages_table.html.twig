@@ -1,0 +1,21 @@
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
+{% trans_default_domain 'neo_websitecheck' %}
+<div style="margin-bottom:{{ t.space[block.space] }};page-break-inside:avoid">
+{% if block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+{% if block.title %}<h2>{{ block.title }}</h2>{% endif %}
+{% if block.intro %}<p class="muted">{{ block.intro|nl2br }}</p>{% endif %}
+<table style="width:100%;border-collapse:collapse;font-size:9pt">
+  <thead><tr>{% for h in ['report.col_page'|trans, 'report.col_title'|trans, 'LCP', 'report.col_contrast'|trans, 'report.col_grade'|trans] %}<th style="text-align:left;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:{{ t.muted }};font-weight:normal;padding:2mm 2.5mm;border-bottom:1px solid {{ t.line }}">{{ h }}</th>{% endfor %}</tr></thead>
+  <tbody>
+  {% for pg in result.pages %}
+    <tr>
+      <td class="mono" style="padding:2mm 2.5mm;border-bottom:1px solid #eee;white-space:nowrap">{{ pg.path }}</td>
+      <td style="padding:2mm 2.5mm;border-bottom:1px solid #eee">{{ pg.title|slice(0, 60) }}</td>
+      <td style="padding:2mm 2.5mm;border-bottom:1px solid #eee;white-space:nowrap">{{ pg.lcp ?: '–' }}</td>
+      <td style="padding:2mm 2.5mm;border-bottom:1px solid #eee">{{ pg.perf is null ? '–' : (pg.contrast ? pg.contrast : 'word.none'|trans) }}</td>
+      <td style="padding:2mm 2.5mm;border-bottom:1px solid #eee">{% if pg.grade %}{{ pdf.badge(pg.grade, 7, 9.5, t.grade_bg[pg.grade], t.grade_ink[pg.grade], '2mm') }}{% else %}–{% endif %}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>

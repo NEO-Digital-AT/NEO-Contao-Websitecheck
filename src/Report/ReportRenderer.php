@@ -8,8 +8,11 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Neo\WebsitecheckBundle\Check\CheckRepository;
+use Neo\WebsitecheckBundle\Design\DesignRenderer;
 use Neo\WebsitecheckBundle\Settings;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
 /**
@@ -27,6 +30,8 @@ final class ReportRenderer
         private readonly CheckRepository $repository,
         private readonly Settings $settings,
         private readonly ContentUrlGenerator $urlGenerator,
+        private readonly DesignRenderer $designs,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -35,7 +40,7 @@ final class ReportRenderer
      */
     public function renderReport(array $row): string
     {
-        return $this->render('@Contao/neo_websitecheck/report.html.twig', $row, 'pdf_body');
+        return $this->render('@Contao/neo_websitecheck/report.html.twig', $row, 'pdf_body', 'pdf_design', 'pdf');
     }
 
     /**
@@ -43,7 +48,61 @@ final class ReportRenderer
      */
     public function renderMail(array $row, string $template): string
     {
-        return $this->render('@Contao/neo_websitecheck/'.$template.'.html.twig', $row, 'mail_visitor' === $template ? 'mail_body' : ('mail_owner' === $template ? 'owner_body' : null));
+        return match ($template) {
+            'mail_visitor' => $this->render('@Contao/neo_websitecheck/mail_visitor.html.twig', $row, 'mail_body', 'mail_design', 'mail'),
+            'mail_owner' => $this->render('@Contao/neo_websitecheck/mail_owner.html.twig', $row, 'owner_body', null, null),
+            default => $this->render('@Contao/neo_websitecheck/'.$template.'.html.twig', $row, null, null, null),
+        };
+    }
+
+    /**
+     * Renders a design (draft from the designer or stored JSON) for the row —
+     * used by the back-end live preview.
+     *
+     * @param array<string, mixed>             $row
+     * @param array<string, mixed>|string|null $design
+     */
+    public function renderDesign(string $kind, array|string|null $design, array $row): string
+    {
+        return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($kind, $design, $row): string {
+            $context = $this->context($row);
+            $context += $context['vars'];
+
+            return $this->designs->render($kind, $design, $context);
+        });
+    }
+
+    /**
+     * Runs $render with the translator switched to the check's language, so
+     * every fixed label (|trans in the templates) matches the report — not the
+     * language of the current request (console, API call, back end).
+     *
+     * @template T
+     *
+     * @param callable(): T $render
+     *
+     * @return T
+     */
+    private function inLocale(string $locale, callable $render): mixed
+    {
+        if (!$this->translator instanceof LocaleAwareInterface) {
+            return $render();
+        }
+
+        $previous = $this->translator->getLocale();
+        $this->translator->setLocale($locale);
+
+        try {
+            return $render();
+        } finally {
+            $this->translator->setLocale($previous);
+        }
+    }
+
+    /** The configuration record of a check row (explicit id, else by language). */
+    public function configFor(array $row): array|null
+    {
+        return $this->settings->db()?->config((int) ($row['config_id'] ?? 0), (string) ($row['locale'] ?: 'en'));
     }
 
     /**
@@ -87,9 +146,11 @@ final class ReportRenderer
 
         $date = 'de' === substr($locale, 0, 2) ? date('d.m.Y', (int) ($result['checkedAt'] ?? time())) : date('Y-m-d', (int) ($result['checkedAt'] ?? time()));
         $contactUrl = $brand['contact_url'] ?: (string) $brand['website_url'];
+        $config = $this->configFor($row);
 
         return [
             'check' => $row,
+            'config' => $config,
             'result' => $result,
             'areas' => array_column($result['areas'] ?? [], null, 'key'),
             'brand' => $brand,
@@ -119,30 +180,35 @@ final class ReportRenderer
                 'days' => (string) $this->settings->retentionDays(),
                 'date' => $date,
                 'newsletter' => '1' === (string) $row['newsletter'] ? '+NL' : '',
+                'config_id' => (int) ($config['id'] ?? 0),
             ],
         ];
     }
 
     /**
-     * Renders the file template — or, when the operator saved a complete
-     * template for the language in the back end, that one (Twig source with
-     * the same variables; {{firstname}} etc. work there as plain placeholders
-     * because the vars are also exposed at top level).
+     * Resolution order: the expert Twig template of the configuration (when
+     * filled), then the designed blocks of the configuration, then the file
+     * template of the bundle (overridable in the project). The template
+     * context is the same everywhere; {{firstname}} etc. work in the Twig
+     * source as plain placeholders because the vars are exposed at top level.
      */
-    private function render(string $template, array $row, string|null $customColumn): string
+    private function render(string $template, array $row, string|null $twigColumn, string|null $designColumn, string|null $kind): string
     {
-        $context = $this->context($row);
-        $context += $context['vars'];
+        return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($template, $row, $twigColumn, $designColumn, $kind): string {
+            $context = $this->context($row);
+            $context += $context['vars'];
+            $config = (array) ($context['config'] ?? []);
 
-        if (null !== $customColumn) {
-            $custom = $this->settings->db()?->text(substr((string) ($row['locale'] ?: 'en'), 0, 2), $customColumn) ?? '';
-
-            if ('' !== $custom) {
-                return $this->twig->createTemplate($custom)->render($context);
+            if (null !== $twigColumn && '' !== trim((string) ($config[$twigColumn] ?? ''))) {
+                return $this->twig->createTemplate((string) $config[$twigColumn])->render($context);
             }
-        }
 
-        return $this->twig->render($template, $context);
+            if (null !== $designColumn && null !== $kind && '' !== trim((string) ($config[$designColumn] ?? ''))) {
+                return $this->designs->render($kind, (string) $config[$designColumn], $context);
+            }
+
+            return $this->twig->render($template, $context);
+        });
     }
 
     /** Absolute URL of a back-end picked page, '' when unset or unpublished. */

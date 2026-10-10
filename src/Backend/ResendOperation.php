@@ -37,7 +37,7 @@ final class ResendOperation
         }
 
         try {
-            $this->mailer->send($row);
+            $this->mailer->send($row, true);
             Message::addConfirmation(sprintf($GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] ?? 'Report for %s sent to %s.', $row['domain'], $row['email']));
         } catch (\Throwable $e) {
             Message::addError(sprintf($GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] ?? 'Could not send: %s', $e->getMessage()));

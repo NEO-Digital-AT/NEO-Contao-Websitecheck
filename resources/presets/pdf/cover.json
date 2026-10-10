@@ -1,0 +1,217 @@
+{
+  "theme": {
+    "header": true,
+    "footer": true,
+    "footer_text": "{{company}} · {{owner}}",
+    "page_numbers": true
+  },
+  "blocks": [
+    {
+      "id": "cover",
+      "type": "cover",
+      "props": {
+        "eyebrow": "@report.cover_eyebrow",
+        "title": "@report.cover_title",
+        "subtitle": "@report.cover_subtitle",
+        "show_domain": true,
+        "show_grade": false,
+        "show_meta": true,
+        "show_screens": true,
+        "bg": "primary"
+      }
+    },
+    {
+      "id": "sum-head",
+      "type": "heading",
+      "props": {
+        "eyebrow": "@report.overview_eyebrow",
+        "text": "@report.summary_title",
+        "level": "h1",
+        "space": "m"
+      }
+    },
+    {
+      "id": "grade",
+      "type": "grade_box",
+      "props": {
+        "show_summary": true,
+        "style": "primary",
+        "space": "m"
+      }
+    },
+    {
+      "id": "gauges",
+      "type": "gauges",
+      "props": {
+        "perf": true,
+        "a11y": true,
+        "bp": true,
+        "seo": true,
+        "show_kpis": false,
+        "space": "l"
+      }
+    },
+    {
+      "id": "ov-areas",
+      "type": "areas",
+      "props": {
+        "layout": "cards",
+        "legend": true,
+        "space": "l"
+      }
+    },
+    {
+      "id": "pb1",
+      "type": "page_break",
+      "props": {}
+    },
+    {
+      "id": "m-head",
+      "type": "heading",
+      "props": {
+        "eyebrow": "@report.measures_eyebrow",
+        "text": "@report.measures_title",
+        "level": "h2",
+        "space": "s"
+      }
+    },
+    {
+      "id": "measures",
+      "type": "measures",
+      "props": {
+        "show_effort": true,
+        "max": 5,
+        "style": "soft",
+        "space": "l"
+      }
+    },
+    {
+      "id": "strengths",
+      "type": "strengths",
+      "props": {
+        "title": "@report.what_works",
+        "max": 6,
+        "space": "l"
+      }
+    },
+    {
+      "id": "a11y",
+      "type": "area_detail",
+      "props": {
+        "area": "accessibility",
+        "show_grade": true,
+        "title": "@report.a11y_title",
+        "intro": "@report.a11y_intro",
+        "show_crops": true,
+        "max_issues": 3,
+        "max_good": 2,
+        "note": "@report.a11y_why",
+        "space": "l"
+      }
+    },
+    {
+      "id": "pb3",
+      "type": "page_break",
+      "props": {}
+    },
+    {
+      "id": "speed",
+      "type": "area_detail",
+      "props": {
+        "area": "speed",
+        "show_grade": true,
+        "title": "@report.speed_title",
+        "intro": "@report.speed_intro",
+        "show_kpis": true,
+        "max_issues": 3,
+        "max_good": 3,
+        "space": "l"
+      }
+    },
+    {
+      "id": "mobile",
+      "type": "area_detail",
+      "props": {
+        "area": "mobile",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "seo",
+      "type": "area_detail",
+      "props": {
+        "area": "seo",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "ai",
+      "type": "area_detail",
+      "props": {
+        "area": "ai",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "content",
+      "type": "area_detail",
+      "props": {
+        "area": "content",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "legal",
+      "type": "area_detail",
+      "props": {
+        "area": "legal",
+        "show_grade": true,
+        "max_issues": 2,
+        "max_good": 2,
+        "space": "l"
+      }
+    },
+    {
+      "id": "pages",
+      "type": "pages_table",
+      "props": {
+        "eyebrow": "@report.pages_eyebrow_plain",
+        "title": "@report.pages_title",
+        "intro": "@report.pages_intro",
+        "space": "xl"
+      }
+    },
+    {
+      "id": "next",
+      "type": "next_steps",
+      "props": {
+        "eyebrow": "@report.next_eyebrow",
+        "title": "@report.next_title",
+        "html": "<p>@report.next_text</p>",
+        "promise": "@report.next_promise",
+        "show_portrait": true,
+        "show_contact": true,
+        "space": "m"
+      }
+    },
+    {
+      "id": "sources",
+      "type": "sources",
+      "props": {
+        "space": "none"
+      }
+    }
+  ]
+}

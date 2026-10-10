@@ -160,20 +160,35 @@ Reports go through Contao's mailer (`MAILER_DSN` in `.env`). The visitor receive
 
 Only when the visitor ticks the box, the bundle calls Brevo's double-opt-in endpoint; the visitor becomes a subscriber after clicking the confirmation link.
 
-## Back-end settings (brand, design, texts)
+## Back-end settings and the visual designer
 
-Everything a visitor sees can be changed in the back end under **NEO › Website check settings**, without touching `config.yaml` (back-end values win, empty fields fall back to the YAML):
+Everything a visitor sees is edited in the back end under **NEO › Website check settings**, without touching `config.yaml` (back-end values win, empty fields fall back to the YAML).
+
+**Settings (one record):**
 
 - **Who sends the report:** company/agency, contact person, phone, website, contact page (target of the "talk about it" buttons), privacy policy page.
-- **Design:** logo (PNG/JPG/SVG), logo for dark backgrounds, portrait photo, primary and accent colour. The colours are applied to the report, the e-mail and the element on the page.
-- **E-mail:** sender name and address, reply-to, copy address for the operator.
+- **Design:** logo (PNG/JPG/SVG), logo for dark backgrounds, portrait photo, primary and accent colour.
+- **E-mail:** default sender name and address, reply-to, copy address for the operator.
 - **Limits:** checks per visitor and day, cache hours, retention days, pages per check.
-- **Texts (per language):** the customer-facing texts of the PDF report, the e-mail and the element — cover title, offer, promise, subject, greeting, intro, button labels, footer, lead form, disclaimer. Empty fields keep the bundle's text. Placeholders work in every field: `{{firstname}}`, `{{lastname}}`, `{{domain}}`, `{{grade}}`, `{{grade_word}}`, `{{pages}}`, `{{company}}`, `{{owner}}`, `{{phone}}`, `{{website}}`, `{{days}}`, `{{date}}`.
-- **Complete templates (advanced):** each language record also holds the *whole* e-mail, your copy and the *whole* PDF report as HTML/Twig, prefilled with the current template when the record is created. Change layout, colours, wording — anything. An emptied field falls back to the bundle template. These three fields are Twig code and therefore visible to **administrators only** (like Contao's template editor); editors see the snippets. Also per language: sender name/address, reply-to and the **PDF file name** with placeholders (`website-check-{{domain}}-{{date}}.pdf`).
-- **Preview PDF / Preview e-mail:** render the templates with the newest finished check or, before the first check, with bundled demo data — in a new tab, right after saving (also per language from the texts record).
-- **Languages the Contao way:** one texts record per site language; the page language of the element decides which one is used, missing languages fall back to the bundle texts.
 
-API keys, the PDF engine and the newsletter provider stay in `config.yaml` (they are technical, not editorial). Non-admin groups need the module and the tables `tl_neo_websitecheck_settings` and `tl_neo_websitecheck_text`.
+**Configurations (one per language or use case):** "Edit configurations" opens the list. Each configuration has a name, a language and:
+
+- **E-mail:** subject, sender, reply-to, and the **e-mail designer**.
+- **PDF report:** file name with placeholders (`website-check-{{domain}}-{{date}}.pdf`) and the **PDF designer**.
+- **Your copy:** subject of the operator copy.
+- **Texts of the element on the page:** labels of the form, lead form and result.
+- **Expert mode (administrators only):** complete Twig templates for e-mail, copy and report. A filled Twig template takes precedence over the design. "Copy to Twig template" in the designer produces the starting point.
+
+**The designer** (same for e-mail and PDF) has three panes:
+
+- **Left:** *Blocks* to click or drag in (cover, heading, text, image, grade, rings, areas, measures, area detail, table of pages, next steps, signature, page break …), *Structure* to reorder by drag and drop, *Design* for colours, font, corner radius, margins, header and footer.
+- **Centre:** live preview with the latest finished check or demo data. Click a block in the preview to edit it.
+- **Right:** the properties of the selected block: texts with placeholders (`{{firstname}}`, `{{domain}}`, `{{grade}}` …), rich text, images from the file manager or uploaded directly, alignment, spacing, background, what to show.
+- **Templates:** "Load template" sets a ready-made layout (*Standard*, *With cover page*, *Compact*; e-mail: *Standard*, *Short*) in the language of the configuration. "PDF preview" opens the real PDF of the current draft.
+
+**Languages the Contao way:** the content element has a **Configuration** field. *Automatic* uses the configuration whose language matches the page; or pick one explicitly (e.g. a second German configuration for a campaign). The check remembers its configuration, so the e-mail and PDF match the page the visitor used.
+
+API keys, the PDF engine and the newsletter provider stay in `config.yaml` (technical, not editorial). Non-admin groups need the module and the tables `tl_neo_websitecheck_settings` and `tl_neo_websitecheck_config`.
 
 ## Local test stand (Docker)
 
@@ -190,6 +205,8 @@ docker compose up --build   # first start installs Contao, takes a few minutes
 - Mailpit (visitor mail, your copy, PDF attachment): <http://localhost:8025>
 - Chromium PDFs: `PDF_ENGINE=gotenberg` and `docker compose --profile gotenberg up`
 - The first start also stores a **demo check** and sends its e-mails to Mailpit. Repeat any time, also on a real installation: `php vendor/bin/contao-console neo:websitecheck:demo --locale=de --send` (no API keys needed; `--email=` sends the report to you).
+
+After changing PDF templates, `python3 dev/check-pdf-badges.py report.pdf` measures every grade badge (pypdfium2, numpy, scipy) and fails when a number is off-centre.
 
 The repository is mounted into the container and symlinked by Composer, so template, PHP and translation changes are live (clear the cache with `docker compose exec app php vendor/bin/contao-console cache:clear`). `docker compose down -v` resets everything.
 
@@ -215,7 +232,8 @@ Results are cached for `cache_hours`: a second visitor entering the same domain 
 
 ## Customising
 
-- **Templates:** copy any file from `contao/templates/` of the bundle to `templates/` of your project (e.g. `templates/neo_websitecheck/report.html.twig`, `templates/content_element/neo_websitecheck.html.twig`) and adapt it. The report template receives `result`, `areas`, `brand`, `images`, `crops`, `date`, …
+- **Templates:** copy any file from `contao/templates/` of the bundle to `templates/` of your project and adapt it: the element (`content_element/neo_websitecheck.html.twig`, the AJAX flow stays intact as long as the `data-nwc-*` hooks remain), a designer block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), the frames (`pdf_frame`, `mail_frame`) or the fallback templates used before any design is saved (`report`, `mail_visitor`, `mail_owner`). Templates receive `result`, `areas`, `brand`, `images`, `crops`, `date`, `vars`, and blocks additionally `block` (its properties) and `t` (theme).
+- **PDF badges:** use the `badge()` macro from `_pdf_macros.html.twig` for numbers in coloured boxes; Dompdf only centres text vertically with that structure.
 - **Styles:** the element uses CSS custom properties (`--nwc-bg`, `--nwc-accent`, `--nwc-fg`, `--nwc-radius`, …). Override them on `.content-neo-websitecheck .nwc` in your theme.
 - **Texts:** every string lives in `translations/neo_websitecheck.{en,de}.yaml`. Override single keys in your project's `translations/` folder.
 - **Grading:** `Check\Grader` holds the scoring; `Check\CheckRunner` the steps. Decorate or replace the services as usual in Symfony.
@@ -361,20 +379,35 @@ Kosten je Check meist wenige Cent. Ohne Schlüssel läuft der Check ohne KI.
 - PDF: `dompdf` (reines PHP), `gotenberg` (Chromium-Container, `docker run --rm -p 3000:3000 gotenberg/gotenberg:8`) oder `none`.
 - Newsletter: In Brevo die Listen-ID und eine Double-Opt-in-Vorlage anlegen, IDs eintragen, `provider: brevo`. Nur bei gesetztem Häkchen ruft das Bundle den Double-Opt-in-Endpunkt auf; angemeldet ist der Besucher erst nach dem Klick auf den Bestätigungslink.
 
-## Backend-Einstellungen (Marke, Design, Texte)
+## Backend-Einstellungen und der visuelle Designer
 
-Alles, was ein Besucher sieht, lässt sich im Backend unter **NEO › Website-Check Einstellungen** ändern, ohne `config.yaml` anzufassen (Backend-Werte gewinnen, leere Felder fallen auf die YAML zurück):
+Alles, was ein Besucher sieht, wird im Backend unter **NEO › Website-Check Einstellungen** gepflegt, ohne `config.yaml` anzufassen (Backend-Werte gewinnen, leere Felder fallen auf die YAML zurück).
+
+**Einstellungen (ein Datensatz):**
 
 - **Wer den Bericht verschickt:** Firma/Agentur, Ansprechperson, Telefon, Website, Kontaktseite (Ziel der Knöpfe „Ergebnis besprechen“), Datenschutzseite.
-- **Design:** Logo (PNG/JPG/SVG), Logo für dunklen Hintergrund, Porträtfoto, Haupt- und Akzentfarbe. Die Farben gelten für Bericht, E-Mail und das Element auf der Seite.
-- **E-Mail:** Absendername und -adresse, Antwortadresse, Kopie an den Betreiber.
+- **Design:** Logo (PNG/JPG/SVG), Logo für dunklen Hintergrund, Porträtfoto, Haupt- und Akzentfarbe.
+- **E-Mail:** Standard-Absender, Antwortadresse, Kopie an den Betreiber.
 - **Grenzen:** Checks je Besucher und Tag, Zwischenspeicher, Aufbewahrung, Seiten je Check.
-- **Texte (je Sprache):** die kundensichtbaren Texte von PDF-Bericht, E-Mail und Element: Deckblatt-Titel, Angebot, Zusage, Betreff, Anrede, Einleitung, Knöpfe, Fußzeile, Kontaktformular, Hinweis. Leere Felder behalten den mitgelieferten Text. Platzhalter in jedem Feld: `{{firstname}}`, `{{lastname}}`, `{{domain}}`, `{{grade}}`, `{{grade_word}}`, `{{pages}}`, `{{company}}`, `{{owner}}`, `{{phone}}`, `{{website}}`, `{{days}}`, `{{date}}`.
-- **Komplette Vorlagen (fortgeschritten):** Jeder Sprach-Datensatz enthält zusätzlich die *ganze* E-Mail, Ihre Kopie und den *ganzen* PDF-Bericht als HTML/Twig, beim Anlegen mit der aktuellen Vorlage vorbefüllt. Layout, Farben, Wortlaut: alles änderbar. Ein geleertes Feld fällt auf die mitgelieferte Vorlage zurück. Diese drei Felder sind Twig-Code und daher nur für **Administratoren** sichtbar (wie Contaos Template-Editor); Redakteure sehen die Textbausteine. Ebenfalls je Sprache: Absendername/-adresse, Antwortadresse und der **PDF-Dateiname** mit Platzhaltern (`website-check-{{domain}}-{{date}}.pdf`).
-- **Vorschau PDF / Vorschau E-Mail:** rendern die Vorlagen mit dem neuesten fertigen Check oder, vor dem ersten Check, mit Beispieldaten, in einem neuen Tab direkt nach dem Speichern (auch je Sprache aus dem Text-Datensatz).
-- **Mehrsprachig nach Contao-Prinzip:** ein Text-Datensatz je Seitensprache; die Seitensprache des Elements entscheidet, fehlende Sprachen fallen auf die mitgelieferten Texte zurück.
 
-API-Schlüssel, PDF-Engine und Newsletter-Anbieter bleiben in der `config.yaml` (technisch, nicht redaktionell). Nicht-Admin-Gruppen brauchen das Modul und die Tabellen `tl_neo_websitecheck_settings` und `tl_neo_websitecheck_text`.
+**Konfigurationen (eine je Sprache oder Einsatz):** „Konfigurationen bearbeiten“ öffnet die Liste. Jede Konfiguration hat einen Namen, eine Sprache und:
+
+- **E-Mail:** Betreff, Absender, Antwortadresse und den **E-Mail-Designer**.
+- **PDF-Bericht:** Dateiname mit Platzhaltern (`website-check-{{domain}}-{{date}}.pdf`) und den **PDF-Designer**.
+- **Ihre Kopie:** Betreff der Kopie an den Betreiber.
+- **Texte des Elements auf der Seite:** Beschriftungen von Formular, Kontaktformular und Ergebnis.
+- **Experten-Modus (nur Administratoren):** komplette Twig-Vorlagen für E-Mail, Kopie und Bericht. Eine ausgefüllte Twig-Vorlage hat Vorrang vor der Gestaltung. „Als Twig-Vorlage übernehmen“ im Designer erzeugt den Startpunkt.
+
+**Der Designer** (gleich für E-Mail und PDF) hat drei Bereiche:
+
+- **Links:** *Blöcke* zum Anklicken oder Hineinziehen (Deckblatt, Überschrift, Text, Bild, Gesamtnote, Google-Ringe, Bereiche, Maßnahmen, Bereich im Detail, Tabelle der Seiten, So geht es weiter, Signatur, Seitenumbruch …), *Aufbau* zum Umsortieren per Drag & Drop, *Design* für Farben, Schrift, Rundung, Seitenränder, Kopf- und Fußzeile.
+- **Mitte:** Live-Vorschau mit dem letzten fertigen Check oder Demo-Daten. Ein Klick auf einen Block in der Vorschau öffnet ihn zum Bearbeiten.
+- **Rechts:** die Eigenschaften des gewählten Blocks: Texte mit Platzhaltern (`{{firstname}}`, `{{domain}}`, `{{grade}}` …), formatierter Text, Bilder aus der Dateiverwaltung oder direkt hochgeladen, Ausrichtung, Abstand, Hintergrund, was angezeigt wird.
+- **Vorlagen:** „Vorlage laden“ setzt einen fertigen Aufbau (*Standard*, *Mit Deckblatt*, *Kompakt*; E-Mail: *Standard*, *Kurz*) in der Sprache der Konfiguration. „PDF-Vorschau“ öffnet das echte PDF des aktuellen Entwurfs.
+
+**Mehrsprachig nach Contao-Prinzip:** Das Inhaltselement hat ein Feld **Konfiguration**. *Automatisch* nimmt die Konfiguration mit der Sprache der Seite; oder man wählt ausdrücklich eine (z. B. eine zweite deutsche Konfiguration für eine Kampagne). Der Check merkt sich seine Konfiguration, damit E-Mail und PDF zur Seite passen, auf der der Besucher war.
+
+API-Schlüssel, PDF-Engine und Newsletter-Anbieter bleiben in der `config.yaml` (technisch, nicht redaktionell). Nicht-Admin-Gruppen brauchen das Modul und die Tabellen `tl_neo_websitecheck_settings` und `tl_neo_websitecheck_config`.
 
 ## Lokaler Teststand (Docker)
 
@@ -391,6 +424,8 @@ docker compose up --build   # der erste Start installiert Contao, dauert einige 
 - Mailpit (Besucher-Mail, Ihre Kopie, PDF-Anhang): <http://localhost:8025>
 - Chromium-PDFs: `PDF_ENGINE=gotenberg` und `docker compose --profile gotenberg up`
 - Der erste Start legt außerdem einen **Demo-Check** an und schickt dessen E-Mails an Mailpit. Jederzeit wiederholbar, auch auf einer echten Installation: `php vendor/bin/contao-console neo:websitecheck:demo --locale=de --send` (keine API-Schlüssel nötig; `--email=` schickt den Bericht an Sie).
+
+Nach Änderungen an PDF-Vorlagen misst `python3 dev/check-pdf-badges.py bericht.pdf` jedes Noten-Kästchen (pypdfium2, numpy, scipy) und schlägt fehl, wenn eine Ziffer nicht mittig sitzt.
 
 Das Repository ist in den Container gemountet und per Composer verlinkt, Änderungen an Templates, PHP und Übersetzungen wirken sofort (Cache leeren: `docker compose exec app php vendor/bin/contao-console cache:clear`). `docker compose down -v` setzt alles zurück.
 
@@ -414,7 +449,8 @@ Ergebnisse werden `cache_hours` lang gespeichert: Wer dieselbe Domain noch einma
 
 ## Anpassen
 
-- **Vorlagen:** Dateien aus `contao/templates/` des Bundles nach `templates/` im Projekt kopieren (z. B. `templates/neo_websitecheck/report.html.twig`).
+- **Vorlagen:** Dateien aus `contao/templates/` des Bundles nach `templates/` im Projekt kopieren und anpassen: das Element (`content_element/neo_websitecheck.html.twig`, der AJAX-Ablauf bleibt erhalten, solange die `data-nwc-*`-Haken bleiben), einen Designer-Block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), die Rahmen (`pdf_frame`, `mail_frame`) oder die Ersatzvorlagen vor der ersten gespeicherten Gestaltung (`report`, `mail_visitor`, `mail_owner`).
+- **Noten-Kästchen im PDF:** das Makro `badge()` aus `_pdf_macros.html.twig` verwenden; nur mit dieser Struktur zentriert Dompdf die Ziffer senkrecht.
 - **Stile:** CSS-Variablen (`--nwc-bg`, `--nwc-accent`, `--nwc-fg`, `--nwc-radius`, …) auf `.content-neo-websitecheck .nwc` überschreiben.
 - **Texte:** alle Texte in `translations/neo_websitecheck.{en,de}.yaml`; einzelne Schlüssel im Projekt unter `translations/` überschreiben.
 

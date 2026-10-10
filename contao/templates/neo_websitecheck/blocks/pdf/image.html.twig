@@ -1,0 +1,6 @@
+{% if block.src %}
+<div class="img-{{ block.align|first }}" style="margin-bottom:{{ t.space[block.space] }}">
+  <img src="{{ block.src }}" alt="" style="width:{{ block.width }}%;{% if block.rounded %}border-radius:{{ t.r }};{% endif %}">
+  {% if block.caption %}<p class="caption" style="margin-top:1.5mm">{{ block.caption }}</p>{% endif %}
+</div>
+{% endif %}

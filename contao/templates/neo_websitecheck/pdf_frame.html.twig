@@ -1,0 +1,90 @@
+{% trans_default_domain 'neo_websitecheck' %}
+{#
+  Frame of the designed PDF report. Written for Dompdf (tables, no flex/grid,
+  fixed header/footer repeat on every page) and renders the same in
+  Gotenberg/Chromium. "content" is the concatenated block HTML (or, in a Twig
+  template exported from the designer, the content block below).
+  Theme values come from the design (t.*): colours, font, radius, margins.
+#}
+{% set t = t|default(theme is defined ? theme : {}) %}
+{% set p = t.primary %}
+{% set a = t.accent %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<title>{{ 'report.title'|trans({'%domain%': result.domain}) }}</title>
+<style>
+@page { size: A4; margin: {{ t.page_margin }}; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; } /* no margin on <html>: Dompdf maps it onto the page margins */
+body { font-family: {{ t.font_family|raw }}; font-size: 9.5pt; line-height: 1.4; color: {{ t.text }}; }
+/* fixed boxes are positioned relative to the content box in Dompdf: negative offsets put them into the page margins */
+.pdf-head { position: fixed; top: -14mm; left: 0; right: 0; height: 9mm; font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: {{ t.muted }}; }
+.pdf-head table { width: 100%; border-collapse: collapse; }
+.pdf-head td { padding: 0; vertical-align: middle; }
+.pdf-head img { height: 7mm; }
+.pdf-head .brand { font-weight: bold; color: {{ p }}; font-size: 11pt; letter-spacing: 0; text-transform: none; }
+.pdf-foot { position: fixed; bottom: -12mm; left: 0; right: 0; border-top: 1px solid {{ t.line }}; padding-top: 2.5mm; font-size: 7.5pt; color: {{ t.muted }}; }
+.pdf-foot .r { float: right; }
+.pdf-foot .pn:after { content: counter(page); }
+h1, h2, h3, h4 { margin: 0 0 2mm; color: {{ p }}; line-height: 1.15; page-break-after: avoid; }
+h1 { font-size: 22pt; line-height: 1.1; }
+h2 { font-size: 15pt; }
+h3 { font-size: 11.5pt; }
+h4 { font-size: 10pt; }
+p { margin: 0 0 2.5mm; }
+a { color: {{ p }}; }
+ul, ol { margin: 0 0 2.5mm; padding-left: 5mm; }
+.nwc-b { page-break-inside: auto; }
+.eyebrow { font-size: 7.5pt; letter-spacing: .16em; text-transform: uppercase; color: {{ p }}; margin: 0 0 1.5mm; page-break-after: avoid; }
+.muted { color: {{ t.muted }}; }
+.mono { font-family: {{ t.mono|raw }}; font-size: 8.5pt; }
+.card { border: 1px solid {{ t.line }}; border-radius: {{ t.r }}; background: #fff; page-break-inside: avoid; }
+.soft { background: {{ t.soft }}; }
+.bg-primary { background: {{ p }}; color: {{ t.primary_ink }}; }
+.bg-primary h1, .bg-primary h2, .bg-primary h3, .bg-primary .eyebrow, .bg-primary a { color: {{ t.primary_ink }}; }
+.bg-accent { background: {{ a }}; color: {{ t.accent_ink }}; }
+.bg-accent h1, .bg-accent h2, .bg-accent h3, .bg-accent .eyebrow { color: {{ t.accent_ink }}; }
+.bg-soft { background: {{ t.soft }}; }
+.box { border-radius: {{ t.r }}; padding: 4mm 5mm; }
+/* badges: tables centre text reliably in Dompdf (line-height tricks do not) */
+table.badge { border-collapse: collapse; }
+table.badge td { text-align: center; vertical-align: middle; font-weight: bold; line-height: 1; padding: 0; }
+.chip { display: inline-block; min-width: 7mm; padding: 1.6mm 1.2mm; border-radius: 2mm; text-align: center; font-weight: bold; font-size: 10pt; line-height: 1; }
+.chip--s { min-width: 4.6mm; padding: 1mm .8mm; font-size: 7pt; border-radius: 1.2mm; }
+.dot { display: inline-block; width: 6mm; padding: 1.4mm 0; border-radius: 3mm; text-align: center; font-weight: bold; font-size: 8pt; line-height: 1; }
+.dot.warn { background: #ffb020; color: #1a1a1a; }
+.dot.good { background: {{ a }}; color: {{ t.accent_ink }}; }
+.dot.bad { background: #ff6b73; color: #1a1a1a; }
+.two { width: 100%; border-collapse: collapse; }
+.two > tbody > tr { page-break-inside: avoid; }
+.two > tbody > tr > td { vertical-align: top; width: 50%; padding: 0; }
+.two td.l { padding-right: 4mm; }
+.two td.r { padding-left: 4mm; }
+.finding { width: 100%; border-collapse: separate; border-spacing: 0; margin-bottom: 2.5mm; page-break-inside: avoid; }
+.finding td { vertical-align: top; padding: 2mm 2.5mm; border: 1px solid {{ t.line }}; background: #fff; font-size: 8.8pt; line-height: 1.35; }
+.finding td.i { width: 10mm; border-right: 0; border-radius: {{ t.r }} 0 0 {{ t.r }}; }
+.finding td.t { border-left: 0; border-radius: 0 {{ t.r }} {{ t.r }} 0; }
+.finding b { display: block; color: {{ p }}; }
+.finding small { display: block; font-size: 7.5pt; color: {{ t.muted }}; margin-top: 1mm; }
+.crop { border: 1px solid #ddd; border-radius: {{ t.r }}; overflow: hidden; margin-bottom: 1.5mm; }
+.crop img { width: 100%; display: block; }
+.caption { font-size: 7.5pt; color: {{ t.muted }}; font-family: {{ t.mono|raw }}; margin-bottom: 4mm; }
+.note { font-size: 8.5pt; color: {{ t.muted }}; border-left: 2px solid {{ t.line }}; padding-left: 3mm; }
+.img-l { text-align: left; } .img-c { text-align: center; } .img-r { text-align: right; }
+</style>
+</head>
+<body>
+{% if t.header %}
+<div class="pdf-head"><table><tr>
+  <td>{% if brand.logo_data %}<img src="{{ brand.logo_data }}" alt="">{% else %}<span class="brand">{{ brand.name }}</span>{% endif %}</td>
+  <td style="text-align:right">{{ t.header_text ?: ('report.header'|trans ~ ' · ' ~ date) }}</td>
+</tr></table></div>
+{% endif %}
+{% if t.footer %}
+<div class="pdf-foot">{{ t.footer_text ?: brand.name }}{% if t.page_numbers %}<span class="r">{{ 'report.page_short'|trans }} <span class="pn"></span></span>{% endif %}</div>
+{% endif %}
+{% block content %}{{ content|raw }}{% endblock %}
+</body>
+</html>

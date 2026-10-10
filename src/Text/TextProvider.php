@@ -8,9 +8,12 @@ use Neo\WebsitecheckBundle\Check\SettingsRepository;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * Customer-facing texts: the operator's override from tl_neo_websitecheck_text
- * (per language) when set, otherwise the bundle translation. Placeholders such
- * as {{firstname}} or {{domain}} are replaced in both.
+ * Customer-facing texts: the operator's override from the applicable
+ * tl_neo_websitecheck_config record (vars['config_id'], else the record of
+ * the language) when set, otherwise the bundle translation. Placeholders such
+ * as {{firstname}} or {{domain}} are replaced in both. The designed e-mail and
+ * PDF carry their texts inside the design; KEYS covers subjects and the
+ * front-end element.
  */
 final class TextProvider
 {
@@ -24,23 +27,7 @@ final class TextProvider
      * @var array<string, array{column: string, long: bool, params: array<string, string>}>
      */
     public const KEYS = [
-        'report.cover_eyebrow' => ['column' => 'report_cover_eyebrow', 'long' => false, 'params' => []],
-        'report.cover_title' => ['column' => 'report_cover_title', 'long' => false, 'params' => []],
-        'report.next_eyebrow' => ['column' => 'report_next_eyebrow', 'long' => false, 'params' => []],
-        'report.next_title' => ['column' => 'report_next_title', 'long' => false, 'params' => []],
-        'report.next_text' => ['column' => 'report_next_text', 'long' => true, 'params' => []],
-        'report.next_promise' => ['column' => 'report_next_promise', 'long' => true, 'params' => []],
-        'report.a11y_why' => ['column' => 'report_a11y_why', 'long' => true, 'params' => []],
         'mail.subject' => ['column' => 'mail_subject', 'long' => false, 'params' => ['%domain%' => 'domain', '%grade%' => 'grade', '%word%' => 'grade_word']],
-        'mail.greeting' => ['column' => 'mail_greeting', 'long' => false, 'params' => ['%name%' => 'firstname']],
-        'mail.intro' => ['column' => 'mail_intro', 'long' => true, 'params' => ['%domain%' => 'domain', '%pages%' => 'pages']],
-        'mail.measures_title' => ['column' => 'mail_measures_title', 'long' => false, 'params' => []],
-        'mail.pdf_note' => ['column' => 'mail_pdf_note', 'long' => true, 'params' => []],
-        'mail.offer' => ['column' => 'mail_offer', 'long' => true, 'params' => []],
-        'mail.cta' => ['column' => 'mail_cta', 'long' => false, 'params' => []],
-        'mail.cta_alt' => ['column' => 'mail_cta_alt', 'long' => false, 'params' => []],
-        'mail.newsletter_note' => ['column' => 'mail_newsletter_note', 'long' => true, 'params' => []],
-        'mail.footer' => ['column' => 'mail_footer', 'long' => true, 'params' => ['%domain%' => 'domain', '%days%' => 'days']],
         'mail.owner_subject' => ['column' => 'mail_owner_subject', 'long' => false, 'params' => ['%domain%' => 'domain', '%grade%' => 'grade', '%name%' => 'firstname', '%newsletter%' => 'newsletter']],
         'fe.url_label' => ['column' => 'fe_url_label', 'long' => false, 'params' => []],
         'fe.submit' => ['column' => 'fe_submit', 'long' => false, 'params' => []],
@@ -88,7 +75,7 @@ final class TextProvider
         $def = self::KEYS[$key] ?? null;
 
         if (null !== $def) {
-            $custom = $this->settings->text(substr($locale, 0, 2), $def['column']);
+            $custom = $this->settings->configValue((int) ($vars['config_id'] ?? 0), $locale, $def['column']);
 
             if ('' !== $custom) {
                 return $this->replace($custom, $vars);

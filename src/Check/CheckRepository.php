@@ -50,7 +50,7 @@ final class CheckRepository
         return $row;
     }
 
-    public function create(string $domain, string $url, string $locale, string $ipHash): int
+    public function create(string $domain, string $url, string $locale, string $ipHash, int $configId = 0): int
     {
         $now = time();
 
@@ -60,6 +60,7 @@ final class CheckRepository
             'domain' => $domain,
             'url' => $url,
             'locale' => $locale,
+            'config_id' => $configId,
             'status' => self::STATUS_QUEUED,
             'step' => '',
             'ip_hash' => $ipHash,
@@ -76,7 +77,7 @@ final class CheckRepository
      * new row, so the visitor still has to leave their data but gets the
      * cached measurement instantly (and the PageSpeed quota is spared).
      */
-    public function createFromCache(array $source, string $locale, string $ipHash): int
+    public function createFromCache(array $source, string $locale, string $ipHash, int $configId = 0): int
     {
         $now = time();
 
@@ -86,6 +87,7 @@ final class CheckRepository
             'domain' => $source['domain'],
             'url' => $source['url'],
             'locale' => $locale,
+            'config_id' => $configId,
             'status' => self::STATUS_DONE,
             'step' => 'finish',
             'finished' => $now,
@@ -100,12 +102,19 @@ final class CheckRepository
 
         $id = (int) $this->db->lastInsertId();
 
-        // Screenshots live on disk next to the id: share them by copying the folder.
+        // Screenshots and crops live on disk next to the id: share them by copying.
+        // Never the PDF: it carries the first visitor's name and is rendered per check.
         $fs = new Filesystem();
         $from = $this->dir((int) $source['id']);
 
         if ($fs->exists($from)) {
-            $fs->mirror($from, $this->dir($id));
+            $fs->mkdir($this->dir($id));
+
+            foreach (glob($from.'/*') ?: [] as $file) {
+                if (is_file($file) && 'pdf' !== strtolower(pathinfo($file, PATHINFO_EXTENSION))) {
+                    $fs->copy($file, $this->dir($id).'/'.basename($file), true);
+                }
+            }
         }
 
         return $id;

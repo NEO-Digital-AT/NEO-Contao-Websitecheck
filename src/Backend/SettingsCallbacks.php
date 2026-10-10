@@ -9,9 +9,8 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
-use Neo\WebsitecheckBundle\Text\TextProvider;
+use Neo\WebsitecheckBundle\Design\Presets;
 use Symfony\Bundle\SecurityBundle\Security;
-use Twig\Environment;
 
 /**
  * DCA callbacks of the settings module (public service, resolved by class name).
@@ -20,37 +19,51 @@ final class SettingsCallbacks
 {
     public function __construct(
         private readonly Connection $db,
-        private readonly Environment $twig,
         private readonly Security $security,
+        private readonly Presets $presets,
     ) {
     }
 
     /**
-     * New language record: start from the complete templates (the effective
-     * ones, i.e. a project override wins over the bundle file) and a sensible
-     * file name, so "fully individual" means editing, not writing from scratch.
+     * New configuration record: a sensible PDF file name. The designs are
+     * filled on the first save (fillEmptyDesigns), when the language is known.
      *
      * @param array<string, mixed> $set
      */
-    public function prefillTemplates(string $table, int $insertId, array $set): void
+    public function prefillConfig(string $table, int $insertId, array $set): void
     {
-        $update = ['pdf_filename' => 'website-check-{{domain}}-{{date}}.pdf'];
-
-        foreach (['mail_body' => 'mail_visitor', 'owner_body' => 'mail_owner', 'pdf_body' => 'report'] as $column => $template) {
-            try {
-                $update[$column] = $this->twig->getLoader()->getSourceContext('@Contao/neo_websitecheck/'.$template.'.html.twig')->getCode();
-            } catch (\Throwable) {
-                // keep empty → bundle template
-            }
-        }
-
-        $this->db->update('tl_neo_websitecheck_text', $update, ['id' => $insertId]);
+        $this->db->update('tl_neo_websitecheck_config', ['pdf_filename' => 'website-check-{{domain}}-{{date}}.pdf'], ['id' => $insertId]);
     }
 
     /**
-     * The complete templates are Twig code: whoever edits them can run
-     * template logic, so — like Contao's own template editor — only
-     * administrators get these fields; editors keep the snippets.
+     * Empty designs get the "standard" preset in the record's language, so a
+     * freshly saved configuration already produces the complete e-mail and PDF.
+     */
+    public function fillEmptyDesigns(DataContainer $dc): void
+    {
+        $row = $this->db->fetchAssociative('SELECT language, mail_design, pdf_design FROM tl_neo_websitecheck_config WHERE id = ?', [(int) $dc->id]);
+
+        if (false === $row) {
+            return;
+        }
+
+        $locale = (string) ($row['language'] ?: 'en');
+        $update = [];
+
+        foreach (['mail_design' => 'mail', 'pdf_design' => 'pdf'] as $column => $kind) {
+            if ('' === trim((string) $row[$column])) {
+                $update[$column] = json_encode($this->presets->default($kind, $locale), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+            }
+        }
+
+        if ([] !== $update) {
+            $this->db->update('tl_neo_websitecheck_config', $update, ['id' => (int) $dc->id]);
+        }
+    }
+
+    /**
+     * The expert Twig templates can run template logic, so — like Contao's own
+     * template editor — only administrators get these fields.
      */
     public function restrictTemplatesToAdmins(): void
     {
@@ -59,28 +72,31 @@ final class SettingsCallbacks
         }
 
         foreach (['mail_body', 'owner_body', 'pdf_body'] as $field) {
-            unset($GLOBALS['TL_DCA']['tl_neo_websitecheck_text']['fields'][$field]);
+            unset($GLOBALS['TL_DCA']['tl_neo_websitecheck_config']['fields'][$field]);
         }
 
-        $palette = (string) $GLOBALS['TL_DCA']['tl_neo_websitecheck_text']['palettes']['default'];
-        $palette = str_replace(['{mail_body_legend:hide},mail_body;', ',owner_body', '{pdf_body_legend:hide},pdf_body;'], ['', '', ''], $palette);
-        $GLOBALS['TL_DCA']['tl_neo_websitecheck_text']['palettes']['default'] = $palette;
+        $palette = (string) $GLOBALS['TL_DCA']['tl_neo_websitecheck_config']['palettes']['default'];
+        $GLOBALS['TL_DCA']['tl_neo_websitecheck_config']['palettes']['default'] = str_replace(';{expert_legend:hide},mail_body,owner_body,pdf_body', '', $palette);
     }
 
     /**
-     * Preview links in the language record (preview in that language).
+     * Preview links in the configuration record (that configuration, its language).
      *
      * @param array<string, string> $buttons
      *
      * @return array<string, string>
      */
-    public function addPreviewButtonsForLanguage(array $buttons, DataContainer $dc): array
+    public function addPreviewButtonsForConfig(array $buttons, DataContainer $dc): array
     {
-        $lang = $GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
-        $language = (string) $this->db->fetchOne('SELECT language FROM tl_neo_websitecheck_text WHERE id = ?', [(int) $dc->id]);
+        $lang = $GLOBALS['TL_LANG']['tl_neo_websitecheck_config'];
+        $row = $this->db->fetchAssociative('SELECT id, language FROM tl_neo_websitecheck_config WHERE id = ?', [(int) $dc->id]);
+
+        if (false === $row) {
+            return $buttons;
+        }
 
         foreach (['preview_pdf', 'preview_mail'] as $key) {
-            $buttons[$key] = sprintf('<a href="%s" class="tl_submit" target="_blank" rel="noopener">%s</a>', Backend::addToUrl('key='.$key.'&lang='.$language, true, ['act', 'id', 'table']), StringUtil::specialchars($lang[$key][0] ?? $key));
+            $buttons[$key] = sprintf('<a href="%s" class="tl_submit" target="_blank" rel="noopener">%s</a>', Backend::addToUrl('key='.$key.'&lang='.$row['language'].'&config='.(int) $row['id'], true, ['act', 'id', 'table']), StringUtil::specialchars($lang[$key][0] ?? $key));
         }
 
         return $buttons;
@@ -130,17 +146,17 @@ final class SettingsCallbacks
         return $buttons;
     }
 
-    /** "Edit texts (N)" block inside the settings mask (the texts live in the child table). */
+    /** "Configurations (N)" block inside the settings mask (they live in the child table). */
     public function textsInfo(DataContainer $dc): string
     {
         $lang = $GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
-        $rows = $this->db->fetchAllAssociative('SELECT language FROM tl_neo_websitecheck_text WHERE pid = ? ORDER BY language', [(int) $dc->id]);
-        $languages = array_column($rows, 'language');
-        $href = Backend::addToUrl('table=tl_neo_websitecheck_text', true, ['act']);
+        $rows = $this->db->fetchAllAssociative('SELECT title, language FROM tl_neo_websitecheck_config WHERE pid = ? ORDER BY language, title', [(int) $dc->id]);
+        $languages = array_map(static fn (array $r): string => $r['title'].' ['.strtoupper((string) $r['language']).']', $rows);
+        $href = Backend::addToUrl('table=tl_neo_websitecheck_config', true, ['act']);
 
         $info = [] === $languages
             ? ($lang['textsNone'] ?? '')
-            : sprintf($lang['textsList'] ?? '%s', implode(', ', array_map('strtoupper', $languages)));
+            : sprintf($lang['textsList'] ?? '%s', implode(', ', $languages));
 
         return sprintf(
             '<div class="widget clr"><p class="tl_help tl_tip">%s</p><a href="%s" class="tl_submit">%s</a></div>',
@@ -148,15 +164,6 @@ final class SettingsCallbacks
             $href,
             StringUtil::specialchars(sprintf($lang['textsButton'] ?? 'Texts (%d)', \count($languages))),
         );
-    }
-
-    /** Placeholder cheat-sheet at the top of a texts record. */
-    public function placeholdersInfo(): string
-    {
-        $text = $GLOBALS['TL_LANG']['tl_neo_websitecheck_text']['placeholdersText'] ?? '%s';
-        $list = implode(' ', array_map(static fn (string $p): string => '<code style="margin-right:.5em">{{'.$p.'}}</code>', TextProvider::PLACEHOLDERS));
-
-        return '<div class="widget clr"><div class="tl_info" style="margin:0;line-height:1.7">'.sprintf(StringUtil::specialchars($text), $list).'</div></div>';
     }
 
     /**
@@ -186,16 +193,11 @@ final class SettingsCallbacks
     /**
      * @param array<string, mixed> $row
      */
-    public function textRecordLabel(array $row): string
+    public function configRecordLabel(array $row): string
     {
-        $filled = 0;
+        $designed = ('' !== trim((string) $row['mail_design']) ? 1 : 0) + ('' !== trim((string) $row['pdf_design']) ? 1 : 0);
+        $expert = '' !== trim((string) $row['mail_body']) || '' !== trim((string) $row['pdf_body']);
 
-        foreach (TextProvider::KEYS as $def) {
-            if ('' !== trim((string) ($row[$def['column']] ?? ''))) {
-                ++$filled;
-            }
-        }
-
-        return sprintf('<div class="tl_content_left"><strong>%s</strong> <span style="color:#999;padding-left:3px">%d / %d</span></div>', strtoupper((string) $row['language']), $filled, \count(TextProvider::KEYS));
+        return sprintf('<div class="tl_content_left"><strong>%s</strong> <span style="color:#999;padding-left:3px">%s · %s%s</span></div>', StringUtil::specialchars((string) $row['title']), strtoupper((string) $row['language']), $designed.'/2', $expert ? ' · Twig' : '');
     }
 }

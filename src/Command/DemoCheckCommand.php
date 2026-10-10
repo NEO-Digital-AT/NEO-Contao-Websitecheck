@@ -10,6 +10,7 @@ use Neo\WebsitecheckBundle\Check\DemoData;
 use Neo\WebsitecheckBundle\Check\Grader;
 use Neo\WebsitecheckBundle\Mail\ReportMailer;
 use Neo\WebsitecheckBundle\Report\PdfGenerator;
+use Neo\WebsitecheckBundle\Settings;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,6 +35,7 @@ final class DemoCheckCommand extends Command
         private readonly DemoData $demo,
         private readonly PdfGenerator $pdf,
         private readonly ReportMailer $mailer,
+        private readonly Settings $settings,
     ) {
         parent::__construct();
     }
@@ -57,7 +59,8 @@ final class DemoCheckCommand extends Command
         $result = $this->grader->grade($data, $locale);
         $result['crops'] = $this->demo->crops();
 
-        $id = $this->repository->create((string) $result['domain'], (string) $result['url'], $locale, 'demo');
+        $configId = (int) ($this->settings->db()?->config(0, $locale)['id'] ?? 0);
+        $id = $this->repository->create((string) $result['domain'], (string) $result['url'], $locale, 'demo', $configId);
 
         $dir = $this->repository->dir($id);
         $fs = new Filesystem();

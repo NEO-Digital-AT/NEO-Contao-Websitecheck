@@ -9,7 +9,7 @@ use Doctrine\DBAL\Exception as DbalException;
 
 /**
  * Reads the back-end settings (tl_neo_websitecheck_settings, one row) and the
- * per-language texts (tl_neo_websitecheck_text) through DBAL, cached for the
+ * configurations per language (tl_neo_websitecheck_config) through DBAL, cached for the
  * request. Missing tables (before the first contao:migrate) simply yield no
  * overrides, so the bundle keeps working from config.yaml alone.
  */
@@ -18,6 +18,7 @@ final class SettingsRepository
     /** @var array<string, mixed>|null|false */
     private array|null|false $row = false;
 
+    /** @var array<string, array<string, mixed>|null> */
     /** @var array<string, array<string, mixed>|null> */
     private array $texts = [];
 
@@ -79,18 +80,64 @@ final class SettingsRepository
     }
 
     /** Custom text for a language and column, '' when not set. */
-    public function text(string $language, string $column): string
+    /**
+     * The configuration record to use: by id when given and existing, else the
+     * first one of the language, else the first one at all. Null without any.
+     *
+     * @return array<string, mixed>|null
+     */
+    public function config(int $id = 0, string $language = ''): array|null
     {
-        if (!\array_key_exists($language, $this->texts)) {
+        $language = substr($language, 0, 2);
+        $key = $id.'|'.$language;
+
+        if (!\array_key_exists($key, $this->texts)) {
+            $row = false;
+
             try {
-                $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck_text WHERE language = ? ORDER BY id ASC LIMIT 1', [$language]);
-                $this->texts[$language] = false === $row ? null : $row;
+                if ($id > 0) {
+                    $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck_config WHERE id = ?', [$id]);
+                }
+
+                if (false === $row && '' !== $language) {
+                    $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck_config WHERE language = ? ORDER BY id ASC LIMIT 1', [$language]);
+                }
+
+                if (false === $row) {
+                    $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck_config ORDER BY id ASC LIMIT 1');
+                }
             } catch (DbalException) {
-                $this->texts[$language] = null;
+                $row = false;
             }
+
+            $this->texts[$key] = false === $row ? null : $row;
         }
 
-        return trim((string) ($this->texts[$language][$column] ?? ''));
+        return $this->texts[$key];
+    }
+
+    /** A trimmed column of the applicable configuration ('' when none). */
+    public function configValue(int $id, string $language, string $column): string
+    {
+        return trim((string) ($this->config($id, $language)[$column] ?? ''));
+    }
+
+    /** @return list<array{id: int, title: string, language: string}> */
+    public function configs(): array
+    {
+        try {
+            $rows = $this->db->fetchAllAssociative('SELECT id, title, language FROM tl_neo_websitecheck_config ORDER BY language, title');
+        } catch (DbalException) {
+            return [];
+        }
+
+        return array_map(static fn (array $r): array => ['id' => (int) $r['id'], 'title' => (string) $r['title'], 'language' => (string) $r['language']], $rows);
+    }
+
+    /** @deprecated use configValue(); kept for templates/extensions written against 1.0 */
+    public function text(string $language, string $column): string
+    {
+        return $this->configValue(0, $language, $column);
     }
 
     public function reset(): void

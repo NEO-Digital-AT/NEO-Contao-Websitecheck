@@ -1,0 +1,13 @@
+<div style="margin-bottom:{{ t.space[block.space] }};page-break-inside:avoid">
+  {% if block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+  {% if block.title %}<h2>{{ block.title }}</h2>{% endif %}
+  {% if block.html %}<div>{{ block.html }}</div>{% endif %}
+  <table style="width:100%;border-collapse:separate;border-spacing:0;background:{{ t.accent }};color:{{ t.accent_ink }};border-radius:{{ t.r }};margin-top:4mm"><tr>
+    {% if block.show_portrait and brand.portrait_data %}<td style="width:30mm;padding:5mm 0 5mm 6mm;vertical-align:middle"><img src="{{ brand.portrait_data }}" alt="" style="width:22mm;height:22mm;border-radius:50%;object-fit:cover;border:2px solid {{ t.accent_ink }}"></td>{% endif %}
+    <td style="padding:5mm 6mm;vertical-align:middle">
+      <b style="display:block;font-size:12pt;margin-bottom:1.5mm">{{ brand.owner_name ?: brand.name }}{% if brand.owner_name and brand.name %}, {{ brand.name }}{% endif %}</b>
+      {% if block.promise %}<p style="margin:0 0 1.5mm">{{ block.promise|nl2br }}</p>{% endif %}
+      {% if block.show_contact %}<p class="mono" style="margin:0;color:{{ t.accent_ink }}">{{ [brand.phone, contact_url]|filter(v => v)|join(' · ') }}</p>{% endif %}
+    </td>
+  </tr></table>
+</div>

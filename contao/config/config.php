@@ -2,24 +2,32 @@
 
 declare(strict_types=1);
 
+use Neo\WebsitecheckBundle\Backend\DesignerOperation;
 use Neo\WebsitecheckBundle\Backend\PreviewOperation;
 use Neo\WebsitecheckBundle\Backend\ResendOperation;
+use Neo\WebsitecheckBundle\Widget\DesignerWidget;
 
-/*
- * Back-end modules:
- *  - NEO › Website checks: every check with grade and lead data (tl_neo_websitecheck);
- *    "resend" re-sends the report e-mail (key=resend).
- *  - NEO › Website check settings: brand, design, sender, limits and the
- *    customer-facing texts per language; "preview_pdf" / "preview_mail" render
- *    the templates with real or demo data.
- */
 $GLOBALS['BE_MOD']['neo']['neo_websitecheck'] = [
     'tables' => ['tl_neo_websitecheck'],
     'resend' => [ResendOperation::class, '__invoke'],
 ];
 
+/*
+ * Settings module: the single settings record plus the configurations per
+ * language (child table). "key=" operations: previews with the latest check
+ * or demo data, and the endpoints of the visual designer (live preview, PDF
+ * of a draft, presets, image upload, Twig export).
+ */
 $GLOBALS['BE_MOD']['neo']['neo_websitecheck_settings'] = [
-    'tables' => ['tl_neo_websitecheck_settings', 'tl_neo_websitecheck_text'],
+    'tables' => ['tl_neo_websitecheck_settings', 'tl_neo_websitecheck_config'],
     'preview_pdf' => [PreviewOperation::class, 'pdf'],
     'preview_mail' => [PreviewOperation::class, 'mail'],
+    'designer_preview' => [DesignerOperation::class, 'preview'],
+    'designer_pdf' => [DesignerOperation::class, 'pdf'],
+    'designer_preset' => [DesignerOperation::class, 'preset'],
+    'designer_upload' => [DesignerOperation::class, 'upload'],
+    'designer_twig' => [DesignerOperation::class, 'twig'],
 ];
+
+// Back-end form field: the visual e-mail/PDF designer
+$GLOBALS['BE_FFL']['neoDesigner'] = DesignerWidget::class;

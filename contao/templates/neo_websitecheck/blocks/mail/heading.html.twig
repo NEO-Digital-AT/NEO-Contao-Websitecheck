@@ -1,0 +1,2 @@
+{% set size = {h1: '26px', h2: '20px', h3: '17px'}[block.level] %}
+<tr><td style="padding:0 28px {{ t.space_px[block.space] }};text-align:{{ block.align }};"><{{ block.level }} style="margin:0;font-size:{{ size }};line-height:1.25;color:{{ t.primary }};">{{ block.text }}</{{ block.level }}></td></tr>

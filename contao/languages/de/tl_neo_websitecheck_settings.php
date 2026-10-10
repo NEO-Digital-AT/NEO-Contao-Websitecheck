@@ -6,7 +6,7 @@ $l = &$GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
 
 $l['brand_legend'] = 'Wer den Bericht verschickt';
 $l['design_legend'] = 'Design';
-$l['texts_legend'] = 'Texte';
+$l['texts_legend'] = 'Konfigurationen (Texte, E-Mail, PDF je Sprache)';
 $l['mail_legend'] = 'E-Mail';
 $l['limits_legend'] = 'Grenzen';
 
@@ -21,7 +21,7 @@ $l['logo_dark'] = ['Logo für dunklen Hintergrund', 'Optionale Variante für den
 $l['portrait'] = ['Porträtfoto', 'Optional, erscheint im Kasten „So geht es weiter“ und in der E-Mail-Signatur.'];
 $l['color_primary'] = ['Hauptfarbe', 'Überschriften, Kästen, E-Mail-Kopf (Hex, z. B. 2a025f).'];
 $l['color_accent'] = ['Akzentfarbe', 'Noten-Badges, Knöpfe, Marker (Hex, z. B. a8f20d).'];
-$l['texts_info'] = ['Texte je Sprache', ''];
+$l['texts_info'] = ['Konfigurationen', ''];
 $l['from_name'] = ['Absendername', 'Leer = Firmenname.'];
 $l['from_email'] = ['Absenderadresse', 'Leer = config.yaml oder die Contao-Admin-Adresse.'];
 $l['reply_to'] = ['Antwortadresse', 'Dorthin gehen Antworten auf die Berichts-E-Mail.'];
@@ -32,9 +32,9 @@ $l['retention_days'] = ['Aufbewahrung in Tagen', 'Danach werden Checks samt Kont
 $l['max_pages'] = ['Seiten je Check', 'Startseite plus wichtige Unterseiten, höchstens 8. 0 = config.yaml (5).'];
 
 $l['edit'] = ['Bearbeiten', 'Einstellungen bearbeiten'];
-$l['texts'] = ['Texte bearbeiten', 'Die kundensichtbaren Texte je Sprache bearbeiten'];
+$l['configs'] = ['Konfigurationen', 'E-Mail, PDF und Texte je Sprache gestalten'];
 $l['preview_pdf'] = ['Vorschau PDF', 'PDF-Bericht mit dem letzten fertigen Check (oder Beispieldaten) anzeigen'];
 $l['preview_mail'] = ['Vorschau E-Mail', 'Berichts-E-Mail mit dem letzten fertigen Check (oder Beispieldaten) anzeigen'];
-$l['textsButton'] = 'Texte bearbeiten (%d)';
-$l['textsNone'] = 'Noch keine eigenen Texte, es gelten die mitgelieferten. Klicken, um einzelne Texte je Sprache zu überschreiben.';
-$l['textsList'] = 'Eigene Texte für: %s';
+$l['textsButton'] = 'Konfigurationen bearbeiten (%d)';
+$l['textsNone'] = 'Noch keine Konfiguration. Legen Sie je Sprache eine an: Dort gestalten Sie E-Mail und PDF-Bericht, Betreff, Absender und die Texte des Elements. Bis dahin gelten die mitgelieferten Vorlagen.';
+$l['textsList'] = 'Vorhanden: %s';

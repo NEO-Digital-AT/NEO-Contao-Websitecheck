@@ -6,6 +6,16 @@ All notable changes to this bundle are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- **Visual designer for e-mail and PDF** replaces the long list of text fields: blocks (cover, heading, text, image, grade, rings, areas, measures, area detail, pages table, next steps, signature, page break …) added by click or drag and drop, reordered in the structure, edited in a properties panel with placeholders, rich text and image upload; theme settings (colours, font, radius, margins, header/footer); live preview; ready-made templates per language; real PDF of the draft. Stored as JSON and rendered through one Twig partial per block (overridable).
+- **Configurations instead of text records:** `tl_neo_websitecheck_config` (one per language or use case) holds subject, sender, PDF file name, both designs, the element texts and the expert Twig templates. The content element picks a configuration or uses the one of the page language; the check stores it (`config_id`).
+
+### Fixed
+- **Privacy:** a check served from the 24-hour cache copied the source check's folder including its PDF, and that PDF (with the first visitor's name) was sent again. The copy now skips PDFs, and a PDF is only reused when it belongs to the same check.
+- **Numbers in grade badges sat 2–6 mm too high in Dompdf PDFs.** Dompdf only centres text vertically when width, height and `vertical-align: middle` are on the table cell; every badge now uses one measured macro (`_pdf_macros.html.twig`). An automatic check measured all badges in all templates (offset ≤ 0.3 mm).
+- PDF and e-mail labels used the language of the current request (English in the console or for browsers set to English); rendering now switches the translator to the check's language.
+- Default report: the second column of area cards ran past the right page margin; measure rows showed a seam between number and text; legend chips were off-centre.
+
 ### Fixed
 - JSON endpoints (`start`, `claim`) answered 400 for visitors with any cookie: Contao's request-token check applied to them. Routes now set `_token_check: false` and the script sends `X-Requested-With`.
 - Contao 5.3: templates were not found (missing `.twig-root` marker); content element used the non-existent `jumpTo`/`guests` columns — now the core `url` field with page picker.

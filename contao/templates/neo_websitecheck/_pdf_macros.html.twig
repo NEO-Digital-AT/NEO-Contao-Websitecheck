@@ -1,0 +1,27 @@
+{#
+  Shared PDF helpers. badge(): a coloured square with a centred number.
+  Dompdf centres text vertically ONLY when width, height and vertical-align
+  sit on the table cell itself (measured: line-height tricks or height on the
+  table leave the digit 2–6 mm too high). Background, radius and border are
+  repeated inline on the cell so surrounding rules such as ".areas td" cannot
+  repaint it. A dash (no grade) sits low in the font, so it gets a small
+  bottom padding to look centred. Keep this structure when restyling.
+#}
+{% macro badge(value, size, pt, bg, ink, radius) -%}
+<table class="badge" style="border-collapse:collapse;border-radius:{{ radius|default('2mm') }};background:{{ bg }}"><tr><td style="width:{{ size }}mm;height:{{ size }}mm;padding:0 0 {{ value == '–' ? (pt * 0.073)|round(2) : 0 }}mm;border:0;border-radius:{{ radius|default('2mm') }};background:{{ bg }};text-align:center;vertical-align:middle;font-weight:bold;font-size:{{ pt }}pt;line-height:1;color:{{ ink }}">{{ value }}</td></tr></table>
+{%- endmacro %}
+
+{# Grade legend as a table (badge cell + label cell), two items per row (no wrapping inside a label); cells reset border/background so card rules do not leak in. #}
+{% macro legend(t, labels) -%}
+<table style="border-collapse:collapse;margin-top:1.2mm">
+  {% for row in [1, 2, 3, 4, 5]|batch(2) %}
+  <tr>
+    {% for n in row %}
+    <td style="width:6mm;padding:.6mm 1mm .6mm 0;border:0;background:transparent;vertical-align:middle">{{ _self.badge(n, 4.4, 7, t.grade_bg[n], t.grade_ink[n], '1.2mm') }}</td>
+    <td style="padding:.6mm 4mm .6mm 0;border:0;background:transparent;vertical-align:middle;font-size:7.5pt;line-height:1.2;white-space:nowrap;color:{{ t.muted }}">{{ labels[n] }}</td>
+    {% endfor %}
+    {% if row|length < 2 %}<td colspan="2" style="border:0;background:transparent"></td>{% endif %}
+  </tr>
+  {% endfor %}
+</table>
+{%- endmacro %}

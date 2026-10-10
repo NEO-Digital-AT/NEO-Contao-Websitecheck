@@ -1,0 +1,4 @@
+<table style="width:100%;border-collapse:collapse;margin-bottom:{{ t.space[block.space] }};page-break-inside:avoid"><tr>
+  {% if block.show_portrait and brand.portrait_data %}<td style="width:20mm;vertical-align:top;padding-right:4mm"><img src="{{ brand.portrait_data }}" alt="" style="width:16mm;height:16mm;border-radius:50%;object-fit:cover"></td>{% endif %}
+  <td style="vertical-align:top">{{ block.html ?: ('<b>' ~ (brand.owner_name ?: brand.name) ~ '</b><br>' ~ brand.name ~ '<br>' ~ brand.phone)|raw }}</td>
+</tr></table>

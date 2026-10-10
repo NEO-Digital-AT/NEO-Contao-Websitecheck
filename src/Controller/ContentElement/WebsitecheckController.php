@@ -43,6 +43,9 @@ final class WebsitecheckController extends AbstractContentElementController
         $lang = $page instanceof PageModel ? (string) $page->language : ($request->getLocale() ?: 'en');
 
         $brand = $this->settings->brand();
+        // Configuration: the one picked in the element (core "module" column) or the one matching the page language.
+        $config = $this->settings->db()?->config((int) ($model->row()['module'] ?? 0), $lang);
+        $configId = (int) ($config['id'] ?? 0);
         $contactUrl = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
         $privacyUrl = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
 
@@ -73,6 +76,7 @@ final class WebsitecheckController extends AbstractContentElementController
             'limit' => $this->settings->checksPerIpPerDay(),
             'dataLayer' => $this->settings->dataLayer(),
             'contactUrl' => $contactUrl,
+            'config' => $configId,
         ];
 
         $template->set('config', $config);
@@ -81,7 +85,8 @@ final class WebsitecheckController extends AbstractContentElementController
         $template->set('contact_url', $contactUrl);
         $template->set('privacy_url', $privacyUrl);
         $template->set('style', $style);
-        $template->set('vars', ['company' => (string) $brand['name'], 'owner' => (string) $brand['owner_name'], 'phone' => (string) $brand['phone'], 'website' => (string) $brand['website_url'], 'days' => (string) $this->settings->retentionDays()]);
+        $template->set('vars', ['company' => (string) $brand['name'], 'owner' => (string) $brand['owner_name'], 'phone' => (string) $brand['phone'], 'website' => (string) $brand['website_url'], 'days' => (string) $this->settings->retentionDays(), 'config_id' => $configId]);
+        $template->set('config_id', $configId);
         $template->set('newsletter', $this->settings->newsletterEnabled());
         $template->set('newsletter_label', (string) ($this->settings->newsletter()['label'] ?? ''));
         $template->set('altcha', null !== $this->altcha);

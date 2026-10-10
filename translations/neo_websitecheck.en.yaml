@@ -512,6 +512,12 @@ report:
     next_text: 'Any web agency or your current provider can implement the measures on page 2. If you like, we go through the list together: 20 minutes on the phone, free of charge, no sales talk.'
     next_promise: 'This report is free and does not oblige you to anything.'
     sources: 'Sources: Google PageSpeed Insights (Lighthouse %lighthouse%), own HTML/legal/AI-visibility checks, AI reading of the page texts · %date%'
+    page_short: 'Page'
+    cover_subtitle: 'Speed, accessibility, Google and AI search, texts, imprint and privacy: seven areas, one overall grade, three concrete measures.'
+    summary_title: 'The result'
+    measures_title: 'The most important measures'
+    what_works_short: 'Speed in detail'
+    pages_eyebrow_plain: 'Pages checked'
 
 # ---------------------------------------------------------------- e-mail
 mail:
@@ -533,3 +539,194 @@ mail:
     cta_alt: 'or simply reply to this e-mail'
     newsletter_note: 'You ticked the newsletter box. A separate e-mail with a confirmation link follows; you are only subscribed after clicking it.'
     footer: 'You receive this e-mail because you requested the website check for %domain%. We use your details only for this report and delete them after %days% days unless you subscribed to the newsletter or sent an inquiry.'
+    greeting_plain: 'Hello {{firstname}},'
+    intro_plain: 'thank you for your trust. We checked {{pages}} pages of {{domain}}: mobile speed, accessibility, findability on Google and in AI search, texts, imprint and cookie notice.'
+    short_intro: 'here is your website check for {{domain}}. The details are in the attached PDF.'
+    footer_plain: 'You receive this e-mail because you requested the website check for {{domain}}. We use your details only for this report and delete them after {{days}} days unless you subscribed to the newsletter or sent an enquiry.'
+
+# ---------------------------------------------------------------- Designer (back end)
+designer:
+    group:
+        content: 'Content'
+        data: 'Data from the check'
+        layout: 'Layout'
+    ui:
+        blocks: 'Blocks'
+        structure: 'Structure'
+        properties: 'Properties'
+        theme: 'Design'
+        preview: 'Preview'
+        presets: 'Load template'
+        preset_confirm: 'The current design will be replaced by the template. Continue?'
+        add: 'Add'
+        duplicate: 'Duplicate'
+        remove: 'Remove'
+        up: 'Move up'
+        down: 'Move down'
+        empty: 'No blocks yet. Click a block on the left or drag it here, or load a template.'
+        select_hint: 'Click a block in the preview or in the structure to edit it.'
+        placeholders: 'Placeholders'
+        insert_placeholder: 'Insert placeholder'
+        choose_image: 'Choose image'
+        upload_image: 'Upload'
+        remove_image: 'Remove image'
+        pdf_preview: 'PDF preview'
+        mail_preview: 'Open in new tab'
+        export_twig: 'Copy to Twig template'
+        export_confirm: 'The Twig template (expert mode) will be overwritten with this design. Continue?'
+        twig_active: 'Note: a Twig template is set in expert mode. It takes precedence, this design is then not used.'
+        loading: 'Rendering preview …'
+        error: 'The preview could not be rendered.'
+        bold: 'Bold'
+        italic: 'Italic'
+        link: 'Link'
+        link_prompt: 'Link address (https://…)'
+        list: 'List'
+        drag: 'Drag to reorder'
+        demo_hint: 'The preview uses the latest finished check or demo data.'
+    opt:
+        none: 'None'
+        s: 'Small'
+        m: 'Medium'
+        l: 'Large'
+        xl: 'Extra large'
+        soft: 'Light'
+        primary: 'Primary colour'
+        accent: 'Accent colour'
+        white: 'White'
+        auto: 'Automatic (from settings)'
+        text: 'Name only'
+        h1: 'Heading 1'
+        h2: 'Heading 2'
+        h3: 'Heading 3'
+        normal: 'Normal'
+        muted: 'Muted'
+        left: 'Left'
+        center: 'Centred'
+        right: 'Right'
+        montage: 'Desktop and phone overlapping'
+        desktop: 'Desktop only'
+        mobile: 'Phone only'
+        side: 'Side by side'
+        cards: 'Cards (two columns)'
+        list: 'List'
+        contact: 'Contact page'
+        website: 'Website'
+        custom: 'Custom address'
+        outline: 'Outlined'
+        sans: 'Sans-serif (DejaVu Sans)'
+        serif: 'Serif (DejaVu Serif)'
+        system: 'Helvetica / Arial'
+        narrow: 'Narrow'
+        wide: 'Wide'
+        '1': 'One column'
+        '2': 'Two columns'
+        speed: 'Speed'
+        accessibility: 'Accessibility'
+        seo: 'Findability on Google'
+        ai: 'Visibility in AI search'
+        content: 'Content & clarity'
+        legal: 'Legal & privacy'
+        mobile_area: 'Mobile'
+    prop:
+        eyebrow: 'Small line above'
+        title: 'Title'
+        subtitle: 'Subtitle'
+        text: 'Text'
+        html: 'Text'
+        intro: 'Introduction'
+        note: 'Note below'
+        level: 'Size'
+        align: 'Alignment'
+        space: 'Space after'
+        bg: 'Background'
+        size: 'Font size'
+        tone: 'Colour'
+        columns: 'Columns'
+        src: 'Image'
+        image: 'Custom image'
+        width: 'Width'
+        caption: 'Caption'
+        rounded: 'Rounded corners'
+        height: 'Height'
+        style: 'Style'
+        layout: 'Layout'
+        legend: 'Show grade legend'
+        max: 'Maximum entries'
+        max_issues: 'Maximum findings'
+        max_good: 'Maximum positive points'
+        area: 'Area'
+        show_grade: 'Show grade'
+        show_summary: 'Show summary'
+        show_domain: 'Show domain'
+        show_meta: 'Show pages, date, recipient'
+        show_screens: 'Show screenshots'
+        show_pages: 'Pages checked'
+        show_date: 'Date'
+        show_for: 'Recipient'
+        show_effort: 'Show effort'
+        show_crops: 'Show marked excerpts'
+        show_kpis: 'Show metrics'
+        show_portrait: 'Show portrait'
+        show_contact: 'Show contact line'
+        logo: 'Logo'
+        tagline: 'Line on the right'
+        label: 'Label'
+        target: 'Target'
+        url: 'Custom address'
+        alt: 'Text next to the button'
+        promise: 'Promise in the contact box'
+        perf: 'Performance'
+        a11y: 'Accessibility'
+        bp: 'Best practices'
+        seo: 'SEO'
+    theme:
+        primary: 'Primary colour (empty = settings)'
+        accent: 'Accent colour (empty = settings)'
+        text: 'Text colour'
+        soft: 'Light surfaces'
+        font: 'Font'
+        radius: 'Corner radius'
+        margins: 'Page margins'
+        header: 'Header on every page'
+        header_text: 'Header text (empty = “Website check · date”)'
+        footer: 'Footer on every page'
+        footer_text: 'Footer text'
+        page_numbers: 'Page numbers'
+        outer: 'Background around the e-mail'
+        size: 'Base font size'
+    preset:
+        pdf:
+            standard: 'Standard (cover with grade, all areas)'
+            cover: 'With cover page (cover in primary colour, result on page 2)'
+            compact: 'Compact (one page)'
+        mail:
+            standard: 'Standard (grade, measures, PDF note, button)'
+            short: 'Short (grade, PDF note, button)'
+    block:
+        cover: {label: 'Cover page', desc: 'Logo, title, domain, optionally grade, key figures and screenshots. A new page starts afterwards.'}
+        heading: {label: 'Heading', desc: 'Heading with an optional small line above.'}
+        text: {label: 'Text', desc: 'Body text with placeholders, optionally on a coloured surface.'}
+        image: {label: 'Image', desc: 'Your own image from the file manager or uploaded.'}
+        note: {label: 'Note', desc: 'Small text with a side rule.'}
+        next_steps: {label: 'Next steps', desc: 'Your offer with contact box, portrait and phone.'}
+        signature: {label: 'Signature', desc: 'Name, company, phone, optional portrait.'}
+        grade_box: {label: 'Overall grade', desc: 'Large grade with grade word and summary.'}
+        meta_cards: {label: 'Key figures', desc: 'Pages checked, date, recipient.'}
+        screenshots: {label: 'Screenshots', desc: 'Start page on desktop and phone.'}
+        gauges: {label: 'Google rings', desc: 'The PageSpeed scores as rings, optionally with metrics.'}
+        areas: {label: 'Areas at a glance', desc: 'The seven areas with grade and short text.'}
+        measures: {label: 'Measures', desc: 'The most important measures, numbered, with effort.'}
+        strengths: {label: 'What already works', desc: 'Positive points as a check list.'}
+        area_detail: {label: 'Area in detail', desc: 'One area with findings and positive points; accessibility with marked excerpts.'}
+        kpis: {label: 'Speed metrics', desc: 'LCP, CLS, INP, performance, page weight, requests.'}
+        pages_table: {label: 'Table of pages', desc: 'All checked pages with title, LCP, contrast and grade.'}
+        sources: {label: 'Sources', desc: 'Automatic source note with Lighthouse version and date.'}
+        spacer: {label: 'Spacer', desc: 'Empty space.'}
+        divider: {label: 'Divider', desc: ''}
+        page_break: {label: 'Page break', desc: 'The next block starts on a new page.'}
+        header: {label: 'Header', desc: 'Coloured header with logo or company name.'}
+        button: {label: 'Button', desc: 'Call to action, e.g. book a call.'}
+        pdf_note: {label: 'PDF note', desc: 'Note on the attachment, only when a PDF is attached.'}
+        newsletter_note: {label: 'Newsletter note', desc: 'Only visible when the visitor ticked the box.'}
+        footer: {label: 'Footer', desc: 'Grey closing with privacy note.'}

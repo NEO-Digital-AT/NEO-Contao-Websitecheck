@@ -58,7 +58,17 @@ final class PreviewOperation
      *
      * @return array<string, mixed>
      */
-    private function sampleRow(): array
+    /**
+     * @param array<string, mixed>|null $overrides row fields to force (e.g. config_id, locale)
+     */
+    public function sampleRow(array|null $overrides = null): array
+    {
+        $row = $this->baseRow();
+
+        return null === $overrides ? $row : array_replace($row, $overrides);
+    }
+
+    private function baseRow(): array
     {
         $request = $this->requestStack->getCurrentRequest();
         $locale = $request?->getLocale() ?: 'en';
@@ -68,9 +78,14 @@ final class PreviewOperation
             $locale = $forced;
         }
 
+        $configId = (int) $request?->query->get('config', 0);
         $row = $this->repository->findLatestDone();
 
         if (null !== $row && '' !== (string) $row['email']) {
+            if ($configId > 0) {
+                $row['config_id'] = $configId;
+            }
+
             // Re-grade in the requested language so a language preview shows that language.
             if (substr((string) $row['locale'], 0, 2) !== $locale) {
                 $row['locale'] = $locale;
@@ -97,6 +112,7 @@ final class PreviewOperation
             'email' => 'maria@example.com',
             'newsletter' => '1',
             'pdf_path' => 'demo.pdf',
+            'config_id' => $configId,
             'result' => $result,
             'data' => $data,
             '_demo_dir' => $demoDir,

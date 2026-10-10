@@ -18,14 +18,15 @@ use Neo\WebsitecheckBundle\Backend\SettingsCallbacks;
  *
  * Like other single-record modules the list view is skipped: the module opens
  * the edit mask directly. Texts (PDF, e-mail, element) live per language in
- * the child table tl_neo_websitecheck_text ("Edit texts" button). "Preview PDF"
+ * the child table tl_neo_websitecheck_config ("Edit configurations" button,
+ * with the visual e-mail/PDF designer). "Preview PDF"
  * and "Preview e-mail" render the templates with the last finished check or
  * bundled demo data, so changes can be checked immediately.
  */
 $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
     'config' => [
         'dataContainer' => DC_Table::class,
-        'ctable' => ['tl_neo_websitecheck_text'],
+        'ctable' => ['tl_neo_websitecheck_config'],
         'enableVersioning' => true,
         'notCreatable' => true,
         'notCopyable' => true,
@@ -46,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
         ],
         'operations' => [
             'edit' => ['href' => 'act=edit', 'icon' => 'edit.svg'],
-            'texts' => ['href' => 'table=tl_neo_websitecheck_text', 'icon' => 'edit.svg'],
+            'configs' => ['href' => 'table=tl_neo_websitecheck_config', 'icon' => 'edit.svg'],
         ],
     ],
     'edit' => [

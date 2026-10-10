@@ -1,0 +1,10 @@
+{% trans_default_domain 'neo_websitecheck' %}
+{% set cards = [] %}
+{% if block.show_pages %}{% set cards = cards|merge([{l: 'report.meta_pages'|trans, v: result.pagesChecked}]) %}{% endif %}
+{% if block.show_date %}{% set cards = cards|merge([{l: 'report.meta_date'|trans, v: date}]) %}{% endif %}
+{% if block.show_for %}{% set cards = cards|merge([{l: 'report.meta_for'|trans, v: (first_name ~ ' ' ~ last_name)|trim}]) %}{% endif %}
+{% if cards %}
+<table style="width:100%;border-collapse:separate;border-spacing:3mm 0;margin:0 -3mm {{ t.space[block.space] }}"><tr>
+  {% for c in cards %}<td style="width:{{ (100 / cards|length)|round }}%;padding:3mm 4mm;background:{{ t.soft }};border:1px solid {{ t.line }};border-radius:{{ t.r }}"><small style="display:block;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:{{ t.muted }};margin-bottom:1mm">{{ c.l }}</small><b style="font-size:11pt;color:{{ t.primary }}">{{ c.v }}</b></td>{% endfor %}
+</tr></table>
+{% endif %}

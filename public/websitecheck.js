@@ -138,7 +138,7 @@
       if (!domain) { input.focus(); return; }
       var btn = urlForm.querySelector('button[type="submit"]'); btn.disabled = true;
       waitForAltcha(8000).then(function (altcha) {
-        return api('POST', cfg.start, { url: input.value.trim(), altcha: altcha, lang: cfg.lang, website: urlForm.elements.website ? urlForm.elements.website.value : '', started: urlForm.elements.started.value });
+        return api('POST', cfg.start, { url: input.value.trim(), altcha: altcha, lang: cfg.lang, config: cfg.config || 0, website: urlForm.elements.website ? urlForm.elements.website.value : '', started: urlForm.elements.started.value });
       }).then(function (j) {
         btn.disabled = false;
         if (!j || j.error) { showErr(err, errText(j)); return; }

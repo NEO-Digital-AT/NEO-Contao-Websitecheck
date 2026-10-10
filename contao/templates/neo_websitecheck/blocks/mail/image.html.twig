@@ -1,0 +1,3 @@
+{% if block.src %}
+<tr><td style="padding:0 28px {{ t.space_px[block.space] }};text-align:{{ block.align }};"><img src="{{ block.src }}" alt="" width="{{ (544 * block.width / 100)|round }}" style="width:{{ block.width }}%;max-width:100%;height:auto;display:inline-block;{% if block.rounded %}border-radius:{{ t.rpx }};{% endif %}"></td></tr>
+{% endif %}

@@ -38,15 +38,18 @@ final class ReportMailer
     /**
      * @param array<string, mixed> $row
      */
-    public function send(array $row): void
+    /**
+     * @param bool $freshPdf render the PDF again (resend from the back end: current design and texts)
+     */
+    public function send(array $row, bool $freshPdf = false): void
     {
         $locale = (string) ($row['locale'] ?: 'en');
         $result = (array) $row['result'];
-        $pdfPath = $this->pdf->generate($row);
+        $pdfPath = $this->pdf->generate($row, $freshPdf);
 
         $vars = $this->renderer->context($row)['vars'];
         $subject = $this->texts->get('mail.subject', $locale, $vars);
-        $from = $this->from($locale);
+        $from = $this->from($locale, $this->renderer->configFor($row));
 
         $email = (new Email())
             ->from($from)
@@ -55,7 +58,8 @@ final class ReportMailer
             ->html($this->renderer->renderMail($row, 'mail_visitor'))
             ->text($this->plain($row, $locale));
 
-        $replyTo = $this->settings->db()?->text(substr($locale, 0, 2), 'mail_reply_to') ?: $this->settings->mail()['reply_to'];
+        $config = $this->renderer->configFor($row);
+        $replyTo = trim((string) ($config['mail_reply_to'] ?? '')) ?: $this->settings->mail()['reply_to'];
 
         if ('' !== $replyTo) {
             $email->replyTo($replyTo);
@@ -88,12 +92,11 @@ final class ReportMailer
         $this->repository->update((int) $row['id'], ['mail_sent' => time()]);
     }
 
-    private function from(string $locale = 'en'): Address
+    private function from(string $locale = 'en', array|null $config = null): Address
     {
         $mail = $this->settings->mail();
-        $lang = substr($locale, 0, 2);
-        $address = trim($this->settings->db()?->text($lang, 'mail_from_email') ?: $mail['from_email']);
-        $mail['from_name'] = $this->settings->db()?->text($lang, 'mail_from_name') ?: $mail['from_name'];
+        $address = trim((string) ($config['mail_from_email'] ?? '')) ?: $mail['from_email'];
+        $mail['from_name'] = trim((string) ($config['mail_from_name'] ?? '')) ?: $mail['from_name'];
 
         if ('' === $address) {
             $this->framework->initialize();

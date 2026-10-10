@@ -1,0 +1,8 @@
+{% set size = {s: '13px', m: t.font_size, l: '18px'}[block.size] %}
+{% set color = block.tone == 'muted' ? t.muted : (block.tone == 'primary' ? t.primary : t.text) %}
+{% set bg = {none: '', soft: t.soft, primary: t.primary, accent: t.accent}[block.bg] %}
+{% set ink = {none: color, soft: color, primary: t.primary_ink, accent: t.accent_ink}[block.bg] %}
+<tr><td style="padding:0 28px {{ t.space_px[block.space] }};">
+  {% if bg %}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:{{ bg }};border-radius:{{ t.rpx }};"><tr><td style="padding:14px 18px;font-size:{{ size }};color:{{ ink }};text-align:{{ block.align }};">{{ block.html }}</td></tr></table>
+  {% else %}<div style="font-size:{{ size }};color:{{ ink }};text-align:{{ block.align }};">{{ block.html }}</div>{% endif %}
+</td></tr>

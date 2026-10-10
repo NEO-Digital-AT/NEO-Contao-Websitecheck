@@ -1,0 +1,4 @@
+<div style="text-align:{{ block.align }};margin-bottom:{{ t.space[block.space] }};page-break-after:avoid">
+  {% if block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+  {% if block.text %}<{{ block.level }} style="margin:0">{{ block.text }}</{{ block.level }}>{% endif %}
+</div>

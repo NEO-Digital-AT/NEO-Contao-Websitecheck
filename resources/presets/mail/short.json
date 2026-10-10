@@ -1,0 +1,13 @@
+{
+  "theme": {},
+  "blocks": [
+    {"id": "header", "type": "header", "props": {"logo": "auto", "tagline": "@report.header", "bg": "primary"}},
+    {"id": "sp1", "type": "spacer", "props": {"height": 24}},
+    {"id": "greeting", "type": "text", "props": {"html": "<p>@mail.greeting_plain</p><p>@mail.short_intro</p>", "space": "m"}},
+    {"id": "grade", "type": "grade_box", "props": {"show_summary": false, "space": "m"}},
+    {"id": "pdf", "type": "pdf_note", "props": {"html": "<p>@mail.pdf_note</p>", "space": "m"}},
+    {"id": "cta", "type": "button", "props": {"label": "@mail.cta", "target": "contact", "alt": "@mail.cta_alt", "style": "accent", "space": "l"}},
+    {"id": "sig", "type": "signature", "props": {"show_portrait": false, "space": "l"}},
+    {"id": "footer", "type": "footer", "props": {"html": "<p>@mail.footer_plain</p>"}}
+  ]
+}

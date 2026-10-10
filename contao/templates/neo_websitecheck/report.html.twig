@@ -1,4 +1,5 @@
 {% trans_default_domain 'neo_websitecheck' %}
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
 {#
   PDF report (A4). Written for Dompdf: tables and floats instead of flex/grid,
   no external assets (images are data URIs), DejaVu Sans as the default font.
@@ -10,6 +11,7 @@
 {% set a = brand.color_accent %}
 {% set gradeColor = {1: a, 2: a, 3: '#ffb020', 4: '#ff6b73', 5: '#ff6b73', 0: '#cccccc'} %}
 {% set gradeInk = {1: p, 2: p, 3: '#1a1a1a', 4: '#1a1a1a', 5: '#1a1a1a', 0: '#555555'} %}
+{% set lt = {grade_bg: gradeColor, grade_ink: gradeInk, muted: '#555555'} %}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
 <head>
@@ -43,7 +45,6 @@ p { margin: 0 0 3mm; }
 .domain { font-family: "DejaVu Sans Mono", Menlo, monospace; font-size: 13pt; color: {{ p }}; margin-bottom: 6mm; }
 .grade-box { width: 100%; border-collapse: separate; border-spacing: 0; background: {{ p }}; color: #fff; border-radius: 4mm; margin-bottom: 5mm; }
 .grade-box td { padding: 6mm; vertical-align: middle; }
-.grade-num { width: 26mm; height: 26mm; border-radius: 4mm; text-align: center; font-size: 30pt; font-weight: bold; line-height: 26mm; }
 .grade-box .word { font-size: 14pt; font-weight: bold; margin: 0 0 2mm; }
 .grade-box p { color: rgba(255,255,255,.88); font-size: 10pt; margin: 0; }
 .meta { width: 100%; border-collapse: separate; border-spacing: 3mm 0; margin: 0 -3mm 6mm; }
@@ -63,9 +64,8 @@ p { margin: 0 0 3mm; }
 .areas td { vertical-align: top; padding: 2mm 2.5mm; border: 1px solid #e3e1ea; background: #fff; }
 .areas td.first { border-right: 0; border-radius: 3mm 0 0 3mm; width: 14mm; }
 .areas td.last { border-left: 0; border-radius: 0 3mm 3mm 0; }
-.areas--two td.last { width: 72mm; }
-.lg { display: inline-block; width: 4.5mm; height: 4.5mm; line-height: 4.5mm; text-align: center; border-radius: 1.2mm; font-style: normal; font-weight: bold; font-size: 7pt; margin: 0 1mm 0 2mm; }
-.chip { display: inline-block; width: 9mm; height: 9mm; line-height: 9mm; text-align: center; border-radius: 2.5mm; font-weight: bold; font-size: 11pt; }
+/* 2 × (11 + 62 + 2 × 2.5 padding) + 3 gap = 169 mm ≤ 178 mm content width */
+.areas--two td.last { width: 62mm; }
 .areas b { display: block; font-size: 9.5pt; color: {{ p }}; }
 .areas p { font-size: 8.5pt; margin: .5mm 0 0; line-height: 1.3; }
 .areas small { display: block; font-size: 7.5pt; color: #777; margin-top: 1mm; font-family: "DejaVu Sans Mono", monospace; }
@@ -77,7 +77,6 @@ p { margin: 0 0 3mm; }
 .measures p { color: rgba(255,255,255,.88); font-size: 8.5pt; margin: 0; }
 .effort { display: inline-block; padding: 1mm 2.5mm; border: 1px solid rgba(180,240,75,.6); border-radius: 3mm; color: {{ a }}; font-size: 7pt; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
 .legend { font-size: 8.5pt; color: #555; margin-top: 4mm; }
-.legend i { display: inline-block; width: 5mm; height: 5mm; line-height: 5mm; text-align: center; border-radius: 1.2mm; font-style: normal; font-weight: bold; font-size: 7.5pt; margin: 0 1mm 0 3mm; }
 .two { width: 100%; border-collapse: collapse; }
 .two > tbody > tr > td { vertical-align: top; width: 50%; padding: 0; }
 .two td.l { padding-right: 4mm; }
@@ -88,7 +87,8 @@ p { margin: 0 0 3mm; }
 .finding td.t { border-left: 0; border-radius: 0 2.5mm 2.5mm 0; }
 .finding b { display: block; color: {{ p }}; }
 .finding small { display: block; font-size: 7.5pt; color: #777; margin-top: 1mm; }
-.dot { display: inline-block; width: 6mm; height: 6mm; line-height: 6mm; text-align: center; border-radius: 50%; font-weight: bold; font-size: 8pt; }
+/* padding, not line-height: Dompdf does not centre text with line-height = height */
+.dot { display: inline-block; width: 6mm; padding: 1.6mm 0; text-align: center; border-radius: 3mm; font-weight: bold; font-size: 8pt; line-height: 1; }
 .dot.warn { background: #ffb020; color: #1a1a1a; }
 .dot.good { background: {{ a }}; color: {{ p }}; }
 .dot.bad { background: #ff6b73; color: #1a1a1a; }
@@ -105,7 +105,6 @@ p { margin: 0 0 3mm; }
 .pages th { text-align: left; font-size: 7pt; letter-spacing: .1em; text-transform: uppercase; color: #777; font-weight: normal; padding: 2mm 2.5mm; border-bottom: 1px solid #e3e1ea; }
 .pages td { padding: 2mm 2.5mm; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; }
 .pages td.wrap { white-space: normal; }
-.pages .chip { width: 8mm; height: 8mm; line-height: 8mm; font-size: 10pt; border-radius: 2mm; }
 .next { width: 100%; border-collapse: separate; border-spacing: 0; background: {{ a }}; color: {{ p }}; border-radius: 4mm; margin-top: 6mm; }
 .next td { padding: 5mm 6mm; vertical-align: middle; }
 .next td.img { width: 30mm; }
@@ -136,7 +135,7 @@ p { margin: 0 0 3mm; }
   <div class="domain">{{ result.domain }}</div>
 
   <table class="grade-box"><tr>
-    <td style="width:38mm"><div class="grade-num" style="background:{{ gradeColor[result.grade] }};color:{{ gradeInk[result.grade] }}">{{ result.grade ?: '–' }}</div></td>
+    <td style="width:38mm">{{ pdf.badge(result.grade ?: '–', 26, 30, gradeColor[result.grade], gradeInk[result.grade], '4mm') }}</td>
     <td><div class="word">{{ 'report.grade_line'|trans({'%grade%': result.grade, '%word%': result.gradeWord}) }}</div><p>{{ result.summary }}</p></td>
   </tr></table>
 
@@ -159,16 +158,16 @@ p { margin: 0 0 3mm; }
   <p class="eyebrow">{{ 'report.overview_eyebrow'|trans }}</p>
   <h2>{{ 'report.overview_title'|trans }}</h2>
   {% set legendCell %}
-    <td class="first" style="background:#f5f3fb"><span class="chip" style="background:{{ p }};color:{{ a }};font-size:9pt">?</span></td>
+    <td class="first" style="background:#f5f3fb">{{ pdf.badge('?', 9, 10, p, a, '2.5mm') }}</td>
     <td class="last" style="background:#f5f3fb"><b>{{ 'report.legend_title'|trans }}</b><p>{{ 'report.legend'|trans }}</p>
-      <small style="font-family:inherit"><span style="white-space:nowrap"><i class="lg" style="background:{{ a }};color:{{ p }}">1</i>{{ 'grade.1'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:{{ a }};color:{{ p }}">2</i>{{ 'grade.2'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:#ffb020">3</i>{{ 'grade.3'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:#ff6b73">4</i>{{ 'grade.4'|trans }}</span> <span style="white-space:nowrap"><i class="lg" style="background:#ff6b73">5</i>{{ 'grade.5'|trans }}</span></small></td>
+      {{ pdf.legend(lt, {1: 'grade.1'|trans, 2: 'grade.2'|trans, 3: 'grade.3'|trans, 4: 'grade.4'|trans, 5: 'grade.5'|trans}) }}</td>
   {% endset %}
   <table class="areas areas--two">
     {% for row in result.areas|batch(2) %}
     <tr>
       {% for area in row %}
       {% if loop.index == 2 %}<td class="gap"></td>{% endif %}
-      <td class="first"><span class="chip" style="background:{{ gradeColor[area.grade] }};color:{{ gradeInk[area.grade] }}">{{ area.grade ?: '–' }}</span></td>
+      <td class="first">{{ pdf.badge(area.grade ?: '–', 9, 11, gradeColor[area.grade], gradeInk[area.grade], '2.5mm') }}</td>
       <td class="last"><b>{{ area.label }}</b><p>{{ area.summary }}</p>{% if area.meta %}<small>{{ area.meta }}</small>{% endif %}</td>
       {% endfor %}
       {% if row|length == 1 %}<td class="gap"></td>{{ legendCell }}{% endif %}
@@ -179,15 +178,13 @@ p { margin: 0 0 3mm; }
 
   {% if result.measures %}
   <p class="eyebrow" style="margin-top:6mm">{{ 'report.measures_eyebrow'|trans }}</p>
-  <table class="measures">
-    {% for m in result.measures %}
-    <tr>
-      <td class="n">{{ '%02d'|format(loop.index) }}</td>
-      <td><b>{{ m.title }}</b><p>{{ m.text }}</p></td>
-      <td class="e"><span class="effort">{{ ('measure.effort.' ~ m.effort)|trans }}</span></td>
-    </tr>
-    {% endfor %}
-  </table>
+  {% for m in result.measures %}
+  <table style="width:100%;border-collapse:collapse;background:{{ p }};border-radius:3mm;margin-bottom:2.5mm;page-break-inside:avoid"><tr>
+    <td style="width:11mm;padding:2.6mm 0 2.6mm 4mm;vertical-align:top;font-family:'DejaVu Sans Mono',monospace;font-weight:bold;font-size:9.5pt;line-height:1.3;color:{{ a }}">{{ '%02d'|format(loop.index) }}</td>
+    <td style="padding:2.6mm 4mm 2.6mm 2mm;vertical-align:top;color:#fff"><b style="display:block;font-size:9.5pt;line-height:1.3;margin-bottom:.8mm">{{ m.title }}</b><p style="margin:0;font-size:8.5pt;line-height:1.4;color:#fff">{{ m.text }}</p></td>
+    <td style="width:30mm;padding:2.6mm 4mm 2.6mm 0;vertical-align:top;text-align:right"><span class="effort">{{ ('measure.effort.' ~ m.effort)|trans }}</span></td>
+  </tr></table>
+  {% endfor %}
   {% endif %}
   {{ footer|replace({'__N__': 2, '__T__': pagesTotal})|raw }}
 </div>
@@ -296,7 +293,7 @@ p { margin: 0 0 3mm; }
         <td class="wrap">{{ pg.title|slice(0, 60) }}</td>
         <td>{{ pg.lcp ?: '–' }}</td>
         <td>{{ pg.perf is null ? '–' : (pg.contrast ? pg.contrast : 'word.none'|trans) }}</td>
-        <td>{% if pg.grade %}<span class="chip" style="background:{{ gradeColor[pg.grade] }};color:{{ gradeInk[pg.grade] }}">{{ pg.grade }}</span>{% else %}–{% endif %}</td>
+        <td>{% if pg.grade %}{{ pdf.badge(pg.grade, 7, 9.5, gradeColor[pg.grade], gradeInk[pg.grade], '2mm') }}{% else %}–{% endif %}</td>
       </tr>
     {% endfor %}
     </tbody>

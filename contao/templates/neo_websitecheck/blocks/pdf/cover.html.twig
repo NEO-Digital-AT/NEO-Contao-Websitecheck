@@ -1,0 +1,39 @@
+{% import '@Contao/neo_websitecheck/_pdf_macros.html.twig' as pdf %}
+{% trans_default_domain 'neo_websitecheck' %}
+{% set dark = block.bg == 'primary' %}
+<div class="cover {{ dark ? 'bg-primary' : (block.bg == 'soft' ? 'bg-soft' : '') }}" style="{% if block.bg != 'white' %}margin:-6mm -8mm 0;padding:10mm 8mm 8mm;border-radius:{{ t.r }};{% endif %}page-break-after:always;">
+  {% if block.logo == 'auto' and (dark ? brand.logo_dark_data : brand.logo_data) %}
+    <div style="margin-bottom:10mm"><img src="{{ dark ? brand.logo_dark_data : brand.logo_data }}" alt="" style="height:10mm"></div>
+  {% elseif block.logo == 'auto' and not t.header %}
+    <div style="margin-bottom:10mm;font-weight:bold;font-size:12pt;color:{{ dark ? t.primary_ink : t.primary }}">{{ brand.name }}</div>
+  {% endif %}
+  {% if block.eyebrow %}<p class="eyebrow">{{ block.eyebrow }}</p>{% endif %}
+  {% if block.title %}<h1 style="font-size:26pt">{{ block.title }}</h1>{% endif %}
+  {% if block.show_domain %}<div class="mono" style="font-size:13pt;color:{{ dark ? t.accent : t.primary }};margin-bottom:6mm">{{ result.domain }}</div>{% endif %}
+  {% if block.subtitle %}<p style="font-size:11pt;max-width:120mm;{{ dark ? 'color:' ~ t.primary_ink : '' }}">{{ block.subtitle|nl2br }}</p>{% endif %}
+  {% if block.image %}<div style="margin:6mm 0"><img src="{{ block.image }}" alt="" style="width:100%;border-radius:{{ t.r }}"></div>{% endif %}
+  {% if block.show_grade %}
+    <table style="width:100%;border-collapse:separate;border-spacing:0;background:{{ dark ? 'rgba(255,255,255,.08)' : t.primary }};color:{{ t.primary_ink }};border-radius:{{ t.r }};margin:6mm 0 5mm"><tr>
+      <td style="width:38mm;padding:6mm;vertical-align:middle">
+        {{ pdf.badge(result.grade ?: '–', 26, 30, t.grade_bg[result.grade], t.grade_ink[result.grade], t.r) }}
+      </td>
+      <td style="padding:6mm 6mm 6mm 0;vertical-align:middle">
+        <div style="font-size:14pt;font-weight:bold;margin-bottom:2mm">{{ 'report.grade_line'|trans({'%grade%': result.grade, '%word%': result.gradeWord}) }}</div>
+        <p style="margin:0;font-size:10pt;color:{{ t.primary_ink }}">{{ result.summary }}</p>
+      </td>
+    </tr></table>
+  {% endif %}
+  {% if block.show_meta %}
+    <table style="width:100%;border-collapse:separate;border-spacing:3mm 0;margin:0 -3mm 6mm"><tr>
+      {% for label, value in {('report.meta_pages'|trans): result.pagesChecked, ('report.meta_date'|trans): date, ('report.meta_for'|trans): (first_name ~ ' ' ~ last_name)|trim} %}
+      <td style="width:33%;padding:3mm 4mm;background:{{ dark ? 'rgba(255,255,255,.1)' : t.soft }};border:1px solid {{ dark ? 'rgba(255,255,255,.2)' : t.line }};border-radius:{{ t.r }}"><small style="display:block;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;color:{{ dark ? t.primary_ink : t.muted }};margin-bottom:1mm">{{ label }}</small><b style="font-size:11pt;color:{{ dark ? t.primary_ink : t.primary }}">{{ value }}</b></td>
+      {% endfor %}
+    </tr></table>
+  {% endif %}
+  {% if block.show_screens and (images.desktop or images.mobile) %}
+    <div style="position:relative;width:100%;height:112mm">
+      {% if images.desktop %}<div style="position:absolute;left:0;top:0;width:78%;border:1px solid #ddd;border-radius:{{ t.r }};overflow:hidden;background:#fff"><div class="mono" style="padding:2mm 3mm;background:#eeedf4;font-size:7pt;color:#777">{{ result.domain }} · Desktop</div><img src="{{ images.desktop }}" alt="" style="width:100%;display:block"></div>{% endif %}
+      {% if images.mobile %}<div style="position:absolute;right:0;bottom:0;width:27%;border:4px solid #1a1a1a;border-radius:5mm;overflow:hidden;background:#fff"><img src="{{ images.mobile }}" alt="" style="width:100%;display:block"></div>{% endif %}
+    </div>
+  {% endif %}
+</div>

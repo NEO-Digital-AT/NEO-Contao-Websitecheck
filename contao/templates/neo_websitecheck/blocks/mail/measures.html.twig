@@ -1,0 +1,6 @@
+{% if result.measures %}
+<tr><td style="padding:0 28px {{ t.space_px[block.space] }};">
+  {% if block.title %}<p style="margin:0 0 8px;"><b>{{ block.title }}</b></p>{% endif %}
+  <ol style="margin:0;padding-left:22px;">{% for m in result.measures|slice(0, block.max) %}<li style="margin-bottom:10px;"><b style="color:{{ t.primary }};">{{ m.title }}.</b> {{ m.text }}</li>{% endfor %}</ol>
+</td></tr>
+{% endif %}

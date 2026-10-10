@@ -92,6 +92,7 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck'] = [
             'sql' => 'text NULL',
         ],
         'locale' => ['sql' => "varchar(8) NOT NULL default 'en'"],
+        'config_id' => ['sql' => 'int(10) unsigned NOT NULL default 0'],
         'status' => [
             'filter' => true,
             'inputType' => 'text',

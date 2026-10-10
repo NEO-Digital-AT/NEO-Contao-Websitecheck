@@ -45,7 +45,8 @@ final class PdfGenerator
         $dir = $this->repository->dir((int) $row['id']);
         $path = $dir.'/'.$this->fileName($row);
 
-        if (!$force && is_file($path) && filesize($path) > 1000) {
+        // Reuse only the PDF this check rendered itself (pdf_path set by us), e.g. for a resend.
+        if (!$force && basename($path) === (string) ($row['pdf_path'] ?? '') && is_file($path) && filesize($path) > 1000) {
             return $path;
         }
 
@@ -69,7 +70,7 @@ final class PdfGenerator
      */
     public function fileName(array $row): string
     {
-        $pattern = $this->settings->db()?->text(substr((string) ($row['locale'] ?: 'en'), 0, 2), 'pdf_filename') ?: 'website-check-{{domain}}-{{date}}.pdf';
+        $pattern = $this->settings->db()?->configValue((int) ($row['config_id'] ?? 0), (string) ($row['locale'] ?: 'en'), 'pdf_filename') ?: 'website-check-{{domain}}-{{date}}.pdf';
         $result = (array) ($row['result'] ?? []);
         $vars = [
             'domain' => (string) ($result['domain'] ?? $row['domain'] ?? 'website'),
