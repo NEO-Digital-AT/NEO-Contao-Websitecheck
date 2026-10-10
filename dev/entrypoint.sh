@@ -40,6 +40,8 @@ neo_websitecheck:
         name: 'Test Agency'
         owner_name: 'Admin'
         website_url: 'http://localhost:8080'
+    limits:
+        checks_per_ip_per_day: 20   # test stand: everything comes from one IP
     pdf:
         engine: '%env(PDF_ENGINE)%'
         gotenberg_url: 'http://gotenberg:3000'

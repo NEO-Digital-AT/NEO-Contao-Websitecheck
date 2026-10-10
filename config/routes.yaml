@@ -11,6 +11,7 @@ neo_websitecheck_start:
     defaults:
         _controller: Neo\WebsitecheckBundle\Controller\Api\CheckController::start
         _scope: frontend
+        _token_check: false   # JSON API: protected by ALTCHA/honeypot, rate limit and tokens, not by Contao's form token
 
 neo_websitecheck_status:
     path: /_neo/websitecheck/{id}/status
@@ -27,6 +28,7 @@ neo_websitecheck_claim:
     defaults:
         _controller: Neo\WebsitecheckBundle\Controller\Api\CheckController::claim
         _scope: frontend
+        _token_check: false
 
 neo_websitecheck_image:
     path: /_neo/websitecheck/{id}/image/{name}

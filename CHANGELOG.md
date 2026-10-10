@@ -7,6 +7,7 @@ All notable changes to this bundle are documented here. The format follows
 ## [Unreleased]
 
 ### Fixed
+- JSON endpoints (`start`, `claim`) answered 400 for visitors with any cookie: Contao's request-token check applied to them. Routes now set `_token_check: false` and the script sends `X-Requested-With`.
 - Contao 5.3: templates were not found (missing `.twig-root` marker); content element used the non-existent `jumpTo`/`guests` columns — now the core `url` field with page picker.
 - Breadcrumb shows "Edit settings" / "Language DE" instead of "Edit element ID 1"; texts link keeps the parent id.
 

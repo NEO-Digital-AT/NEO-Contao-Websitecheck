@@ -34,7 +34,8 @@ Pages: the start page plus up to four key sub-pages found in the navigation and 
 
 ## Requirements
 
-- Contao **5.3 or newer** (ALTCHA spam protection needs 5.7; older versions use a honeypot), PHP 8.2+, GD with JPEG and WebP support (standard).
+- **Contao 5.3 LTS up to 5.7** (`contao/core-bundle ^5.3`, enforced by Composer, so it cannot be installed on Contao 4) and **PHP 8.2+**. Tested on a fresh Contao 5.3 Managed Edition and on Contao 5.7.
+- ALTCHA spam protection needs Contao 5.7; older versions use a honeypot. GD with JPEG and WebP support (standard).
 - A **Google PageSpeed Insights API key** (free, see below). Without a key the public quota is shared and usually exhausted.
 - A working **mailer** (`MAILER_DSN`) in Contao.
 - Optional: an **OpenAI-compatible AI endpoint** (Requesty, OpenAI, Azure OpenAI, Ollama, …) for the "read like a visitor" step; **Gotenberg** for pixel-perfect PDFs; **Brevo** for newsletter double opt-in.
@@ -295,7 +296,8 @@ Seiten: Startseite plus bis zu vier wichtige Unterseiten aus Navigation und Site
 
 ## Voraussetzungen
 
-- Contao **5.3 oder neuer** (ALTCHA ab 5.7, davor Honeypot), PHP 8.2+, GD mit JPEG und WebP (Standard).
+- **Contao 5.3 LTS bis 5.7** (`contao/core-bundle ^5.3`, von Composer erzwungen, eine Installation unter Contao 4 ist damit ausgeschlossen) und **PHP 8.2+**. Getestet in einer frischen Contao-5.3-Managed-Edition und unter Contao 5.7.
+- ALTCHA-Spamschutz ab Contao 5.7, davor Honeypot. GD mit JPEG und WebP (Standard).
 - Ein **Google-PageSpeed-Insights-API-Schlüssel** (kostenlos, siehe unten). Ohne Schlüssel ist das öffentliche Kontingent meist erschöpft.
 - Ein funktionierender **Mailer** (`MAILER_DSN`) in Contao.
 - Optional: ein **OpenAI-kompatibler KI-Endpunkt** (Requesty, OpenAI, Azure OpenAI, Ollama, …) für die Lesung; **Gotenberg** für pixelgenaue PDFs; **Brevo** für den Newsletter-Double-Opt-in.

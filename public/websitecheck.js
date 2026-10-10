@@ -42,7 +42,7 @@
     function showErr(el, msg) { el.textContent = msg || ''; el.hidden = !msg; }
     function norm(v) { v = v.trim().toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, '').replace(/^www\./, ''); return /^([a-z0-9äöüß-]+\.)+[a-z]{2,}$/.test(v) ? v : ''; }
     function api(method, url, body) {
-      return fetch(url, { method: method, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: body ? JSON.stringify(body) : undefined, credentials: 'same-origin' })
+      return fetch(url, { method: method, headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' }, body: body ? JSON.stringify(body) : undefined, credentials: 'same-origin' })
         .then(function (r) { return r.json().then(function (j) { j.__status = r.status; return j; }); });
     }
     function errText(j) {
