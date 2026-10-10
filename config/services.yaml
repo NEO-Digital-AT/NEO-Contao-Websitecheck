@@ -1,0 +1,73 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Neo\WebsitecheckBundle\:
+        resource: ../src/
+        exclude:
+            - ../src/DependencyInjection/
+            - ../src/ContaoManager/
+            - ../src/NeoWebsitecheckBundle.php
+            - ../src/Check/Result/
+
+    # Processed bundle configuration as a typed value object.
+    Neo\WebsitecheckBundle\Settings:
+        arguments:
+            $config: '%neo_websitecheck.config%'
+            $projectDir: '%kernel.project_dir%'
+
+    # Dedicated HTTP clients: the visitor's website must never stall the
+    # request for long, PageSpeed and the AI endpoint legitimately take longer.
+    neo_websitecheck.site_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - { timeout: 10, max_duration: 20, max_redirects: 5 }
+
+    neo_websitecheck.api_client:
+        class: Symfony\Contracts\HttpClient\HttpClientInterface
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        arguments:
+            - { timeout: 60, max_duration: 170 }
+
+    Neo\WebsitecheckBundle\Check\SiteFetcher:
+        arguments:
+            $httpClient: '@neo_websitecheck.site_client'
+
+    Neo\WebsitecheckBundle\Check\PageSpeedClient:
+        arguments:
+            $httpClient: '@neo_websitecheck.api_client'
+
+    Neo\WebsitecheckBundle\Check\AiReviewer:
+        arguments:
+            $httpClient: '@neo_websitecheck.api_client'
+
+    Neo\WebsitecheckBundle\Report\PdfGenerator:
+        arguments:
+            $httpClient: '@neo_websitecheck.api_client'
+
+    Neo\WebsitecheckBundle\Newsletter\BrevoSubscriber:
+        arguments:
+            $httpClient: '@neo_websitecheck.api_client'
+
+    # ALTCHA is optional: Contao provides the service from 5.7 on; older
+    # versions fall back to honeypot + minimum fill time (+ the IP limit).
+    Neo\WebsitecheckBundle\Controller\Api\CheckController:
+        arguments:
+            $altcha: '@?contao.altcha'
+        public: true
+
+    Neo\WebsitecheckBundle\Controller\ContentElement\WebsitecheckController:
+        arguments:
+            $altcha: '@?contao.altcha'
+
+    # Public: the back-end "resend" operation and DCA callbacks resolve them from the container.
+    Neo\WebsitecheckBundle\Check\CheckRepository:
+        public: true
+
+    Neo\WebsitecheckBundle\Mail\ReportMailer:
+        public: true
+
+    Neo\WebsitecheckBundle\Backend\ResendOperation:
+        public: true

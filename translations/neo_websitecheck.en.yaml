@@ -1,0 +1,526 @@
+# NEO Website Check — English texts (front end, report, e-mail).
+# Copy to translations/neo_websitecheck.en.yaml in your project to override single keys.
+word:
+    yes: 'yes'
+    no: 'no'
+    none: 'none'
+grade:
+    1: 'Very good'
+    2: 'Good'
+    3: 'Satisfactory'
+    4: 'Sufficient'
+    5: 'Insufficient'
+verdict:
+    good: 'A solid website. Nothing urgent, a few small things would make it even better.'
+    mid: 'A solid base, but some points are likely costing you inquiries. The most important ones are listed below.'
+    low: 'Clear need for action. Start with the three measures below, then the website becomes a tool that brings customers.'
+area:
+    speed: 'Loading speed'
+    accessibility: 'Accessibility'
+    seo: 'Findability on Google'
+    ai: 'Visibility in AI search'
+    content: 'Content & clarity'
+    legal: 'Legal & privacy'
+    mobile: 'Mobile'
+    unavailable: 'Could not be measured this time.'
+measure:
+    effort:
+        small: 'small effort'
+        medium: 'medium effort'
+        large: 'large effort'
+
+# ---------------------------------------------------------------- speed
+speed:
+    summary:
+        good: 'The start page is visible on a phone after %lcp% s. That is faster than most websites.'
+        ok: 'The start page takes %lcp% s on a phone. Usable, but some visitors leave before it is ready.'
+        bad: 'The start page needs %lcp% s on a phone. Many visitors leave before anything appears.'
+    meta: 'Performance %perf% of 100 · LCP %lcp% s · CLS %cls%'
+    kpi:
+        lcp: 'Main content visible (LCP)'
+        lcp_note: 'limit 2.5 s'
+        cls: 'Layout shifts (CLS)'
+        cls_note: 'limit 0.1'
+        tbt: 'Blocked time (TBT)'
+        tbt_note: 'limit 200 ms'
+        inp: 'Reaction to taps (INP)'
+        inp_note: 'limit 200 ms'
+        perf: 'Performance score'
+        perf_note: 'of 100'
+        bytes: 'Page weight'
+        bytes_note: 'limit 2 MB'
+        requests: 'Requests'
+        requests_note: 'limit 80'
+    issue:
+        lcp:
+            title: 'Start page loads slowly on phones'
+            text: 'The main content appears after %lcp% seconds. Google draws the line at 2.5 seconds; visitors judge even sooner.'
+            fix: 'Shrink the largest image above the fold, load scripts later and let the server send compressed files. Usually one to two hours of work.'
+        largest_image:
+            title: 'One image weighs %kb% KB'
+            text: 'The file "%file%" is the heaviest element of the start page and delays everything after it.'
+            fix: 'Export the image at the displayed width (usually 1200–1600 px) as WebP or AVIF. Often 80 % smaller with no visible difference.'
+        render_blocking:
+            title: '%count% files block the first display'
+            text: 'Stylesheets or scripts in the page head are loaded completely before anything is shown.'
+            fix: 'Load non-critical CSS and JavaScript deferred or asynchronously; keep only the critical styles in the head.'
+        image_formats:
+            title: 'Images in old formats'
+            text: 'JPEG/PNG where WebP or AVIF would be 30–70 % smaller.'
+            fix: 'Let the CMS deliver modern formats automatically (most systems do that with one setting).'
+        responsive_images:
+            title: 'Images larger than displayed'
+            text: 'Phones download desktop-sized images and scale them down.'
+            fix: 'Provide images in several sizes (srcset); the CMS can usually generate them.'
+        unused_js:
+            title: 'Unused JavaScript'
+            text: 'Scripts are loaded that this page does not use. They cost time and battery.'
+            fix: 'Remove unused plugins and tag scripts; load the rest only on the pages that need it.'
+        ttfb:
+            title: 'Server responds slowly'
+            text: 'The server takes %value% to deliver the first byte, before the browser can do anything.'
+            fix: 'Enable page caching in the CMS or ask the hosting provider for a faster plan.'
+        compression:
+            title: 'Files are sent uncompressed'
+            text: 'Text files (HTML, CSS, JavaScript) are not compressed on the way to the browser.'
+            fix: 'Enable gzip or Brotli compression on the server (one line in the server configuration).'
+        cls:
+            title: 'Content jumps while loading (CLS %cls%)'
+            text: 'Elements move after they appeared, so visitors click the wrong thing or lose their place.'
+            fix: 'Reserve space for images, ads and fonts (width/height attributes, font-display: swap).'
+        bytes:
+            title: 'Start page weighs %mb% MB'
+            text: 'On a mobile connection this takes several seconds and costs data volume.'
+            fix: 'Compress images and videos; load videos only when they are visible.'
+        console:
+            title: '%count% errors in the browser console'
+            text: 'JavaScript errors hint at broken functions that visitors may run into.'
+            fix: 'Have the errors checked by the web developer; usually outdated plugins.'
+    good:
+        lcp:
+            title: 'Fast on phones'
+            text: 'The main content is visible after %lcp% s — below the 2.5 s Google expects. That is the basis many websites lack.'
+        cls:
+            title: 'Nothing jumps'
+            text: 'The layout stays stable while loading; visitors can read and click right away.'
+        https:
+            title: 'HTTPS set up correctly'
+            text: 'Encrypted connection with a valid certificate; plain http redirects to https.'
+        console:
+            title: 'No errors in the browser'
+            text: 'The browser console is clean — no broken scripts.'
+        images:
+            title: 'Images delivered correctly'
+            text: 'Modern formats and matching sizes for phone and desktop.'
+
+# ---------------------------------------------------------------- accessibility
+a11y:
+    summary:
+        good: 'Barrier-free in the automated tests: texts are readable, controls are labelled.'
+        ok: 'Mostly fine. %count% contrast findings and a few labels keep it from a top grade.'
+        bad: 'Several barriers: %count% contrast findings, missing labels or descriptions. These also cost regular visitors.'
+    meta: 'Lighthouse accessibility %score% of 100 · %count% contrast findings'
+    issue:
+        color_contrast:
+            title: 'Text with too little contrast (%count%×)'
+            text: 'Light text on light background or dark on dark is hard to read in sunlight and for roughly every twelfth man (colour vision). Required: 4.5:1.'
+            fix: 'Darken the text colour or the background slightly — usually one colour value in the stylesheet, no redesign.'
+        image_alt:
+            title: '%count% images without description'
+            text: 'Screen readers and Google do not know what these images show.'
+            fix: 'Add a short alt text to each content image; decorative images get an empty alt attribute.'
+        link_name:
+            title: '%count% links without a readable name'
+            text: 'Links like "read more" or icon-only links tell screen reader users nothing.'
+            fix: 'Give each link a text that says where it leads, or an aria-label for icon links.'
+        button_name:
+            title: '%count% buttons without a name'
+            text: 'Icon buttons without a label cannot be operated by screen reader users.'
+            fix: 'Add an aria-label to each icon button (e.g. "Open menu").'
+        html_has_lang:
+            title: 'Page language not declared'
+            text: 'Without a language attribute screen readers choose the wrong pronunciation.'
+            fix: 'Set lang="en" (or your language) on the <html> element.'
+        heading_order:
+            title: 'Headings skip levels'
+            text: 'Heading levels (h1 → h3) are skipped, so the structure is confusing for assistive technology.'
+            fix: 'Use heading levels in order; style them with CSS instead of picking a level for its look.'
+        label:
+            title: '%count% form fields without a label'
+            text: 'Fields without a visible, linked label are hard to fill in and are rejected by browsers'' autofill.'
+            fix: 'Give each field a <label for> that matches the field id.'
+        target_size:
+            title: '%count% tap targets too small'
+            text: 'Links or buttons smaller than 24 px are easily missed with a thumb.'
+            fix: 'Enlarge the clickable area (padding) to at least 44 × 44 px.'
+    good:
+        contrast:
+            title: 'Contrasts are fine'
+            text: 'Every checked text reaches the required contrast ratio.'
+        images:
+            title: 'Images are described'
+            text: 'All %count% images on the checked pages have an alternative text.'
+        lang:
+            title: 'Language declared'
+            text: 'Screen readers read the page in the right language.'
+        names:
+            title: 'Links and buttons are named'
+            text: 'Every control has a readable name; heading levels are in order.'
+        targets:
+            title: 'Tap targets large enough'
+            text: 'Buttons and links can be hit with a thumb.'
+
+# ---------------------------------------------------------------- seo
+seo:
+    summary:
+        good: 'Titles, descriptions, headings and structured data are clean. Google can read the site.'
+        ok: 'The basics are there; a few titles, descriptions or structural details are worth tidying up.'
+        bad: 'Important basics for Google are missing. Search engines find the site, but hardly know what it is about.'
+    meta: 'Lighthouse SEO %score% of 100 · %pages% pages checked'
+    issue:
+        title_missing:
+            title: 'No page title on %page%'
+            text: 'The title is the headline in Google results. Without it Google invents one.'
+            fix: 'Write a title of up to 60 characters: what you offer, where (e.g. "Dentist in Graz – Dr. Example").'
+        title_long:
+            title: 'Page title too long on %page%'
+            text: '%length% characters — Google cuts titles after about 60.'
+            fix: 'Shorten the title; the most important words first.'
+        desc_missing:
+            title: 'No description on %page%'
+            text: 'The meta description is the grey text under the Google result. Missing: Google shows a random excerpt.'
+            fix: 'Write 140–158 characters that say what the page offers and why someone should click.'
+        desc_long:
+            title: 'Description too long on %page%'
+            text: '%length% characters — Google cuts descriptions after about 160.'
+            fix: 'Shorten to 140–158 characters.'
+        h1_missing:
+            title: 'No main heading on %page%'
+            text: 'Every page needs exactly one H1 that names the topic.'
+            fix: 'Make the most important headline an H1.'
+        h1_multiple:
+            title: '%count% main headings on %page%'
+            text: 'Several H1 headings blur what the page is about.'
+            fix: 'Keep one H1 per page; make the others H2.'
+        noindex:
+            title: 'Start page blocked for Google'
+            text: 'The start page carries a "noindex" instruction: Google is told not to list it.'
+            fix: 'Remove the noindex setting in the CMS (usually a checkbox on the page).'
+        heading_skips:
+            title: 'Heading levels skipped (%count%×)'
+            text: 'Jumps like H1 → H3 make the structure unclear for Google and screen readers.'
+            fix: 'Use heading levels in order.'
+        sitemap_missing:
+            title: 'No sitemap found'
+            text: 'A sitemap.xml tells Google all pages at once; without it new pages are found later.'
+            fix: 'Enable the sitemap in the CMS and reference it in robots.txt.'
+        schema:
+            title: 'No structured data'
+            text: 'Structured data (schema.org) tells Google and AI assistants what kind of business this is, where and when it is open.'
+            fix: 'Add Organization or LocalBusiness data with name, address, phone and opening hours (most CMS have a plugin).'
+        not_crawlable:
+            title: 'Page blocked for search engines'
+            text: 'Robots instructions prevent Google from indexing the page.'
+            fix: 'Check robots.txt and the robots meta tag; remove the block for the public pages.'
+        link_text:
+            title: '%count% links with meaningless text'
+            text: '"Click here" or "more" tells Google nothing about the target page.'
+            fix: 'Use descriptive link texts ("our opening hours").'
+        crawlable_anchors:
+            title: 'Links Google cannot follow'
+            text: 'Some links are built with JavaScript only and are invisible to search engines.'
+            fix: 'Use normal <a href> links for navigation.'
+        canonical:
+            title: 'Canonical link faulty'
+            text: 'The canonical tag points to a wrong or unreachable address, which can confuse Google.'
+            fix: 'Point the canonical link to the page itself.'
+        hreflang:
+            title: 'Language links faulty'
+            text: 'The hreflang tags for language versions contain errors.'
+            fix: 'Have the hreflang tags corrected (valid language codes, all versions reference each other).'
+        http_redirect:
+            title: 'http does not redirect to https'
+            text: 'Visitors who type the address without https land on the unencrypted version.'
+            fix: 'Add a permanent redirect from http to https on the server.'
+    good:
+        sitemap:
+            title: 'Sitemap present'
+            text: '%count% pages are listed for Google.'
+        titles:
+            title: 'Titles and descriptions set'
+            text: 'Every checked page has its own title and description of suitable length.'
+        h1:
+            title: 'One main heading per page'
+            text: 'Clear structure for Google and visitors.'
+        schema:
+            title: 'Structured data present'
+            text: 'Google and AI assistants find %types% data.'
+        https:
+            title: 'Encrypted and redirected'
+            text: 'https with redirect from http.'
+
+# ---------------------------------------------------------------- AI visibility
+ai:
+    summary:
+        good: 'AI assistants can read and understand the site; a summary (llms.txt) is in place.'
+        ok: 'AI assistants may read the site, but have to piece together what you offer.'
+        bad: 'AI search engines hardly see the site: no summary, crawlers blocked or no identifiable business data.'
+    meta: 'llms.txt: %llms% · %blocked% AI crawlers blocked'
+    issue:
+        llms_missing:
+            title: 'No llms.txt'
+            text: 'ChatGPT, Perplexity and Google''s AI look for a short text file that says what the business does, for whom and where. Without it they guess from the pages.'
+            fix: 'Create /llms.txt: three paragraphs (offer, target group, location/contact) plus links to the key pages. Half an hour of work.'
+        bots_blocked:
+            title: 'AI crawlers blocked: %bots%'
+            text: 'robots.txt forbids these assistants to read the site, so they cannot recommend it.'
+            fix: 'Allow the crawlers in robots.txt — or decide consciously to stay out of AI answers.'
+        no_identity_schema:
+            title: 'Business not machine-readable'
+            text: 'Without Organization/LocalBusiness data an assistant does not reliably know name, address or opening hours.'
+            fix: 'Add structured data with name, address, phone, opening hours and the area served.'
+        offer_unclear:
+            title: 'Offer not in the first sentences'
+            text: 'AI answers quote the first sentences of a page. On the start page they do not state the offer clearly.'
+            fix: 'Start the page with one plain sentence: who you are, what you do, for whom, where.'
+    good:
+        llms:
+            title: 'llms.txt present'
+            text: 'AI assistants get a summary straight from you.'
+        bots:
+            title: 'AI crawlers allowed'
+            text: 'GPTBot, ClaudeBot, PerplexityBot and Google-Extended may read the site.'
+        schema:
+            title: 'Business machine-readable'
+            text: 'Structured data of type %types% identifies the business.'
+        offer:
+            title: 'Offer stated early'
+            text: 'The first sentences already say what the business does.'
+
+# ---------------------------------------------------------------- content
+content:
+    summary:
+        good: 'Within five seconds it is clear what the business does, for whom and what to do next.'
+        ok: 'Understandable, but the offer or the next step could be clearer; some terms assume prior knowledge.'
+        bad: 'Visitors do not quickly understand what is offered or how to get in touch. That costs inquiries.'
+    meta:
+        ai: 'AI read %pages% pages like a first-time visitor'
+        heuristic: 'Heuristic check (no AI configured)'
+    issue:
+        no_cta:
+            title: 'No clear next step'
+            text: 'Interested visitors do not see at first glance how to call, request or book.'
+            fix: 'Put one prominent action in the first screen: "Call", "Request a quote" or "Book" — with phone number.'
+        thin:
+            title: 'Very little text (%words% words)'
+            text: 'With so little text neither visitors nor Google learn what you offer.'
+            fix: 'Describe the offer, target group and location in two or three short paragraphs.'
+        phone:
+            title: 'Phone number not tappable'
+            text: 'On phones a number should be tappable (tel: link). Here it is missing or plain text.'
+            fix: 'Link the phone number with tel:+43…; put it in the header or footer of every page.'
+    good:
+        cta:
+            title: 'Clear next step'
+            text: 'Visitors see how to get in touch.'
+        length:
+            title: 'Enough text'
+            text: '%words% words describe the offer.'
+        phone:
+            title: 'Phone number tappable'
+            text: 'One tap on the phone starts the call.'
+
+# ---------------------------------------------------------------- legal
+legal:
+    summary:
+        good: 'Legal notice, privacy policy and consent handling are in place as far as can be checked technically.'
+        ok: 'Legal notice and privacy policy exist; the handling of third-party services should be reviewed.'
+        bad: 'Legal notice or privacy policy missing, or tracking services load before consent. Please review with your legal advisor.'
+    meta: 'Technical check, not legal advice'
+    note: 'This is a technical check: it looks for the pages and for services loaded before any consent. It is not legal advice — please have the details reviewed by your legal advisor.'
+    issue:
+        imprint:
+            title: 'Legal notice (imprint) not found'
+            text: 'No link to a legal notice page was found on the checked pages, or the page is unreachable.'
+            fix: 'Link a legal notice page from every page (footer), with the mandatory details.'
+        privacy:
+            title: 'Privacy policy not found'
+            text: 'No link to a privacy policy was found, or the page is unreachable.'
+            fix: 'Link the privacy policy from every page (footer); it must name every service used.'
+        tracking:
+            title: 'Tracking before consent: %services%'
+            text: 'These services load on the first visit, before the visitor could consent. Under GDPR/TTDSG this needs prior consent.'
+            fix: 'Load these services only after consent in the cookie banner (or configure the consent tool to block them).'
+        embeds:
+            title: 'Third-party services without consent tool: %services%'
+            text: 'External services load without a consent banner. Depending on the service, consent may be required.'
+            fix: 'Host fonts locally; load maps and videos after a click or through the consent tool.'
+    good:
+        imprint:
+            title: 'Legal notice present'
+            text: 'Linked and reachable.'
+        privacy:
+            title: 'Privacy policy present'
+            text: 'Linked and reachable.'
+        no_third_party:
+            title: 'No third-party services before consent'
+            text: 'Nothing external loads on the first visit.'
+        cmp:
+            title: 'Consent tool present'
+            text: 'A cookie banner / consent tool was found.'
+
+# ---------------------------------------------------------------- mobile
+mobile:
+    summary:
+        good: 'Fits the phone screen; buttons and text are large enough.'
+        ok: 'Usable on phones; a few tap targets or font sizes are too small.'
+        bad: 'Hard to use on phones: no viewport setting, too small targets or content wider than the screen.'
+        unknown: 'Could not be fully measured (no PageSpeed result).'
+    meta: 'Viewport, tap targets, font size, content width'
+    issue:
+        viewport:
+            title: 'No mobile viewport'
+            text: 'The page is shown as a shrunk desktop page on phones.'
+            fix: 'Add <meta name="viewport" content="width=device-width, initial-scale=1"> to the page head.'
+        targets:
+            title: '%count% tap targets too small'
+            text: 'Links or buttons are too small or too close together for a thumb.'
+            fix: 'Enlarge the tap area to at least 44 × 44 px and add spacing between links.'
+        font:
+            title: 'Text too small on phones'
+            text: '%value% of the text is below 12 px and hard to read on phones.'
+            fix: 'Use at least 16 px for body text.'
+        width:
+            title: 'Content wider than the screen'
+            text: 'Visitors have to scroll sideways.'
+            fix: 'Fix fixed-width elements (tables, images, embeds) with max-width: 100 %.'
+    good:
+        viewport:
+            title: 'Mobile viewport set'
+            text: 'The page adapts to the phone screen.'
+        targets:
+            title: 'Tap targets fine'
+            text: 'Links and buttons can be hit with a thumb.'
+        font:
+            title: 'Text readable'
+            text: 'Font sizes are large enough for phones.'
+
+# ---------------------------------------------------------------- front end
+fe:
+    status_idle: 'Ready to check'
+    status_run: 'Check running …'
+    status_done: 'Check finished'
+    preview_idle: 'Your website will appear here'
+    placeholder_domain: 'your-company.com'
+    url_label: 'Address of your website'
+    submit: 'Check now'
+    what_speed: 'Loading speed on phones'
+    what_a11y: 'Accessibility & contrasts'
+    what_seo: 'Google & AI search'
+    what_content: 'Texts & next step'
+    what_legal: 'Legal notice, privacy, cookies'
+    altcha_label: 'I am human'
+    altcha_verifying: 'Verifying …'
+    altcha_verified: 'Verified'
+    altcha_error: 'Verification failed. Please reload the page.'
+    altcha_wait: 'Verification is still running. Please wait a moment.'
+    err_url: 'Please enter a valid address, e.g. your-company.com.'
+    err_limit: 'You have already run %limit% checks today. Please try again tomorrow.'
+    err_spam: 'The spam check did not go through. Please reload the page and try again.'
+    err_generic: 'Something went wrong. Please try again in a moment.'
+    err_failed: 'This website could not be checked (not reachable or blocked).'
+    eta: 'about %s s left'
+    eta_soon: 'almost done …'
+    progress_label: 'Progress of the check'
+    step_discover: 'Open start page, find sitemap and key sub-pages'
+    step_speed_home: 'Measure the start page on a phone (Google PageSpeed)'
+    step_speed_pages: 'Measure the sub-pages'
+    step_analyze: 'Check accessibility, legal pages and AI visibility'
+    step_ai: 'Read the texts and form an opinion'
+    step_finish: 'Grade and compile the report'
+    gate_title: 'Your result is ready'
+    gate_text: 'Where may we send it? You will see it right here and receive the PDF report by e-mail.'
+    firstname: 'First name'
+    lastname: 'Last name'
+    email: 'E-mail'
+    err_firstname: 'Please enter your first name.'
+    err_lastname: 'Please enter your last name.'
+    err_email: 'Please enter a valid e-mail address.'
+    newsletter: 'Yes, send me occasional tips on web, IT and AI as well. Confirmation by e-mail, unsubscribe any time.'
+    optional: '(optional)'
+    gate_legal: 'We use your details only to send you this result.'
+    privacy: 'Privacy policy'
+    gate_submit: 'Show result'
+    result_kicker: 'Result for'
+    grade_label: 'Overall grade %s'
+    mail_sent: 'Copy on its way to %s'
+    mail_failed: 'The e-mail could not be sent — the result stays visible here.'
+    gauge_perf: 'Performance'
+    gauge_a11y: 'Accessibility'
+    gauge_bp: 'Technology'
+    gauge_seo: 'SEO'
+    measures_title: 'What to change first'
+    strengths_title: 'What already works'
+    disclaimer: 'Automated assessment based on Google PageSpeed Insights, our own checks and an AI reading. The PDF report contains all findings with screenshots.'
+    cta: 'Talk about the result — free of charge'
+    reset: 'Check another website'
+
+# ---------------------------------------------------------------- report (PDF)
+report:
+    title: 'Website check for %domain%'
+    header: 'Website check'
+    page: 'Page %n% of %total%'
+    cover_eyebrow: 'Free website check'
+    cover_title: 'Your website check for'
+    grade_line: 'Overall grade %grade% · %word%'
+    grade_short: 'Grade %grade% · %word%'
+    meta_pages: 'Pages checked'
+    meta_date: 'Date'
+    meta_for: 'For'
+    overview_eyebrow: 'Seven areas, one overall grade'
+    overview_title: 'At a glance'
+    legend_title: 'How to read the grades'
+    legend: 'School grades. The overall grade is never better than the worst area plus one.'
+    measures_eyebrow: 'What I would change first'
+    a11y_title: 'Accessibility & contrasts'
+    a11y_intro: 'Checked with Lighthouse (the same tests Google uses) on the start page and the sub-pages. Marked excerpts show where the findings are.'
+    a11y_no_findings_caption: 'Start page, phone. No marked findings.'
+    a11y_why: 'Why it matters: roughly every twelfth man sees colours differently, many people read in sunlight, and a button nobody can read is a button nobody presses.'
+    speed_title: 'Loading speed & mobile'
+    speed_intro: 'Measured with Google PageSpeed Insights, profile "phone, slow 4G" — the same numbers Google uses for ranking.'
+    what_works: 'What works'
+    what_to_improve: 'Where there is room'
+    nothing_to_improve: 'Nothing worth mentioning — well done.'
+    pages_eyebrow: '%count% pages checked'
+    pages_title: 'Checked pages'
+    pages_intro: 'Selected from the sitemap and the navigation: the pages visitors see first. Blog posts and legal sub-pages were not graded.'
+    col_page: 'Page'
+    col_title: 'Title'
+    col_contrast: 'Contrast findings'
+    col_grade: 'Grade'
+    next_eyebrow: 'What happens next'
+    next_title: 'Small steps, no rebuild'
+    next_text: 'Any web agency or your current provider can implement the measures on page 2. If you like, we go through the list together: 20 minutes on the phone, free of charge, no sales talk.'
+    next_promise: 'This report is free and does not oblige you to anything.'
+    sources: 'Sources: Google PageSpeed Insights (Lighthouse %lighthouse%), own HTML/legal/AI-visibility checks, AI reading of the page texts · %date%'
+
+# ---------------------------------------------------------------- e-mail
+mail:
+    subject: 'Your website check for %domain%: grade %grade% · %word%'
+    owner_subject: '[Website check] %domain% · grade %grade% · %name% %newsletter%'
+    owner_lead_title: 'New website check requested'
+    owner_lead: 'Lead: %name% <%email%> · %domain% · newsletter: %newsletter%'
+    owner_newsletter: 'Newsletter requested'
+    owner_areas: 'Grades per area'
+    owner_errors: 'Steps with errors'
+    owner_footer: 'Internal copy of check #%id%. The visitor received the same report without this header.'
+    greeting: 'Hello %name%,'
+    intro: 'thank you for your trust. We checked %pages% pages of %domain%: loading speed on phones, accessibility, findability on Google and in AI search, texts, legal notice and cookie handling.'
+    grade_line: 'Overall grade %grade% · %word%.'
+    measures_title: 'What I would change first:'
+    pdf_note: 'The full report with screenshots, measurements and all findings is attached as a PDF, in plain language.'
+    offer: 'Any web agency or your current provider can implement these points. If you like, we go through the list together: 20 minutes on the phone, free of charge, no sales talk.'
+    cta: 'Talk about it'
+    cta_alt: 'or simply reply to this e-mail'
+    newsletter_note: 'You ticked the newsletter box. A separate e-mail with a confirmation link follows; you are only subscribed after clicking it.'
+    footer: 'You receive this e-mail because you requested the website check for %domain%. We use your details only for this report and delete them after %days% days unless you subscribed to the newsletter or sent an inquiry.'

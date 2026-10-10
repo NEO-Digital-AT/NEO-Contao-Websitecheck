@@ -1,0 +1,37 @@
+neo_websitecheck_challenge:
+    path: /_neo/websitecheck/challenge
+    methods: [GET]
+    defaults:
+        _controller: Neo\WebsitecheckBundle\Controller\Api\CheckController::challenge
+        _scope: frontend
+
+neo_websitecheck_start:
+    path: /_neo/websitecheck/start
+    methods: [POST]
+    defaults:
+        _controller: Neo\WebsitecheckBundle\Controller\Api\CheckController::start
+        _scope: frontend
+
+neo_websitecheck_status:
+    path: /_neo/websitecheck/{id}/status
+    methods: [GET]
+    requirements: { id: '\d+' }
+    defaults:
+        _controller: Neo\WebsitecheckBundle\Controller\Api\CheckController::status
+        _scope: frontend
+
+neo_websitecheck_claim:
+    path: /_neo/websitecheck/{id}/claim
+    methods: [POST]
+    requirements: { id: '\d+' }
+    defaults:
+        _controller: Neo\WebsitecheckBundle\Controller\Api\CheckController::claim
+        _scope: frontend
+
+neo_websitecheck_image:
+    path: /_neo/websitecheck/{id}/image/{name}
+    methods: [GET]
+    requirements: { id: '\d+', name: '[a-z0-9-]+\.(jpg|png|webp)' }
+    defaults:
+        _controller: Neo\WebsitecheckBundle\Controller\Api\CheckController::image
+        _scope: frontend

@@ -1,0 +1,321 @@
+{% trans_default_domain 'neo_websitecheck' %}
+{#
+  PDF report (A4). Written for Dompdf: tables and floats instead of flex/grid,
+  no external assets (images are data URIs), DejaVu Sans as the default font.
+  Renders identically in Gotenberg/Chromium. Override by copying this file to
+  templates/neo_websitecheck/report.html.twig in your Contao project.
+  Variables: result, areas (by key), brand, images, crops, date, lang, …
+#}
+{% set p = brand.color_primary %}
+{% set a = brand.color_accent %}
+{% set gradeColor = {1: a, 2: a, 3: '#ffb020', 4: '#ff6b73', 5: '#ff6b73', 0: '#cccccc'} %}
+{% set gradeInk = {1: p, 2: p, 3: '#1a1a1a', 4: '#1a1a1a', 5: '#1a1a1a', 0: '#555555'} %}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<title>{{ 'report.title'|trans({'%domain%': result.domain}) }}</title>
+<style>
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "DejaVu Sans", Helvetica, Arial, sans-serif; font-size: 9.5pt; line-height: 1.4; color: #222; }
+.page { position: relative; width: auto; padding: 10mm 16mm 6mm; page-break-after: always; }
+.page.last { page-break-after: auto; }
+.page--dark { background: {{ p }}; color: #fff; }
+.head { width: 100%; border-collapse: collapse; margin-bottom: 6mm; }
+.head td { padding: 0; vertical-align: middle; font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: #777; }
+.page--dark .head td { color: rgba(255,255,255,.7); }
+.head img { height: 7mm; }
+.head .brand { font-weight: bold; color: {{ p }}; font-size: 11pt; letter-spacing: 0; text-transform: none; }
+.page--dark .head .brand { color: #fff; }
+.foot { margin-top: 8mm; border-top: 1px solid #e3e1ea; padding-top: 3mm; font-size: 7.5pt; color: #777; }
+.page--dark .foot { border-color: rgba(255,255,255,.25); color: rgba(255,255,255,.7); }
+.foot .r { float: right; }
+.eyebrow { font-size: 7.5pt; letter-spacing: .16em; text-transform: uppercase; color: {{ p }}; margin: 0 0 2mm; }
+.page--dark .eyebrow { color: {{ a }}; }
+h1 { font-size: 22pt; line-height: 1.1; margin: 0 0 2mm; color: {{ p }}; }
+h2 { font-size: 15pt; line-height: 1.15; margin: 0 0 2mm; color: {{ p }}; }
+h3 { font-size: 11pt; margin: 0 0 2mm; color: {{ p }}; }
+.page--dark h1, .page--dark h2, .page--dark h3 { color: #fff; }
+p { margin: 0 0 3mm; }
+.muted { color: #666; }
+.mono { font-family: "DejaVu Sans Mono", Menlo, monospace; font-size: 8.5pt; }
+.domain { font-family: "DejaVu Sans Mono", Menlo, monospace; font-size: 13pt; color: {{ p }}; margin-bottom: 6mm; }
+.grade-box { width: 100%; border-collapse: separate; border-spacing: 0; background: {{ p }}; color: #fff; border-radius: 4mm; margin-bottom: 5mm; }
+.grade-box td { padding: 6mm; vertical-align: middle; }
+.grade-num { width: 26mm; height: 26mm; border-radius: 4mm; text-align: center; font-size: 30pt; font-weight: bold; line-height: 26mm; }
+.grade-box .word { font-size: 14pt; font-weight: bold; margin: 0 0 2mm; }
+.grade-box p { color: rgba(255,255,255,.88); font-size: 10pt; margin: 0; }
+.meta { width: 100%; border-collapse: separate; border-spacing: 3mm 0; margin: 0 -3mm 6mm; }
+.meta td { width: 33%; padding: 3mm 4mm; background: #f5f3fb; border: 1px solid #e3e1ea; border-radius: 3mm; }
+.meta small { display: block; font-size: 7pt; letter-spacing: .1em; text-transform: uppercase; color: #777; margin-bottom: 1mm; }
+.meta b { font-size: 11pt; color: {{ p }}; }
+.shots { position: relative; width: 100%; height: 118mm; }
+.shot-desk { position: absolute; left: 0; top: 0; width: 78%; border: 1px solid #ddd; border-radius: 3mm; overflow: hidden; background: #fff; }
+.shot-desk img { width: 100%; display: block; }
+.shot-mob { position: absolute; right: 0; bottom: 0; width: 27%; border: 4px solid #1a1a1a; border-radius: 5mm; overflow: hidden; background: #fff; }
+.shot-mob img { width: 100%; display: block; }
+.shotbar { padding: 2mm 3mm; background: #eeedf4; font-size: 7pt; color: #777; font-family: "DejaVu Sans Mono", monospace; }
+.areas { width: 100%; border-collapse: separate; border-spacing: 0 3mm; margin-top: -3mm; }
+.areas--two { border-spacing: 0 2.5mm; margin-top: -2.5mm; }
+.areas--two td.first { width: 11mm; }
+.areas--two td.gap { width: 3mm; border: 0; background: transparent; padding: 0; }
+.areas td { vertical-align: top; padding: 2mm 2.5mm; border: 1px solid #e3e1ea; background: #fff; }
+.areas td.first { border-right: 0; border-radius: 3mm 0 0 3mm; width: 14mm; }
+.areas td.last { border-left: 0; border-radius: 0 3mm 3mm 0; }
+.areas--two td.last { width: 72mm; }
+.lg { display: inline-block; width: 4.5mm; height: 4.5mm; line-height: 4.5mm; text-align: center; border-radius: 1.2mm; font-style: normal; font-weight: bold; font-size: 7pt; margin: 0 1mm 0 2mm; }
+.chip { display: inline-block; width: 9mm; height: 9mm; line-height: 9mm; text-align: center; border-radius: 2.5mm; font-weight: bold; font-size: 11pt; }
+.areas b { display: block; font-size: 9.5pt; color: {{ p }}; }
+.areas p { font-size: 8.5pt; margin: .5mm 0 0; line-height: 1.3; }
+.areas small { display: block; font-size: 7.5pt; color: #777; margin-top: 1mm; font-family: "DejaVu Sans Mono", monospace; }
+.measures { width: 100%; border-collapse: separate; border-spacing: 0 2.5mm; margin-top: -2.5mm; }
+.measures td { vertical-align: top; padding: 2mm 4mm; background: {{ p }}; color: #fff; }
+.measures td.n { width: 12mm; border-radius: 3mm 0 0 3mm; font-family: "DejaVu Sans Mono", monospace; color: {{ a }}; font-size: 9pt; }
+.measures td.e { width: 28mm; border-radius: 0 3mm 3mm 0; text-align: right; }
+.measures b { display: block; font-size: 9.5pt; margin-bottom: .5mm; }
+.measures p { color: rgba(255,255,255,.88); font-size: 8.5pt; margin: 0; }
+.effort { display: inline-block; padding: 1mm 2.5mm; border: 1px solid rgba(180,240,75,.6); border-radius: 3mm; color: {{ a }}; font-size: 7pt; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.legend { font-size: 8.5pt; color: #555; margin-top: 4mm; }
+.legend i { display: inline-block; width: 5mm; height: 5mm; line-height: 5mm; text-align: center; border-radius: 1.2mm; font-style: normal; font-weight: bold; font-size: 7.5pt; margin: 0 1mm 0 3mm; }
+.two { width: 100%; border-collapse: collapse; }
+.two > tbody > tr > td { vertical-align: top; width: 50%; padding: 0; }
+.two td.l { padding-right: 4mm; }
+.two td.r { padding-left: 4mm; }
+.finding { width: 100%; border-collapse: collapse; margin-bottom: 2.5mm; }
+.finding td { vertical-align: top; padding: 2mm 2.5mm; border: 1px solid #e3e1ea; background: #fff; font-size: 8.8pt; line-height: 1.35; }
+.finding td.i { width: 10mm; border-right: 0; border-radius: 2.5mm 0 0 2.5mm; }
+.finding td.t { border-left: 0; border-radius: 0 2.5mm 2.5mm 0; }
+.finding b { display: block; color: {{ p }}; }
+.finding small { display: block; font-size: 7.5pt; color: #777; margin-top: 1mm; }
+.dot { display: inline-block; width: 6mm; height: 6mm; line-height: 6mm; text-align: center; border-radius: 50%; font-weight: bold; font-size: 8pt; }
+.dot.warn { background: #ffb020; color: #1a1a1a; }
+.dot.good { background: {{ a }}; color: {{ p }}; }
+.dot.bad { background: #ff6b73; color: #1a1a1a; }
+.crop { border: 1px solid #ddd; border-radius: 2.5mm; overflow: hidden; margin-bottom: 1.5mm; }
+.crop img { width: 100%; display: block; }
+.caption { font-size: 7.5pt; color: #777; font-family: "DejaVu Sans Mono", monospace; margin-bottom: 4mm; }
+.kpis { width: 100%; border-collapse: separate; border-spacing: 2.5mm 0; margin: 0 -2.5mm 5mm; }
+.kpis td { width: 33%; padding: 3mm; background: #f5f3fb; border: 1px solid #e3e1ea; border-radius: 3mm; vertical-align: top; }
+.kpis small { display: block; font-size: 6.8pt; letter-spacing: .08em; text-transform: uppercase; color: #777; }
+.kpis b { display: block; font-size: 13pt; color: {{ p }}; margin: .5mm 0; }
+.kpis em { font-style: normal; font-size: 8pt; color: #2d7a2d; }
+.kpis em.warn { color: #8a5a00; }
+.pages { width: 100%; border-collapse: collapse; font-size: 9pt; }
+.pages th { text-align: left; font-size: 7pt; letter-spacing: .1em; text-transform: uppercase; color: #777; font-weight: normal; padding: 2mm 2.5mm; border-bottom: 1px solid #e3e1ea; }
+.pages td { padding: 2mm 2.5mm; border-bottom: 1px solid #eee; vertical-align: middle; white-space: nowrap; }
+.pages td.wrap { white-space: normal; }
+.pages .chip { width: 8mm; height: 8mm; line-height: 8mm; font-size: 10pt; border-radius: 2mm; }
+.next { width: 100%; border-collapse: separate; border-spacing: 0; background: {{ a }}; color: {{ p }}; border-radius: 4mm; margin-top: 6mm; }
+.next td { padding: 5mm 6mm; vertical-align: middle; }
+.next td.img { width: 30mm; }
+.next img { width: 22mm; height: 22mm; border-radius: 50%; object-fit: cover; border: 2px solid {{ p }}; }
+.next b { display: block; font-size: 12pt; margin-bottom: 1.5mm; }
+.next p { margin: 0 0 1.5mm; }
+.note { font-size: 8.5pt; color: #666; border-left: 2px solid #e3e1ea; padding-left: 3mm; margin-top: 4mm; }
+</style>
+</head>
+<body>
+
+{# ---------------------------------------------------------------- 1 cover #}
+{% set header %}
+<table class="head"><tr>
+  <td>{% if brand.logo_data %}<img src="{{ brand.logo_data }}" alt="">{% else %}<span class="brand">{{ brand.name }}</span>{% endif %}</td>
+  <td style="text-align:right">{{ 'report.header'|trans }} · {{ date }}</td>
+</tr></table>
+{% endset %}
+{% set footer %}
+<div class="foot">{{ brand.name }}{% if brand.owner_name %} · {{ brand.owner_name }}{% endif %}<span class="r">{{ 'report.page'|trans({'%n%': '__N__', '%total%': '__T__'}) }}</span></div>
+{% endset %}
+{% set pagesTotal = 6 %}
+
+<div class="page">
+  {{ header }}
+  <p class="eyebrow">{{ 'report.cover_eyebrow'|trans }}</p>
+  <h1>{{ 'report.cover_title'|trans }}</h1>
+  <div class="domain">{{ result.domain }}</div>
+
+  <table class="grade-box"><tr>
+    <td style="width:38mm"><div class="grade-num" style="background:{{ gradeColor[result.grade] }};color:{{ gradeInk[result.grade] }}">{{ result.grade ?: '–' }}</div></td>
+    <td><div class="word">{{ 'report.grade_line'|trans({'%grade%': result.grade, '%word%': result.gradeWord}) }}</div><p>{{ result.summary }}</p></td>
+  </tr></table>
+
+  <table class="meta"><tr>
+    <td><small>{{ 'report.meta_pages'|trans }}</small><b>{{ result.pagesChecked }}</b></td>
+    <td><small>{{ 'report.meta_date'|trans }}</small><b>{{ date }}</b></td>
+    <td><small>{{ 'report.meta_for'|trans }}</small><b>{{ first_name }} {{ last_name }}</b></td>
+  </tr></table>
+
+  <div class="shots">
+    {% if images.desktop %}<div class="shot-desk"><div class="shotbar">{{ result.domain }} · Desktop</div><img src="{{ images.desktop }}" alt=""></div>{% endif %}
+    {% if images.mobile %}<div class="shot-mob"><img src="{{ images.mobile }}" alt=""></div>{% endif %}
+  </div>
+  {{ footer|replace({'__N__': 1, '__T__': pagesTotal})|raw }}
+</div>
+
+{# ---------------------------------------------------------------- 2 overview #}
+<div class="page">
+  {{ header }}
+  <p class="eyebrow">{{ 'report.overview_eyebrow'|trans }}</p>
+  <h2>{{ 'report.overview_title'|trans }}</h2>
+  {% set legendCell %}
+    <td class="first" style="background:#f5f3fb"><span class="chip" style="background:{{ p }};color:{{ a }};font-size:9pt">?</span></td>
+    <td class="last" style="background:#f5f3fb"><b>{{ 'report.legend_title'|trans }}</b><p>{{ 'report.legend'|trans }}</p>
+      <small style="font-family:inherit"><i class="lg" style="background:{{ a }};color:{{ p }}">1</i>{{ 'grade.1'|trans }} <i class="lg" style="background:{{ a }};color:{{ p }}">2</i>{{ 'grade.2'|trans }} <i class="lg" style="background:#ffb020">3</i>{{ 'grade.3'|trans }} <i class="lg" style="background:#ff6b73">4</i>{{ 'grade.4'|trans }} <i class="lg" style="background:#ff6b73">5</i>{{ 'grade.5'|trans }}</small></td>
+  {% endset %}
+  <table class="areas areas--two">
+    {% for row in result.areas|batch(2) %}
+    <tr>
+      {% for area in row %}
+      {% if loop.index == 2 %}<td class="gap"></td>{% endif %}
+      <td class="first"><span class="chip" style="background:{{ gradeColor[area.grade] }};color:{{ gradeInk[area.grade] }}">{{ area.grade ?: '–' }}</span></td>
+      <td class="last"><b>{{ area.label }}</b><p>{{ area.summary }}</p>{% if area.meta %}<small>{{ area.meta }}</small>{% endif %}</td>
+      {% endfor %}
+      {% if row|length == 1 %}<td class="gap"></td>{{ legendCell }}{% endif %}
+    </tr>
+    {% endfor %}
+    {% if result.areas|length is even %}<tr>{{ legendCell }}<td class="gap"></td><td class="first" style="border:0;background:transparent"></td><td class="last" style="border:0;background:transparent"></td></tr>{% endif %}
+  </table>
+
+  {% if result.measures %}
+  <p class="eyebrow" style="margin-top:6mm">{{ 'report.measures_eyebrow'|trans }}</p>
+  <table class="measures">
+    {% for m in result.measures %}
+    <tr>
+      <td class="n">{{ '%02d'|format(loop.index) }}</td>
+      <td><b>{{ m.title }}</b><p>{{ m.text }}</p></td>
+      <td class="e"><span class="effort">{{ ('measure.effort.' ~ m.effort)|trans }}</span></td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+  {{ footer|replace({'__N__': 2, '__T__': pagesTotal})|raw }}
+</div>
+
+{# ---------------------------------------------------------------- 3 accessibility #}
+{% set acc = areas.accessibility %}
+<div class="page">
+  {{ header }}
+  <p class="eyebrow">{{ 'report.grade_short'|trans({'%grade%': acc.grade, '%word%': acc.grade ? ('grade.' ~ acc.grade)|trans : ''}) }}</p>
+  <h2>{{ 'report.a11y_title'|trans }}</h2>
+  <p class="muted">{{ 'report.a11y_intro'|trans }}</p>
+  <table class="two"><tr>
+    <td class="l">
+      {% for crop in crops|slice(0, 2) %}
+        <div class="crop"><img src="{{ crop.data }}" alt=""></div>
+        <p class="caption">{{ crop.title }}{% if crop.text %} · „{{ crop.text|slice(0, 60) }}“{% endif %}</p>
+      {% else %}
+        {% if images.mobileFull %}<div class="crop"><img src="{{ images.mobileFull }}" alt="" style="max-height:120mm;object-fit:cover;object-position:top"></div><p class="caption">{{ 'report.a11y_no_findings_caption'|trans }}</p>{% endif %}
+      {% endfor %}
+    </td>
+    <td class="r">
+      {% for issue in acc.issues|slice(0, 3) %}
+        <table class="finding"><tr><td class="i"><span class="dot warn">!</span></td><td class="t"><b>{{ issue.title }}</b>{{ issue.text }}{% if issue.examples is defined and issue.examples %}<small>{{ issue.examples|join(' · ') }}</small>{% endif %}</td></tr></table>
+      {% endfor %}
+      {% for good in acc.good|slice(0, 2) %}
+        <table class="finding"><tr><td class="i"><span class="dot good">✓</span></td><td class="t"><b>{{ good.title }}</b>{{ good.text }}</td></tr></table>
+      {% endfor %}
+    </td>
+  </tr></table>
+  <p class="note">{{ 'report.a11y_why'|trans }}</p>
+  {{ footer|replace({'__N__': 3, '__T__': pagesTotal})|raw }}
+</div>
+
+{# ---------------------------------------------------------------- 4 speed & mobile #}
+{% set sp = areas.speed %}
+{% set mo = areas.mobile %}
+<div class="page">
+  {{ header }}
+  <p class="eyebrow">{{ 'report.grade_short'|trans({'%grade%': sp.grade, '%word%': sp.grade ? ('grade.' ~ sp.grade)|trans : ''}) }}</p>
+  <h2>{{ 'report.speed_title'|trans }}</h2>
+  <p class="muted">{{ 'report.speed_intro'|trans }}</p>
+  {% if sp.kpis is defined %}
+  <table class="kpis"><tr>
+    {% for k in sp.kpis|slice(0, 3) %}<td><small>{{ k.label }}</small><b>{{ k.value }}</b><em class="{{ k.ok ? '' : 'warn' }}">{{ k.note }}</em></td>{% endfor %}
+  </tr></table>
+  <table class="kpis"><tr>
+    {% for k in sp.kpis|slice(3, 3) %}<td><small>{{ k.label }}</small><b>{{ k.value }}</b><em class="{{ k.ok ? '' : 'warn' }}">{{ k.note }}</em></td>{% endfor %}
+  </tr></table>
+  {% endif %}
+  <table class="two"><tr>
+    <td class="l">
+      <h3>{{ 'report.what_works'|trans }}</h3>
+      {% for good in sp.good|slice(0, 3) %}<table class="finding"><tr><td class="i"><span class="dot good">✓</span></td><td class="t"><b>{{ good.title }}</b>{{ good.text }}</td></tr></table>{% endfor %}
+      {% for good in mo.good|slice(0, 2) %}<table class="finding"><tr><td class="i"><span class="dot good">✓</span></td><td class="t"><b>{{ good.title }}</b>{{ good.text }}</td></tr></table>{% endfor %}
+    </td>
+    <td class="r">
+      <h3>{{ 'report.what_to_improve'|trans }}</h3>
+      {% for issue in sp.issues|slice(0, 3) %}<table class="finding"><tr><td class="i"><span class="dot warn">!</span></td><td class="t"><b>{{ issue.title }}</b>{{ issue.text }}</td></tr></table>{% endfor %}
+      {% for issue in mo.issues|slice(0, 2) %}<table class="finding"><tr><td class="i"><span class="dot warn">!</span></td><td class="t"><b>{{ issue.title }}</b>{{ issue.text }}</td></tr></table>{% endfor %}
+      {% if sp.issues is empty and mo.issues is empty %}<p class="muted">{{ 'report.nothing_to_improve'|trans }}</p>{% endif %}
+    </td>
+  </tr></table>
+  {{ footer|replace({'__N__': 4, '__T__': pagesTotal})|raw }}
+</div>
+
+{# ---------------------------------------------------------------- 5 seo, ai, content, legal #}
+<div class="page">
+  {{ header }}
+  <table class="two"><tr>
+    <td class="l">
+      {% for key in ['seo', 'ai'] %}{% set ar = areas[key] %}
+        <p class="eyebrow">{{ 'report.grade_short'|trans({'%grade%': ar.grade, '%word%': ar.grade ? ('grade.' ~ ar.grade)|trans : ''}) }}</p>
+        <h3 style="font-size:13pt">{{ ar.label }}</h3>
+        {% for good in ar.good|slice(0, 2) %}<table class="finding"><tr><td class="i"><span class="dot good">✓</span></td><td class="t"><b>{{ good.title }}</b>{{ good.text }}</td></tr></table>{% endfor %}
+        {% for issue in ar.issues|slice(0, 2) %}<table class="finding"><tr><td class="i"><span class="dot warn">!</span></td><td class="t"><b>{{ issue.title }}</b>{{ issue.text }}</td></tr></table>{% endfor %}
+        <div style="height:4mm"></div>
+      {% endfor %}
+    </td>
+    <td class="r">
+      {% for key in ['content', 'legal'] %}{% set ar = areas[key] %}
+        <p class="eyebrow">{{ 'report.grade_short'|trans({'%grade%': ar.grade, '%word%': ar.grade ? ('grade.' ~ ar.grade)|trans : ''}) }}</p>
+        <h3 style="font-size:13pt">{{ ar.label }}</h3>
+        {% if key == 'content' and result.firstImpression %}<p class="muted" style="font-size:9pt">„{{ result.firstImpression }}“</p>{% endif %}
+        {% for good in ar.good|slice(0, 2) %}<table class="finding"><tr><td class="i"><span class="dot good">✓</span></td><td class="t"><b>{{ good.title }}</b>{{ good.text }}</td></tr></table>{% endfor %}
+        {% for issue in ar.issues|slice(0, 2) %}<table class="finding"><tr><td class="i"><span class="dot warn">!</span></td><td class="t"><b>{{ issue.title }}</b>{{ issue.text }}</td></tr></table>{% endfor %}
+        {% if key == 'legal' and ar.note is defined %}<p class="note">{{ ar.note }}</p>{% endif %}
+        <div style="height:4mm"></div>
+      {% endfor %}
+    </td>
+  </tr></table>
+  {{ footer|replace({'__N__': 5, '__T__': pagesTotal})|raw }}
+</div>
+
+{# ---------------------------------------------------------------- 6 pages & next steps #}
+<div class="page last">
+  {{ header }}
+  <p class="eyebrow">{{ 'report.pages_eyebrow'|trans({'%count%': result.pagesChecked}) }}</p>
+  <h2>{{ 'report.pages_title'|trans }}</h2>
+  <p class="muted">{{ 'report.pages_intro'|trans }}</p>
+  <table class="pages">
+    <thead><tr><th>{{ 'report.col_page'|trans }}</th><th>{{ 'report.col_title'|trans }}</th><th>LCP</th><th>{{ 'report.col_contrast'|trans }}</th><th>{{ 'report.col_grade'|trans }}</th></tr></thead>
+    <tbody>
+    {% for pg in result.pages %}
+      <tr>
+        <td class="mono">{{ pg.path }}</td>
+        <td class="wrap">{{ pg.title|slice(0, 60) }}</td>
+        <td>{{ pg.lcp ?: '–' }}</td>
+        <td>{{ pg.perf is null ? '–' : (pg.contrast ? pg.contrast : 'word.none'|trans) }}</td>
+        <td>{% if pg.grade %}<span class="chip" style="background:{{ gradeColor[pg.grade] }};color:{{ gradeInk[pg.grade] }}">{{ pg.grade }}</span>{% else %}–{% endif %}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <p class="eyebrow" style="margin-top:8mm">{{ 'report.next_eyebrow'|trans }}</p>
+  <h2>{{ 'report.next_title'|trans }}</h2>
+  <p>{{ 'report.next_text'|trans }}</p>
+  <table class="next"><tr>
+    {% if brand.portrait_data %}<td class="img"><img src="{{ brand.portrait_data }}" alt=""></td>{% endif %}
+    <td>
+      <b>{{ brand.owner_name ?: brand.name }}{% if brand.owner_name and brand.name %}, {{ brand.name }}{% endif %}</b>
+      <p>{{ 'report.next_promise'|trans }}</p>
+      <p class="mono">{{ [brand.phone, contact_url]|filter(v => v)|join(' · ') }}</p>
+    </td>
+  </tr></table>
+  <p class="note">{{ 'report.sources'|trans({'%date%': date, '%lighthouse%': result.lighthouse ?: '–'}) }}</p>
+  {{ footer|replace({'__N__': 6, '__T__': pagesTotal})|raw }}
+</div>
+
+</body>
+</html>

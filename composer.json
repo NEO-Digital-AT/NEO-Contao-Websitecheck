@@ -1,0 +1,52 @@
+{
+    "name": "neo-digital/contao-websitecheck-bundle",
+    "type": "contao-bundle",
+    "description": "Website check for Contao 5: visitors enter a domain, the bundle measures it with Google PageSpeed Insights, runs its own HTML/legal/AI-visibility checks, lets an LLM read the site like a visitor, grades everything with school grades and emails a PDF report in exchange for name and e-mail. Lead magnet for agencies and freelancers.",
+    "keywords": ["contao", "contao-bundle", "website-check", "audit", "pagespeed", "lighthouse", "accessibility", "seo", "lead-generation", "llms.txt"],
+    "license": "MIT",
+    "homepage": "https://github.com/NEO-Digital-AT/NEO-Contao-Websitecheck",
+    "authors": [
+        {
+            "name": "NEO Digital – Erich Nigg",
+            "homepage": "https://neo-digital.at"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/NEO-Digital-AT/NEO-Contao-Websitecheck/issues",
+        "source": "https://github.com/NEO-Digital-AT/NEO-Contao-Websitecheck"
+    },
+    "require": {
+        "php": "^8.2",
+        "ext-dom": "*",
+        "ext-gd": "*",
+        "ext-json": "*",
+        "ext-libxml": "*",
+        "contao/core-bundle": "^5.3",
+        "doctrine/dbal": "^3.6 || ^4.0",
+        "dompdf/dompdf": "^3.0",
+        "symfony/console": "^6.4 || ^7.0",
+        "symfony/http-client": "^6.4 || ^7.0",
+        "symfony/http-foundation": "^6.4 || ^7.0",
+        "symfony/mailer": "^6.4 || ^7.0",
+        "symfony/mime": "^6.4 || ^7.0",
+        "symfony/translation": "^6.4 || ^7.0",
+        "symfony/twig-bridge": "^6.4 || ^7.0",
+        "twig/twig": "^3.8"
+    },
+    "conflict": {
+        "contao/manager-plugin": "<2.0 || >=3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Neo\\WebsitecheckBundle\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "Neo\\WebsitecheckBundle\\ContaoManager\\Plugin"
+    },
+    "config": {
+        "allow-plugins": {
+            "contao/manager-plugin": true
+        }
+    }
+}

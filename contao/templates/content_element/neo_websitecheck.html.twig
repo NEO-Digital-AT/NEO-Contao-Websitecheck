@@ -1,0 +1,136 @@
+{% extends "@Contao/content_element/_base.html.twig" %}
+{% trans_default_domain 'neo_websitecheck' %}
+
+{#
+  Website check — the complete visitor flow in one element:
+    idle   → URL form
+    run    → progress (steps, remaining seconds, live screenshot with markers)
+    gate   → first name / last name / e-mail (+ optional newsletter)
+    result → grade, four scores, measures, strengths, call to action
+  Behaviour lives in bundles/neowebsitecheck/websitecheck.js; this template
+  only renders markup and hands over the configuration as JSON.
+  Override: copy to templates/content_element/neo_websitecheck.html.twig.
+#}
+
+{% block content %}
+{% set i = element_id %}
+<div class="nwc" id="{{ i }}" data-nwc data-state="idle" data-config="{{ config|json_encode|e('html_attr') }}"
+     data-i18n="{{ {
+        eta: 'fe.eta'|trans, eta_soon: 'fe.eta_soon'|trans, err_url: 'fe.err_url'|trans, err_limit: 'fe.err_limit'|trans({'%limit%': config.limit}),
+        err_spam: 'fe.err_spam'|trans, err_generic: 'fe.err_generic'|trans, err_failed: 'fe.err_failed'|trans, status_idle: 'fe.status_idle'|trans,
+        status_run: 'fe.status_run'|trans, status_done: 'fe.status_done'|trans, grade_label: 'fe.grade_label'|trans, mail_sent: 'fe.mail_sent'|trans,
+        mail_failed: 'fe.mail_failed'|trans, effort_small: 'measure.effort.small'|trans, effort_medium: 'measure.effort.medium'|trans, effort_large: 'measure.effort.large'|trans
+     }|json_encode|e('html_attr') }}">
+
+  <div class="nwc__screen" aria-hidden="true">
+    <div class="nwc-os">
+      <div class="nwc-os__bar"><i></i><i></i><i></i><span class="nwc-os__url" data-nwc-url>{{ 'fe.placeholder_domain'|trans }}</span></div>
+      <div class="nwc-os__view" data-nwc-view>
+        <div class="nwc-os__skeleton">
+          <div class="s-nav"><i class="s-logo"></i><i></i><i></i><i></i><i class="s-cta"></i></div>
+          <div class="s-hero"><div class="s-txt"><i class="s-h1"></i><i class="s-h1 s-short"></i><i class="s-p"></i><i class="s-p s-short"></i><i class="s-btn"></i></div><i class="s-img"></i></div>
+          <div class="s-cards"><i></i><i></i><i></i></div>
+        </div>
+        <img class="nwc-os__shot" alt="" data-nwc-shot hidden>
+        <div class="nwc-os__idle"><span>{{ 'fe.preview_idle'|trans }}</span></div>
+        <i class="nwc-os__beam"></i>
+        <div class="nwc-os__pins" data-nwc-pins></div>
+        <span class="nwc-lens"><i></i></span>
+      </div>
+    </div>
+    <p class="nwc__status" data-nwc-status>{{ 'fe.status_idle'|trans }}</p>
+  </div>
+
+  <div class="nwc__main">
+    {% if text %}<div class="nwc__intro">{{ text|insert_tag|raw }}</div>{% endif %}
+
+    {# ---- idle: URL form ---- #}
+    <form class="nwc__url" data-nwc-pane="idle" novalidate>
+      <label for="{{ i }}-url" class="nwc__label">{{ 'fe.url_label'|trans }}</label>
+      <div class="nwc__bar">
+        <span class="nwc__proto" aria-hidden="true">https://</span>
+        <input id="{{ i }}-url" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="{{ 'fe.placeholder_domain'|trans }}" aria-describedby="{{ i }}-url-err" required>
+        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ 'fe.submit'|trans }}</span></button>
+      </div>
+      <p id="{{ i }}-url-err" class="nwc__err" role="status" hidden></p>
+      {# Honeypot for installations without ALTCHA; invisible for people. #}
+      <div class="nwc__hp" aria-hidden="true"><label for="{{ i }}-website">Website</label><input id="{{ i }}-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+      <input type="hidden" name="started" value="">
+      {% if altcha %}
+        {% add 'altcha' to body %}<script src="{{ asset('js/altcha.min.js', 'contao-components/altcha') }}" type="module"></script>{% endadd %}
+        <altcha-widget class="nwc__altcha" name="altcha" auto="onload" hidelogo hidefooter challengeurl="{{ config.challenge }}" maxnumber="{{ config.altchaMax }}" workerurl="{{ asset('js/worker.js', 'contao-components/altcha') }}" strings="{{ {label: 'fe.altcha_label'|trans, verifying: 'fe.altcha_verifying'|trans, verified: 'fe.altcha_verified'|trans, error: 'fe.altcha_error'|trans, waitAlert: 'fe.altcha_wait'|trans}|json_encode|e('html_attr') }}"></altcha-widget>
+      {% endif %}
+      <ul class="nwc__what">
+        <li>{{ 'fe.what_speed'|trans }}</li>
+        <li>{{ 'fe.what_a11y'|trans }}</li>
+        <li>{{ 'fe.what_seo'|trans }}</li>
+        <li>{{ 'fe.what_content'|trans }}</li>
+        <li>{{ 'fe.what_legal'|trans }}</li>
+      </ul>
+    </form>
+
+    {# ---- run: progress ---- #}
+    <div class="nwc__run" data-nwc-pane="run" hidden>
+      <p class="nwc__domain"><i aria-hidden="true"></i><span data-nwc-domain></span><em data-nwc-eta></em></p>
+      <div class="nwc__progress" role="progressbar" aria-label="{{ 'fe.progress_label'|trans }}" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+      <ol class="nwc__steps" aria-live="polite">
+        <li data-step="discover">{{ 'fe.step_discover'|trans }}</li>
+        <li data-step="speed_home">{{ 'fe.step_speed_home'|trans }}</li>
+        <li data-step="speed_pages">{{ 'fe.step_speed_pages'|trans }}</li>
+        <li data-step="analyze">{{ 'fe.step_analyze'|trans }}</li>
+        <li data-step="ai">{{ 'fe.step_ai'|trans }}</li>
+        <li data-step="finish">{{ 'fe.step_finish'|trans }}</li>
+      </ol>
+      <p class="nwc__err" role="status" data-nwc-run-err hidden></p>
+    </div>
+
+    {# ---- gate: lead form ---- #}
+    <div class="nwc__gate" data-nwc-pane="gate" hidden>
+      <form class="nwc__lead" data-nwc-lead novalidate tabindex="-1" aria-labelledby="{{ i }}-gate-title">
+        <h3 id="{{ i }}-gate-title" class="nwc__h">{{ 'fe.gate_title'|trans }}</h3>
+        <p class="nwc__note">{{ 'fe.gate_text'|trans }}</p>
+        <div class="nwc__fields">
+          <div class="nwc__field"><label for="{{ i }}-fn">{{ 'fe.firstname'|trans }}*</label><input id="{{ i }}-fn" name="firstname" required autocomplete="given-name" aria-describedby="{{ i }}-fn-err"><p id="{{ i }}-fn-err" class="nwc__err" hidden>{{ 'fe.err_firstname'|trans }}</p></div>
+          <div class="nwc__field"><label for="{{ i }}-ln">{{ 'fe.lastname'|trans }}*</label><input id="{{ i }}-ln" name="lastname" required autocomplete="family-name" aria-describedby="{{ i }}-ln-err"><p id="{{ i }}-ln-err" class="nwc__err" hidden>{{ 'fe.err_lastname'|trans }}</p></div>
+          <div class="nwc__field nwc__field--full"><label for="{{ i }}-em">{{ 'fe.email'|trans }}*</label><input id="{{ i }}-em" name="email" type="email" required autocomplete="email" aria-describedby="{{ i }}-em-err"><p id="{{ i }}-em-err" class="nwc__err" hidden>{{ 'fe.err_email'|trans }}</p></div>
+        </div>
+        {% if newsletter %}
+          <label class="nwc__check"><input type="checkbox" id="{{ i }}-nl" name="newsletter" value="1"><span>{{ newsletter_label ?: 'fe.newsletter'|trans }} <small>{{ 'fe.optional'|trans }}</small></span></label>
+        {% endif %}
+        <p class="nwc__legal">{{ 'fe.gate_legal'|trans }}{% if privacy_url %} <a href="{{ privacy_url }}">{{ 'fe.privacy'|trans }}</a>{% endif %}</p>
+        <p class="nwc__err" role="status" data-nwc-lead-err hidden></p>
+        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ 'fe.gate_submit'|trans }}</span></button>
+      </form>
+    </div>
+
+    {# ---- result ---- #}
+    <div class="nwc__result" data-nwc-pane="result" hidden tabindex="-1" aria-labelledby="{{ i }}-res-title">
+      <div class="nwc__reshead">
+        <div><span class="nwc__kicker">{{ 'fe.result_kicker'|trans }}</span><h3 id="{{ i }}-res-title" class="nwc__h"><span data-nwc-domain></span></h3></div>
+        <p class="nwc__sent" data-nwc-sent></p>
+      </div>
+      <div class="nwc__grade" data-nwc-gradebox><span class="nwc__gradenum" data-nwc-grade>–</span><div><b data-nwc-gradeword></b><p data-nwc-verdict></p></div></div>
+      <div class="nwc__gauges">
+        <div class="nwc__gauge" data-g="perf" style="--p:0"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52"></circle><circle cx="60" cy="60" r="52"></circle></svg><b>–</b><span>{{ 'fe.gauge_perf'|trans }}</span></div>
+        <div class="nwc__gauge" data-g="a11y" style="--p:0"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52"></circle><circle cx="60" cy="60" r="52"></circle></svg><b>–</b><span>{{ 'fe.gauge_a11y'|trans }}</span></div>
+        <div class="nwc__gauge" data-g="bp" style="--p:0"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52"></circle><circle cx="60" cy="60" r="52"></circle></svg><b>–</b><span>{{ 'fe.gauge_bp'|trans }}</span></div>
+        <div class="nwc__gauge" data-g="seo" style="--p:0"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52"></circle><circle cx="60" cy="60" r="52"></circle></svg><b>–</b><span>{{ 'fe.gauge_seo'|trans }}</span></div>
+      </div>
+      <ul class="nwc__areas" data-nwc-areas></ul>
+      <div class="nwc__block" data-nwc-measures-wrap hidden>
+        <p class="nwc__blocklabel">{{ 'fe.measures_title'|trans }}</p>
+        <ol class="nwc__measures" data-nwc-measures></ol>
+      </div>
+      <div class="nwc__block" data-nwc-strengths-wrap hidden>
+        <p class="nwc__blocklabel">{{ 'fe.strengths_title'|trans }}</p>
+        <ul class="nwc__strengths" data-nwc-strengths></ul>
+      </div>
+      <p class="nwc__disc">{{ 'fe.disclaimer'|trans }}</p>
+      <div class="nwc__cta">
+        {% if contact_url %}<a class="nwc__btn nwc__btn--primary" href="{{ contact_url }}"><span>{{ 'fe.cta'|trans }}</span></a>{% endif %}
+        <button type="button" class="nwc__btn nwc__btn--ghost" data-nwc-reset>{{ 'fe.reset'|trans }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
