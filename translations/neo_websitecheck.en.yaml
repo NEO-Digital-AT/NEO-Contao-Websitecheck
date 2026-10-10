@@ -490,6 +490,8 @@ report:
     a11y_intro: 'Checked with Lighthouse (the same tests Google uses) on the start page and the sub-pages. Marked excerpts show where the findings are.'
     a11y_no_findings_caption: 'Start page, phone. No marked findings.'
     contrast_label: 'Contrast %ratio%:1 · required 4.5:1'
+    gauge_sub: 'of 100'
+    gauge_note: 'Google PageSpeed Insights, start page on a phone. 90–100 green, 50–89 orange, below 50 red.'
     a11y_why_title: 'Why it matters'
     a11y_why: 'Roughly every twelfth man sees colours differently, many people read in sunlight, and a button nobody can read is a button nobody presses.'
     findings: 'findings'

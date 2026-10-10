@@ -490,6 +490,8 @@ report:
     a11y_intro: 'Geprüft mit Lighthouse (dieselben Tests, die Google verwendet) auf der Startseite und den Unterseiten. Markierte Ausschnitte zeigen, wo die Fundstellen liegen.'
     a11y_no_findings_caption: 'Startseite, Handy. Keine markierten Fundstellen.'
     contrast_label: 'Kontrast %ratio%:1 · Soll 4,5:1'
+    gauge_sub: 'von 100'
+    gauge_note: 'Google PageSpeed Insights, Startseite am Handy. 90–100 grün, 50–89 orange, unter 50 rot.'
     a11y_why_title: 'Warum das zählt'
     a11y_why: 'Rund jeder zwölfte Mann sieht Farben anders, viele Menschen lesen im Sonnenlicht, und ein Knopf, den niemand lesen kann, wird nicht gedrückt.'
     findings: 'Fundstellen'
