@@ -1,0 +1,799 @@
+# NEO Website Check — French texts (front end, report, e-mail).
+# Copy to translations/neo_websitecheck.fr.yaml in your project to override single keys.
+word:
+    yes: 'oui'
+    no: 'non'
+    none: 'aucun'
+grade:
+    1: 'Très bien'
+    2: 'Bien'
+    3: 'Satisfaisant'
+    4: 'Suffisant'
+    5: 'Insuffisant'
+verdict:
+    good: 'Un site solide. Rien d’urgent, quelques petits détails le rendraient encore meilleur.'
+    mid: 'Une bonne base, mais certains points vous font probablement perdre des demandes. Les plus importants figurent ci-dessous.'
+    low: 'Il y a clairement des choses à faire. Commencez par les trois mesures ci-dessous : votre site deviendra alors un outil qui vous amène des clients.'
+area:
+    speed: 'Vitesse de chargement'
+    accessibility: 'Accessibilité'
+    seo: 'Visibilité sur Google'
+    ai: 'Visibilité dans la recherche IA'
+    content: 'Contenu et clarté'
+    legal: 'Juridique et confidentialité'
+    mobile: 'Mobile'
+    unavailable: 'N’a pas pu être mesuré cette fois-ci.'
+measure:
+    effort:
+        small: 'effort faible'
+        medium: 'effort moyen'
+        large: 'effort important'
+
+# ---------------------------------------------------------------- speed
+speed:
+    summary:
+        good: 'Sur un téléphone, la page d’accueil s’affiche après %lcp% s. C’est plus rapide que la plupart des sites.'
+        ok: 'Sur un téléphone, la page d’accueil met %lcp% s à s’afficher. C’est utilisable, mais certains visiteurs partent avant qu’elle soit prête.'
+        bad: 'Sur un téléphone, la page d’accueil met %lcp% s à s’afficher. Beaucoup de visiteurs partent avant que quoi que ce soit n’apparaisse.'
+    meta: 'Performance %perf% sur 100 · LCP %lcp% s · CLS %cls%'
+    kpi:
+        lcp: 'Contenu principal visible (LCP)'
+        lcp_note: 'limite 2,5 s'
+        cls: 'Décalages de mise en page (CLS)'
+        cls_note: 'limite 0,1'
+        tbt: 'Temps de blocage (TBT)'
+        tbt_note: 'limite 200 ms'
+        inp: 'Réaction au toucher (INP)'
+        inp_note: 'limite 200 ms'
+        perf: 'Score de performance'
+        perf_note: 'sur 100'
+        bytes: 'Poids de la page'
+        bytes_note: 'limite 2 Mo'
+        requests: 'Requêtes'
+        requests_note: 'limite 80'
+    issue:
+        lcp:
+            title: 'La page d’accueil se charge lentement sur téléphone'
+            text: 'Le contenu principal apparaît au bout de %lcp% secondes. Google fixe la limite à 2,5 secondes ; les visiteurs jugent encore plus vite.'
+            fix: 'Réduire la plus grande image visible sans défiler, charger les scripts plus tard et faire envoyer des fichiers compressés par le serveur. En général une à deux heures de travail.'
+        largest_image:
+            title: 'Une image pèse %kb% Ko'
+            text: 'Le fichier « %file% » est l’élément le plus lourd de la page d’accueil et retarde tout ce qui suit.'
+            fix: 'Exporter l’image à la largeur affichée (généralement 1200–1600 px) en WebP ou AVIF. Souvent 80 % plus légère, sans différence visible.'
+        render_blocking:
+            title: '%count% fichiers bloquent le premier affichage'
+            text: 'Des feuilles de style ou des scripts dans l’en-tête de la page sont chargés entièrement avant que quoi que ce soit ne s’affiche.'
+            fix: 'Charger le CSS et le JavaScript non essentiels en différé ou de manière asynchrone ; ne garder dans l’en-tête que les styles indispensables.'
+        image_formats:
+            title: 'Images dans des formats anciens'
+            text: 'Du JPEG/PNG là où le WebP ou l’AVIF seraient 30–70 % plus légers.'
+            fix: 'Faire livrer automatiquement des formats modernes par le CMS (la plupart des systèmes le font avec un simple réglage).'
+        responsive_images:
+            title: 'Images plus grandes que leur affichage'
+            text: 'Les téléphones téléchargent des images au format ordinateur et les réduisent ensuite.'
+            fix: 'Proposer les images en plusieurs tailles (srcset) ; le CMS peut généralement les générer.'
+        unused_js:
+            title: 'JavaScript inutilisé'
+            text: 'Des scripts que cette page n’utilise pas sont chargés. Ils coûtent du temps et de la batterie.'
+            fix: 'Supprimer les plugins et scripts de suivi inutilisés ; ne charger le reste que sur les pages qui en ont besoin.'
+        ttfb:
+            title: 'Le serveur répond lentement'
+            text: 'Le serveur met %value% à livrer le premier octet, avant même que le navigateur puisse faire quoi que ce soit.'
+            fix: 'Activer la mise en cache des pages dans le CMS ou demander une offre plus rapide à l’hébergeur.'
+        compression:
+            title: 'Les fichiers sont envoyés sans compression'
+            text: 'Les fichiers texte (HTML, CSS, JavaScript) ne sont pas compressés lors de leur envoi au navigateur.'
+            fix: 'Activer la compression gzip ou Brotli sur le serveur (une ligne dans la configuration du serveur).'
+        cls:
+            title: 'Le contenu saute pendant le chargement (CLS %cls%)'
+            text: 'Des éléments se déplacent après leur apparition : les visiteurs cliquent au mauvais endroit ou perdent le fil de leur lecture.'
+            fix: 'Réserver la place des images, publicités et polices (attributs width/height, font-display: swap).'
+        bytes:
+            title: 'La page d’accueil pèse %mb% Mo'
+            text: 'Avec une connexion mobile, cela prend plusieurs secondes et consomme du forfait de données.'
+            fix: 'Compresser les images et les vidéos ; ne charger les vidéos que lorsqu’elles deviennent visibles.'
+        console:
+            title: '%count% erreurs dans la console du navigateur'
+            text: 'Des erreurs JavaScript indiquent des fonctions défectueuses sur lesquelles les visiteurs peuvent tomber.'
+            fix: 'Faire vérifier les erreurs par le développeur web ; il s’agit généralement de plugins obsolètes.'
+    good:
+        lcp:
+            title: 'Rapide sur téléphone'
+            text: 'Le contenu principal est visible après %lcp% s — sous les 2,5 s attendues par Google. C’est la base qui manque à beaucoup de sites.'
+        cls:
+            title: 'Rien ne saute'
+            text: 'La mise en page reste stable pendant le chargement ; les visiteurs peuvent lire et cliquer tout de suite.'
+        https:
+            title: 'HTTPS correctement configuré'
+            text: 'Connexion chiffrée avec un certificat valide ; le simple http redirige vers https.'
+        console:
+            title: 'Aucune erreur dans le navigateur'
+            text: 'La console du navigateur est propre — aucun script défectueux.'
+        images:
+            title: 'Images livrées correctement'
+            text: 'Formats modernes et tailles adaptées au téléphone comme à l’ordinateur.'
+
+# ---------------------------------------------------------------- accessibility
+a11y:
+    summary:
+        good: 'Sans obstacle lors des tests automatiques : les textes sont lisibles, les éléments de commande sont nommés.'
+        ok: 'Globalement correct. %count% problèmes de contraste et quelques libellés manquants empêchent une très bonne note.'
+        bad: 'Plusieurs obstacles : %count% problèmes de contraste, libellés ou descriptions manquants. Cela gêne aussi les visiteurs sans handicap.'
+    meta: 'Accessibilité Lighthouse %score% sur 100 · %count% problèmes de contraste'
+    issue:
+        meta_viewport:
+            title: 'Le zoom est bloqué sur téléphone'
+            text: 'La page empêche le zoom à deux doigts. Les personnes malvoyantes ne peuvent pas agrandir le texte.'
+            fix: 'Retirer user-scalable=no et maximum-scale de la balise viewport dans l’en-tête de la page, une ligne dans le template.'
+        color_contrast:
+            title: 'Texte avec un contraste insuffisant (%count%×)'
+            text: 'Un texte clair sur fond clair ou foncé sur fond foncé est difficile à lire en plein soleil et pour environ un homme sur douze (perception des couleurs). Exigence : 4,5:1.'
+            fix: 'Foncer légèrement la couleur du texte ou du fond — généralement une seule valeur de couleur dans la feuille de style, sans refonte.'
+        image_alt:
+            title: '%count% images sans description'
+            text: 'Les lecteurs d’écran et Google ne savent pas ce que montrent ces images.'
+            fix: 'Ajouter un court texte alternatif (alt) à chaque image de contenu ; les images décoratives reçoivent un attribut alt vide.'
+        link_name:
+            title: '%count% liens sans nom lisible'
+            text: 'Des liens comme « en savoir plus » ou composés uniquement d’une icône ne disent rien aux utilisateurs de lecteurs d’écran.'
+            fix: 'Donner à chaque lien un texte qui indique où il mène, ou un aria-label pour les liens à icône.'
+        button_name:
+            title: '%count% boutons sans nom'
+            text: 'Les boutons à icône sans libellé ne peuvent pas être utilisés avec un lecteur d’écran.'
+            fix: 'Ajouter un aria-label à chaque bouton à icône (p. ex. « Ouvrir le menu »).'
+        html_has_lang:
+            title: 'Langue de la page non déclarée'
+            text: 'Sans attribut de langue, les lecteurs d’écran choisissent une mauvaise prononciation.'
+            fix: 'Définir lang="en" (ou votre langue) sur l’élément <html>.'
+        heading_order:
+            title: 'Les titres sautent des niveaux'
+            text: 'Des niveaux de titre sont sautés (h1 → h3) : la structure devient confuse pour les technologies d’assistance.'
+            fix: 'Utiliser les niveaux de titre dans l’ordre ; les mettre en forme avec le CSS plutôt que de choisir un niveau pour son apparence.'
+        label:
+            title: '%count% champs de formulaire sans libellé'
+            text: 'Les champs sans libellé visible et associé sont difficiles à remplir et ne sont pas reconnus par le remplissage automatique des navigateurs.'
+            fix: 'Donner à chaque champ un <label for> qui correspond à l’id du champ.'
+        target_size:
+            title: '%count% zones tactiles trop petites'
+            text: 'Les liens ou boutons de moins de 24 px se ratent facilement avec le pouce.'
+            fix: 'Agrandir la zone cliquable (padding) à au moins 44 × 44 px.'
+        label_content_name_mismatch:
+            title: '%count% éléments dont le nom vocal diffère du libellé'
+            text: 'Des boutons à icône (recherche, flèches, appel) portent un nom accessible qui ne correspond pas au texte visible : la commande vocale et les lecteurs d’écran annoncent autre chose.'
+            fix: 'Faire commencer l’aria-label par le texte visible, ou utiliser le texte de l’icône comme nom.'
+    good:
+        contrast:
+            title: 'Les contrastes sont bons'
+            text: 'Chaque texte vérifié atteint le rapport de contraste exigé.'
+        images:
+            title: 'Les images sont décrites'
+            text: 'Les %count% images des pages analysées ont toutes un texte alternatif.'
+        lang:
+            title: 'Langue déclarée'
+            text: 'Les lecteurs d’écran lisent la page dans la bonne langue.'
+        names:
+            title: 'Liens et boutons nommés'
+            text: 'Chaque élément de commande a un nom lisible ; les niveaux de titre sont dans l’ordre.'
+        targets:
+            title: 'Zones tactiles assez grandes'
+            text: 'Les boutons et les liens peuvent être touchés avec le pouce.'
+
+# ---------------------------------------------------------------- seo
+seo:
+    summary:
+        good: 'Titres, descriptions, intertitres et données structurées sont propres. Google peut lire le site.'
+        ok: 'Les bases sont là ; quelques titres, descriptions ou détails de structure méritent d’être revus.'
+        bad: 'Des bases importantes pour Google manquent. Les moteurs de recherche trouvent le site, mais comprennent à peine de quoi il parle.'
+    meta: 'SEO Lighthouse %score% sur 100 · %pages% pages analysées'
+    issue:
+        title_missing:
+            title: 'Pas de titre de page sur %page%'
+            text: 'Le titre est le gros titre affiché dans les résultats Google. S’il manque, Google en invente un.'
+            fix: 'Rédiger un titre de 60 caractères maximum : ce que vous proposez, et où (p. ex. « Dentiste à Lyon – Dr Exemple »).'
+        title_long:
+            title: 'Titre de page trop long sur %page%'
+            text: '%length% caractères — Google coupe les titres au-delà d’environ 60.'
+            fix: 'Raccourcir le titre ; les mots les plus importants en premier.'
+        desc_missing:
+            title: 'Pas de description sur %page%'
+            text: 'La meta description est le texte gris sous le résultat Google. Si elle manque, Google affiche un extrait au hasard.'
+            fix: 'Rédiger 140–158 caractères qui disent ce que propose la page et pourquoi cliquer.'
+        desc_long:
+            title: 'Description trop longue sur %page%'
+            text: '%length% caractères — Google coupe les descriptions au-delà d’environ 160.'
+            fix: 'Raccourcir à 140–158 caractères.'
+        h1_missing:
+            title: 'Pas de titre principal sur %page%'
+            text: 'Chaque page a besoin d’exactement un titre H1 qui nomme le sujet.'
+            fix: 'Faire du titre le plus important un H1.'
+        h1_multiple:
+            title: '%count% titres principaux sur %page%'
+            text: 'Plusieurs titres H1 brouillent le sujet de la page.'
+            fix: 'Garder un seul H1 par page ; transformer les autres en H2.'
+        noindex:
+            title: 'Page d’accueil bloquée pour Google'
+            text: 'La page d’accueil porte une instruction « noindex » : Google est prié de ne pas la référencer.'
+            fix: 'Retirer le réglage noindex dans le CMS (généralement une case à cocher sur la page).'
+        heading_skips:
+            title: 'Niveaux de titre sautés (%count%×)'
+            text: 'Des sauts comme H1 → H3 rendent la structure peu claire pour Google et les lecteurs d’écran.'
+            fix: 'Utiliser les niveaux de titre dans l’ordre.'
+        sitemap_missing:
+            title: 'Aucun plan du site trouvé'
+            text: 'Un fichier sitemap.xml indique d’un coup toutes les pages à Google ; sans lui, les nouvelles pages sont trouvées plus tard.'
+            fix: 'Activer le plan du site dans le CMS et l’indiquer dans le robots.txt.'
+        schema:
+            title: 'Aucune donnée structurée'
+            text: 'Les données structurées (schema.org) indiquent à Google et aux assistants IA de quel type d’entreprise il s’agit, où elle se trouve et quand elle est ouverte.'
+            fix: 'Ajouter des données Organization ou LocalBusiness avec nom, adresse, téléphone et horaires d’ouverture (la plupart des CMS ont un plugin pour cela).'
+        not_crawlable:
+            title: 'Page bloquée pour les moteurs de recherche'
+            text: 'Des instructions robots empêchent Google d’indexer la page.'
+            fix: 'Vérifier le robots.txt et la balise meta robots ; lever le blocage pour les pages publiques.'
+        link_text:
+            title: '%count% liens au texte peu parlant'
+            text: '« Cliquez ici » ou « plus » ne dit rien à Google sur la page de destination.'
+            fix: 'Utiliser des textes de lien descriptifs (« nos horaires d’ouverture »).'
+        crawlable_anchors:
+            title: 'Liens que Google ne peut pas suivre'
+            text: 'Certains liens sont construits uniquement en JavaScript et sont invisibles pour les moteurs de recherche.'
+            fix: 'Utiliser des liens <a href> normaux pour la navigation.'
+        canonical:
+            title: 'Lien canonique incorrect'
+            text: 'La balise canonical pointe vers une adresse erronée ou inaccessible, ce qui peut induire Google en erreur.'
+            fix: 'Faire pointer le lien canonique vers la page elle-même.'
+        hreflang:
+            title: 'Liens de langue incorrects'
+            text: 'Les balises hreflang des versions linguistiques contiennent des erreurs.'
+            fix: 'Faire corriger les balises hreflang (codes de langue valides, toutes les versions se référencent mutuellement).'
+        http_redirect:
+            title: 'http ne redirige pas vers https'
+            text: 'Les visiteurs qui saisissent l’adresse sans https arrivent sur la version non chiffrée.'
+            fix: 'Mettre en place une redirection permanente de http vers https sur le serveur.'
+    good:
+        sitemap:
+            title: 'Plan du site présent'
+            text: '%count% pages sont répertoriées pour Google.'
+        titles:
+            title: 'Titres et descriptions définis'
+            text: 'Chaque page analysée a son propre titre et sa propre description, de longueur adaptée.'
+        h1:
+            title: 'Un titre principal par page'
+            text: 'Une structure claire pour Google et pour les visiteurs.'
+        schema:
+            title: 'Données structurées présentes'
+            text: 'Google et les assistants IA trouvent des données %types%.'
+        https:
+            title: 'Chiffré et redirigé'
+            text: 'https avec redirection depuis http.'
+
+# ---------------------------------------------------------------- AI visibility
+ai:
+    summary:
+        good: 'Les assistants IA peuvent lire et comprendre le site ; un résumé (llms.txt) est en place.'
+        ok: 'Les assistants IA peuvent lire le site, mais doivent reconstituer eux-mêmes ce que vous proposez.'
+        bad: 'Les moteurs de recherche IA voient à peine le site : pas de résumé, robots bloqués ou aucune donnée d’entreprise identifiable.'
+    meta: 'llms.txt : %llms% · %blocked% robots IA bloqués'
+    issue:
+        llms_missing:
+            title: 'Pas de llms.txt'
+            text: 'ChatGPT, Perplexity et l’IA de Google cherchent un court fichier texte qui dit ce que fait l’entreprise, pour qui et où. Sans lui, ils devinent à partir des pages.'
+            fix: 'Créer /llms.txt : trois paragraphes (offre, public cible, lieu/contact) plus des liens vers les pages clés. Une demi-heure de travail.'
+        bots_blocked:
+            title: 'Robots IA bloqués : %bots%'
+            text: 'Le robots.txt interdit à ces assistants de lire le site : ils ne peuvent donc pas le recommander.'
+            fix: 'Autoriser ces robots dans le robots.txt — ou décider sciemment de rester absent des réponses IA.'
+        no_identity_schema:
+            title: 'Entreprise non lisible par les machines'
+            text: 'Sans données Organization/LocalBusiness, un assistant ne connaît pas de façon fiable le nom, l’adresse ou les horaires d’ouverture.'
+            fix: 'Ajouter des données structurées avec nom, adresse, téléphone, horaires d’ouverture et zone desservie.'
+        offer_unclear:
+            title: 'L’offre n’apparaît pas dans les premières phrases'
+            text: 'Les réponses des IA citent les premières phrases d’une page. Sur la page d’accueil, elles n’énoncent pas clairement l’offre.'
+            fix: 'Commencer la page par une phrase simple : qui vous êtes, ce que vous faites, pour qui, où.'
+    good:
+        llms:
+            title: 'llms.txt présent'
+            text: 'Les assistants IA obtiennent un résumé directement de votre part.'
+        bots:
+            title: 'Robots IA autorisés'
+            text: 'GPTBot, ClaudeBot, PerplexityBot et Google-Extended peuvent lire le site.'
+        schema:
+            title: 'Entreprise lisible par les machines'
+            text: 'Des données structurées de type %types% identifient l’entreprise.'
+        offer:
+            title: 'Offre annoncée d’emblée'
+            text: 'Les premières phrases disent déjà ce que fait l’entreprise.'
+
+# ---------------------------------------------------------------- content
+content:
+    summary:
+        good: 'En cinq secondes, on comprend ce que fait l’entreprise, pour qui, et quelle est l’étape suivante.'
+        ok: 'Compréhensible, mais l’offre ou l’étape suivante pourrait être plus claire ; certains termes supposent des connaissances préalables.'
+        bad: 'Les visiteurs ne comprennent pas rapidement ce qui est proposé ni comment prendre contact. Cela coûte des demandes.'
+    meta:
+        ai: 'Une IA a lu %pages% pages comme un visiteur qui découvre le site'
+        heuristic: 'Vérification heuristique (aucune IA configurée)'
+    issue:
+        no_cta:
+            title: 'Pas d’étape suivante claire'
+            text: 'Les visiteurs intéressés ne voient pas au premier coup d’œil comment appeler, demander un devis ou réserver.'
+            fix: 'Placer une action bien visible dès le premier écran : « Appeler », « Demander un devis » ou « Réserver » — avec le numéro de téléphone.'
+        thin:
+            title: 'Très peu de texte (%words% mots)'
+            text: 'Avec si peu de texte, ni les visiteurs ni Google n’apprennent ce que vous proposez.'
+            fix: 'Décrire l’offre, le public cible et le lieu en deux ou trois courts paragraphes.'
+        phone:
+            title: 'Numéro de téléphone non cliquable'
+            text: 'Sur téléphone, un numéro devrait pouvoir être touché pour appeler (lien tel:). Ici, il manque ou n’est que du texte.'
+            fix: 'Lier le numéro avec tel:+43… ; le placer dans l’en-tête ou le pied de page de chaque page.'
+    good:
+        cta:
+            title: 'Étape suivante claire'
+            text: 'Les visiteurs voient comment prendre contact.'
+        length:
+            title: 'Suffisamment de texte'
+            text: '%words% mots décrivent l’offre.'
+        phone:
+            title: 'Numéro de téléphone cliquable'
+            text: 'Un simple toucher sur le téléphone lance l’appel.'
+
+# ---------------------------------------------------------------- legal
+legal:
+    summary:
+        good: 'Mentions légales, politique de confidentialité et gestion du consentement sont en place, pour autant que cela se vérifie techniquement.'
+        ok: 'Mentions légales et politique de confidentialité existent ; la gestion des services tiers mérite d’être revue.'
+        bad: 'Mentions légales ou politique de confidentialité manquantes, ou des services de suivi se chargent avant le consentement. Veuillez faire vérifier par votre conseiller juridique.'
+    meta: 'Vérification technique, pas un conseil juridique'
+    note: 'Il s’agit d’une vérification technique : elle recherche les pages et les services chargés avant tout consentement. Ce n’est pas un conseil juridique — veuillez faire vérifier les détails par votre conseiller juridique.'
+    issue:
+        imprint:
+            title: 'Mentions légales introuvables'
+            text: 'Aucun lien vers une page de mentions légales n’a été trouvé sur les pages analysées, ou la page est inaccessible.'
+            fix: 'Lier une page de mentions légales depuis chaque page (pied de page), avec les informations obligatoires.'
+        privacy:
+            title: 'Politique de confidentialité introuvable'
+            text: 'Aucun lien vers une politique de confidentialité n’a été trouvé, ou la page est inaccessible.'
+            fix: 'Lier la politique de confidentialité depuis chaque page (pied de page) ; elle doit citer chaque service utilisé.'
+        tracking:
+            title: 'Suivi avant consentement : %services%'
+            text: 'Ces services se chargent dès la première visite, avant que le visiteur ait pu donner son consentement. Selon le RGPD et les règles ePrivacy, un consentement préalable est nécessaire.'
+            fix: 'Ne charger ces services qu’après consentement dans le bandeau cookies (ou configurer l’outil de consentement pour qu’il les bloque).'
+        embeds:
+            title: 'Services tiers sans outil de consentement : %services%'
+            text: 'Des services externes se chargent sans bandeau de consentement. Selon le service, un consentement peut être nécessaire.'
+            fix: 'Héberger les polices localement ; charger les cartes et vidéos après un clic ou via l’outil de consentement.'
+    good:
+        imprint:
+            title: 'Mentions légales présentes'
+            text: 'Liées et accessibles.'
+        privacy:
+            title: 'Politique de confidentialité présente'
+            text: 'Liée et accessible.'
+        no_third_party:
+            title: 'Aucun service tiers avant consentement'
+            text: 'Rien d’externe ne se charge lors de la première visite.'
+        cmp:
+            title: 'Outil de consentement présent'
+            text: 'Un bandeau cookies / outil de consentement a été trouvé.'
+
+# ---------------------------------------------------------------- mobile
+mobile:
+    summary:
+        good: 'S’adapte à l’écran du téléphone ; les boutons et le texte sont assez grands.'
+        ok: 'Utilisable sur téléphone ; quelques zones tactiles ou tailles de police sont trop petites.'
+        bad: 'Difficile à utiliser sur téléphone : pas de réglage viewport, zones tactiles trop petites ou contenu plus large que l’écran.'
+        unknown: 'N’a pas pu être entièrement mesuré (pas de résultat PageSpeed).'
+    meta: 'Viewport, zones tactiles, taille de police, largeur du contenu'
+    issue:
+        viewport:
+            title: 'Pas de viewport mobile'
+            text: 'Sur téléphone, la page s’affiche comme une page d’ordinateur en miniature.'
+            fix: 'Ajouter <meta name="viewport" content="width=device-width, initial-scale=1"> dans l’en-tête de la page.'
+        targets:
+            title: '%count% zones tactiles trop petites'
+            text: 'Des liens ou boutons sont trop petits ou trop rapprochés pour le pouce.'
+            fix: 'Agrandir la zone tactile à au moins 44 × 44 px et espacer les liens.'
+        font:
+            title: 'Texte trop petit sur téléphone'
+            text: '%value% du texte fait moins de 12 px et se lit difficilement sur téléphone.'
+            fix: 'Utiliser au moins 16 px pour le texte courant.'
+        width:
+            title: 'Contenu plus large que l’écran'
+            text: 'Les visiteurs doivent faire défiler la page latéralement.'
+            fix: 'Corriger les éléments à largeur fixe (tableaux, images, contenus intégrés) avec max-width: 100 %.'
+    good:
+        viewport:
+            title: 'Viewport mobile défini'
+            text: 'La page s’adapte à l’écran du téléphone.'
+        targets:
+            title: 'Zones tactiles correctes'
+            text: 'Les liens et boutons peuvent être touchés avec le pouce.'
+        font:
+            title: 'Texte lisible'
+            text: 'Les tailles de police sont suffisantes pour les téléphones.'
+
+# ---------------------------------------------------------------- front end
+fe:
+    status_idle: 'Prêt pour l’analyse'
+    status_run: 'Analyse en cours …'
+    status_done: 'Analyse terminée'
+    preview_idle: 'Votre site web apparaîtra ici'
+    placeholder_domain: 'votre-entreprise.fr'
+    url_label: 'Adresse de votre site web'
+    submit: 'Analyser maintenant'
+    what_speed: 'Vitesse de chargement sur téléphone'
+    what_a11y: 'Accessibilité et contrastes'
+    what_seo: 'Google et recherche IA'
+    what_content: 'Textes et étape suivante'
+    what_legal: 'Mentions légales, confidentialité, cookies'
+    altcha_label: 'Je suis un humain'
+    altcha_verifying: 'Vérification …'
+    altcha_verified: 'Vérifié'
+    altcha_error: 'La vérification a échoué. Veuillez recharger la page.'
+    altcha_wait: 'La vérification est encore en cours. Veuillez patienter un instant.'
+    err_url: 'Veuillez saisir une adresse valide, p. ex. votre-entreprise.fr.'
+    err_limit_hour: 'Vous avez déjà lancé %limit% analyses au cours de la dernière heure. Veuillez réessayer dans une heure.'
+    err_limit: 'Vous avez déjà effectué %limit% analyses aujourd’hui. Veuillez réessayer demain.'
+    err_spam: 'La vérification anti-spam n’a pas abouti. Veuillez recharger la page et réessayer.'
+    err_generic: 'Une erreur s’est produite. Veuillez réessayer dans un instant.'
+    err_failed: 'Ce site web n’a pas pu être analysé (inaccessible ou bloqué).'
+    eta: 'encore environ %s s'
+    eta_soon: 'presque terminé …'
+    progress_label: 'Progression de l’analyse'
+    step_discover: 'Ouvrir la page d’accueil, trouver le plan du site et les sous-pages clés'
+    step_speed_home: 'Mesurer la page d’accueil sur téléphone (Google PageSpeed)'
+    step_speed_pages: 'Mesurer les sous-pages'
+    step_analyze: 'Vérifier l’accessibilité, les pages juridiques et la visibilité IA'
+    step_ai: 'Lire les textes et se faire un avis'
+    step_finish: 'Attribuer la note et compiler le rapport'
+    gate_title: 'Votre résultat est prêt'
+    gate_text: 'Où pouvons-nous vous l’envoyer ? Vous le verrez directement ici et recevrez le rapport PDF par e-mail.'
+    firstname: 'Prénom'
+    lastname: 'Nom'
+    email: 'E-mail'
+    err_firstname: 'Veuillez saisir votre prénom.'
+    err_lastname: 'Veuillez saisir votre nom.'
+    err_email: 'Veuillez saisir une adresse e-mail valide.'
+    newsletter: 'Oui, envoyez-moi aussi de temps en temps des conseils sur le web, l’informatique et l’IA. Confirmation par e-mail, désinscription possible à tout moment.'
+    optional: '(facultatif)'
+    gate_legal: 'Nous utilisons vos données uniquement pour vous envoyer ce résultat.'
+    privacy: 'Politique de confidentialité'
+    gate_submit: 'Afficher le résultat'
+    result_kicker: 'Résultat pour'
+    grade_label: 'Note globale %s'
+    mail_sent: 'Copie en route vers %s'
+    mail_failed: 'L’e-mail n’a pas pu être envoyé — le résultat reste visible ici.'
+    gauge_perf: 'Performance'
+    gauge_a11y: 'Accessibilité'
+    gauge_bp: 'Technique'
+    gauge_seo: 'SEO'
+    measures_title: 'Ce qu’il faut changer en premier'
+    strengths_title: 'Ce qui fonctionne déjà'
+    disclaimer: 'Évaluation automatique basée sur Google PageSpeed Insights, nos propres vérifications et une lecture par IA. Le rapport PDF contient tous les constats avec captures d’écran.'
+    cta: 'Discuter du résultat — gratuitement'
+    reset: 'Analyser un autre site web'
+
+# ---------------------------------------------------------------- report (PDF)
+report:
+    title: 'Analyse de site web pour %domain%'
+    header: 'Analyse de site web'
+    page: 'Page %n% sur %total%'
+    cover_eyebrow: 'Analyse de site web gratuite'
+    cover_title: 'Votre analyse de site web pour'
+    grade_line: 'Note globale %grade% · %word%'
+    grade_short: 'Note %grade% · %word%'
+    meta_pages: 'Pages analysées'
+    meta_date: 'Date'
+    meta_for: 'Pour'
+    overview_eyebrow: 'Sept domaines, une note globale'
+    overview_title: 'En un coup d’œil'
+    legend_title: 'Comment lire les notes'
+    legend: 'Notes de 1 (très bien) à 5 (insuffisant). La note globale n’est jamais meilleure que celle du domaine le plus faible plus un.'
+    measures_eyebrow: 'Ce que je changerais en premier'
+    a11y_title: 'Accessibilité et contrastes'
+    a11y_intro: 'Vérifié avec Lighthouse (les mêmes tests que ceux de Google) sur la page d’accueil et les sous-pages. Les extraits annotés montrent où se trouvent les problèmes.'
+    a11y_no_findings_caption: 'Page d’accueil, téléphone. Aucun problème signalé.'
+    contrast_label: 'Contraste %ratio%:1 · exigé 4,5:1'
+    gauge_sub: 'sur 100'
+    gauge_note: 'Google PageSpeed Insights, page d’accueil sur téléphone. 90–100 vert, 50–89 orange, moins de 50 rouge.'
+    a11y_why_title: 'Pourquoi c’est important'
+    a11y_why: 'Environ un homme sur douze perçoit les couleurs différemment, beaucoup de gens lisent en plein soleil, et un bouton que personne ne peut lire est un bouton sur lequel personne n’appuie.'
+    findings: 'constats'
+    speed_title: 'Vitesse de chargement et mobile'
+    speed_intro: 'Mesuré avec Google PageSpeed Insights, profil « téléphone, 4G lente » — les mêmes chiffres que Google utilise pour le classement.'
+    what_works: 'Ce qui fonctionne'
+    what_to_improve: 'Ce qui peut être amélioré'
+    nothing_to_improve: 'Rien de notable — bravo.'
+    pages_eyebrow: '%count% pages analysées'
+    pages_title: 'Pages analysées'
+    pages_intro: 'Sélectionnées à partir du plan du site et de la navigation : les pages que les visiteurs voient en premier. Les articles de blog et les sous-pages juridiques n’ont pas été notés.'
+    col_page: 'Page'
+    col_title: 'Titre'
+    col_contrast: 'Problèmes de contraste'
+    col_grade: 'Note'
+    next_eyebrow: 'Et ensuite ?'
+    next_title: 'De petites étapes, pas de refonte'
+    next_text: 'N’importe quelle agence web ou votre prestataire actuel peut mettre en œuvre les mesures de la page 2. Si vous le souhaitez, nous parcourons la liste ensemble : 20 minutes au téléphone, gratuitement, sans discours commercial.'
+    next_promise: 'Ce rapport est gratuit et ne vous engage à rien.'
+    sources: 'Sources : Google PageSpeed Insights (Lighthouse %lighthouse%), vérifications propres HTML/juridique/visibilité IA, lecture des textes par IA · %date%'
+    page_short: 'Page'
+    cover_subtitle: 'Vitesse, accessibilité, Google et recherche IA, textes, mentions légales et confidentialité : sept domaines, une note globale, trois mesures concrètes.'
+    summary_title: 'Le résultat'
+    measures_title: 'Les mesures les plus importantes'
+    what_works_short: 'La vitesse en détail'
+    pages_eyebrow_plain: 'Pages analysées'
+    title_plain: 'Analyse de site web pour {{domain}}'
+    header_plain: 'Analyse de site web · {{date}}'
+    grade_line_plain: 'Note globale {{grade}} · {{grade_word}}'
+    area_grade_line: 'Note {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Ordinateur'
+    label_mobile: 'Mobile'
+    col_lcp: 'LCP'
+    sources_plain: 'Sources : Google PageSpeed Insights (Lighthouse {{lighthouse}}), vérifications propres HTML/juridique/visibilité IA, lecture des textes par IA · {{date}}'
+    ai_sections_eyebrow: 'Ce que nous avons remarqué en plus'
+    ai_sections_title: 'Autres observations'
+
+# ---------------------------------------------------------------- e-mail
+mail:
+    subject: 'Votre analyse de site web pour %domain% : note %grade% · %word%'
+    owner_subject: '[Analyse de site web] %domain% · note %grade% · %name% %newsletter%'
+    owner_lead_title: 'Nouvelle analyse de site web demandée'
+    owner_lead: 'Contact : %name% <%email%> · %domain% · newsletter : %newsletter%'
+    owner_newsletter: 'Newsletter demandée'
+    owner_areas: 'Notes par domaine'
+    owner_errors: 'Étapes en erreur'
+    owner_footer: 'Copie interne de l’analyse n° %id%. Le visiteur a reçu le même rapport sans cet en-tête.'
+    greeting: 'Bonjour %name%,'
+    intro: 'merci de votre confiance. Nous avons analysé %pages% pages de %domain% : vitesse de chargement sur téléphone, accessibilité, visibilité sur Google et dans la recherche IA, textes, mentions légales et gestion des cookies.'
+    grade_line: 'Note globale %grade% · %word%.'
+    measures_title: 'Ce que je changerais en premier :'
+    pdf_note: 'Le rapport complet, avec captures d’écran, mesures et tous les constats, est joint en PDF, dans un langage simple.'
+    offer: 'N’importe quelle agence web ou votre prestataire actuel peut mettre en œuvre ces points. Si vous le souhaitez, nous parcourons la liste ensemble : 20 minutes au téléphone, gratuitement, sans discours commercial.'
+    cta: 'En discuter'
+    cta_alt: 'ou répondez simplement à cet e-mail'
+    newsletter_note: 'Vous avez coché la case newsletter. Un e-mail séparé avec un lien de confirmation va suivre ; vous ne serez inscrit qu’après avoir cliqué dessus.'
+    footer: 'Vous recevez cet e-mail parce que vous avez demandé l’analyse de site web pour %domain%. Nous utilisons vos données uniquement pour ce rapport et les supprimons après %days% jours, sauf si vous vous êtes inscrit à la newsletter ou nous avez envoyé une demande.'
+    greeting_plain: 'Bonjour {{firstname}},'
+    intro_plain: 'merci de votre confiance. Nous avons analysé {{pages}} pages de {{domain}} : vitesse sur mobile, accessibilité, visibilité sur Google et dans la recherche IA, textes, mentions légales et bandeau cookies.'
+    short_intro: 'voici votre analyse de site web pour {{domain}}. Vous trouverez les détails dans le PDF joint.'
+    footer_plain: 'Vous recevez cet e-mail parce que vous avez demandé l’analyse de site web pour {{domain}}. Nous utilisons vos données uniquement pour ce rapport et les supprimons après {{days}} jours, sauf si vous vous êtes inscrit à la newsletter ou nous avez envoyé une demande.'
+
+# ---------------------------------------------------------------- Designer (back end)
+designer:
+    group:
+        content: 'Contenu'
+        data: 'Données de l’analyse'
+        layout: 'Mise en page'
+    ui:
+        blocks: 'Blocs'
+        structure: 'Structure'
+        properties: 'Propriétés'
+        theme: 'Design'
+        preview: 'Aperçu'
+        presets: 'Charger un modèle'
+        preset_confirm: 'Le design actuel va être remplacé par le modèle. Continuer ?'
+        add: 'Ajouter'
+        duplicate: 'Dupliquer'
+        remove: 'Supprimer'
+        up: 'Monter'
+        down: 'Descendre'
+        empty: 'Aucun bloc pour l’instant. Cliquez sur un bloc à gauche ou faites-le glisser ici, ou chargez un modèle.'
+        select_hint: 'Cliquez sur un bloc dans l’aperçu ou dans la structure pour le modifier.'
+        placeholders: 'Variables'
+        insert_placeholder: 'Insérer une variable'
+        choose_image: 'Choisir une image'
+        upload_image: 'Téléverser'
+        remove_image: 'Retirer l’image'
+        pdf_preview: 'Aperçu PDF'
+        mail_preview: 'Ouvrir dans un nouvel onglet'
+        export_twig: 'Copier dans le template Twig'
+        export_confirm: 'Le template Twig (mode expert) va être remplacé par ce design. Continuer ?'
+        twig_active: 'Cette configuration contient du code Twig issu du mode avancé. Il est prioritaire : ce design n’est donc pas utilisé. Un administrateur peut changer cela.'
+        loading: 'Génération de l’aperçu …'
+        error: 'L’aperçu n’a pas pu être généré.'
+        bold: 'Gras'
+        italic: 'Italique'
+        link: 'Lien'
+        link_prompt: 'Adresse du lien (https://…)'
+        list: 'Liste'
+        drag: 'Faire glisser pour réorganiser'
+        demo_hint: 'L’aperçu utilise la dernière analyse terminée ou des données de démonstration.'
+        labels: 'Formulations'
+        labels_hint: 'Mots utilisés par plusieurs blocs : appréciations des notes, noms des domaines, effort et noms des valeurs mesurées. Ce que vous écrivez ici est ce qu’affiche le document.'
+        mode_visual: 'Visuel'
+        mode_twig: 'Avancé (Twig)'
+        mode_label: 'Mode d’édition'
+        twig_intro: 'Voici le document complet en code Twig : cadre, chaque bloc et chaque mot. Les modifications apparaissent immédiatement dans l’aperçu et sont enregistrées avec « Enregistrer ». Tant que du code figure ici, il remplace la mise en page visuelle.'
+        twig_generate: 'Régénérer le code à partir du design visuel'
+        twig_generate_confirm: 'Le code Twig va être remplacé par le design visuel actuel. Vos propres modifications du code seront perdues. Continuer ?'
+        twig_leave_confirm: 'Retour au mode visuel : le code Twig est supprimé et le design visuel s’applique à nouveau. Continuer ?'
+        twig_error: 'Erreur dans le code Twig'
+        twig_refresh: 'Actualiser l’aperçu'
+    opt:
+        none: 'Aucun'
+        s: 'Petit'
+        m: 'Moyen'
+        l: 'Grand'
+        xl: 'Très grand'
+        soft: 'Clair'
+        primary: 'Couleur principale'
+        accent: 'Couleur d’accent'
+        white: 'Blanc'
+        auto: 'Automatique (depuis les paramètres)'
+        text: 'Nom uniquement'
+        h1: 'Titre 1'
+        h2: 'Titre 2'
+        h3: 'Titre 3'
+        normal: 'Normal'
+        muted: 'Atténué'
+        left: 'À gauche'
+        center: 'Centré'
+        right: 'À droite'
+        montage: 'Ordinateur et téléphone superposés'
+        desktop: 'Ordinateur uniquement'
+        mobile: 'Téléphone uniquement'
+        side: 'Côte à côte'
+        cards: 'Cartes (deux colonnes)'
+        list: 'Liste'
+        contact: 'Page de contact'
+        website: 'Site web'
+        custom: 'Adresse personnalisée'
+        outline: 'Contour'
+        arimo: 'Arimo (comme Arial)'
+        sans: 'Sans empattement (DejaVu Sans)'
+        serif: 'Avec empattement (DejaVu Serif)'
+        system: 'Helvetica (caractères d’Europe occidentale uniquement)'
+        narrow: 'Étroit'
+        wide: 'Large'
+        '1': 'Une colonne'
+        '2': 'Deux colonnes'
+        speed: 'Vitesse'
+        accessibility: 'Accessibilité'
+        seo: 'Visibilité sur Google'
+        ai: 'Visibilité dans la recherche IA'
+        content: 'Contenu et clarté'
+        legal: 'Juridique et confidentialité'
+        mobile_area: 'Mobile'
+        effort_small: 'faible'
+        effort_medium: 'moyen'
+        effort_large: 'important'
+    prop:
+        eyebrow: 'Petite ligne au-dessus'
+        title: 'Titre'
+        subtitle: 'Sous-titre'
+        text: 'Texte'
+        html: 'Texte'
+        intro: 'Introduction'
+        note: 'Remarque en dessous'
+        level: 'Taille'
+        align: 'Alignement'
+        space: 'Espace après'
+        bg: 'Arrière-plan'
+        size: 'Taille de police'
+        tone: 'Couleur'
+        columns: 'Colonnes'
+        src: 'Image'
+        image: 'Image personnalisée'
+        width: 'Largeur'
+        caption: 'Légende'
+        rounded: 'Coins arrondis'
+        height: 'Hauteur'
+        style: 'Style'
+        layout: 'Disposition'
+        legend: 'Afficher la légende des notes'
+        max: 'Nombre maximal d’entrées'
+        max_issues: 'Nombre maximal de constats'
+        max_good: 'Nombre maximal de points positifs'
+        area: 'Domaine'
+        show_grade: 'Afficher la note'
+        show_summary: 'Afficher le résumé'
+        show_domain: 'Afficher le domaine'
+        show_meta: 'Afficher pages, date, destinataire'
+        show_screens: 'Afficher les captures d’écran'
+        show_pages: 'Pages analysées'
+        show_date: 'Date'
+        show_for: 'Destinataire'
+        show_effort: 'Afficher l’effort'
+        show_crops: 'Afficher les extraits annotés'
+        show_kpis: 'Afficher les indicateurs'
+        show_portrait: 'Afficher le portrait'
+        show_contact: 'Afficher la ligne de contact'
+        logo: 'Logo'
+        tagline: 'Ligne à droite'
+        label: 'Libellé'
+        target: 'Cible'
+        url: 'Adresse personnalisée'
+        alt: 'Texte à côté du bouton'
+        promise: 'Promesse dans l’encadré de contact'
+        perf: 'Performance'
+        a11y: 'Accessibilité'
+        bp: 'Bonnes pratiques'
+        seo: 'SEO'
+        grade_line: 'Ligne de note'
+        label_pages: 'Libellé « Pages analysées »'
+        label_date: 'Libellé « Date »'
+        label_for: 'Libellé « Pour »'
+        label_desktop: 'Libellé ordinateur'
+        label_mobile: 'Libellé mobile'
+        label_perf: 'Libellé performance'
+        label_a11y: 'Libellé accessibilité'
+        label_bp: 'Libellé bonnes pratiques'
+        label_seo: 'Libellé SEO'
+        legend_title: 'Titre de la légende'
+        legend_text: 'Texte de la légende'
+        works_title: 'Titre « Ce qui fonctionne »'
+        improve_title: 'Titre « Ce qui peut être amélioré »'
+        nothing_text: 'Texte lorsqu’il n’y a rien à améliorer'
+        col_page: 'Colonne page'
+        col_title: 'Colonne titre'
+        col_lcp: 'Colonne temps de chargement'
+        col_contrast: 'Colonne contraste'
+        col_grade: 'Colonne note'
+        none_text: 'Mot pour « aucun »'
+        badge: 'Libellé court dans l’encadré'
+        max_crops: 'Nombre maximal d’extraits annotés'
+        show_intro: 'Afficher l’introduction'
+    theme:
+        doc_title: 'Titre du document (propriétés du PDF)'
+        page_label: 'Mot devant le numéro de page'
+        grade_word: 'Appréciation de la note %s'
+        area_name: 'Domaine : %s'
+        effort_word: 'Effort %s'
+        kpi_name: 'Valeur mesurée : %s'
+        kpi_note: 'Remarque sur : %s'
+        primary: 'Couleur principale (vide = paramètres)'
+        accent: 'Couleur d’accent (vide = paramètres)'
+        text: 'Couleur du texte'
+        soft: 'Surfaces claires'
+        font: 'Police'
+        radius: 'Arrondi des coins'
+        margins: 'Marges de page'
+        header: 'En-tête sur chaque page'
+        header_text: 'Texte de l’en-tête'
+        footer: 'Pied de page sur chaque page'
+        footer_text: 'Texte du pied de page'
+        page_numbers: 'Numéros de page'
+        outer: 'Arrière-plan autour de l’e-mail'
+        size: 'Taille de police de base'
+    preset:
+        pdf:
+            standard: 'Standard (couverture avec note, tous les domaines)'
+            cover: 'Avec page de couverture (couverture dans la couleur principale, résultat en page 2)'
+            compact: 'Compact (une page)'
+        mail:
+            standard: 'Standard (note, mesures, mention du PDF, bouton)'
+            short: 'Court (note, mention du PDF, bouton)'
+    block:
+        cover: {label: 'Page de couverture', desc: 'Logo, titre, domaine, éventuellement note, chiffres clés et captures d’écran. Une nouvelle page commence ensuite.'}
+        heading: {label: 'Titre', desc: 'Titre avec une petite ligne facultative au-dessus.'}
+        text: {label: 'Texte', desc: 'Texte courant avec variables, éventuellement sur une surface colorée.'}
+        image: {label: 'Image', desc: 'Votre propre image, depuis le gestionnaire de fichiers ou téléversée.'}
+        note: {label: 'Remarque', desc: 'Petit texte avec un filet latéral.'}
+        next_steps: {label: 'Prochaines étapes', desc: 'Votre offre avec encadré de contact, portrait et téléphone.'}
+        signature: {label: 'Signature', desc: 'Nom, entreprise, téléphone, portrait facultatif.'}
+        grade_box: {label: 'Note globale', desc: 'Grande note avec appréciation et résumé.'}
+        meta_cards: {label: 'Chiffres clés', desc: 'Pages analysées, date, destinataire.'}
+        screenshots: {label: 'Captures d’écran', desc: 'Page d’accueil sur ordinateur et sur téléphone.'}
+        gauges: {label: 'Anneaux Google', desc: 'Les scores PageSpeed sous forme d’anneaux, éventuellement avec indicateurs.'}
+        areas: {label: 'Domaines en un coup d’œil', desc: 'Les sept domaines avec note et texte court.', show_meta: 'Afficher les détails de mesure'}
+        measures: {label: 'Mesures', desc: 'Les mesures les plus importantes, numérotées, avec l’effort.'}
+        strengths: {label: 'Ce qui fonctionne déjà', desc: 'Points positifs sous forme de liste à cocher.'}
+        area_detail: {label: 'Domaine en détail', desc: 'Un domaine avec constats et points positifs ; l’accessibilité avec extraits annotés.'}
+        kpis: {label: 'Indicateurs de vitesse', desc: 'LCP, CLS, INP, performance, poids de la page, requêtes.'}
+        ai_sections: {label: 'Sections IA', desc: 'Sujets que l’IA a relevés au-delà des sept domaines (p. ex. prix, réservation, confiance). N’apparaît que s’il y a quelque chose à dire.'}
+        pages_table: {label: 'Tableau des pages', desc: 'Toutes les pages analysées avec titre, LCP, contraste et note.'}
+        sources: {label: 'Sources', desc: 'Mention des sources, variables {{lighthouse}} et {{date}}.'}
+        spacer: {label: 'Espace', desc: 'Espace vide.'}
+        divider: {label: 'Séparateur', desc: ''}
+        page_break: {label: 'Saut de page', desc: 'Le bloc suivant commence sur une nouvelle page.'}
+        header: {label: 'En-tête', desc: 'En-tête coloré avec logo ou nom de l’entreprise.'}
+        button: {label: 'Bouton', desc: 'Appel à l’action, p. ex. réserver un appel.'}
+        pdf_note: {label: 'Mention du PDF', desc: 'Remarque sur la pièce jointe, uniquement si un PDF est joint.'}
+        newsletter_note: {label: 'Mention newsletter', desc: 'Visible uniquement si le visiteur a coché la case.'}
+        footer: {label: 'Pied de page', desc: 'Conclusion grise avec mention de confidentialité.'}
+
+# Typography of the report language (quotation marks around quoted page text)
+format:
+    quote_open: "« "
+    quote_close: " »"

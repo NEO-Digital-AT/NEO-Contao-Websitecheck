@@ -1,0 +1,799 @@
+# NEO Website Check — Czech texts (front end, report, e-mail).
+# Copy to translations/neo_websitecheck.cs.yaml in your project to override single keys.
+word:
+    yes: 'ano'
+    no: 'ne'
+    none: 'žádné'
+grade:
+    1: 'Velmi dobré'
+    2: 'Dobré'
+    3: 'Uspokojivé'
+    4: 'Dostatečné'
+    5: 'Nedostatečné'
+verdict:
+    good: 'Solidní web. Nic naléhavého, pár drobností by ho ještě vylepšilo.'
+    mid: 'Dobrý základ, ale některé body vás nejspíš stojí poptávky. Ty nejdůležitější najdete níže.'
+    low: 'Jasná potřeba jednat. Začněte třemi opatřeními níže – pak se z webu stane nástroj, který přivádí zákazníky.'
+area:
+    speed: 'Rychlost načítání'
+    accessibility: 'Přístupnost'
+    seo: 'Dohledatelnost na Googlu'
+    ai: 'Viditelnost ve vyhledávání s AI'
+    content: 'Obsah a srozumitelnost'
+    legal: 'Právní náležitosti a ochrana údajů'
+    mobile: 'Mobilní zobrazení'
+    unavailable: 'Tentokrát se nepodařilo změřit.'
+measure:
+    effort:
+        small: 'malá náročnost'
+        medium: 'střední náročnost'
+        large: 'velká náročnost'
+
+# ---------------------------------------------------------------- speed
+speed:
+    summary:
+        good: 'Úvodní stránka je na mobilu vidět po %lcp% s. To je rychleji než u většiny webů.'
+        ok: 'Úvodní stránka se na mobilu načítá %lcp% s. Dá se použít, ale část návštěvníků odejde dřív, než je hotová.'
+        bad: 'Úvodní stránka potřebuje na mobilu %lcp% s. Mnoho návštěvníků odejde dřív, než se cokoli objeví.'
+    meta: 'Výkon %perf% ze 100 · LCP %lcp% s · CLS %cls%'
+    kpi:
+        lcp: 'Hlavní obsah viditelný (LCP)'
+        lcp_note: 'limit 2,5 s'
+        cls: 'Posuny rozvržení (CLS)'
+        cls_note: 'limit 0,1'
+        tbt: 'Doba blokování (TBT)'
+        tbt_note: 'limit 200 ms'
+        inp: 'Reakce na klepnutí (INP)'
+        inp_note: 'limit 200 ms'
+        perf: 'Skóre výkonu'
+        perf_note: 'ze 100'
+        bytes: 'Velikost stránky'
+        bytes_note: 'limit 2 MB'
+        requests: 'Požadavky'
+        requests_note: 'limit 80'
+    issue:
+        lcp:
+            title: 'Úvodní stránka se na mobilu načítá pomalu'
+            text: 'Hlavní obsah se objeví po %lcp% sekundách. Google stanovuje hranici 2,5 sekundy; návštěvníci soudí ještě dřív.'
+            fix: 'Zmenšete největší obrázek v horní části stránky, načítejte skripty později a nechte server posílat komprimované soubory. Obvykle jedna až dvě hodiny práce.'
+        largest_image:
+            title: 'Jeden obrázek má %kb% KB'
+            text: 'Soubor „%file%“ je nejtěžším prvkem úvodní stránky a zdržuje vše, co následuje.'
+            fix: 'Exportujte obrázek v zobrazované šířce (obvykle 1200–1600 px) jako WebP nebo AVIF. Často o 80 % menší bez viditelného rozdílu.'
+        render_blocking:
+            title: '%count% souborů blokuje první zobrazení'
+            text: 'Styly nebo skripty v hlavičce stránky se načtou celé dřív, než se cokoli zobrazí.'
+            fix: 'Méně důležité CSS a JavaScript načítejte odloženě nebo asynchronně; v hlavičce ponechte jen nezbytné styly.'
+        image_formats:
+            title: 'Obrázky ve starých formátech'
+            text: 'JPEG/PNG tam, kde by WebP nebo AVIF byly o 30–70 % menší.'
+            fix: 'Nechte redakční systém (CMS) automaticky dodávat moderní formáty (většina systémů to umí jedním nastavením).'
+        responsive_images:
+            title: 'Obrázky větší, než jak se zobrazují'
+            text: 'Mobily stahují obrázky ve velikosti pro počítač a zmenšují si je.'
+            fix: 'Připravte obrázky v několika velikostech (srcset); CMS je obvykle umí vytvořit samo.'
+        unused_js:
+            title: 'Nevyužitý JavaScript'
+            text: 'Načítají se skripty, které tato stránka nepoužívá. Stojí čas i baterii.'
+            fix: 'Odstraňte nepoužívané pluginy a měřicí skripty; zbytek načítejte jen na stránkách, které ho potřebují.'
+        ttfb:
+            title: 'Server odpovídá pomalu'
+            text: 'Serveru trvá %value%, než pošle první bajt – teprve potom může prohlížeč cokoli dělat.'
+            fix: 'Zapněte v CMS ukládání stránek do mezipaměti nebo požádejte poskytovatele hostingu o rychlejší tarif.'
+        compression:
+            title: 'Soubory se posílají nekomprimované'
+            text: 'Textové soubory (HTML, CSS, JavaScript) se na cestě do prohlížeče nekomprimují.'
+            fix: 'Zapněte na serveru kompresi gzip nebo Brotli (jeden řádek v konfiguraci serveru).'
+        cls:
+            title: 'Obsah při načítání poskakuje (CLS %cls%)'
+            text: 'Prvky se po zobrazení posouvají, takže návštěvníci kliknou na něco jiného nebo ztratí místo, kde četli.'
+            fix: 'Rezervujte místo pro obrázky, reklamy a písma (atributy width/height, font-display: swap).'
+        bytes:
+            title: 'Úvodní stránka má %mb% MB'
+            text: 'Na mobilním připojení to trvá několik sekund a spotřebovává data.'
+            fix: 'Komprimujte obrázky a videa; videa načítejte, až když jsou vidět.'
+        console:
+            title: '%count% chyb v konzoli prohlížeče'
+            text: 'Chyby JavaScriptu ukazují na nefunkční prvky, na které mohou návštěvníci narazit.'
+            fix: 'Nechte chyby prověřit webovým vývojářem; obvykle jde o zastaralé pluginy.'
+    good:
+        lcp:
+            title: 'Rychlé na mobilu'
+            text: 'Hlavní obsah je vidět po %lcp% s — pod hranicí 2,5 s, kterou očekává Google. To je základ, který mnoha webům chybí.'
+        cls:
+            title: 'Nic neposkakuje'
+            text: 'Rozvržení zůstává při načítání stabilní; návštěvníci mohou hned číst a klikat.'
+        https:
+            title: 'HTTPS správně nastavené'
+            text: 'Šifrované spojení s platným certifikátem; prosté http přesměrovává na https.'
+        console:
+            title: 'Žádné chyby v prohlížeči'
+            text: 'Konzole prohlížeče je čistá — žádné nefunkční skripty.'
+        images:
+            title: 'Obrázky dodávané správně'
+            text: 'Moderní formáty a vhodné velikosti pro mobil i počítač.'
+
+# ---------------------------------------------------------------- accessibility
+a11y:
+    summary:
+        good: 'V automatických testech bez bariér: texty jsou čitelné, ovládací prvky mají popisky.'
+        ok: 'Většinou v pořádku. %count% nálezů v kontrastu a několik popisků brání nejlepší známce.'
+        bad: 'Několik bariér: %count% nálezů v kontrastu, chybějící popisky nebo popisy. Ty komplikují i běžné návštěvníky.'
+    meta: 'Lighthouse přístupnost %score% ze 100 · %count% nálezů v kontrastu'
+    issue:
+        meta_viewport:
+            title: 'Přiblížení je na mobilu zablokované'
+            text: 'Stránka brání přiblížení dvěma prsty. Lidé se slabším zrakem si nemohou text zvětšit.'
+            fix: 'Odstraňte user-scalable=no a maximum-scale ze značky viewport v hlavičce stránky – jeden řádek v šabloně.'
+        color_contrast:
+            title: 'Text s příliš nízkým kontrastem (%count%×)'
+            text: 'Světlý text na světlém pozadí nebo tmavý na tmavém se na slunci špatně čte, stejně jako zhruba pro každého dvanáctého muže (porucha barevného vidění). Požadováno: 4,5:1.'
+            fix: 'Barvu textu nebo pozadí mírně ztmavte či zesvětlete — obvykle jedna hodnota barvy ve stylech, žádný redesign.'
+        image_alt:
+            title: '%count% obrázků bez popisu'
+            text: 'Čtečky obrazovky ani Google nevědí, co tyto obrázky zobrazují.'
+            fix: 'Doplňte ke každému obsahovému obrázku krátký alternativní text (alt); dekorativní obrázky dostanou prázdný atribut alt.'
+        link_name:
+            title: '%count% odkazů bez srozumitelného názvu'
+            text: 'Odkazy jako „více“ nebo odkazy jen s ikonou nic neříkají uživatelům čteček obrazovky.'
+            fix: 'Dejte každému odkazu text, který říká, kam vede, u odkazů s ikonou aria-label.'
+        button_name:
+            title: '%count% tlačítek bez názvu'
+            text: 'Tlačítka s ikonou bez popisku nemohou uživatelé čteček obrazovky ovládat.'
+            fix: 'Doplňte ke každému tlačítku s ikonou aria-label (např. „Otevřít menu“).'
+        html_has_lang:
+            title: 'Jazyk stránky není uveden'
+            text: 'Bez atributu jazyka zvolí čtečky obrazovky špatnou výslovnost.'
+            fix: 'Nastavte u prvku <html> atribut lang="cs" (nebo kód vašeho jazyka).'
+        heading_order:
+            title: 'Nadpisy přeskakují úrovně'
+            text: 'Úrovně nadpisů se přeskakují (h1 → h3), takže struktura je pro asistivní technologie matoucí.'
+            fix: 'Používejte úrovně nadpisů postupně; vzhled upravte v CSS, místo abyste úroveň volili podle vzhledu.'
+        label:
+            title: '%count% polí formuláře bez popisku'
+            text: 'Pole bez viditelného, propojeného popisku se špatně vyplňují a automatické vyplňování prohlížeče je odmítá.'
+            fix: 'Dejte každému poli <label for>, který odpovídá id pole.'
+        target_size:
+            title: '%count% příliš malých dotykových ploch'
+            text: 'Odkazy nebo tlačítka menší než 24 px se palcem snadno minou.'
+            fix: 'Zvětšete klikací plochu (padding) alespoň na 44 × 44 px.'
+        label_content_name_mismatch:
+            title: '%count% ovládacích prvků, jejichž vyslovovaný název se liší od popisku'
+            text: 'Tlačítka s ikonou (hledání, šipky, volání) mají přístupný název, který neodpovídá viditelnému textu, takže hlasové ovládání a čtečky obrazovky ohlásí něco jiného.'
+            fix: 'Začněte aria-label viditelným textem, nebo nechte jako název použít text ikony.'
+    good:
+        contrast:
+            title: 'Kontrasty jsou v pořádku'
+            text: 'Každý zkontrolovaný text dosahuje požadovaného kontrastního poměru.'
+        images:
+            title: 'Obrázky mají popis'
+            text: 'Všech %count% obrázků na zkontrolovaných stránkách má alternativní text.'
+        lang:
+            title: 'Jazyk je uveden'
+            text: 'Čtečky obrazovky čtou stránku ve správném jazyce.'
+        names:
+            title: 'Odkazy a tlačítka mají názvy'
+            text: 'Každý ovládací prvek má srozumitelný název; úrovně nadpisů jsou v pořádku.'
+        targets:
+            title: 'Dostatečně velké dotykové plochy'
+            text: 'Tlačítka a odkazy se dají trefit palcem.'
+
+# ---------------------------------------------------------------- seo
+seo:
+    summary:
+        good: 'Titulky, popisy, nadpisy a strukturovaná data jsou v pořádku. Google web dokáže přečíst.'
+        ok: 'Základ je hotový; několik titulků, popisů nebo detailů struktury stojí za úpravu.'
+        bad: 'Chybí důležité základy pro Google. Vyhledávače web najdou, ale skoro nevědí, o čem je.'
+    meta: 'Lighthouse SEO %score% ze 100 · zkontrolováno %pages% stránek'
+    issue:
+        title_missing:
+            title: 'Chybí titulek stránky na %page%'
+            text: 'Titulek je nadpis ve výsledcích Googlu. Bez něj si Google nějaký vymyslí.'
+            fix: 'Napište titulek do 60 znaků: co nabízíte a kde (např. „Zubař v Brně – MUDr. Příklad“).'
+        title_long:
+            title: 'Příliš dlouhý titulek stránky na %page%'
+            text: '%length% znaků — Google zkracuje titulky zhruba po 60 znacích.'
+            fix: 'Zkraťte titulek; nejdůležitější slova dejte na začátek.'
+        desc_missing:
+            title: 'Chybí popis na %page%'
+            text: 'Meta popis je šedý text pod výsledkem v Googlu. Když chybí, Google zobrazí náhodný úryvek.'
+            fix: 'Napište 140–158 znaků, které říkají, co stránka nabízí a proč na ni kliknout.'
+        desc_long:
+            title: 'Příliš dlouhý popis na %page%'
+            text: '%length% znaků — Google zkracuje popisy zhruba po 160 znacích.'
+            fix: 'Zkraťte na 140–158 znaků.'
+        h1_missing:
+            title: 'Chybí hlavní nadpis na %page%'
+            text: 'Každá stránka potřebuje právě jeden nadpis H1, který pojmenuje téma.'
+            fix: 'Z nejdůležitějšího nadpisu udělejte H1.'
+        h1_multiple:
+            title: '%count% hlavních nadpisů na %page%'
+            text: 'Více nadpisů H1 zamlžuje, o čem stránka je.'
+            fix: 'Ponechte na stránce jeden H1; ostatní změňte na H2.'
+        noindex:
+            title: 'Úvodní stránka je pro Google zablokovaná'
+            text: 'Úvodní stránka obsahuje pokyn „noindex“: Google ji podle něj nemá zařadit do výsledků.'
+            fix: 'Odstraňte nastavení noindex v CMS (obvykle zaškrtávací políčko u stránky).'
+        heading_skips:
+            title: 'Přeskočené úrovně nadpisů (%count%×)'
+            text: 'Skoky jako H1 → H3 činí strukturu nejasnou pro Google i čtečky obrazovky.'
+            fix: 'Používejte úrovně nadpisů postupně.'
+        sitemap_missing:
+            title: 'Mapa webu nenalezena'
+            text: 'Soubor sitemap.xml sdělí Googlu všechny stránky najednou; bez něj se nové stránky najdou později.'
+            fix: 'Zapněte mapu webu v CMS a uveďte ji v souboru robots.txt.'
+        schema:
+            title: 'Žádná strukturovaná data'
+            text: 'Strukturovaná data (schema.org) říkají Googlu a AI asistentům, o jakou firmu jde, kde sídlí a kdy má otevřeno.'
+            fix: 'Doplňte údaje Organization nebo LocalBusiness s názvem, adresou, telefonem a otevírací dobou (většina CMS na to má plugin).'
+        not_crawlable:
+            title: 'Stránka je pro vyhledávače zablokovaná'
+            text: 'Pokyny pro roboty brání Googlu stránku indexovat.'
+            fix: 'Zkontrolujte robots.txt a meta značku robots; u veřejných stránek blokaci odstraňte.'
+        link_text:
+            title: '%count% odkazů s nic neříkajícím textem'
+            text: '„Klikněte zde“ nebo „více“ neříká Googlu nic o cílové stránce.'
+            fix: 'Používejte popisné texty odkazů („naše otevírací doba“).'
+        crawlable_anchors:
+            title: 'Odkazy, které Google nemůže sledovat'
+            text: 'Některé odkazy jsou vytvořené jen JavaScriptem a vyhledávače je nevidí.'
+            fix: 'Pro navigaci používejte běžné odkazy <a href>.'
+        canonical:
+            title: 'Chybný kanonický odkaz'
+            text: 'Značka canonical ukazuje na špatnou nebo nedostupnou adresu, což může Google zmást.'
+            fix: 'Nasměrujte kanonický odkaz na stránku samotnou.'
+        hreflang:
+            title: 'Chybné jazykové odkazy'
+            text: 'Značky hreflang pro jazykové verze obsahují chyby.'
+            fix: 'Nechte značky hreflang opravit (platné kódy jazyků, všechny verze na sebe navzájem odkazují).'
+        http_redirect:
+            title: 'http nepřesměrovává na https'
+            text: 'Návštěvníci, kteří zadají adresu bez https, skončí na nešifrované verzi.'
+            fix: 'Nastavte na serveru trvalé přesměrování z http na https.'
+    good:
+        sitemap:
+            title: 'Mapa webu existuje'
+            text: 'Pro Google je uvedeno %count% stránek.'
+        titles:
+            title: 'Titulky a popisy jsou nastavené'
+            text: 'Každá zkontrolovaná stránka má vlastní titulek a popis vhodné délky.'
+        h1:
+            title: 'Jeden hlavní nadpis na stránku'
+            text: 'Jasná struktura pro Google i návštěvníky.'
+        schema:
+            title: 'Strukturovaná data existují'
+            text: 'Google a AI asistenti najdou data typu %types%.'
+        https:
+            title: 'Šifrované a přesměrované'
+            text: 'https s přesměrováním z http.'
+
+# ---------------------------------------------------------------- AI visibility
+ai:
+    summary:
+        good: 'AI asistenti web dokážou přečíst a pochopit; shrnutí (llms.txt) je k dispozici.'
+        ok: 'AI asistenti web číst smějí, ale co nabízíte, si musí poskládat sami.'
+        bad: 'Vyhledávače s AI web téměř nevidí: chybí shrnutí, roboti jsou zablokovaní nebo chybí rozpoznatelné údaje o firmě.'
+    meta: 'llms.txt: %llms% · zablokovaní AI roboti: %blocked%'
+    issue:
+        llms_missing:
+            title: 'Chybí llms.txt'
+            text: 'ChatGPT, Perplexity a AI od Googlu hledají krátký textový soubor, který říká, co firma dělá, pro koho a kde. Bez něj odhadují podle stránek.'
+            fix: 'Vytvořte /llms.txt: tři odstavce (nabídka, cílová skupina, místo/kontakt) a odkazy na hlavní stránky. Půl hodiny práce.'
+        bots_blocked:
+            title: 'Zablokovaní AI roboti: %bots%'
+            text: 'Soubor robots.txt těmto asistentům zakazuje web číst, takže ho nemohou doporučit.'
+            fix: 'Povolte roboty v robots.txt — nebo se vědomě rozhodněte v odpovědích AI nefigurovat.'
+        no_identity_schema:
+            title: 'Firma není strojově čitelná'
+            text: 'Bez údajů Organization/LocalBusiness asistent spolehlivě nezná název, adresu ani otevírací dobu.'
+            fix: 'Doplňte strukturovaná data s názvem, adresou, telefonem, otevírací dobou a obsluhovanou oblastí.'
+        offer_unclear:
+            title: 'Nabídka není v prvních větách'
+            text: 'Odpovědi AI citují první věty stránky. Na úvodní stránce nabídku jasně neuvádějí.'
+            fix: 'Začněte stránku jednou jednoduchou větou: kdo jste, co děláte, pro koho a kde.'
+    good:
+        llms:
+            title: 'llms.txt existuje'
+            text: 'AI asistenti dostanou shrnutí přímo od vás.'
+        bots:
+            title: 'AI roboti povoleni'
+            text: 'GPTBot, ClaudeBot, PerplexityBot a Google-Extended smějí web číst.'
+        schema:
+            title: 'Firma je strojově čitelná'
+            text: 'Strukturovaná data typu %types% identifikují firmu.'
+        offer:
+            title: 'Nabídka uvedená hned na začátku'
+            text: 'Už první věty říkají, co firma dělá.'
+
+# ---------------------------------------------------------------- content
+content:
+    summary:
+        good: 'Do pěti sekund je jasné, co firma dělá, pro koho a jaký je další krok.'
+        ok: 'Srozumitelné, ale nabídka nebo další krok by mohly být jasnější; některé pojmy předpokládají znalosti.'
+        bad: 'Návštěvníci rychle nepochopí, co se nabízí ani jak se ozvat. To stojí poptávky.'
+    meta:
+        ai: 'AI přečetla %pages% stránek jako návštěvník, který je tu poprvé'
+        heuristic: 'Heuristická kontrola (AI není nastavená)'
+    issue:
+        no_cta:
+            title: 'Chybí jasný další krok'
+            text: 'Zájemci na první pohled nevidí, jak zavolat, poptat nebo si rezervovat.'
+            fix: 'Umístěte na první obrazovku jednu výraznou akci: „Zavolat“, „Poptat nabídku“ nebo „Rezervovat“ — s telefonním číslem.'
+        thin:
+            title: 'Velmi málo textu (%words% slov)'
+            text: 'Z tak malého množství textu se ani návštěvníci, ani Google nedozvědí, co nabízíte.'
+            fix: 'Popište nabídku, cílovou skupinu a místo ve dvou až třech krátkých odstavcích.'
+        phone:
+            title: 'Na telefonní číslo nejde klepnout'
+            text: 'Na mobilu by mělo jít na číslo klepnout (odkaz tel:). Tady chybí nebo je jen prostým textem.'
+            fix: 'Propojte telefonní číslo odkazem tel:+43…; umístěte ho do záhlaví nebo zápatí každé stránky.'
+    good:
+        cta:
+            title: 'Jasný další krok'
+            text: 'Návštěvníci vidí, jak se ozvat.'
+        length:
+            title: 'Dostatek textu'
+            text: 'Nabídku popisuje %words% slov.'
+        phone:
+            title: 'Na telefonní číslo jde klepnout'
+            text: 'Jedno klepnutí na mobilu zahájí hovor.'
+
+# ---------------------------------------------------------------- legal
+legal:
+    summary:
+        good: 'Údaje o provozovateli, zásady ochrany osobních údajů a práce se souhlasem jsou na místě, pokud to lze technicky ověřit.'
+        ok: 'Údaje o provozovateli a zásady ochrany osobních údajů existují; zacházení se službami třetích stran je ale vhodné prověřit.'
+        bad: 'Chybí údaje o provozovateli nebo zásady ochrany osobních údajů, případně se měřicí služby načítají před souhlasem. Prověřte to prosím se svým právním poradcem.'
+    meta: 'Technická kontrola, ne právní poradenství'
+    note: 'Jde o technickou kontrolu: hledá příslušné stránky a služby, které se načítají ještě před udělením souhlasu. Nejde o právní poradenství — podrobnosti si prosím nechte prověřit svým právním poradcem.'
+    issue:
+        imprint:
+            title: 'Údaje o provozovateli nenalezeny'
+            text: 'Na zkontrolovaných stránkách se nenašel odkaz na stránku s údaji o provozovateli, nebo je tato stránka nedostupná.'
+            fix: 'Odkažte stránku s údaji o provozovateli z každé stránky (v zápatí) a uveďte na ní povinné údaje.'
+        privacy:
+            title: 'Zásady ochrany osobních údajů nenalezeny'
+            text: 'Nenašel se odkaz na zásady ochrany osobních údajů, nebo je stránka nedostupná.'
+            fix: 'Odkažte zásady ochrany osobních údajů z každé stránky (v zápatí); musí uvádět každou používanou službu.'
+        tracking:
+            title: 'Měření před souhlasem: %services%'
+            text: 'Tyto služby se načtou už při první návštěvě, než mohl návštěvník dát souhlas. Podle GDPR a zákona o elektronických komunikacích k tomu je potřeba předchozí souhlas.'
+            fix: 'Načítejte tyto služby až po souhlasu v cookie liště (nebo nastavte nástroj pro souhlas tak, aby je blokoval).'
+        embeds:
+            title: 'Služby třetích stran bez nástroje pro souhlas: %services%'
+            text: 'Externí služby se načítají bez cookie lišty. Podle druhu služby může být souhlas nutný.'
+            fix: 'Písma hostujte lokálně; mapy a videa načítejte až po kliknutí nebo přes nástroj pro souhlas.'
+    good:
+        imprint:
+            title: 'Údaje o provozovateli existují'
+            text: 'Odkázané a dostupné.'
+        privacy:
+            title: 'Zásady ochrany osobních údajů existují'
+            text: 'Odkázané a dostupné.'
+        no_third_party:
+            title: 'Žádné služby třetích stran před souhlasem'
+            text: 'Při první návštěvě se nenačítá nic externího.'
+        cmp:
+            title: 'Nástroj pro souhlas existuje'
+            text: 'Byla nalezena cookie lišta / nástroj pro správu souhlasu.'
+
+# ---------------------------------------------------------------- mobile
+mobile:
+    summary:
+        good: 'Sedí na obrazovku mobilu; tlačítka a text jsou dostatečně velké.'
+        ok: 'Na mobilu použitelné; několik dotykových ploch nebo velikostí písma je příliš malých.'
+        bad: 'Na mobilu se špatně ovládá: chybí nastavení viewport, příliš malé dotykové plochy nebo obsah širší než obrazovka.'
+        unknown: 'Nepodařilo se změřit úplně (chybí výsledek PageSpeed).'
+    meta: 'Viewport, dotykové plochy, velikost písma, šířka obsahu'
+    issue:
+        viewport:
+            title: 'Chybí mobilní viewport'
+            text: 'Stránka se na mobilu zobrazuje jako zmenšená verze pro počítač.'
+            fix: 'Doplňte do hlavičky stránky <meta name="viewport" content="width=device-width, initial-scale=1">.'
+        targets:
+            title: '%count% příliš malých dotykových ploch'
+            text: 'Odkazy nebo tlačítka jsou pro palec příliš malé nebo příliš blízko u sebe.'
+            fix: 'Zvětšete dotykovou plochu alespoň na 44 × 44 px a mezi odkazy přidejte mezery.'
+        font:
+            title: 'Příliš malý text na mobilu'
+            text: '%value% textu má méně než 12 px a na mobilu se špatně čte.'
+            fix: 'Pro běžný text používejte alespoň 16 px.'
+        width:
+            title: 'Obsah širší než obrazovka'
+            text: 'Návštěvníci musí posouvat do strany.'
+            fix: 'Opravte prvky s pevnou šířkou (tabulky, obrázky, vložený obsah) pomocí max-width: 100 %.'
+    good:
+        viewport:
+            title: 'Mobilní viewport nastaven'
+            text: 'Stránka se přizpůsobí obrazovce mobilu.'
+        targets:
+            title: 'Dotykové plochy v pořádku'
+            text: 'Odkazy a tlačítka se dají trefit palcem.'
+        font:
+            title: 'Čitelný text'
+            text: 'Velikosti písma jsou pro mobil dostatečné.'
+
+# ---------------------------------------------------------------- front end
+fe:
+    status_idle: 'Připraveno ke kontrole'
+    status_run: 'Kontrola probíhá …'
+    status_done: 'Kontrola dokončena'
+    preview_idle: 'Zde se zobrazí váš web'
+    placeholder_domain: 'vase-firma.cz'
+    url_label: 'Adresa vašeho webu'
+    submit: 'Zkontrolovat'
+    what_speed: 'Rychlost načítání na mobilu'
+    what_a11y: 'Přístupnost a kontrasty'
+    what_seo: 'Google a vyhledávání s AI'
+    what_content: 'Texty a další krok'
+    what_legal: 'Údaje o provozovateli, ochrana údajů, cookies'
+    altcha_label: 'Jsem člověk'
+    altcha_verifying: 'Ověřuji …'
+    altcha_verified: 'Ověřeno'
+    altcha_error: 'Ověření se nezdařilo. Načtěte prosím stránku znovu.'
+    altcha_wait: 'Ověřování ještě probíhá. Chvíli prosím počkejte.'
+    err_url: 'Zadejte prosím platnou adresu, např. vase-firma.cz.'
+    err_limit_hour: 'Za poslední hodinu jste už spustili %limit% kontrol. Zkuste to prosím znovu za hodinu.'
+    err_limit: 'Dnes jste už provedli %limit% kontrol. Zkuste to prosím znovu zítra.'
+    err_spam: 'Ochrana proti spamu neprošla. Načtěte prosím stránku znovu a zkuste to ještě jednou.'
+    err_generic: 'Něco se pokazilo. Zkuste to prosím za chvíli znovu.'
+    err_failed: 'Tento web se nepodařilo zkontrolovat (není dostupný nebo je zablokovaný).'
+    eta: 'zbývá asi %s s'
+    eta_soon: 'téměř hotovo …'
+    progress_label: 'Průběh kontroly'
+    step_discover: 'Otevřít úvodní stránku, najít mapu webu a hlavní podstránky'
+    step_speed_home: 'Změřit úvodní stránku na mobilu (Google PageSpeed)'
+    step_speed_pages: 'Změřit podstránky'
+    step_analyze: 'Zkontrolovat přístupnost, právní stránky a viditelnost pro AI'
+    step_ai: 'Přečíst texty a udělat si názor'
+    step_finish: 'Oznámkovat a sestavit zprávu'
+    gate_title: 'Váš výsledek je hotový'
+    gate_text: 'Kam vám ho máme poslat? Uvidíte ho hned tady a PDF zprávu dostanete e-mailem.'
+    firstname: 'Jméno'
+    lastname: 'Příjmení'
+    email: 'E-mail'
+    err_firstname: 'Zadejte prosím své jméno.'
+    err_lastname: 'Zadejte prosím své příjmení.'
+    err_email: 'Zadejte prosím platnou e-mailovou adresu.'
+    newsletter: 'Ano, posílejte mi občas i tipy o webu, IT a AI. Potvrzení e-mailem, odhlásit se můžete kdykoli.'
+    optional: '(nepovinné)'
+    gate_legal: 'Vaše údaje použijeme jen k zaslání tohoto výsledku.'
+    privacy: 'Zásady ochrany osobních údajů'
+    gate_submit: 'Zobrazit výsledek'
+    result_kicker: 'Výsledek pro'
+    grade_label: 'Celková známka %s'
+    mail_sent: 'Kopie je na cestě na %s'
+    mail_failed: 'E-mail se nepodařilo odeslat — výsledek zůstává vidět zde.'
+    gauge_perf: 'Výkon'
+    gauge_a11y: 'Přístupnost'
+    gauge_bp: 'Technika'
+    gauge_seo: 'SEO'
+    measures_title: 'Co změnit jako první'
+    strengths_title: 'Co už funguje'
+    disclaimer: 'Automatické hodnocení na základě Google PageSpeed Insights, našich vlastních kontrol a čtení pomocí AI. PDF zpráva obsahuje všechny nálezy se snímky obrazovky.'
+    cta: 'Probrat výsledek – zdarma'
+    reset: 'Zkontrolovat jiný web'
+
+# ---------------------------------------------------------------- report (PDF)
+report:
+    title: 'Kontrola webu %domain%'
+    header: 'Kontrola webu'
+    page: 'Strana %n% z %total%'
+    cover_eyebrow: 'Bezplatná kontrola webu'
+    cover_title: 'Vaše kontrola webu pro'
+    grade_line: 'Celková známka %grade% · %word%'
+    grade_short: 'Známka %grade% · %word%'
+    meta_pages: 'Zkontrolované stránky'
+    meta_date: 'Datum'
+    meta_for: 'Pro'
+    overview_eyebrow: 'Sedm oblastí, jedna celková známka'
+    overview_title: 'Přehled'
+    legend_title: 'Jak číst známky'
+    legend: 'Školní známky. Celková známka nikdy není lepší než nejhorší oblast plus jedna.'
+    measures_eyebrow: 'Co doporučuji změnit jako první'
+    a11y_title: 'Přístupnost a kontrasty'
+    a11y_intro: 'Zkontrolováno nástrojem Lighthouse (stejné testy, jaké používá Google) na úvodní stránce a podstránkách. Označené výřezy ukazují, kde se nálezy nacházejí.'
+    a11y_no_findings_caption: 'Úvodní stránka, mobil. Žádné označené nálezy.'
+    contrast_label: 'Kontrast %ratio%:1 · požadováno 4,5:1'
+    gauge_sub: 'ze 100'
+    gauge_note: 'Google PageSpeed Insights, úvodní stránka na mobilu. 90–100 zelená, 50–89 oranžová, pod 50 červená.'
+    a11y_why_title: 'Proč na tom záleží'
+    a11y_why: 'Zhruba každý dvanáctý muž vnímá barvy jinak, mnoho lidí čte na slunci – a tlačítko, které nikdo nepřečte, nikdo nestiskne.'
+    findings: 'nálezy'
+    speed_title: 'Rychlost načítání a mobil'
+    speed_intro: 'Měřeno nástrojem Google PageSpeed Insights, profil „mobil, pomalé 4G“ — stejná čísla, jaká Google používá pro řazení výsledků.'
+    what_works: 'Co funguje'
+    what_to_improve: 'Kde je prostor ke zlepšení'
+    nothing_to_improve: 'Nic podstatného — výborně.'
+    pages_eyebrow: 'Zkontrolováno %count% stránek'
+    pages_title: 'Zkontrolované stránky'
+    pages_intro: 'Vybrané z mapy webu a navigace: stránky, které návštěvníci vidí jako první. Blogové příspěvky a právní podstránky se neznámkovaly.'
+    col_page: 'Stránka'
+    col_title: 'Titulek'
+    col_contrast: 'Nálezy v kontrastu'
+    col_grade: 'Známka'
+    next_eyebrow: 'Co bude dál'
+    next_title: 'Malé kroky, žádná přestavba'
+    next_text: 'Opatření ze strany 2 zvládne každá webová agentura nebo váš současný dodavatel. Pokud chcete, projdeme seznam společně: 20 minut po telefonu, zdarma, bez prodejních řečí.'
+    next_promise: 'Tato zpráva je zdarma a k ničemu vás nezavazuje.'
+    sources: 'Zdroje: Google PageSpeed Insights (Lighthouse %lighthouse%), vlastní kontroly HTML, právních náležitostí a viditelnosti pro AI, čtení textů stránek pomocí AI · %date%'
+    page_short: 'Strana'
+    cover_subtitle: 'Rychlost, přístupnost, vyhledávání na Googlu a s AI, texty, údaje o provozovateli a ochrana údajů: sedm oblastí, jedna celková známka, tři konkrétní opatření.'
+    summary_title: 'Výsledek'
+    measures_title: 'Nejdůležitější opatření'
+    what_works_short: 'Rychlost podrobně'
+    pages_eyebrow_plain: 'Zkontrolované stránky'
+    title_plain: 'Kontrola webu {{domain}}'
+    header_plain: 'Kontrola webu · {{date}}'
+    grade_line_plain: 'Celková známka {{grade}} · {{grade_word}}'
+    area_grade_line: 'Známka {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Počítač'
+    label_mobile: 'Mobil'
+    col_lcp: 'LCP'
+    sources_plain: 'Zdroje: Google PageSpeed Insights (Lighthouse {{lighthouse}}), vlastní kontroly HTML, právních náležitostí a viditelnosti pro AI, čtení textů stránek pomocí AI · {{date}}'
+    ai_sections_eyebrow: 'Čeho jsme si ještě všimli'
+    ai_sections_title: 'Další postřehy'
+
+# ---------------------------------------------------------------- e-mail
+mail:
+    subject: 'Vaše kontrola webu %domain%: známka %grade% · %word%'
+    owner_subject: '[Kontrola webu] %domain% · známka %grade% · %name% %newsletter%'
+    owner_lead_title: 'Nová žádost o kontrolu webu'
+    owner_lead: 'Kontakt: %name% <%email%> · %domain% · newsletter: %newsletter%'
+    owner_newsletter: 'Zájem o newsletter'
+    owner_areas: 'Známky podle oblastí'
+    owner_errors: 'Kroky s chybami'
+    owner_footer: 'Interní kopie kontroly č. %id%. Návštěvník dostal stejnou zprávu bez tohoto záhlaví.'
+    greeting: 'Dobrý den, %name%,'
+    intro: 'děkujeme za vaši důvěru. Zkontrolovali jsme %pages% stránek webu %domain%: rychlost načítání na mobilu, přístupnost, dohledatelnost na Googlu a ve vyhledávání s AI, texty, údaje o provozovateli a práci s cookies.'
+    grade_line: 'Celková známka %grade% · %word%.'
+    measures_title: 'Co doporučuji změnit jako první:'
+    pdf_note: 'Kompletní zprávu se snímky obrazovky, měřeními a všemi nálezy najdete v příloze jako PDF – srozumitelně a bez odborného žargonu.'
+    offer: 'Tyto body zvládne každá webová agentura nebo váš současný dodavatel. Pokud chcete, projdeme seznam společně: 20 minut po telefonu, zdarma, bez prodejních řečí.'
+    cta: 'Probrat výsledek'
+    cta_alt: 'nebo jednoduše odpovězte na tento e-mail'
+    newsletter_note: 'Zaškrtli jste odběr newsletteru. Následuje samostatný e-mail s potvrzovacím odkazem; přihlášeni budete až po kliknutí na něj.'
+    footer: 'Tento e-mail dostáváte, protože jste si vyžádali kontrolu webu %domain%. Vaše údaje používáme jen pro tuto zprávu a po %days% dnech je smažeme, pokud jste se nepřihlásili k newsletteru nebo nám neposlali poptávku.'
+    greeting_plain: 'Dobrý den, {{firstname}},'
+    intro_plain: 'děkujeme za vaši důvěru. Zkontrolovali jsme {{pages}} stránek webu {{domain}}: rychlost na mobilu, přístupnost, dohledatelnost na Googlu a ve vyhledávání s AI, texty, údaje o provozovateli a informace o cookies.'
+    short_intro: 'posíláme vaši kontrolu webu {{domain}}. Podrobnosti najdete v přiloženém PDF.'
+    footer_plain: 'Tento e-mail dostáváte, protože jste si vyžádali kontrolu webu {{domain}}. Vaše údaje používáme jen pro tuto zprávu a po {{days}} dnech je smažeme, pokud jste se nepřihlásili k newsletteru nebo nám neposlali poptávku.'
+
+# ---------------------------------------------------------------- Designer (back end)
+designer:
+    group:
+        content: 'Obsah'
+        data: 'Data z kontroly'
+        layout: 'Rozvržení'
+    ui:
+        blocks: 'Bloky'
+        structure: 'Struktura'
+        properties: 'Vlastnosti'
+        theme: 'Vzhled'
+        preview: 'Náhled'
+        presets: 'Načíst šablonu'
+        preset_confirm: 'Současný návrh bude nahrazen šablonou. Pokračovat?'
+        add: 'Přidat'
+        duplicate: 'Duplikovat'
+        remove: 'Odebrat'
+        up: 'Posunout nahoru'
+        down: 'Posunout dolů'
+        empty: 'Zatím žádné bloky. Klikněte na blok vlevo nebo ho sem přetáhněte, případně načtěte šablonu.'
+        select_hint: 'Blok upravíte kliknutím na něj v náhledu nebo ve struktuře.'
+        placeholders: 'Zástupné symboly'
+        insert_placeholder: 'Vložit zástupný symbol'
+        choose_image: 'Vybrat obrázek'
+        upload_image: 'Nahrát'
+        remove_image: 'Odebrat obrázek'
+        pdf_preview: 'Náhled PDF'
+        mail_preview: 'Otevřít v nové kartě'
+        export_twig: 'Zkopírovat do šablony Twig'
+        export_confirm: 'Šablona Twig (expertní režim) bude přepsána tímto návrhem. Pokračovat?'
+        twig_active: 'Tato konfigurace obsahuje kód Twig z pokročilého režimu. Ten má přednost, takže se tento návrh nepoužije. Změnit to může administrátor.'
+        loading: 'Vytvářím náhled …'
+        error: 'Náhled se nepodařilo vytvořit.'
+        bold: 'Tučně'
+        italic: 'Kurzíva'
+        link: 'Odkaz'
+        link_prompt: 'Adresa odkazu (https://…)'
+        list: 'Seznam'
+        drag: 'Přetažením změníte pořadí'
+        demo_hint: 'Náhled používá poslední dokončenou kontrolu nebo ukázková data.'
+        labels: 'Formulace'
+        labels_hint: 'Slova, která používá více bloků: slovní hodnocení známek, názvy oblastí, náročnost a názvy měřených hodnot. Co zde napíšete, to bude v dokumentu.'
+        mode_visual: 'Vizuální'
+        mode_twig: 'Pokročilé (Twig)'
+        mode_label: 'Režim úprav'
+        twig_intro: 'Toto je celý dokument jako kód Twig: rámec, každý blok a každé slovo. Změny se hned projeví v náhledu a uloží se tlačítkem „Uložit“. Dokud je zde kód, použije se místo vizuálního návrhu.'
+        twig_generate: 'Znovu vytvořit kód z vizuálního návrhu'
+        twig_generate_confirm: 'Kód Twig bude nahrazen aktuálním vizuálním návrhem. Vaše vlastní změny v kódu se ztratí. Pokračovat?'
+        twig_leave_confirm: 'Zpět do vizuálního režimu: kód Twig se zahodí a znovu platí vizuální návrh. Pokračovat?'
+        twig_error: 'Chyba v kódu Twig'
+        twig_refresh: 'Obnovit náhled'
+    opt:
+        none: 'Žádné'
+        s: 'Malé'
+        m: 'Střední'
+        l: 'Velké'
+        xl: 'Extra velké'
+        soft: 'Světlé'
+        primary: 'Hlavní barva'
+        accent: 'Zvýrazňující barva'
+        white: 'Bílá'
+        auto: 'Automaticky (z nastavení)'
+        text: 'Jen název'
+        h1: 'Nadpis 1'
+        h2: 'Nadpis 2'
+        h3: 'Nadpis 3'
+        normal: 'Normální'
+        muted: 'Tlumené'
+        left: 'Vlevo'
+        center: 'Na střed'
+        right: 'Vpravo'
+        montage: 'Počítač a mobil přes sebe'
+        desktop: 'Jen počítač'
+        mobile: 'Jen mobil'
+        side: 'Vedle sebe'
+        cards: 'Karty (dva sloupce)'
+        list: 'Seznam'
+        contact: 'Kontaktní stránka'
+        website: 'Web'
+        custom: 'Vlastní adresa'
+        outline: 'Obrys'
+        arimo: 'Arimo (podobné Arialu)'
+        sans: 'Bezpatkové (DejaVu Sans)'
+        serif: 'Patkové (DejaVu Serif)'
+        system: 'Helvetica (jen západoevropské znaky)'
+        narrow: 'Úzké'
+        wide: 'Široké'
+        '1': 'Jeden sloupec'
+        '2': 'Dva sloupce'
+        speed: 'Rychlost'
+        accessibility: 'Přístupnost'
+        seo: 'Dohledatelnost na Googlu'
+        ai: 'Viditelnost ve vyhledávání s AI'
+        content: 'Obsah a srozumitelnost'
+        legal: 'Právní náležitosti a ochrana údajů'
+        mobile_area: 'Mobilní zobrazení'
+        effort_small: 'malá'
+        effort_medium: 'střední'
+        effort_large: 'velká'
+    prop:
+        eyebrow: 'Malý řádek nad nadpisem'
+        title: 'Nadpis'
+        subtitle: 'Podnadpis'
+        text: 'Text'
+        html: 'Text'
+        intro: 'Úvod'
+        note: 'Poznámka pod tím'
+        level: 'Velikost'
+        align: 'Zarovnání'
+        space: 'Mezera za blokem'
+        bg: 'Pozadí'
+        size: 'Velikost písma'
+        tone: 'Barva'
+        columns: 'Sloupce'
+        src: 'Obrázek'
+        image: 'Vlastní obrázek'
+        width: 'Šířka'
+        caption: 'Popisek'
+        rounded: 'Zaoblené rohy'
+        height: 'Výška'
+        style: 'Styl'
+        layout: 'Rozvržení'
+        legend: 'Zobrazit legendu známek'
+        max: 'Maximum položek'
+        max_issues: 'Maximum nálezů'
+        max_good: 'Maximum kladných bodů'
+        area: 'Oblast'
+        show_grade: 'Zobrazit známku'
+        show_summary: 'Zobrazit shrnutí'
+        show_domain: 'Zobrazit doménu'
+        show_meta: 'Zobrazit stránky, datum, příjemce'
+        show_screens: 'Zobrazit snímky obrazovky'
+        show_pages: 'Zkontrolované stránky'
+        show_date: 'Datum'
+        show_for: 'Příjemce'
+        show_effort: 'Zobrazit náročnost'
+        show_crops: 'Zobrazit označené výřezy'
+        show_kpis: 'Zobrazit měřené hodnoty'
+        show_portrait: 'Zobrazit portrét'
+        show_contact: 'Zobrazit kontaktní řádek'
+        logo: 'Logo'
+        tagline: 'Řádek vpravo'
+        label: 'Popisek'
+        target: 'Cíl'
+        url: 'Vlastní adresa'
+        alt: 'Text vedle tlačítka'
+        promise: 'Příslib v kontaktním rámečku'
+        perf: 'Výkon'
+        a11y: 'Přístupnost'
+        bp: 'Osvědčené postupy'
+        seo: 'SEO'
+        grade_line: 'Řádek se známkou'
+        label_pages: 'Popisek „Zkontrolované stránky“'
+        label_date: 'Popisek „Datum“'
+        label_for: 'Popisek „Pro“'
+        label_desktop: 'Popisek počítač'
+        label_mobile: 'Popisek mobil'
+        label_perf: 'Popisek výkon'
+        label_a11y: 'Popisek přístupnost'
+        label_bp: 'Popisek osvědčené postupy'
+        label_seo: 'Popisek SEO'
+        legend_title: 'Nadpis legendy'
+        legend_text: 'Text legendy'
+        works_title: 'Nadpis „Co funguje“'
+        improve_title: 'Nadpis „Prostor ke zlepšení“'
+        nothing_text: 'Text, když není co zlepšovat'
+        col_page: 'Sloupec stránka'
+        col_title: 'Sloupec titulek'
+        col_lcp: 'Sloupec doba načítání'
+        col_contrast: 'Sloupec kontrast'
+        col_grade: 'Sloupec známka'
+        none_text: 'Slovo pro „žádné“'
+        badge: 'Krátký štítek v rámečku'
+        max_crops: 'Nejvýše označených výřezů'
+        show_intro: 'Zobrazit úvod'
+    theme:
+        doc_title: 'Název dokumentu (vlastnosti PDF)'
+        page_label: 'Slovo před číslem strany'
+        grade_word: 'Slovní hodnocení známky %s'
+        area_name: 'Oblast: %s'
+        effort_word: 'Náročnost %s'
+        kpi_name: 'Měřená hodnota: %s'
+        kpi_note: 'Poznámka k: %s'
+        primary: 'Hlavní barva (prázdné = nastavení)'
+        accent: 'Zvýrazňující barva (prázdné = nastavení)'
+        text: 'Barva textu'
+        soft: 'Světlé plochy'
+        font: 'Písmo'
+        radius: 'Zaoblení rohů'
+        margins: 'Okraje stránky'
+        header: 'Záhlaví na každé straně'
+        header_text: 'Text záhlaví'
+        footer: 'Zápatí na každé straně'
+        footer_text: 'Text zápatí'
+        page_numbers: 'Čísla stran'
+        outer: 'Pozadí kolem e-mailu'
+        size: 'Základní velikost písma'
+    preset:
+        pdf:
+            standard: 'Standardní (titulní strana se známkou, všechny oblasti)'
+            cover: 'S titulní stranou (titulní strana v hlavní barvě, výsledek na straně 2)'
+            compact: 'Kompaktní (jedna strana)'
+        mail:
+            standard: 'Standardní (známka, opatření, poznámka k PDF, tlačítko)'
+            short: 'Krátký (známka, poznámka k PDF, tlačítko)'
+    block:
+        cover: {label: 'Titulní strana', desc: 'Logo, nadpis, doména, volitelně známka, klíčové údaje a snímky obrazovky. Poté začíná nová strana.'}
+        heading: {label: 'Nadpis', desc: 'Nadpis s volitelným malým řádkem nad ním.'}
+        text: {label: 'Text', desc: 'Běžný text se zástupnými symboly, volitelně na barevné ploše.'}
+        image: {label: 'Obrázek', desc: 'Vlastní obrázek ze správce souborů nebo nahraný.'}
+        note: {label: 'Poznámka', desc: 'Drobný text s linkou po straně.'}
+        next_steps: {label: 'Další kroky', desc: 'Vaše nabídka s kontaktním rámečkem, portrétem a telefonem.'}
+        signature: {label: 'Podpis', desc: 'Jméno, firma, telefon, volitelně portrét.'}
+        grade_box: {label: 'Celková známka', desc: 'Velká známka se slovním hodnocením a shrnutím.'}
+        meta_cards: {label: 'Klíčové údaje', desc: 'Zkontrolované stránky, datum, příjemce.'}
+        screenshots: {label: 'Snímky obrazovky', desc: 'Úvodní stránka na počítači a na mobilu.'}
+        gauges: {label: 'Kruhy Google', desc: 'Skóre PageSpeed jako kruhy, volitelně s měřenými hodnotami.'}
+        areas: {label: 'Přehled oblastí', desc: 'Sedm oblastí se známkou a krátkým textem.', show_meta: 'Zobrazit podrobnosti měření'}
+        measures: {label: 'Opatření', desc: 'Nejdůležitější opatření, očíslovaná, s náročností.'}
+        strengths: {label: 'Co už funguje', desc: 'Kladné body jako seznam s odškrtnutím.'}
+        area_detail: {label: 'Oblast podrobně', desc: 'Jedna oblast s nálezy a kladnými body; u přístupnosti s označenými výřezy.'}
+        kpis: {label: 'Měřené hodnoty rychlosti', desc: 'LCP, CLS, INP, výkon, velikost stránky, požadavky.'}
+        ai_sections: {label: 'Oddíly od AI', desc: 'Témata, která AI našla nad rámec sedmi oblastí (např. ceny, rezervace, důvěryhodnost). Zobrazí se, jen když je co říct.'}
+        pages_table: {label: 'Tabulka stránek', desc: 'Všechny zkontrolované stránky s titulkem, LCP, kontrastem a známkou.'}
+        sources: {label: 'Zdroje', desc: 'Poznámka o zdrojích, zástupné symboly {{lighthouse}} a {{date}}.'}
+        spacer: {label: 'Mezera', desc: 'Prázdné místo.'}
+        divider: {label: 'Oddělovač', desc: ''}
+        page_break: {label: 'Zalomení stránky', desc: 'Další blok začne na nové straně.'}
+        header: {label: 'Záhlaví', desc: 'Barevné záhlaví s logem nebo názvem firmy.'}
+        button: {label: 'Tlačítko', desc: 'Výzva k akci, např. domluvit si hovor.'}
+        pdf_note: {label: 'Poznámka k PDF', desc: 'Upozornění na přílohu, jen když je PDF přiložené.'}
+        newsletter_note: {label: 'Poznámka k newsletteru', desc: 'Viditelná, jen když návštěvník zaškrtl políčko.'}
+        footer: {label: 'Zápatí', desc: 'Šedý závěr s informací o ochraně údajů.'}
+
+# Typography of the report language (quotation marks around quoted page text)
+format:
+    quote_open: "„"
+    quote_close: "“"

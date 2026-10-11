@@ -187,7 +187,7 @@ Everything a visitor sees is edited in the back end under **NEO › Website chec
 - **Right:** the properties of the selected block: texts with placeholders (`{{firstname}}`, `{{domain}}`, `{{grade}}` …), rich text, images from the file manager or uploaded directly, alignment, spacing, background, what to show.
 - **Templates:** "Load template" sets a ready-made layout (*Standard*, *With cover page*, *Compact*; e-mail: *Standard*, *Short*) in the language of the configuration. "PDF preview" opens the real PDF of the current draft.
 
-**Every word is the customer's.** Apart from what the check finds (the AI reading, findings, area summaries, measures and measured values), everything in the e-mail and the PDF comes from the design: headings, labels, table columns, legend, grade words, area names, effort labels, the names of the measured values, header, footer and the word before the page number. Each block carries its words as properties; words used by several blocks are under *Design › Wording*. The templates arrive prefilled in the configuration's language (German and English included); for any other language the customer simply overwrites them.
+**Every word is the customer's.** Apart from what the check finds (the AI reading, findings, area summaries, measures and measured values), everything in the e-mail and the PDF comes from the design: headings, labels, table columns, legend, grade words, area names, effort labels, the names of the measured values, header, footer and the word before the page number. Each block carries its words as properties; words used by several blocks are under *Design › Wording*. The templates arrive prefilled in the configuration's language (eleven languages included, see *Languages*; other languages through the AI translation below); the customer overwrites whatever they want to word differently.
 
 **What the AI adds:** with an AI key the check reads up to five pages like a first-time visitor. Besides the content area it picks which marked screenshot excerpts the report shows and explains each in one sentence, and it may add up to two sections for topics outside the seven areas (block *AI sections*; it prints nothing when there is nothing to add). A check costs a few cents with a mid-range model.
 
@@ -247,7 +247,7 @@ Contao's way — one root page per language — works out of the box:
 
 Every link is the customer's choice (contact page, privacy page, newsletter confirmation page — in the settings or per configuration); the bundle never guesses a page of your site. Without a contact page the button is left out, without a confirmation page there is no newsletter box.
 
-**Any language, none special-cased.** The configuration's language list offers every language Contao knows. Translation files ship for German and English as defaults; for every other language the configured AI translates the visitor-facing texts (findings, measures, form, report, e-mail) once — automatically when a configuration in that language is saved, when a page in that language first shows the element (after the response) or at the latest before the first check is graded; it takes a few seconds and costs about a cent. `php bin/console neo:websitecheck:translate <lang> --export` writes them to `translations/neo_websitecheck.<lang>.yaml` for review — a project file always wins. Dates and numbers follow the language's own format (Intl). Without AI settings the installation's default language is used.
+**Any language, none special-cased.** The configuration's language list offers every language Contao knows. Translation files ship for eleven languages (see *Languages*); for every other language the configured AI translates the visitor-facing texts (findings, measures, form, report, e-mail) once — automatically when a configuration in that language is saved, when a page in that language first shows the element (after the response) or at the latest before the first check is graded; it takes a few seconds and costs about a cent. `php bin/console neo:websitecheck:translate <lang> --export` writes them to `translations/neo_websitecheck.<lang>.yaml` for review — a project file always wins. Dates and numbers follow the language's own format (Intl). Without AI settings the installation's default language is used.
 
 ## Customising
 
@@ -322,6 +322,16 @@ The bundle stores: domain, measurement data, first name, last name, e-mail, news
 - **No e-mail** – check `MAILER_DSN` and the Contao log (`var/logs`); the result page shows a notice when sending failed and the back end has a re-send button.
 - **Umlauts missing in the PDF** – a custom template uses a font Dompdf does not have; keep Arimo or DejaVu Sans, or switch to Gotenberg. Helvetica only knows Western European characters.
 - **ALTCHA widget not visible / spam error** – ALTCHA needs HTTPS (or localhost); on Contao < 5.7 the honeypot is used automatically.
+
+## Languages
+
+Back end and default texts ship in German, English, French, Dutch, Italian, Polish, Czech, Hungarian, Slovenian, Croatian and Spanish (`contao/languages/<lang>/`, `translations/*.<lang>.yaml`). A project file `translations/<domain>.<lang>.yaml` overrides single texts. Contao itself offers Hungarian and Croatian as back-end language only when enabled in `config/config.yaml`:
+
+```yaml
+contao:
+    intl:
+        enabled_locales: ['+hu', '+hr']
+```
 
 ## License
 
@@ -452,7 +462,7 @@ Alles, was ein Besucher sieht, wird im Backend unter **NEO › Website-Check Ein
 - **Rechts:** die Eigenschaften des gewählten Blocks: Texte mit Platzhaltern (`{{firstname}}`, `{{domain}}`, `{{grade}}` …), formatierter Text, Bilder aus der Dateiverwaltung oder direkt hochgeladen, Ausrichtung, Abstand, Hintergrund, was angezeigt wird.
 - **Vorlagen:** „Vorlage laden“ setzt einen fertigen Aufbau (*Standard*, *Mit Deckblatt*, *Kompakt*; E-Mail: *Standard*, *Kurz*) in der Sprache der Konfiguration. „PDF-Vorschau“ öffnet das echte PDF des aktuellen Entwurfs.
 
-**Jedes Wort gehört dem Kunden.** Außer dem, was der Check findet (KI-Lesung, Fundstellen, Zusammenfassungen der Bereiche, Maßnahmen und Messwerte), kommt alles in E-Mail und PDF aus der Gestaltung: Überschriften, Beschriftungen, Tabellenspalten, Legende, Notenwörter, Namen der Bereiche, Aufwand, Bezeichnungen der Messwerte, Kopf- und Fußzeile und das Wort vor der Seitenzahl. Jeder Block trägt seine Wörter als Eigenschaften; Wörter, die mehrere Blöcke nutzen, stehen unter *Design › Bezeichnungen*. Die Vorlagen kommen vorausgefüllt in der Sprache der Konfiguration (Deutsch und Englisch dabei); für jede andere Sprache überschreibt der Kunde sie einfach.
+**Jedes Wort gehört dem Kunden.** Außer dem, was der Check findet (KI-Lesung, Fundstellen, Zusammenfassungen der Bereiche, Maßnahmen und Messwerte), kommt alles in E-Mail und PDF aus der Gestaltung: Überschriften, Beschriftungen, Tabellenspalten, Legende, Notenwörter, Namen der Bereiche, Aufwand, Bezeichnungen der Messwerte, Kopf- und Fußzeile und das Wort vor der Seitenzahl. Jeder Block trägt seine Wörter als Eigenschaften; Wörter, die mehrere Blöcke nutzen, stehen unter *Design › Bezeichnungen*. Die Vorlagen kommen vorausgefüllt in der Sprache der Konfiguration (elf Sprachen liegen bei, siehe *Sprachen*; andere Sprachen über die KI-Übersetzung unten); was der Kunde anders formulieren will, überschreibt er.
 
 **Was die KI beiträgt:** Mit KI-Schlüssel liest der Check bis zu fünf Seiten wie ein neuer Besucher. Neben dem Bereich Inhalte wählt sie aus, welche markierten Screenshot-Ausschnitte der Bericht zeigt, erklärt jeden in einem Satz und ergänzt bei Bedarf bis zu zwei eigene Abschnitte für Themen außerhalb der sieben Bereiche (Block *KI-Abschnitte*; bleibt leer, wenn es nichts zu ergänzen gibt). Ein Check kostet mit einem Mittelklasse-Modell wenige Cent.
 
@@ -510,7 +520,7 @@ So, wie Contao es vorsieht – ein Startpunkt je Sprache:
 
 Alle Links wählt der Kunde selbst (Kontakt-, Datenschutz-, Newsletter-Bestätigungsseite – in den Einstellungen oder je Konfiguration); das Bundle rät nie eine Seite. Ohne Kontaktseite entfällt der Knopf, ohne Bestätigungsseite das Newsletter-Häkchen.
 
-**Jede Sprache, keine als Sonderfall.** Die Sprachauswahl der Konfiguration bietet alle Sprachen, die Contao kennt. Sprachdateien liegen für Deutsch und Englisch als Vorbelegung bei; für jede andere Sprache übersetzt die eingestellte KI die Besucher-Texte (Befunde, Maßnahmen, Formular, Bericht, E-Mail) einmalig – automatisch beim Speichern einer Konfiguration in dieser Sprache, beim ersten Aufruf einer Seite dieser Sprache (nach dem Ausliefern) und spätestens vor der Benotung des ersten Checks; das dauert Sekunden und kostet rund einen Cent. `php bin/console neo:websitecheck:translate <sprache> --export` legt sie als `translations/neo_websitecheck.<sprache>.yaml` zum Korrigieren ab – eine Projektdatei hat immer Vorrang. Datum und Zahlen im Format der jeweiligen Sprache (Intl). Ohne KI-Einstellungen gilt die Standardsprache der Installation.
+**Jede Sprache, keine als Sonderfall.** Die Sprachauswahl der Konfiguration bietet alle Sprachen, die Contao kennt. Sprachdateien liegen für elf Sprachen bei (siehe *Sprachen*); für jede andere Sprache übersetzt die eingestellte KI die Besucher-Texte (Befunde, Maßnahmen, Formular, Bericht, E-Mail) einmalig – automatisch beim Speichern einer Konfiguration in dieser Sprache, beim ersten Aufruf einer Seite dieser Sprache (nach dem Ausliefern) und spätestens vor der Benotung des ersten Checks; das dauert Sekunden und kostet rund einen Cent. `php bin/console neo:websitecheck:translate <sprache> --export` legt sie als `translations/neo_websitecheck.<sprache>.yaml` zum Korrigieren ab – eine Projektdatei hat immer Vorrang. Datum und Zahlen im Format der jeweiligen Sprache (Intl). Ohne KI-Einstellungen gilt die Standardsprache der Installation.
 
 ## Anpassen
 
@@ -538,6 +548,10 @@ Gespeichert werden Domain, Messdaten, Vorname, Nachname, E-Mail, Newsletter-Ents
 - **Keine E-Mail** – `MAILER_DSN` und `var/logs` prüfen; die Ergebnisseite zeigt einen Hinweis, das Backend hat einen Knopf „erneut senden“.
 - **Umlaute fehlen im PDF** – eigene Vorlage mit einer Schrift, die Dompdf nicht kennt; Arimo oder DejaVu Sans behalten oder Gotenberg verwenden. Helvetica kennt nur westeuropäische Zeichen.
 - **ALTCHA nicht sichtbar / Spam-Fehler** – ALTCHA braucht HTTPS (oder localhost); unter Contao 5.7 greift automatisch der Honeypot.
+
+## Sprachen
+
+Backend und Standardtexte liegen in Deutsch, Englisch, Französisch, Niederländisch, Italienisch, Polnisch, Tschechisch, Ungarisch, Slowenisch, Kroatisch und Spanisch bei (`contao/languages/<sprache>/`, `translations/*.<sprache>.yaml`). Eine Datei `translations/<domain>.<sprache>.yaml` im Projekt überschreibt einzelne Texte. Ungarisch und Kroatisch bietet Contao als Backend-Sprache erst an, wenn sie in `config/config.yaml` freigeschaltet sind (`contao.intl.enabled_locales: ['+hu', '+hr']`).
 
 ## Lizenz
 

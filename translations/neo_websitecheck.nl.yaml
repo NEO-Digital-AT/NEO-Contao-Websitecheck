@@ -1,0 +1,799 @@
+# NEO Website Check — Dutch texts (front end, report, e-mail).
+# Copy to translations/neo_websitecheck.nl.yaml in your project to override single keys.
+word:
+    yes: 'ja'
+    no: 'nee'
+    none: 'geen'
+grade:
+    1: 'Zeer goed'
+    2: 'Goed'
+    3: 'Ruim voldoende'
+    4: 'Voldoende'
+    5: 'Onvoldoende'
+verdict:
+    good: 'Een degelijke website. Niets dringends; een paar kleine dingen maken hem nog beter.'
+    mid: 'Een goede basis, maar enkele punten kosten u waarschijnlijk aanvragen. De belangrijkste staan hieronder.'
+    low: 'Duidelijk werk aan de winkel. Begin met de drie maatregelen hieronder; dan wordt de website een middel dat klanten oplevert.'
+area:
+    speed: 'Laadsnelheid'
+    accessibility: 'Toegankelijkheid'
+    seo: 'Vindbaarheid in Google'
+    ai: 'Zichtbaarheid in AI-zoekmachines'
+    content: 'Inhoud & duidelijkheid'
+    legal: 'Juridisch & privacy'
+    mobile: 'Mobiel'
+    unavailable: 'Kon deze keer niet worden gemeten.'
+measure:
+    effort:
+        small: 'weinig werk'
+        medium: 'gemiddeld werk'
+        large: 'veel werk'
+
+# ---------------------------------------------------------------- speed
+speed:
+    summary:
+        good: 'De startpagina is op een smartphone na %lcp% s zichtbaar. Dat is sneller dan bij de meeste websites.'
+        ok: 'De startpagina heeft op een smartphone %lcp% s nodig. Bruikbaar, maar een deel van de bezoekers haakt af voordat hij klaar is.'
+        bad: 'De startpagina heeft op een smartphone %lcp% s nodig. Veel bezoekers zijn al weg voordat er iets verschijnt.'
+    meta: 'Performance %perf% van 100 · LCP %lcp% s · CLS %cls%'
+    kpi:
+        lcp: 'Hoofdinhoud zichtbaar (LCP)'
+        lcp_note: 'grens 2,5 s'
+        cls: 'Verspringende lay-out (CLS)'
+        cls_note: 'grens 0,1'
+        tbt: 'Geblokkeerde tijd (TBT)'
+        tbt_note: 'grens 200 ms'
+        inp: 'Reactie op tikken (INP)'
+        inp_note: 'grens 200 ms'
+        perf: 'Performancescore'
+        perf_note: 'van 100'
+        bytes: 'Paginagewicht'
+        bytes_note: 'grens 2 MB'
+        requests: 'Verzoeken'
+        requests_note: 'grens 80'
+    issue:
+        lcp:
+            title: 'Startpagina laadt traag op smartphones'
+            text: 'De hoofdinhoud verschijnt na %lcp% seconden. Google legt de grens bij 2,5 seconden; bezoekers oordelen nog eerder.'
+            fix: 'Verklein de grootste afbeelding in het eerste scherm, laad scripts later en laat de server gecomprimeerde bestanden versturen. Meestal één tot twee uur werk.'
+        largest_image:
+            title: 'Eén afbeelding weegt %kb% KB'
+            text: 'Het bestand “%file%” is het zwaarste onderdeel van de startpagina en vertraagt alles wat erna komt.'
+            fix: 'Exporteer de afbeelding op de weergegeven breedte (meestal 1200–1600 px) als WebP of AVIF. Vaak 80 % kleiner zonder zichtbaar verschil.'
+        render_blocking:
+            title: '%count% bestanden blokkeren de eerste weergave'
+            text: 'Stylesheets of scripts in de kop van de pagina worden volledig geladen voordat er iets wordt getoond.'
+            fix: 'Laad niet-kritieke CSS en JavaScript uitgesteld of asynchroon; houd alleen de kritieke stijlen in de kop.'
+        image_formats:
+            title: 'Afbeeldingen in verouderde formaten'
+            text: 'JPEG/PNG waar WebP of AVIF 30–70 % kleiner zou zijn.'
+            fix: 'Laat het CMS automatisch moderne formaten leveren (bij de meeste systemen is dat één instelling).'
+        responsive_images:
+            title: 'Afbeeldingen groter dan weergegeven'
+            text: 'Smartphones downloaden afbeeldingen op desktopformaat en verkleinen ze daarna.'
+            fix: 'Lever afbeeldingen in meerdere formaten (srcset); het CMS kan ze meestal zelf aanmaken.'
+        unused_js:
+            title: 'Ongebruikt JavaScript'
+            text: 'Er worden scripts geladen die deze pagina niet gebruikt. Dat kost tijd en batterij.'
+            fix: 'Verwijder ongebruikte plug-ins en trackingscripts; laad de rest alleen op de pagina’s die het nodig hebben.'
+        ttfb:
+            title: 'Server reageert traag'
+            text: 'De server heeft %value% nodig om de eerste byte te leveren, voordat de browser iets kan doen.'
+            fix: 'Schakel paginacaching in het CMS in of vraag de hostingprovider om een sneller pakket.'
+        compression:
+            title: 'Bestanden worden ongecomprimeerd verstuurd'
+            text: 'Tekstbestanden (HTML, CSS, JavaScript) worden op weg naar de browser niet gecomprimeerd.'
+            fix: 'Schakel gzip- of Brotli-compressie in op de server (één regel in de serverconfiguratie).'
+        cls:
+            title: 'Inhoud verspringt tijdens het laden (CLS %cls%)'
+            text: 'Elementen verschuiven nadat ze verschenen zijn, waardoor bezoekers op het verkeerde klikken of de draad kwijtraken.'
+            fix: 'Reserveer ruimte voor afbeeldingen, advertenties en lettertypen (width/height-attributen, font-display: swap).'
+        bytes:
+            title: 'Startpagina weegt %mb% MB'
+            text: 'Via een mobiele verbinding duurt dat enkele seconden en het kost databundel.'
+            fix: 'Comprimeer afbeeldingen en video’s; laad video’s pas als ze in beeld komen.'
+        console:
+            title: '%count% fouten in de browserconsole'
+            text: 'JavaScript-fouten wijzen op kapotte functies waar bezoekers tegenaan kunnen lopen.'
+            fix: 'Laat de fouten door de webontwikkelaar nakijken; meestal gaat het om verouderde plug-ins.'
+    good:
+        lcp:
+            title: 'Snel op smartphones'
+            text: 'De hoofdinhoud is na %lcp% s zichtbaar — onder de 2,5 s die Google verwacht. Die basis ontbreekt bij veel websites.'
+        cls:
+            title: 'Niets verspringt'
+            text: 'De lay-out blijft stabiel tijdens het laden; bezoekers kunnen meteen lezen en klikken.'
+        https:
+            title: 'HTTPS correct ingericht'
+            text: 'Versleutelde verbinding met een geldig certificaat; gewoon http wordt doorgestuurd naar https.'
+        console:
+            title: 'Geen fouten in de browser'
+            text: 'De browserconsole is schoon — geen kapotte scripts.'
+        images:
+            title: 'Afbeeldingen correct geleverd'
+            text: 'Moderne formaten en passende afmetingen voor smartphone en desktop.'
+
+# ---------------------------------------------------------------- accessibility
+a11y:
+    summary:
+        good: 'Toegankelijk volgens de automatische tests: teksten zijn leesbaar, bedieningselementen hebben een naam.'
+        ok: 'Grotendeels in orde. %count% contrastbevindingen en een paar ontbrekende labels staan een topcijfer in de weg.'
+        bad: 'Meerdere drempels: %count% contrastbevindingen, ontbrekende labels of beschrijvingen. Ook gewone bezoekers hebben daar last van.'
+    meta: 'Lighthouse-toegankelijkheid %score% van 100 · %count% contrastbevindingen'
+    issue:
+        meta_viewport:
+            title: 'Inzoomen is op smartphones geblokkeerd'
+            text: 'De pagina verhindert inzoomen met twee vingers. Slechtziende mensen kunnen de tekst niet vergroten.'
+            fix: 'Verwijder user-scalable=no en maximum-scale uit de viewport-tag in de kop van de pagina; één regel in de template.'
+        color_contrast:
+            title: 'Tekst met te weinig contrast (%count%×)'
+            text: 'Lichte tekst op een lichte achtergrond of donker op donker is in zonlicht slecht leesbaar, en ook voor ongeveer één op de twaalf mannen (kleurenzien). Vereist: 4,5:1.'
+            fix: 'Maak de tekstkleur of de achtergrond iets donkerder — meestal één kleurwaarde in de stylesheet, geen nieuw ontwerp.'
+        image_alt:
+            title: '%count% afbeeldingen zonder beschrijving'
+            text: 'Schermlezers en Google weten niet wat deze afbeeldingen tonen.'
+            fix: 'Geef elke inhoudelijke afbeelding een korte alt-tekst; decoratieve afbeeldingen krijgen een leeg alt-attribuut.'
+        link_name:
+            title: '%count% links zonder leesbare naam'
+            text: 'Links als “lees meer” of links met alleen een pictogram zeggen gebruikers van schermlezers niets.'
+            fix: 'Geef elke link een tekst die zegt waar hij naartoe leidt, of een aria-label bij pictogramlinks.'
+        button_name:
+            title: '%count% knoppen zonder naam'
+            text: 'Pictogramknoppen zonder label kunnen gebruikers van schermlezers niet bedienen.'
+            fix: 'Geef elke pictogramknop een aria-label (bijv. “Menu openen”).'
+        html_has_lang:
+            title: 'Taal van de pagina niet opgegeven'
+            text: 'Zonder taalattribuut kiezen schermlezers de verkeerde uitspraak.'
+            fix: 'Zet lang="nl" (of uw taal) op het <html>-element.'
+        heading_order:
+            title: 'Koppen slaan niveaus over'
+            text: 'Kopniveaus worden overgeslagen (h1 → h3), waardoor de structuur voor hulpmiddelen verwarrend is.'
+            fix: 'Gebruik de kopniveaus op volgorde; bepaal het uiterlijk met CSS in plaats van een niveau te kiezen om hoe het eruitziet.'
+        label:
+            title: '%count% formuliervelden zonder label'
+            text: 'Velden zonder zichtbaar, gekoppeld label zijn lastig in te vullen en worden door het automatisch invullen van browsers overgeslagen.'
+            fix: 'Geef elk veld een <label for> dat overeenkomt met de id van het veld.'
+        target_size:
+            title: '%count% aanraakdoelen te klein'
+            text: 'Links of knoppen kleiner dan 24 px mis je makkelijk met je duim.'
+            fix: 'Vergroot het klikbare vlak (padding) tot minstens 44 × 44 px.'
+        label_content_name_mismatch:
+            title: '%count% bedieningselementen waarvan de uitgesproken naam afwijkt van het label'
+            text: 'Pictogramknoppen (zoeken, pijlen, bellen) hebben een toegankelijke naam die niet overeenkomt met de zichtbare tekst, waardoor spraakbesturing en schermlezers iets anders aankondigen.'
+            fix: 'Laat het aria-label met de zichtbare tekst beginnen, of gebruik de tekst van het pictogram als naam.'
+    good:
+        contrast:
+            title: 'Contrasten in orde'
+            text: 'Elke gecontroleerde tekst haalt de vereiste contrastverhouding.'
+        images:
+            title: 'Afbeeldingen zijn beschreven'
+            text: 'Alle %count% afbeeldingen op de gecontroleerde pagina’s hebben een alternatieve tekst.'
+        lang:
+            title: 'Taal opgegeven'
+            text: 'Schermlezers lezen de pagina voor in de juiste taal.'
+        names:
+            title: 'Links en knoppen hebben een naam'
+            text: 'Elk bedieningselement heeft een leesbare naam; de kopniveaus kloppen.'
+        targets:
+            title: 'Aanraakdoelen groot genoeg'
+            text: 'Knoppen en links zijn goed met de duim te raken.'
+
+# ---------------------------------------------------------------- seo
+seo:
+    summary:
+        good: 'Titels, beschrijvingen, koppen en gestructureerde gegevens zijn in orde. Google kan de website goed lezen.'
+        ok: 'De basis staat; een paar titels, beschrijvingen of structuurdetails zijn het opruimen waard.'
+        bad: 'Belangrijke basiszaken voor Google ontbreken. Zoekmachines vinden de website wel, maar weten nauwelijks waar hij over gaat.'
+    meta: 'Lighthouse-SEO %score% van 100 · %pages% pagina’s gecontroleerd'
+    issue:
+        title_missing:
+            title: 'Geen paginatitel op %page%'
+            text: 'De titel is de kop in de zoekresultaten van Google. Zonder titel verzint Google er zelf een.'
+            fix: 'Schrijf een titel van maximaal 60 tekens: wat u aanbiedt en waar (bijv. “Tandarts in Utrecht – Dr. Voorbeeld”).'
+        title_long:
+            title: 'Paginatitel te lang op %page%'
+            text: '%length% tekens — Google kort titels af na ongeveer 60.'
+            fix: 'Maak de titel korter; de belangrijkste woorden vooraan.'
+        desc_missing:
+            title: 'Geen beschrijving op %page%'
+            text: 'De metabeschrijving is de grijze tekst onder het zoekresultaat in Google. Ontbreekt die, dan toont Google een willekeurig fragment.'
+            fix: 'Schrijf 140–158 tekens die zeggen wat de pagina biedt en waarom iemand zou moeten klikken.'
+        desc_long:
+            title: 'Beschrijving te lang op %page%'
+            text: '%length% tekens — Google kort beschrijvingen af na ongeveer 160.'
+            fix: 'Inkorten tot 140–158 tekens.'
+        h1_missing:
+            title: 'Geen hoofdkop op %page%'
+            text: 'Elke pagina heeft precies één H1 nodig die het onderwerp noemt.'
+            fix: 'Maak van de belangrijkste kop een H1.'
+        h1_multiple:
+            title: '%count% hoofdkoppen op %page%'
+            text: 'Meerdere H1-koppen maken onduidelijk waar de pagina over gaat.'
+            fix: 'Houd één H1 per pagina aan; maak van de andere een H2.'
+        noindex:
+            title: 'Startpagina geblokkeerd voor Google'
+            text: 'De startpagina heeft een “noindex”-instructie: Google krijgt te horen dat hij haar niet moet opnemen.'
+            fix: 'Verwijder de noindex-instelling in het CMS (meestal een vinkje bij de pagina).'
+        heading_skips:
+            title: 'Kopniveaus overgeslagen (%count%×)'
+            text: 'Sprongen als H1 → H3 maken de structuur onduidelijk voor Google en schermlezers.'
+            fix: 'Gebruik de kopniveaus op volgorde.'
+        sitemap_missing:
+            title: 'Geen sitemap gevonden'
+            text: 'Een sitemap.xml geeft Google in één keer alle pagina’s door; zonder sitemap worden nieuwe pagina’s later gevonden.'
+            fix: 'Schakel de sitemap in het CMS in en verwijs ernaar in robots.txt.'
+        schema:
+            title: 'Geen gestructureerde gegevens'
+            text: 'Gestructureerde gegevens (schema.org) vertellen Google en AI-assistenten wat voor bedrijf dit is, waar het zit en wanneer het open is.'
+            fix: 'Voeg Organization- of LocalBusiness-gegevens toe met naam, adres, telefoon en openingstijden (voor de meeste CMS bestaat een plug-in).'
+        not_crawlable:
+            title: 'Pagina geblokkeerd voor zoekmachines'
+            text: 'Robots-instructies verhinderen dat Google de pagina opneemt.'
+            fix: 'Controleer robots.txt en de robots-metatag; hef de blokkade voor de openbare pagina’s op.'
+        link_text:
+            title: '%count% links met nietszeggende tekst'
+            text: '“Klik hier” of “meer” vertelt Google niets over de doelpagina.'
+            fix: 'Gebruik beschrijvende linkteksten (“onze openingstijden”).'
+        crawlable_anchors:
+            title: 'Links die Google niet kan volgen'
+            text: 'Sommige links zijn alleen met JavaScript gebouwd en zijn onzichtbaar voor zoekmachines.'
+            fix: 'Gebruik gewone <a href>-links voor de navigatie.'
+        canonical:
+            title: 'Canonieke link onjuist'
+            text: 'De canonical-tag verwijst naar een verkeerd of onbereikbaar adres, wat Google in verwarring kan brengen.'
+            fix: 'Laat de canonieke link naar de pagina zelf verwijzen.'
+        hreflang:
+            title: 'Taallinks onjuist'
+            text: 'De hreflang-tags voor de taalversies bevatten fouten.'
+            fix: 'Laat de hreflang-tags corrigeren (geldige taalcodes, alle versies verwijzen naar elkaar).'
+        http_redirect:
+            title: 'http stuurt niet door naar https'
+            text: 'Bezoekers die het adres zonder https intypen, komen op de onversleutelde versie terecht.'
+            fix: 'Stel op de server een permanente doorverwijzing van http naar https in.'
+    good:
+        sitemap:
+            title: 'Sitemap aanwezig'
+            text: '%count% pagina’s staan voor Google klaar.'
+        titles:
+            title: 'Titels en beschrijvingen ingesteld'
+            text: 'Elke gecontroleerde pagina heeft een eigen titel en beschrijving van geschikte lengte.'
+        h1:
+            title: 'Eén hoofdkop per pagina'
+            text: 'Duidelijke structuur voor Google en bezoekers.'
+        schema:
+            title: 'Gestructureerde gegevens aanwezig'
+            text: 'Google en AI-assistenten vinden gegevens van het type %types%.'
+        https:
+            title: 'Versleuteld en doorgestuurd'
+            text: 'https met doorverwijzing vanaf http.'
+
+# ---------------------------------------------------------------- AI visibility
+ai:
+    summary:
+        good: 'AI-assistenten kunnen de website lezen en begrijpen; er is een samenvatting (llms.txt).'
+        ok: 'AI-assistenten mogen de website lezen, maar moeten zelf bij elkaar puzzelen wat u aanbiedt.'
+        bad: 'AI-zoekmachines zien de website nauwelijks: geen samenvatting, crawlers geblokkeerd of geen herkenbare bedrijfsgegevens.'
+    meta: 'llms.txt: %llms% · %blocked% AI-crawlers geblokkeerd'
+    issue:
+        llms_missing:
+            title: 'Geen llms.txt'
+            text: 'ChatGPT, Perplexity en de AI van Google zoeken naar een kort tekstbestand dat zegt wat het bedrijf doet, voor wie en waar. Zonder dat bestand raden ze het aan de hand van de pagina’s.'
+            fix: 'Maak /llms.txt aan: drie alinea’s (aanbod, doelgroep, locatie/contact) plus links naar de belangrijkste pagina’s. Een halfuurtje werk.'
+        bots_blocked:
+            title: 'AI-crawlers geblokkeerd: %bots%'
+            text: 'robots.txt verbiedt deze assistenten de website te lezen, dus kunnen ze hem ook niet aanbevelen.'
+            fix: 'Sta de crawlers toe in robots.txt — of kies bewust ervoor om niet in AI-antwoorden voor te komen.'
+        no_identity_schema:
+            title: 'Bedrijf niet machineleesbaar'
+            text: 'Zonder Organization/LocalBusiness-gegevens kent een assistent naam, adres of openingstijden niet betrouwbaar.'
+            fix: 'Voeg gestructureerde gegevens toe met naam, adres, telefoon, openingstijden en werkgebied.'
+        offer_unclear:
+            title: 'Aanbod niet in de eerste zinnen'
+            text: 'AI-antwoorden citeren de eerste zinnen van een pagina. Op de startpagina noemen die het aanbod niet duidelijk.'
+            fix: 'Begin de pagina met één eenvoudige zin: wie u bent, wat u doet, voor wie en waar.'
+    good:
+        llms:
+            title: 'llms.txt aanwezig'
+            text: 'AI-assistenten krijgen een samenvatting rechtstreeks van u.'
+        bots:
+            title: 'AI-crawlers toegestaan'
+            text: 'GPTBot, ClaudeBot, PerplexityBot en Google-Extended mogen de website lezen.'
+        schema:
+            title: 'Bedrijf machineleesbaar'
+            text: 'Gestructureerde gegevens van het type %types% maken het bedrijf herkenbaar.'
+        offer:
+            title: 'Aanbod vroeg genoemd'
+            text: 'De eerste zinnen zeggen al wat het bedrijf doet.'
+
+# ---------------------------------------------------------------- content
+content:
+    summary:
+        good: 'Binnen vijf seconden is duidelijk wat het bedrijf doet, voor wie en wat de volgende stap is.'
+        ok: 'Begrijpelijk, maar het aanbod of de volgende stap kan duidelijker; sommige begrippen veronderstellen voorkennis.'
+        bad: 'Bezoekers begrijpen niet snel wat er wordt aangeboden of hoe ze contact opnemen. Dat kost aanvragen.'
+    meta:
+        ai: 'AI heeft %pages% pagina’s gelezen zoals een nieuwe bezoeker'
+        heuristic: 'Controle op basis van vuistregels (geen AI ingesteld)'
+    issue:
+        no_cta:
+            title: 'Geen duidelijke volgende stap'
+            text: 'Geïnteresseerde bezoekers zien niet in één oogopslag hoe ze kunnen bellen, iets aanvragen of boeken.'
+            fix: 'Zet één opvallende actie in het eerste scherm: “Bellen”, “Offerte aanvragen” of “Boeken” — met telefoonnummer.'
+        thin:
+            title: 'Heel weinig tekst (%words% woorden)'
+            text: 'Met zo weinig tekst komen bezoekers en Google niet te weten wat u aanbiedt.'
+            fix: 'Beschrijf aanbod, doelgroep en locatie in twee of drie korte alinea’s.'
+        phone:
+            title: 'Telefoonnummer niet aantikbaar'
+            text: 'Op een smartphone hoort een nummer aantikbaar te zijn (tel:-link). Hier ontbreekt het of staat het als gewone tekst.'
+            fix: 'Link het telefoonnummer met tel:+31…; zet het in de kop- of voettekst van elke pagina.'
+    good:
+        cta:
+            title: 'Duidelijke volgende stap'
+            text: 'Bezoekers zien hoe ze contact kunnen opnemen.'
+        length:
+            title: 'Genoeg tekst'
+            text: '%words% woorden beschrijven het aanbod.'
+        phone:
+            title: 'Telefoonnummer aantikbaar'
+            text: 'Eén tik op de smartphone en het gesprek begint.'
+
+# ---------------------------------------------------------------- legal
+legal:
+    summary:
+        good: 'Colofon, privacyverklaring en toestemmingsbeheer zijn aanwezig, voor zover technisch te controleren.'
+        ok: 'Colofon en privacyverklaring zijn aanwezig; de omgang met diensten van derden verdient een controle.'
+        bad: 'Colofon of privacyverklaring ontbreekt, of trackingdiensten laden vóór de toestemming. Laat dit nakijken door uw juridisch adviseur.'
+    meta: 'Technische controle, geen juridisch advies'
+    note: 'Dit is een technische controle: er wordt gezocht naar de pagina’s en naar diensten die al vóór enige toestemming laden. Het is geen juridisch advies — laat de details nakijken door uw juridisch adviseur.'
+    issue:
+        imprint:
+            title: 'Colofon (bedrijfsgegevens) niet gevonden'
+            text: 'Op de gecontroleerde pagina’s is geen link naar een colofon met bedrijfsgegevens gevonden, of de pagina is niet bereikbaar.'
+            fix: 'Link vanaf elke pagina (voettekst) naar een colofon met de verplichte bedrijfsgegevens.'
+        privacy:
+            title: 'Privacyverklaring niet gevonden'
+            text: 'Er is geen link naar een privacyverklaring gevonden, of de pagina is niet bereikbaar.'
+            fix: 'Link vanaf elke pagina (voettekst) naar de privacyverklaring; daarin moet elke gebruikte dienst genoemd worden.'
+        tracking:
+            title: 'Tracking vóór toestemming: %services%'
+            text: 'Deze diensten laden bij het eerste bezoek, voordat de bezoeker toestemming kon geven. Volgens de AVG en de cookieregels is daarvoor vooraf toestemming nodig.'
+            fix: 'Laad deze diensten pas na toestemming in de cookiebanner (of stel de toestemmingstool zo in dat hij ze blokkeert).'
+        embeds:
+            title: 'Diensten van derden zonder toestemmingstool: %services%'
+            text: 'Externe diensten laden zonder cookiebanner. Afhankelijk van de dienst kan toestemming vereist zijn.'
+            fix: 'Host lettertypen lokaal; laad kaarten en video’s pas na een klik of via de toestemmingstool.'
+    good:
+        imprint:
+            title: 'Colofon aanwezig'
+            text: 'Gelinkt en bereikbaar.'
+        privacy:
+            title: 'Privacyverklaring aanwezig'
+            text: 'Gelinkt en bereikbaar.'
+        no_third_party:
+            title: 'Geen diensten van derden vóór toestemming'
+            text: 'Bij het eerste bezoek laadt er niets van buitenaf.'
+        cmp:
+            title: 'Toestemmingstool aanwezig'
+            text: 'Er is een cookiebanner / toestemmingstool gevonden.'
+
+# ---------------------------------------------------------------- mobile
+mobile:
+    summary:
+        good: 'Past op het scherm van een smartphone; knoppen en tekst zijn groot genoeg.'
+        ok: 'Bruikbaar op smartphones; enkele aanraakdoelen of lettergroottes zijn te klein.'
+        bad: 'Lastig te gebruiken op smartphones: geen viewport-instelling, te kleine aanraakdoelen of inhoud die breder is dan het scherm.'
+        unknown: 'Kon niet volledig worden gemeten (geen PageSpeed-resultaat).'
+    meta: 'Viewport, aanraakdoelen, lettergrootte, breedte van de inhoud'
+    issue:
+        viewport:
+            title: 'Geen mobiele viewport'
+            text: 'De pagina wordt op smartphones getoond als verkleinde desktoppagina.'
+            fix: 'Voeg <meta name="viewport" content="width=device-width, initial-scale=1"> toe aan de kop van de pagina.'
+        targets:
+            title: '%count% aanraakdoelen te klein'
+            text: 'Links of knoppen zijn te klein of staan te dicht op elkaar voor een duim.'
+            fix: 'Vergroot het aanraakvlak tot minstens 44 × 44 px en zorg voor ruimte tussen links.'
+        font:
+            title: 'Tekst te klein op smartphones'
+            text: '%value% van de tekst is kleiner dan 12 px en slecht leesbaar op smartphones.'
+            fix: 'Gebruik minstens 16 px voor lopende tekst.'
+        width:
+            title: 'Inhoud breder dan het scherm'
+            text: 'Bezoekers moeten opzij scrollen.'
+            fix: 'Corrigeer elementen met een vaste breedte (tabellen, afbeeldingen, embeds) met max-width: 100 %.'
+    good:
+        viewport:
+            title: 'Mobiele viewport ingesteld'
+            text: 'De pagina past zich aan het scherm van de smartphone aan.'
+        targets:
+            title: 'Aanraakdoelen in orde'
+            text: 'Links en knoppen zijn goed met de duim te raken.'
+        font:
+            title: 'Tekst leesbaar'
+            text: 'De lettergroottes zijn groot genoeg voor smartphones.'
+
+# ---------------------------------------------------------------- front end
+fe:
+    status_idle: 'Klaar voor de check'
+    status_run: 'Check loopt …'
+    status_done: 'Check afgerond'
+    preview_idle: 'Hier verschijnt uw website'
+    placeholder_domain: 'uw-bedrijf.nl'
+    url_label: 'Adres van uw website'
+    submit: 'Nu controleren'
+    what_speed: 'Laadsnelheid op smartphones'
+    what_a11y: 'Toegankelijkheid & contrasten'
+    what_seo: 'Google & AI-zoekmachines'
+    what_content: 'Teksten & volgende stap'
+    what_legal: 'Colofon, privacy, cookies'
+    altcha_label: 'Ik ben een mens'
+    altcha_verifying: 'Bezig met verifiëren …'
+    altcha_verified: 'Geverifieerd'
+    altcha_error: 'Verificatie mislukt. Laad de pagina opnieuw.'
+    altcha_wait: 'De verificatie loopt nog. Een ogenblik geduld.'
+    err_url: 'Vul een geldig adres in, bijv. uw-bedrijf.nl.'
+    err_limit_hour: 'U hebt het afgelopen uur al %limit% checks gestart. Probeer het over een uur opnieuw.'
+    err_limit: 'U hebt vandaag al %limit% checks uitgevoerd. Probeer het morgen opnieuw.'
+    err_spam: 'De spamcontrole is niet gelukt. Laad de pagina opnieuw en probeer het nog eens.'
+    err_generic: 'Er ging iets mis. Probeer het zo meteen opnieuw.'
+    err_failed: 'Deze website kon niet worden gecontroleerd (niet bereikbaar of geblokkeerd).'
+    eta: 'nog ongeveer %s s'
+    eta_soon: 'bijna klaar …'
+    progress_label: 'Voortgang van de check'
+    step_discover: 'Startpagina openen, sitemap en belangrijke subpagina’s zoeken'
+    step_speed_home: 'Startpagina op een smartphone meten (Google PageSpeed)'
+    step_speed_pages: 'De subpagina’s meten'
+    step_analyze: 'Toegankelijkheid, juridische pagina’s en zichtbaarheid in AI controleren'
+    step_ai: 'De teksten lezen en beoordelen'
+    step_finish: 'Cijfer bepalen en rapport samenstellen'
+    gate_title: 'Uw resultaat staat klaar'
+    gate_text: 'Waar mogen we het naartoe sturen? U ziet het meteen hier en ontvangt het pdf-rapport per e-mail.'
+    firstname: 'Voornaam'
+    lastname: 'Achternaam'
+    email: 'E-mail'
+    err_firstname: 'Vul uw voornaam in.'
+    err_lastname: 'Vul uw achternaam in.'
+    err_email: 'Vul een geldig e-mailadres in.'
+    newsletter: 'Ja, stuur mij ook af en toe tips over web, IT en AI. Bevestiging per e-mail, altijd af te melden.'
+    optional: '(optioneel)'
+    gate_legal: 'We gebruiken uw gegevens alleen om u dit resultaat te sturen.'
+    privacy: 'Privacyverklaring'
+    gate_submit: 'Resultaat tonen'
+    result_kicker: 'Resultaat voor'
+    grade_label: 'Eindcijfer %s'
+    mail_sent: 'Kopie onderweg naar %s'
+    mail_failed: 'De e-mail kon niet worden verstuurd — het resultaat blijft hier zichtbaar.'
+    gauge_perf: 'Performance'
+    gauge_a11y: 'Toegankelijkheid'
+    gauge_bp: 'Techniek'
+    gauge_seo: 'SEO'
+    measures_title: 'Wat u als eerste moet aanpakken'
+    strengths_title: 'Wat al goed werkt'
+    disclaimer: 'Automatische beoordeling op basis van Google PageSpeed Insights, onze eigen controles en een beoordeling door AI. Het pdf-rapport bevat alle bevindingen met schermafbeeldingen.'
+    cta: 'Het resultaat bespreken — gratis'
+    reset: 'Andere website controleren'
+
+# ---------------------------------------------------------------- report (PDF)
+report:
+    title: 'Websitecheck voor %domain%'
+    header: 'Websitecheck'
+    page: 'Pagina %n% van %total%'
+    cover_eyebrow: 'Gratis websitecheck'
+    cover_title: 'Uw websitecheck voor'
+    grade_line: 'Eindcijfer %grade% · %word%'
+    grade_short: 'Cijfer %grade% · %word%'
+    meta_pages: 'Gecontroleerde pagina’s'
+    meta_date: 'Datum'
+    meta_for: 'Voor'
+    overview_eyebrow: 'Zeven onderdelen, één eindcijfer'
+    overview_title: 'In één oogopslag'
+    legend_title: 'Zo leest u de cijfers'
+    legend: 'Schoolcijfers. Het eindcijfer is nooit beter dan het slechtste onderdeel plus één.'
+    measures_eyebrow: 'Wat ik als eerste zou aanpakken'
+    a11y_title: 'Toegankelijkheid & contrasten'
+    a11y_intro: 'Gecontroleerd met Lighthouse (dezelfde tests die Google gebruikt) op de startpagina en de subpagina’s. Gemarkeerde uitsneden laten zien waar de bevindingen zitten.'
+    a11y_no_findings_caption: 'Startpagina, smartphone. Geen gemarkeerde bevindingen.'
+    contrast_label: 'Contrast %ratio%:1 · vereist 4,5:1'
+    gauge_sub: 'van 100'
+    gauge_note: 'Google PageSpeed Insights, startpagina op een smartphone. 90–100 groen, 50–89 oranje, onder 50 rood.'
+    a11y_why_title: 'Waarom het ertoe doet'
+    a11y_why: 'Ongeveer één op de twaalf mannen ziet kleuren anders, veel mensen lezen in de zon, en op een knop die niemand kan lezen, drukt ook niemand.'
+    findings: 'bevindingen'
+    speed_title: 'Laadsnelheid & mobiel'
+    speed_intro: 'Gemeten met Google PageSpeed Insights, profiel “smartphone, traag 4G” — dezelfde cijfers die Google voor de rangschikking gebruikt.'
+    what_works: 'Wat goed werkt'
+    what_to_improve: 'Waar nog ruimte is'
+    nothing_to_improve: 'Niets noemenswaardigs — goed gedaan.'
+    pages_eyebrow: '%count% pagina’s gecontroleerd'
+    pages_title: 'Gecontroleerde pagina’s'
+    pages_intro: 'Gekozen uit de sitemap en de navigatie: de pagina’s die bezoekers als eerste zien. Blogberichten en juridische subpagina’s zijn niet beoordeeld.'
+    col_page: 'Pagina'
+    col_title: 'Titel'
+    col_contrast: 'Contrastbevindingen'
+    col_grade: 'Cijfer'
+    next_eyebrow: 'Hoe nu verder'
+    next_title: 'Kleine stappen, geen nieuwe website'
+    next_text: 'Elk webbureau of uw huidige leverancier kan de maatregelen op pagina 2 uitvoeren. Als u wilt, lopen we de lijst samen door: 20 minuten aan de telefoon, gratis en zonder verkooppraatje.'
+    next_promise: 'Dit rapport is gratis en verplicht u tot niets.'
+    sources: 'Bronnen: Google PageSpeed Insights (Lighthouse %lighthouse%), eigen controles van HTML, juridische pagina’s en zichtbaarheid in AI, beoordeling van de paginateksten door AI · %date%'
+    page_short: 'Pagina'
+    cover_subtitle: 'Snelheid, toegankelijkheid, Google en AI-zoekmachines, teksten, colofon en privacy: zeven onderdelen, één eindcijfer, drie concrete maatregelen.'
+    summary_title: 'Het resultaat'
+    measures_title: 'De belangrijkste maatregelen'
+    what_works_short: 'Snelheid in detail'
+    pages_eyebrow_plain: 'Gecontroleerde pagina’s'
+    title_plain: 'Websitecheck voor {{domain}}'
+    header_plain: 'Websitecheck · {{date}}'
+    grade_line_plain: 'Eindcijfer {{grade}} · {{grade_word}}'
+    area_grade_line: 'Cijfer {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Desktop'
+    label_mobile: 'Mobiel'
+    col_lcp: 'LCP'
+    sources_plain: 'Bronnen: Google PageSpeed Insights (Lighthouse {{lighthouse}}), eigen controles van HTML, juridische pagina’s en zichtbaarheid in AI, beoordeling van de paginateksten door AI · {{date}}'
+    ai_sections_eyebrow: 'Wat ons verder opviel'
+    ai_sections_title: 'Overige observaties'
+
+# ---------------------------------------------------------------- e-mail
+mail:
+    subject: 'Uw websitecheck voor %domain%: cijfer %grade% · %word%'
+    owner_subject: '[Websitecheck] %domain% · cijfer %grade% · %name% %newsletter%'
+    owner_lead_title: 'Nieuwe websitecheck aangevraagd'
+    owner_lead: 'Lead: %name% <%email%> · %domain% · nieuwsbrief: %newsletter%'
+    owner_newsletter: 'Nieuwsbrief aangevraagd'
+    owner_areas: 'Cijfers per onderdeel'
+    owner_errors: 'Stappen met fouten'
+    owner_footer: 'Interne kopie van check #%id%. De bezoeker heeft hetzelfde rapport ontvangen, zonder deze kop.'
+    greeting: 'Beste %name%,'
+    intro: 'bedankt voor uw vertrouwen. We hebben %pages% pagina’s van %domain% gecontroleerd: laadsnelheid op smartphones, toegankelijkheid, vindbaarheid in Google en in AI-zoekmachines, teksten, colofon en de omgang met cookies.'
+    grade_line: 'Eindcijfer %grade% · %word%.'
+    measures_title: 'Wat ik als eerste zou aanpakken:'
+    pdf_note: 'Het volledige rapport met schermafbeeldingen, meetwaarden en alle bevindingen vindt u in begrijpelijke taal in de bijgevoegde pdf.'
+    offer: 'Elk webbureau of uw huidige leverancier kan deze punten uitvoeren. Als u wilt, lopen we de lijst samen door: 20 minuten aan de telefoon, gratis en zonder verkooppraatje.'
+    cta: 'Bespreken'
+    cta_alt: 'of beantwoord gewoon deze e-mail'
+    newsletter_note: 'U hebt het vakje voor de nieuwsbrief aangevinkt. U ontvangt nog een aparte e-mail met een bevestigingslink; pas na het klikken daarop bent u aangemeld.'
+    footer: 'U ontvangt deze e-mail omdat u de websitecheck voor %domain% hebt aangevraagd. We gebruiken uw gegevens alleen voor dit rapport en verwijderen ze na %days% dagen, tenzij u zich voor de nieuwsbrief hebt aangemeld of een aanvraag hebt gestuurd.'
+    greeting_plain: 'Beste {{firstname}},'
+    intro_plain: 'bedankt voor uw vertrouwen. We hebben {{pages}} pagina’s van {{domain}} gecontroleerd: snelheid op smartphones, toegankelijkheid, vindbaarheid in Google en in AI-zoekmachines, teksten, colofon en cookiemelding.'
+    short_intro: 'hier is uw websitecheck voor {{domain}}. De details vindt u in de bijgevoegde pdf.'
+    footer_plain: 'U ontvangt deze e-mail omdat u de websitecheck voor {{domain}} hebt aangevraagd. We gebruiken uw gegevens alleen voor dit rapport en verwijderen ze na {{days}} dagen, tenzij u zich voor de nieuwsbrief hebt aangemeld of een aanvraag hebt gestuurd.'
+
+# ---------------------------------------------------------------- Designer (back end)
+designer:
+    group:
+        content: 'Inhoud'
+        data: 'Gegevens uit de check'
+        layout: 'Lay-out'
+    ui:
+        blocks: 'Blokken'
+        structure: 'Structuur'
+        properties: 'Eigenschappen'
+        theme: 'Vormgeving'
+        preview: 'Voorbeeld'
+        presets: 'Sjabloon laden'
+        preset_confirm: 'Het huidige ontwerp wordt vervangen door het sjabloon. Doorgaan?'
+        add: 'Toevoegen'
+        duplicate: 'Dupliceren'
+        remove: 'Verwijderen'
+        up: 'Omhoog'
+        down: 'Omlaag'
+        empty: 'Nog geen blokken. Klik links op een blok of sleep het hierheen, of laad een sjabloon.'
+        select_hint: 'Klik op een blok in de voorbeeldweergave of in de structuur om het te bewerken.'
+        placeholders: 'Placeholders'
+        insert_placeholder: 'Placeholder invoegen'
+        choose_image: 'Afbeelding kiezen'
+        upload_image: 'Uploaden'
+        remove_image: 'Afbeelding verwijderen'
+        pdf_preview: 'Pdf-voorbeeld'
+        mail_preview: 'In nieuw tabblad openen'
+        export_twig: 'Naar Twig-template kopiëren'
+        export_confirm: 'De Twig-template (expertmodus) wordt overschreven met dit ontwerp. Doorgaan?'
+        twig_active: 'Deze configuratie bevat Twig-code uit de geavanceerde modus. Die heeft voorrang, dus dit ontwerp wordt niet gebruikt. Een beheerder kan dit wijzigen.'
+        loading: 'Voorbeeld wordt gemaakt …'
+        error: 'Het voorbeeld kon niet worden gemaakt.'
+        bold: 'Vet'
+        italic: 'Cursief'
+        link: 'Link'
+        link_prompt: 'Linkadres (https://…)'
+        list: 'Lijst'
+        drag: 'Slepen om de volgorde te wijzigen'
+        demo_hint: 'De voorbeeldweergave gebruikt de laatste afgeronde check of voorbeeldgegevens.'
+        labels: 'Formuleringen'
+        labels_hint: 'Woorden die meerdere blokken gebruiken: cijferwoorden, namen van onderdelen, werkinschatting en de namen van de meetwaarden. Wat u hier schrijft, staat zo in het document.'
+        mode_visual: 'Visueel'
+        mode_twig: 'Geavanceerd (Twig)'
+        mode_label: 'Bewerkingsmodus'
+        twig_intro: 'Dit is het volledige document als Twig-code: kader, elk blok en elk woord. Wijzigingen ziet u meteen in het voorbeeld en worden met “Opslaan” bewaard. Zolang hier code staat, wordt die gebruikt in plaats van het visuele ontwerp.'
+        twig_generate: 'Code opnieuw maken op basis van het visuele ontwerp'
+        twig_generate_confirm: 'De Twig-code wordt vervangen door het huidige visuele ontwerp. Uw eigen wijzigingen in de code gaan verloren. Doorgaan?'
+        twig_leave_confirm: 'Terug naar de visuele modus: de Twig-code wordt verwijderd en het visuele ontwerp geldt weer. Doorgaan?'
+        twig_error: 'Fout in de Twig-code'
+        twig_refresh: 'Voorbeeld vernieuwen'
+    opt:
+        none: 'Geen'
+        s: 'Klein'
+        m: 'Gemiddeld'
+        l: 'Groot'
+        xl: 'Extra groot'
+        soft: 'Licht'
+        primary: 'Hoofdkleur'
+        accent: 'Accentkleur'
+        white: 'Wit'
+        auto: 'Automatisch (uit de instellingen)'
+        text: 'Alleen naam'
+        h1: 'Kop 1'
+        h2: 'Kop 2'
+        h3: 'Kop 3'
+        normal: 'Normaal'
+        muted: 'Gedempt'
+        left: 'Links'
+        center: 'Gecentreerd'
+        right: 'Rechts'
+        montage: 'Desktop en smartphone overlappend'
+        desktop: 'Alleen desktop'
+        mobile: 'Alleen smartphone'
+        side: 'Naast elkaar'
+        cards: 'Kaarten (twee kolommen)'
+        list: 'Lijst'
+        contact: 'Contactpagina'
+        website: 'Website'
+        custom: 'Eigen adres'
+        outline: 'Omlijnd'
+        arimo: 'Arimo (zoals Arial)'
+        sans: 'Schreefloos (DejaVu Sans)'
+        serif: 'Schreef (DejaVu Serif)'
+        system: 'Helvetica (alleen West-Europese tekens)'
+        narrow: 'Smal'
+        wide: 'Breed'
+        '1': 'Eén kolom'
+        '2': 'Twee kolommen'
+        speed: 'Snelheid'
+        accessibility: 'Toegankelijkheid'
+        seo: 'Vindbaarheid in Google'
+        ai: 'Zichtbaarheid in AI-zoekmachines'
+        content: 'Inhoud & duidelijkheid'
+        legal: 'Juridisch & privacy'
+        mobile_area: 'Mobiel'
+        effort_small: 'weinig'
+        effort_medium: 'gemiddeld'
+        effort_large: 'veel'
+    prop:
+        eyebrow: 'Kleine regel erboven'
+        title: 'Titel'
+        subtitle: 'Ondertitel'
+        text: 'Tekst'
+        html: 'Tekst'
+        intro: 'Inleiding'
+        note: 'Opmerking eronder'
+        level: 'Grootte'
+        align: 'Uitlijning'
+        space: 'Ruimte erna'
+        bg: 'Achtergrond'
+        size: 'Lettergrootte'
+        tone: 'Kleur'
+        columns: 'Kolommen'
+        src: 'Afbeelding'
+        image: 'Eigen afbeelding'
+        width: 'Breedte'
+        caption: 'Bijschrift'
+        rounded: 'Afgeronde hoeken'
+        height: 'Hoogte'
+        style: 'Stijl'
+        layout: 'Lay-out'
+        legend: 'Legenda bij cijfers tonen'
+        max: 'Maximaal aantal items'
+        max_issues: 'Maximaal aantal bevindingen'
+        max_good: 'Maximaal aantal positieve punten'
+        area: 'Onderdeel'
+        show_grade: 'Cijfer tonen'
+        show_summary: 'Samenvatting tonen'
+        show_domain: 'Domein tonen'
+        show_meta: 'Pagina’s, datum en ontvanger tonen'
+        show_screens: 'Schermafbeeldingen tonen'
+        show_pages: 'Gecontroleerde pagina’s'
+        show_date: 'Datum'
+        show_for: 'Ontvanger'
+        show_effort: 'Werkinschatting tonen'
+        show_crops: 'Gemarkeerde uitsneden tonen'
+        show_kpis: 'Meetwaarden tonen'
+        show_portrait: 'Portret tonen'
+        show_contact: 'Contactregel tonen'
+        logo: 'Logo'
+        tagline: 'Regel rechts'
+        label: 'Label'
+        target: 'Doel'
+        url: 'Eigen adres'
+        alt: 'Tekst naast de knop'
+        promise: 'Belofte in het contactkader'
+        perf: 'Performance'
+        a11y: 'Toegankelijkheid'
+        bp: 'Best practices'
+        seo: 'SEO'
+        grade_line: 'Cijferregel'
+        label_pages: 'Label “Gecontroleerde pagina’s”'
+        label_date: 'Label “Datum”'
+        label_for: 'Label “Voor”'
+        label_desktop: 'Label desktop'
+        label_mobile: 'Label mobiel'
+        label_perf: 'Label performance'
+        label_a11y: 'Label toegankelijkheid'
+        label_bp: 'Label best practices'
+        label_seo: 'Label SEO'
+        legend_title: 'Titel van de legenda'
+        legend_text: 'Tekst van de legenda'
+        works_title: 'Titel “Wat goed werkt”'
+        improve_title: 'Titel “Waar nog ruimte is”'
+        nothing_text: 'Tekst als er niets te verbeteren is'
+        col_page: 'Kolom pagina'
+        col_title: 'Kolom titel'
+        col_lcp: 'Kolom laadtijd'
+        col_contrast: 'Kolom contrast'
+        col_grade: 'Kolom cijfer'
+        none_text: 'Woord voor “geen”'
+        badge: 'Kort label in het kader'
+        max_crops: 'Maximaal aantal gemarkeerde uitsneden'
+        show_intro: 'Inleiding tonen'
+    theme:
+        doc_title: 'Documenttitel (pdf-eigenschappen)'
+        page_label: 'Woord vóór het paginanummer'
+        grade_word: 'Cijferwoord %s'
+        area_name: 'Onderdeel: %s'
+        effort_word: 'Werkinschatting %s'
+        kpi_name: 'Meetwaarde: %s'
+        kpi_note: 'Opmerking bij: %s'
+        primary: 'Hoofdkleur (leeg = instellingen)'
+        accent: 'Accentkleur (leeg = instellingen)'
+        text: 'Tekstkleur'
+        soft: 'Lichte vlakken'
+        font: 'Lettertype'
+        radius: 'Hoekafronding'
+        margins: 'Paginamarges'
+        header: 'Koptekst op elke pagina'
+        header_text: 'Tekst in de koptekst'
+        footer: 'Voettekst op elke pagina'
+        footer_text: 'Tekst in de voettekst'
+        page_numbers: 'Paginanummers'
+        outer: 'Achtergrond rond de e-mail'
+        size: 'Basislettergrootte'
+    preset:
+        pdf:
+            standard: 'Standaard (voorblad met cijfer, alle onderdelen)'
+            cover: 'Met voorblad (voorblad in de hoofdkleur, resultaat op pagina 2)'
+            compact: 'Compact (één pagina)'
+        mail:
+            standard: 'Standaard (cijfer, maatregelen, pdf-vermelding, knop)'
+            short: 'Kort (cijfer, pdf-vermelding, knop)'
+    block:
+        cover: {label: 'Voorblad', desc: 'Logo, titel, domein, desgewenst cijfer, kerngegevens en schermafbeeldingen. Daarna begint een nieuwe pagina.'}
+        heading: {label: 'Kop', desc: 'Kop met een optionele kleine regel erboven.'}
+        text: {label: 'Tekst', desc: 'Lopende tekst met placeholders, desgewenst op een gekleurd vlak.'}
+        image: {label: 'Afbeelding', desc: 'Een eigen afbeelding uit het bestandsbeheer of geüpload.'}
+        note: {label: 'Opmerking', desc: 'Kleine tekst met een lijn aan de zijkant.'}
+        next_steps: {label: 'Volgende stappen', desc: 'Uw aanbod met contactkader, portret en telefoon.'}
+        signature: {label: 'Ondertekening', desc: 'Naam, bedrijf, telefoon, optioneel portret.'}
+        grade_box: {label: 'Eindcijfer', desc: 'Groot cijfer met cijferwoord en samenvatting.'}
+        meta_cards: {label: 'Kerngegevens', desc: 'Gecontroleerde pagina’s, datum, ontvanger.'}
+        screenshots: {label: 'Schermafbeeldingen', desc: 'Startpagina op desktop en smartphone.'}
+        gauges: {label: 'Google-ringen', desc: 'De PageSpeed-scores als ringen, desgewenst met meetwaarden.'}
+        areas: {label: 'Onderdelen in één oogopslag', desc: 'De zeven onderdelen met cijfer en korte tekst.', show_meta: 'Meetdetails tonen'}
+        measures: {label: 'Maatregelen', desc: 'De belangrijkste maatregelen, genummerd, met werkinschatting.'}
+        strengths: {label: 'Wat al goed werkt', desc: 'Positieve punten als lijst met vinkjes.'}
+        area_detail: {label: 'Onderdeel in detail', desc: 'Eén onderdeel met bevindingen en positieve punten; toegankelijkheid met gemarkeerde uitsneden.'}
+        kpis: {label: 'Snelheidswaarden', desc: 'LCP, CLS, INP, performance, paginagewicht, verzoeken.'}
+        ai_sections: {label: 'AI-secties', desc: 'Onderwerpen die de AI buiten de zeven onderdelen heeft gevonden (bijv. prijzen, boeken, vertrouwen). Verschijnt alleen als er iets te melden is.'}
+        pages_table: {label: 'Tabel met pagina’s', desc: 'Alle gecontroleerde pagina’s met titel, LCP, contrast en cijfer.'}
+        sources: {label: 'Bronnen', desc: 'Bronvermelding, placeholders {{lighthouse}} en {{date}}.'}
+        spacer: {label: 'Witruimte', desc: 'Lege ruimte.'}
+        divider: {label: 'Scheidingslijn', desc: ''}
+        page_break: {label: 'Pagina-einde', desc: 'Het volgende blok begint op een nieuwe pagina.'}
+        header: {label: 'Kopbalk', desc: 'Gekleurde kopbalk met logo of bedrijfsnaam.'}
+        button: {label: 'Knop', desc: 'Oproep tot actie, bijv. een gesprek inplannen.'}
+        pdf_note: {label: 'Pdf-vermelding', desc: 'Verwijzing naar de bijlage, alleen als er een pdf is bijgevoegd.'}
+        newsletter_note: {label: 'Nieuwsbriefvermelding', desc: 'Alleen zichtbaar als de bezoeker het vakje heeft aangevinkt.'}
+        footer: {label: 'Voettekst', desc: 'Grijze afsluiting met privacyvermelding.'}
+
+# Typography of the report language (quotation marks around quoted page text)
+format:
+    quote_open: "“"
+    quote_close: "”"

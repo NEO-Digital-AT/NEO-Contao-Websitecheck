@@ -74,7 +74,27 @@ final class HtmlAnalyzer
         $base = $this->baseUrl($url);
         $host = parse_url($base, PHP_URL_HOST);
         $links = ['internal' => [], 'external' => 0, 'nav' => [], 'legal' => [], 'tel' => [], 'mailto' => 0, 'contact' => [], 'social' => [], 'maps' => false];
-        $legalWords = ['impressum' => 'imprint', 'imprint' => 'imprint', 'legal notice' => 'imprint', 'legal-notice' => 'imprint', 'mentions légales' => 'imprint', 'datenschutz' => 'privacy', 'privacy' => 'privacy', 'dsgvo' => 'privacy', 'gdpr' => 'privacy', 'agb' => 'terms', 'terms' => 'terms'];
+        // Link texts and paths of legal pages in the common European languages
+        // (paths usually without diacritics, so both spellings are listed).
+        $legalWords = [
+            'impressum' => 'imprint', 'imprint' => 'imprint', 'legal notice' => 'imprint', 'legal-notice' => 'imprint',
+            'mentions légales' => 'imprint', 'mentions-legales' => 'imprint', 'colofon' => 'imprint', 'note legali' => 'imprint',
+            'aviso legal' => 'imprint', 'nota prawna' => 'imprint', 'informacje prawne' => 'imprint', 'právní informace' => 'imprint',
+            'pravni-informace' => 'imprint', 'impresszum' => 'imprint', 'impresum' => 'imprint', 'pravno obvestilo' => 'imprint',
+            'pravne napomene' => 'imprint',
+            'datenschutz' => 'privacy', 'privacy' => 'privacy', 'dsgvo' => 'privacy', 'gdpr' => 'privacy', 'rgpd' => 'privacy',
+            'confidentialité' => 'privacy', 'confidentialite' => 'privacy', 'données personnelles' => 'privacy', 'privacyverklaring' => 'privacy',
+            'informativa' => 'privacy', 'privacidad' => 'privacy', 'protección de datos' => 'privacy', 'proteccion-de-datos' => 'privacy',
+            'prywatności' => 'privacy', 'prywatnosci' => 'privacy', 'osobních údajů' => 'privacy', 'osobnich-udaju' => 'privacy',
+            'adatvédelem' => 'privacy', 'adatvedelem' => 'privacy', 'adatkezelés' => 'privacy', 'adatkezeles' => 'privacy',
+            'zasebnost' => 'privacy', 'osebnih podatkov' => 'privacy', 'privatnost' => 'privacy', 'zaštita podataka' => 'privacy',
+            'zastita-podataka' => 'privacy',
+            'agb' => 'terms', 'terms' => 'terms', 'conditions générales' => 'terms', 'conditions-generales' => 'terms', 'cgv' => 'terms',
+            'algemene voorwaarden' => 'terms', 'algemene-voorwaarden' => 'terms', 'termini e condizioni' => 'terms', 'condizioni' => 'terms',
+            'términos' => 'terms', 'terminos' => 'terms', 'condiciones' => 'terms', 'regulamin' => 'terms', 'obchodní podmínky' => 'terms',
+            'obchodni-podminky' => 'terms', 'ászf' => 'terms', 'aszf' => 'terms', 'splošni pogoji' => 'terms', 'splosni-pogoji' => 'terms',
+            'opći uvjeti' => 'terms', 'opci-uvjeti' => 'terms', 'uvjeti korištenja' => 'terms',
+        ];
 
         foreach ($xp->query('//a[@href]') ?: [] as $a) {
             if (!$a instanceof \DOMElement) {
@@ -128,7 +148,7 @@ final class HtmlAnalyzer
                 }
             }
 
-            if (preg_match('/kontakt|contact|anfrage|termin|booking|buchen|reserv/u', $label.' '.$path)) {
+            if (preg_match('/kontakt|contact|contatt|kapcsolat|anfrage|termin|booking|buchen|reserv|rezerv|prenot|foglal/u', $label.' '.$path)) {
                 $links['contact'][$abs] = true;
             }
 
@@ -188,8 +208,8 @@ final class HtmlAnalyzer
         $visible = $text($body);
         $words = str_word_count(strip_tags($visible)) ?: \count(preg_split('/\s+/u', $visible, -1, PREG_SPLIT_NO_EMPTY) ?: []);
 
-        $hasOpeningHours = (bool) preg_match('/öffnungszeiten|opening hours|geöffnet|open(ed)? (from|mon|daily)|mo[\.\-–]|mon[\.\-–]|montag|monday/iu', $visible);
-        $hasAddress = (bool) preg_match('/\b\d{4,5}\s+[A-ZÄÖÜ][a-zäöüß]+/u', $visible) || isset($schema['PostalAddress']) || isset($schema['LocalBusiness']);
+        $hasOpeningHours = (bool) preg_match('/öffnungszeiten|opening hours|geöffnet|open(ed)? (from|mon|daily)|mo[\.\-–]|mon[\.\-–]|montag|monday|horaires|heures d.ouverture|openingstijden|openingsuren|orari|orario|horario|godziny otwarcia|otevírací doba|nyitvatartás|nyitva tartás|delovni čas|odpiralni čas|radno vrijeme/iu', $visible);
+        $hasAddress = (bool) preg_match('/\b(?:\d{4,5}|\d{2}-\d{3}|\d{3} \d{2}|\d{4} ?[A-Z]{2})\s+\p{Lu}\p{Ll}+/u', $visible) || isset($schema['PostalAddress']) || isset($schema['LocalBusiness']);
 
         return [
             'url' => $url,

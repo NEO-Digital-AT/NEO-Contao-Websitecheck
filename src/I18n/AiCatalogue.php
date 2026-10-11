@@ -13,7 +13,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 /**
  * Visitor-facing texts for languages the bundle ships no translation file for.
  *
- * No language is special: the bundle ships German and English files, and for
+ * No language is special: the bundle ships translation files for eleven
+ * languages (de, en, fr, nl, it, pl, cs, hu, sl, hr, es), and for
  * every other language the configured AI translates the visitor-facing part of
  * the catalogue once (findings, measures, form, report and e-mail wording —
  * not the back-end designer labels). The result is stored in

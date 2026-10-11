@@ -13,10 +13,13 @@ namespace Neo\WebsitecheckBundle\Check;
 final class PageDiscovery
 {
     private const KEYWORDS = [
-        'offer' => ['leistung', 'angebot', 'service', 'produkt', 'preis', 'pricing', 'shop', 'zimmer', 'rooms', 'menu', 'speisekarte', 'portfolio', 'referenz', 'project', 'module', 'features', 'solutions', 'loesung', 'lösung'],
-        'about' => ['ueber', 'über', 'about', 'team', 'wir', 'unternehmen', 'firma', 'company', 'philosophie', 'geschichte', 'story'],
-        'contact' => ['kontakt', 'contact', 'anfrage', 'termin', 'booking', 'buchen', 'reserv', 'anfahrt', 'standort', 'location'],
-        'legal' => ['impressum', 'imprint', 'legal', 'datenschutz', 'privacy', 'agb', 'terms'],
+        'offer' => ['leistung', 'angebot', 'service', 'produkt', 'product', 'preis', 'pricing', 'shop', 'zimmer', 'rooms', 'menu', 'speisekarte', 'portfolio', 'referenz', 'project', 'module', 'features', 'solutions', 'loesung', 'lösung',
+            'servizi', 'servicios', 'diensten', 'uslugi', 'sluzby', 'szolgaltatas', 'storitve', 'usluge', 'prodott', 'producto', 'prix', 'tarif', 'prezz', 'precio', 'cennik', 'cenik', 'arak', 'oferta', 'offre', 'aanbod', 'ponuka', 'ponudba', 'ponuda', 'chambres', 'camere', 'habitaciones', 'kamers', 'pokoje', 'sobe', 'szobak'],
+        'about' => ['ueber', 'über', 'about', 'team', 'wir', 'unternehmen', 'firma', 'company', 'philosophie', 'geschichte', 'story',
+            'a-propos', 'qui-sommes', 'over-ons', 'chi-siamo', 'azienda', 'sobre', 'nosotros', 'empresa', 'o-nas', 'o-nama', 'o-podjetju', 'o-spolecnosti', 'rolunk', 'cegunk', 'equipe', 'equipo', 'squadra', 'zespol'],
+        'contact' => ['kontakt', 'contact', 'contatt', 'kapcsolat', 'anfrage', 'termin', 'booking', 'buchen', 'reserv', 'rezerv', 'prenot', 'foglal', 'anfahrt', 'standort', 'location'],
+        'legal' => ['impressum', 'imprint', 'legal', 'datenschutz', 'privacy', 'agb', 'terms', 'mentions', 'confidentialit', 'rgpd', 'gdpr', 'cgv', 'colofon', 'voorwaarden', 'informativa', 'condizioni', 'aviso', 'privacidad', 'condiciones', 'terminos',
+            'prywatn', 'regulamin', 'nota-prawna', 'pravni', 'osobni', 'podminky', 'impresszum', 'adatvedelem', 'adatkezel', 'aszf', 'impresum', 'zasebnost', 'pogoji', 'privatnost', 'zastita', 'uvjeti'],
     ];
 
     /**

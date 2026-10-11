@@ -1,0 +1,799 @@
+# NEO Website Check — Slovenian texts (front end, report, e-mail).
+# Copy to translations/neo_websitecheck.sl.yaml in your project to override single keys.
+word:
+    yes: 'da'
+    no: 'ne'
+    none: 'brez'
+grade:
+    1: 'Zelo dobro'
+    2: 'Dobro'
+    3: 'Zadovoljivo'
+    4: 'Zadostno'
+    5: 'Nezadostno'
+verdict:
+    good: 'Solidna spletna stran. Nič nujnega, nekaj malenkosti bi jo naredilo še boljšo.'
+    mid: 'Solidna osnova, vendar vas nekatere točke verjetno stanejo povpraševanj. Najpomembnejše so navedene spodaj.'
+    low: 'Jasna potreba po ukrepanju. Začnite s tremi spodnjimi ukrepi, nato bo spletna stran postala orodje, ki pripelje stranke.'
+area:
+    speed: 'Hitrost nalaganja'
+    accessibility: 'Dostopnost'
+    seo: 'Najdljivost v Googlu'
+    ai: 'Vidnost v iskanju z AI'
+    content: 'Vsebina in jasnost'
+    legal: 'Pravno in zasebnost'
+    mobile: 'Mobilno'
+    unavailable: 'Tokrat ni bilo mogoče izmeriti.'
+measure:
+    effort:
+        small: 'majhen trud'
+        medium: 'srednji trud'
+        large: 'velik trud'
+
+# ---------------------------------------------------------------- speed
+speed:
+    summary:
+        good: 'Začetna stran je na telefonu vidna po %lcp% s. To je hitreje kot pri večini spletnih strani.'
+        ok: 'Začetna stran na telefonu potrebuje %lcp% s. Uporabno, vendar nekateri obiskovalci odidejo, preden je pripravljena.'
+        bad: 'Začetna stran na telefonu potrebuje %lcp% s. Veliko obiskovalcev odide, preden se karkoli prikaže.'
+    meta: 'Zmogljivost %perf% od 100 · LCP %lcp% s · CLS %cls%'
+    kpi:
+        lcp: 'Glavna vsebina vidna (LCP)'
+        lcp_note: 'meja 2,5 s'
+        cls: 'Premiki postavitve (CLS)'
+        cls_note: 'meja 0,1'
+        tbt: 'Blokiran čas (TBT)'
+        tbt_note: 'meja 200 ms'
+        inp: 'Odziv na dotik (INP)'
+        inp_note: 'meja 200 ms'
+        perf: 'Ocena zmogljivosti'
+        perf_note: 'od 100'
+        bytes: 'Velikost strani'
+        bytes_note: 'meja 2 MB'
+        requests: 'Zahteve'
+        requests_note: 'meja 80'
+    issue:
+        lcp:
+            title: 'Začetna stran se na telefonih nalaga počasi'
+            text: 'Glavna vsebina se prikaže po %lcp% sekundah. Google postavlja mejo pri 2,5 sekunde; obiskovalci presodijo še prej.'
+            fix: 'Zmanjšajte največjo sliko v vidnem delu, skripte naložite pozneje in naj strežnik pošilja stisnjene datoteke. Običajno ena do dve uri dela.'
+        largest_image:
+            title: 'Ena slika tehta %kb% KB'
+            text: 'Datoteka „%file%“ je najtežji element začetne strani in zavira vse, kar pride za njo.'
+            fix: 'Sliko izvozite v prikazani širini (običajno 1200–1600 px) kot WebP ali AVIF. Pogosto je 80 % manjša brez vidne razlike.'
+        render_blocking:
+            title: '%count% datotek blokira prvi prikaz'
+            text: 'Slogovne datoteke ali skripte v glavi strani se v celoti naložijo, preden se karkoli prikaže.'
+            fix: 'Nekritični CSS in JavaScript nalagajte z zamikom ali asinhrono; v glavi pustite le ključne sloge.'
+        image_formats:
+            title: 'Slike v starih formatih'
+            text: 'JPEG/PNG, kjer bi bil WebP ali AVIF za 30–70 % manjši.'
+            fix: 'Naj CMS samodejno dostavlja sodobne formate (večina sistemov to omogoča z eno nastavitvijo).'
+        responsive_images:
+            title: 'Slike so večje od prikaza'
+            text: 'Telefoni prenašajo slike v velikosti za namizje in jih nato pomanjšajo.'
+            fix: 'Slike pripravite v več velikostih (srcset); CMS jih običajno lahko ustvari sam.'
+        unused_js:
+            title: 'Neuporabljen JavaScript'
+            text: 'Naložijo se skripte, ki jih ta stran ne uporablja. Stanejo čas in baterijo.'
+            fix: 'Odstranite neuporabljene vtičnike in sledilne skripte; ostalo naložite le na straneh, ki to potrebujejo.'
+        ttfb:
+            title: 'Strežnik se odziva počasi'
+            text: 'Strežnik potrebuje %value%, da pošlje prvi bajt, preden brskalnik sploh lahko kaj naredi.'
+            fix: 'V CMS vklopite predpomnjenje strani ali pri ponudniku gostovanja vprašajte za hitrejši paket.'
+        compression:
+            title: 'Datoteke se pošiljajo nestisnjene'
+            text: 'Besedilne datoteke (HTML, CSS, JavaScript) na poti do brskalnika niso stisnjene.'
+            fix: 'Na strežniku vklopite stiskanje gzip ali Brotli (ena vrstica v konfiguraciji strežnika).'
+        cls:
+            title: 'Vsebina med nalaganjem skače (CLS %cls%)'
+            text: 'Elementi se premaknejo, ko so že prikazani, zato obiskovalci kliknejo napačno stvar ali izgubijo mesto branja.'
+            fix: 'Rezervirajte prostor za slike, oglase in pisave (atributa width/height, font-display: swap).'
+        bytes:
+            title: 'Začetna stran tehta %mb% MB'
+            text: 'Na mobilni povezavi to traja več sekund in porablja prenos podatkov.'
+            fix: 'Stisnite slike in videoposnetke; videoposnetke naložite šele, ko so vidni.'
+        console:
+            title: '%count% napak v konzoli brskalnika'
+            text: 'Napake JavaScripta kažejo na nedelujoče funkcije, na katere lahko naletijo obiskovalci.'
+            fix: 'Naj napake preveri spletni razvijalec; običajno gre za zastarele vtičnike.'
+    good:
+        lcp:
+            title: 'Hitra na telefonih'
+            text: 'Glavna vsebina je vidna po %lcp% s — pod 2,5 s, ki jih pričakuje Google. To je osnova, ki manjka mnogim spletnim stranem.'
+        cls:
+            title: 'Nič ne skače'
+            text: 'Postavitev med nalaganjem ostane stabilna; obiskovalci lahko takoj berejo in klikajo.'
+        https:
+            title: 'HTTPS pravilno nastavljen'
+            text: 'Šifrirana povezava z veljavnim certifikatom; navaden http preusmeri na https.'
+        console:
+            title: 'Brez napak v brskalniku'
+            text: 'Konzola brskalnika je čista — brez nedelujočih skript.'
+        images:
+            title: 'Slike so dostavljene pravilno'
+            text: 'Sodobni formati in ustrezne velikosti za telefon in namizje.'
+
+# ---------------------------------------------------------------- accessibility
+a11y:
+    summary:
+        good: 'Brez ovir v samodejnih testih: besedila so berljiva, upravljalni elementi so označeni.'
+        ok: 'Večinoma v redu. %count% ugotovitev glede kontrasta in nekaj oznak preprečuje najvišjo oceno.'
+        bad: 'Več ovir: %count% ugotovitev glede kontrasta, manjkajoče oznake ali opisi. To moti tudi običajne obiskovalce.'
+    meta: 'Dostopnost po Lighthouse %score% od 100 · %count% ugotovitev glede kontrasta'
+    issue:
+        meta_viewport:
+            title: 'Povečava na telefonih je blokirana'
+            text: 'Stran preprečuje povečavo s prsti. Slabovidni ne morejo povečati besedila.'
+            fix: 'Iz oznake viewport v glavi strani odstranite user-scalable=no in maximum-scale, ena vrstica v predlogi.'
+        color_contrast:
+            title: 'Besedilo s premajhnim kontrastom (%count%×)'
+            text: 'Svetlo besedilo na svetlem ozadju ali temno na temnem je težko berljivo na soncu in za približno vsakega dvanajstega moškega (barvni vid). Zahtevano: 4,5 : 1.'
+            fix: 'Barvo besedila ali ozadje nekoliko potemnite — običajno ena barvna vrednost v slogovni datoteki, brez prenove.'
+        image_alt:
+            title: '%count% slik brez opisa'
+            text: 'Bralniki zaslona in Google ne vedo, kaj te slike prikazujejo.'
+            fix: 'Vsaki vsebinski sliki dodajte kratko besedilo alt; okrasne slike dobijo prazen atribut alt.'
+        link_name:
+            title: '%count% povezav brez berljivega imena'
+            text: 'Povezave, kot je „preberi več“, ali povezave samo z ikono uporabnikom bralnikov zaslona ne povedo ničesar.'
+            fix: 'Vsaki povezavi dajte besedilo, ki pove, kam vodi, ali aria-label za povezave z ikonami.'
+        button_name:
+            title: '%count% gumbov brez imena'
+            text: 'Gumbov z ikono brez oznake uporabniki bralnikov zaslona ne morejo uporabljati.'
+            fix: 'Vsakemu gumbu z ikono dodajte aria-label (npr. „Odpri meni“).'
+        html_has_lang:
+            title: 'Jezik strani ni naveden'
+            text: 'Brez atributa jezika bralniki zaslona izberejo napačno izgovorjavo.'
+            fix: 'Na elementu <html> nastavite lang="sl" (ali vaš jezik).'
+        heading_order:
+            title: 'Naslovi preskakujejo ravni'
+            text: 'Ravni naslovov (h1 → h3) so preskočene, zato je zgradba za podporne tehnologije nejasna.'
+            fix: 'Ravni naslovov uporabljajte po vrsti; oblikujte jih s CSS, namesto da raven izberete zaradi videza.'
+        label:
+            title: '%count% polj obrazca brez oznake'
+            text: 'Polja brez vidne, povezane oznake je težko izpolniti in jih samodejno izpolnjevanje brskalnikov zavrne.'
+            fix: 'Vsakemu polju dodajte <label for>, ki se ujema z ID-jem polja.'
+        target_size:
+            title: '%count% premajhnih ciljev za dotik'
+            text: 'Povezave ali gumbe, manjše od 24 px, s palcem zlahka zgrešite.'
+            fix: 'Povečajte območje za klik (padding) na vsaj 44 × 44 px.'
+        label_content_name_mismatch:
+            title: '%count% upravljalnih elementov, katerih izgovorjeno ime se razlikuje od oznake'
+            text: 'Gumbi z ikono (iskanje, puščice, klic) imajo dostopno ime, ki se ne ujema z vidnim besedilom, zato glasovno upravljanje in bralniki zaslona napovedo nekaj drugega.'
+            fix: 'Naj se aria-label začne z vidnim besedilom ali pa naj bo besedilo ikone kar ime.'
+    good:
+        contrast:
+            title: 'Kontrasti so v redu'
+            text: 'Vsako preverjeno besedilo doseže zahtevano razmerje kontrasta.'
+        images:
+            title: 'Slike so opisane'
+            text: 'Vseh %count% slik na preverjenih straneh ima nadomestno besedilo.'
+        lang:
+            title: 'Jezik je naveden'
+            text: 'Bralniki zaslona berejo stran v pravem jeziku.'
+        names:
+            title: 'Povezave in gumbi imajo imena'
+            text: 'Vsak upravljalni element ima berljivo ime; ravni naslovov so po vrsti.'
+        targets:
+            title: 'Cilji za dotik so dovolj veliki'
+            text: 'Gumbe in povezave je mogoče zadeti s palcem.'
+
+# ---------------------------------------------------------------- seo
+seo:
+    summary:
+        good: 'Naslovi, opisi, podnaslovi in strukturirani podatki so urejeni. Google lahko prebere stran.'
+        ok: 'Osnove so prisotne; nekatere naslove, opise ali podrobnosti zgradbe se splača urediti.'
+        bad: 'Manjkajo pomembne osnove za Google. Iskalniki stran najdejo, vendar komaj vedo, o čem govori.'
+    meta: 'SEO po Lighthouse %score% od 100 · preverjenih strani: %pages%'
+    issue:
+        title_missing:
+            title: 'Na strani %page% ni naslova strani'
+            text: 'Naslov je naslovna vrstica v Googlovih rezultatih. Brez njega si ga Google izmisli sam.'
+            fix: 'Napišite naslov z največ 60 znaki: kaj ponujate in kje (npr. „Zobozdravnik v Mariboru – dr. Primer“).'
+        title_long:
+            title: 'Naslov strani na %page% je predolg'
+            text: '%length% znakov — Google naslove odreže po približno 60.'
+            fix: 'Skrajšajte naslov; najpomembnejše besede naj bodo na začetku.'
+        desc_missing:
+            title: 'Na strani %page% ni opisa'
+            text: 'Meta opis je sivo besedilo pod Googlovim rezultatom. Če manjka, Google prikaže naključen izsek.'
+            fix: 'Napišite 140–158 znakov, ki povedo, kaj stran ponuja in zakaj naj nekdo klikne.'
+        desc_long:
+            title: 'Opis na %page% je predolg'
+            text: '%length% znakov — Google opise odreže po približno 160.'
+            fix: 'Skrajšajte na 140–158 znakov.'
+        h1_missing:
+            title: 'Na strani %page% ni glavnega naslova'
+            text: 'Vsaka stran potrebuje natanko en H1, ki poimenuje temo.'
+            fix: 'Najpomembnejši naslov naj bo H1.'
+        h1_multiple:
+            title: '%count% glavnih naslovov na %page%'
+            text: 'Več naslovov H1 zabriše, o čem stran govori.'
+            fix: 'Na vsaki strani obdržite en H1; ostale naj bodo H2.'
+        noindex:
+            title: 'Začetna stran je za Google blokirana'
+            text: 'Začetna stran vsebuje navodilo „noindex“: Googlu sporoča, naj je ne navaja.'
+            fix: 'V CMS odstranite nastavitev noindex (običajno potrditveno polje pri strani).'
+        heading_skips:
+            title: 'Preskočene ravni naslovov (%count%×)'
+            text: 'Skoki, kot je H1 → H3, naredijo zgradbo nejasno za Google in bralnike zaslona.'
+            fix: 'Ravni naslovov uporabljajte po vrsti.'
+        sitemap_missing:
+            title: 'Zemljevid strani ni bil najden'
+            text: 'Datoteka sitemap.xml Googlu naenkrat sporoči vse strani; brez nje so nove strani najdene pozneje.'
+            fix: 'V CMS vklopite zemljevid strani in ga navedite v robots.txt.'
+        schema:
+            title: 'Ni strukturiranih podatkov'
+            text: 'Strukturirani podatki (schema.org) Googlu in AI-asistentom povedo, za kakšno podjetje gre, kje je in kdaj je odprto.'
+            fix: 'Dodajte podatke Organization ali LocalBusiness z imenom, naslovom, telefonom in delovnim časom (večina CMS ima za to vtičnik).'
+        not_crawlable:
+            title: 'Stran je za iskalnike blokirana'
+            text: 'Navodila za robote preprečujejo, da bi Google stran indeksiral.'
+            fix: 'Preverite robots.txt in meta oznako robots; za javne strani odstranite blokado.'
+        link_text:
+            title: '%count% povezav z nepovednim besedilom'
+            text: '„Kliknite tukaj“ ali „več“ Googlu ne pove ničesar o ciljni strani.'
+            fix: 'Uporabljajte opisna besedila povezav („naš delovni čas“).'
+        crawlable_anchors:
+            title: 'Povezave, ki jim Google ne more slediti'
+            text: 'Nekatere povezave so zgrajene samo z JavaScriptom in so za iskalnike nevidne.'
+            fix: 'Za navigacijo uporabljajte običajne povezave <a href>.'
+        canonical:
+            title: 'Kanonična povezava je napačna'
+            text: 'Oznaka canonical kaže na napačen ali nedosegljiv naslov, kar lahko zmede Google.'
+            fix: 'Kanonična povezava naj kaže na stran samo.'
+        hreflang:
+            title: 'Jezikovne povezave so napačne'
+            text: 'Oznake hreflang za jezikovne različice vsebujejo napake.'
+            fix: 'Naj se oznake hreflang popravijo (veljavne jezikovne kode, vse različice se sklicujejo druga na drugo).'
+        http_redirect:
+            title: 'http ne preusmeri na https'
+            text: 'Obiskovalci, ki naslov vtipkajo brez https, pristanejo na nešifrirani različici.'
+            fix: 'Na strežniku dodajte trajno preusmeritev s http na https.'
+    good:
+        sitemap:
+            title: 'Zemljevid strani obstaja'
+            text: 'Za Google je navedenih %count% strani.'
+        titles:
+            title: 'Naslovi in opisi so nastavljeni'
+            text: 'Vsaka preverjena stran ima svoj naslov in opis ustrezne dolžine.'
+        h1:
+            title: 'En glavni naslov na stran'
+            text: 'Jasna zgradba za Google in obiskovalce.'
+        schema:
+            title: 'Strukturirani podatki obstajajo'
+            text: 'Google in AI-asistenti najdejo podatke %types%.'
+        https:
+            title: 'Šifrirano in preusmerjeno'
+            text: 'https s preusmeritvijo s http.'
+
+# ---------------------------------------------------------------- AI visibility
+ai:
+    summary:
+        good: 'AI-asistenti lahko stran preberejo in razumejo; povzetek (llms.txt) je na voljo.'
+        ok: 'AI-asistenti smejo stran brati, vendar morajo sami sestaviti, kaj ponujate.'
+        bad: 'AI-iskalniki stran komaj vidijo: ni povzetka, pajki so blokirani ali ni prepoznavnih podatkov o podjetju.'
+    meta: 'llms.txt: %llms% · blokiranih AI-pajkov: %blocked%'
+    issue:
+        llms_missing:
+            title: 'Ni datoteke llms.txt'
+            text: 'ChatGPT, Perplexity in Googlova AI iščejo kratko besedilno datoteko, ki pove, kaj podjetje počne, za koga in kje. Brez nje ugibajo na podlagi strani.'
+            fix: 'Ustvarite /llms.txt: trije odstavki (ponudba, ciljna skupina, lokacija/kontakt) in povezave na ključne strani. Pol ure dela.'
+        bots_blocked:
+            title: 'Blokirani AI-pajki: %bots%'
+            text: 'robots.txt tem asistentom prepoveduje branje strani, zato je ne morejo priporočiti.'
+            fix: 'V robots.txt dovolite te pajke — ali pa se zavestno odločite, da ostanete zunaj odgovorov AI.'
+        no_identity_schema:
+            title: 'Podjetje ni strojno berljivo'
+            text: 'Brez podatkov Organization/LocalBusiness asistent ne pozna zanesljivo imena, naslova ali delovnega časa.'
+            fix: 'Dodajte strukturirane podatke z imenom, naslovom, telefonom, delovnim časom in območjem delovanja.'
+        offer_unclear:
+            title: 'Ponudbe ni v prvih stavkih'
+            text: 'Odgovori AI navajajo prve stavke strani. Na začetni strani ti ne povedo jasno, kaj ponujate.'
+            fix: 'Stran začnite z enim preprostim stavkom: kdo ste, kaj delate, za koga in kje.'
+    good:
+        llms:
+            title: 'llms.txt obstaja'
+            text: 'AI-asistenti dobijo povzetek neposredno od vas.'
+        bots:
+            title: 'AI-pajki so dovoljeni'
+            text: 'GPTBot, ClaudeBot, PerplexityBot in Google-Extended smejo brati stran.'
+        schema:
+            title: 'Podjetje je strojno berljivo'
+            text: 'Strukturirani podatki vrste %types% identificirajo podjetje.'
+        offer:
+            title: 'Ponudba je navedena zgodaj'
+            text: 'Že prvi stavki povedo, kaj podjetje počne.'
+
+# ---------------------------------------------------------------- content
+content:
+    summary:
+        good: 'V petih sekundah je jasno, kaj podjetje počne, za koga in kaj storiti naprej.'
+        ok: 'Razumljivo, vendar bi bila ponudba ali naslednji korak lahko jasnejša; nekateri izrazi predpostavljajo predznanje.'
+        bad: 'Obiskovalci ne razumejo hitro, kaj je na voljo ali kako stopiti v stik. To stane povpraševanja.'
+    meta:
+        ai: 'AI je prebrala strani (%pages%) kot obiskovalec, ki jih vidi prvič'
+        heuristic: 'Hevristično preverjanje (AI ni nastavljena)'
+    issue:
+        no_cta:
+            title: 'Ni jasnega naslednjega koraka'
+            text: 'Zainteresirani obiskovalci na prvi pogled ne vidijo, kako poklicati, povprašati ali rezervirati.'
+            fix: 'Na prvi zaslon postavite eno vidno dejanje: „Pokličite“, „Zahtevajte ponudbo“ ali „Rezervirajte“ — s telefonsko številko.'
+        thin:
+            title: 'Zelo malo besedila (%words% besed)'
+            text: 'Pri tako malo besedila niti obiskovalci niti Google ne izvedo, kaj ponujate.'
+            fix: 'Ponudbo, ciljno skupino in lokacijo opišite v dveh ali treh kratkih odstavkih.'
+        phone:
+            title: 'Telefonske številke ni mogoče tapniti'
+            text: 'Na telefonih naj bo številko mogoče tapniti (povezava tel:). Tukaj manjka ali je navadno besedilo.'
+            fix: 'Telefonsko številko povežite s tel:+386…; postavite jo v glavo ali nogo vsake strani.'
+    good:
+        cta:
+            title: 'Jasen naslednji korak'
+            text: 'Obiskovalci vidijo, kako stopiti v stik.'
+        length:
+            title: 'Dovolj besedila'
+            text: 'Ponudbo opisuje %words% besed.'
+        phone:
+            title: 'Telefonsko številko je mogoče tapniti'
+            text: 'En dotik na telefonu sproži klic.'
+
+# ---------------------------------------------------------------- legal
+legal:
+    summary:
+        good: 'Pravno obvestilo, politika zasebnosti in upravljanje privolitev so urejeni, kolikor je mogoče tehnično preveriti.'
+        ok: 'Pravno obvestilo in politika zasebnosti obstajata; ravnanje s storitvami tretjih oseb je treba preveriti.'
+        bad: 'Pravno obvestilo ali politika zasebnosti manjka ali pa se sledilne storitve naložijo pred privolitvijo. Prosimo, preverite s svojim pravnim svetovalcem.'
+    meta: 'Tehnično preverjanje, ne pravni nasvet'
+    note: 'To je tehnično preverjanje: išče strani in storitve, ki se naložijo pred kakršno koli privolitvijo. Ni pravni nasvet — podrobnosti naj preveri vaš pravni svetovalec.'
+    issue:
+        imprint:
+            title: 'Pravno obvestilo (kolofon) ni bilo najdeno'
+            text: 'Na preverjenih straneh ni bilo najdene povezave na stran s pravnim obvestilom ali pa stran ni dosegljiva.'
+            fix: 'Na vsaki strani (v nogi) povežite stran s pravnim obvestilom z obveznimi podatki.'
+        privacy:
+            title: 'Politika zasebnosti ni bila najdena'
+            text: 'Ni bilo najdene povezave na politiko zasebnosti ali pa stran ni dosegljiva.'
+            fix: 'Politiko zasebnosti povežite na vsaki strani (v nogi); navesti mora vse uporabljene storitve.'
+        tracking:
+            title: 'Sledenje pred privolitvijo: %services%'
+            text: 'Te storitve se naložijo ob prvem obisku, še preden je obiskovalec lahko privolil. Po GDPR/TTDSG je za to potrebna predhodna privolitev.'
+            fix: 'Te storitve naložite šele po privolitvi v pasici za piškotke (ali orodje za privolitev nastavite tako, da jih blokira).'
+        embeds:
+            title: 'Storitve tretjih oseb brez orodja za privolitev: %services%'
+            text: 'Zunanje storitve se naložijo brez pasice za privolitev. Glede na storitev je lahko potrebna privolitev.'
+            fix: 'Pisave gostite lokalno; zemljevide in videoposnetke naložite po kliku ali prek orodja za privolitev.'
+    good:
+        imprint:
+            title: 'Pravno obvestilo obstaja'
+            text: 'Povezano in dosegljivo.'
+        privacy:
+            title: 'Politika zasebnosti obstaja'
+            text: 'Povezana in dosegljiva.'
+        no_third_party:
+            title: 'Brez storitev tretjih oseb pred privolitvijo'
+            text: 'Ob prvem obisku se ne naloži nič zunanjega.'
+        cmp:
+            title: 'Orodje za privolitev obstaja'
+            text: 'Najdena je bila pasica za piškotke / orodje za privolitev.'
+
+# ---------------------------------------------------------------- mobile
+mobile:
+    summary:
+        good: 'Prilega se zaslonu telefona; gumbi in besedilo so dovolj veliki.'
+        ok: 'Na telefonih uporabna; nekaj ciljev za dotik ali velikosti pisave je premajhnih.'
+        bad: 'Na telefonih težko uporabna: ni nastavitve viewport, premajhni cilji ali vsebina, širša od zaslona.'
+        unknown: 'Ni bilo mogoče v celoti izmeriti (ni rezultata PageSpeed).'
+    meta: 'Viewport, cilji za dotik, velikost pisave, širina vsebine'
+    issue:
+        viewport:
+            title: 'Ni mobilnega viewporta'
+            text: 'Stran je na telefonih prikazana kot pomanjšana namizna stran.'
+            fix: 'V glavo strani dodajte <meta name="viewport" content="width=device-width, initial-scale=1">.'
+        targets:
+            title: '%count% premajhnih ciljev za dotik'
+            text: 'Povezave ali gumbi so za palec premajhni ali preblizu skupaj.'
+            fix: 'Območje za dotik povečajte na vsaj 44 × 44 px in med povezavami dodajte razmik.'
+        font:
+            title: 'Besedilo na telefonih je premajhno'
+            text: '%value% besedila je manjšega od 12 px in je na telefonih težko berljivo.'
+            fix: 'Za osnovno besedilo uporabite vsaj 16 px.'
+        width:
+            title: 'Vsebina je širša od zaslona'
+            text: 'Obiskovalci se morajo pomikati vstran.'
+            fix: 'Elemente s fiksno širino (tabele, slike, vdelave) popravite z max-width: 100 %.'
+    good:
+        viewport:
+            title: 'Mobilni viewport je nastavljen'
+            text: 'Stran se prilagodi zaslonu telefona.'
+        targets:
+            title: 'Cilji za dotik so v redu'
+            text: 'Povezave in gumbe je mogoče zadeti s palcem.'
+        font:
+            title: 'Besedilo je berljivo'
+            text: 'Velikosti pisave so dovolj velike za telefone.'
+
+# ---------------------------------------------------------------- front end
+fe:
+    status_idle: 'Pripravljeno za preverjanje'
+    status_run: 'Preverjanje poteka …'
+    status_done: 'Preverjanje končano'
+    preview_idle: 'Tukaj se bo prikazala vaša spletna stran'
+    placeholder_domain: 'vase-podjetje.si'
+    url_label: 'Naslov vaše spletne strani'
+    submit: 'Preveri zdaj'
+    what_speed: 'Hitrost nalaganja na telefonih'
+    what_a11y: 'Dostopnost in kontrasti'
+    what_seo: 'Google in iskanje z AI'
+    what_content: 'Besedila in naslednji korak'
+    what_legal: 'Pravno obvestilo, zasebnost, piškotki'
+    altcha_label: 'Nisem robot'
+    altcha_verifying: 'Preverjanje …'
+    altcha_verified: 'Preverjeno'
+    altcha_error: 'Preverjanje ni uspelo. Prosimo, ponovno naložite stran.'
+    altcha_wait: 'Preverjanje še poteka. Prosimo, počakajte trenutek.'
+    err_url: 'Prosimo, vnesite veljaven naslov, npr. vase-podjetje.si.'
+    err_limit_hour: 'V zadnji uri ste začeli že %limit% preverjanj. Prosimo, poskusite znova čez eno uro.'
+    err_limit: 'Danes ste izvedli že %limit% preverjanj. Prosimo, poskusite znova jutri.'
+    err_spam: 'Preverjanje neželene pošte ni uspelo. Prosimo, ponovno naložite stran in poskusite znova.'
+    err_generic: 'Prišlo je do napake. Prosimo, poskusite znova čez trenutek.'
+    err_failed: 'Te spletne strani ni bilo mogoče preveriti (ni dosegljiva ali je blokirana).'
+    eta: 'še približno %s s'
+    eta_soon: 'skoraj končano …'
+    progress_label: 'Napredek preverjanja'
+    step_discover: 'Odpiranje začetne strani, iskanje zemljevida strani in ključnih podstrani'
+    step_speed_home: 'Merjenje začetne strani na telefonu (Google PageSpeed)'
+    step_speed_pages: 'Merjenje podstrani'
+    step_analyze: 'Preverjanje dostopnosti, pravnih strani in vidnosti v AI'
+    step_ai: 'Branje besedil in oblikovanje mnenja'
+    step_finish: 'Ocenjevanje in sestavljanje poročila'
+    gate_title: 'Vaš rezultat je pripravljen'
+    gate_text: 'Kam vam ga lahko pošljemo? Videli ga boste kar tukaj, poročilo PDF pa prejmete po e-pošti.'
+    firstname: 'Ime'
+    lastname: 'Priimek'
+    email: 'E-pošta'
+    err_firstname: 'Prosimo, vnesite svoje ime.'
+    err_lastname: 'Prosimo, vnesite svoj priimek.'
+    err_email: 'Prosimo, vnesite veljaven e-poštni naslov.'
+    newsletter: 'Da, občasno mi pošljite tudi nasvete o spletu, IT in AI. Potrditev po e-pošti, odjava kadar koli.'
+    optional: '(neobvezno)'
+    gate_legal: 'Vaše podatke uporabimo samo za pošiljanje tega rezultata.'
+    privacy: 'Politika zasebnosti'
+    gate_submit: 'Prikaži rezultat'
+    result_kicker: 'Rezultat za'
+    grade_label: 'Skupna ocena %s'
+    mail_sent: 'Kopija je na poti na %s'
+    mail_failed: 'E-pošte ni bilo mogoče poslati — rezultat ostane viden tukaj.'
+    gauge_perf: 'Zmogljivost'
+    gauge_a11y: 'Dostopnost'
+    gauge_bp: 'Tehnologija'
+    gauge_seo: 'SEO'
+    measures_title: 'Kaj spremeniti najprej'
+    strengths_title: 'Kaj že deluje'
+    disclaimer: 'Samodejna ocena na podlagi Google PageSpeed Insights, naših lastnih preverjanj in branja z AI. Poročilo PDF vsebuje vse ugotovitve s posnetki zaslona.'
+    cta: 'Pogovorimo se o rezultatu — brezplačno'
+    reset: 'Preveri drugo spletno stran'
+
+# ---------------------------------------------------------------- report (PDF)
+report:
+    title: 'Preverjanje spletne strani za %domain%'
+    header: 'Preverjanje spletne strani'
+    page: 'Stran %n% od %total%'
+    cover_eyebrow: 'Brezplačno preverjanje spletne strani'
+    cover_title: 'Vaše preverjanje spletne strani za'
+    grade_line: 'Skupna ocena %grade% · %word%'
+    grade_short: 'Ocena %grade% · %word%'
+    meta_pages: 'Preverjene strani'
+    meta_date: 'Datum'
+    meta_for: 'Za'
+    overview_eyebrow: 'Sedem področij, ena skupna ocena'
+    overview_title: 'Na prvi pogled'
+    legend_title: 'Kako brati ocene'
+    legend: 'Šolske ocene (1 = najboljša). Skupna ocena nikoli ni boljša od najslabšega področja plus ena.'
+    measures_eyebrow: 'Kaj priporočamo spremeniti najprej'
+    a11y_title: 'Dostopnost in kontrasti'
+    a11y_intro: 'Preverjeno z Lighthouse (isti testi, kot jih uporablja Google) na začetni strani in podstraneh. Označeni izseki kažejo, kje so ugotovitve.'
+    a11y_no_findings_caption: 'Začetna stran, telefon. Brez označenih ugotovitev.'
+    contrast_label: 'Kontrast %ratio% : 1 · zahtevano 4,5 : 1'
+    gauge_sub: 'od 100'
+    gauge_note: 'Google PageSpeed Insights, začetna stran na telefonu. 90–100 zeleno, 50–89 oranžno, pod 50 rdeče.'
+    a11y_why_title: 'Zakaj je to pomembno'
+    a11y_why: 'Približno vsak dvanajsti moški vidi barve drugače, veliko ljudi bere na soncu, in gumba, ki ga nihče ne more prebrati, nihče ne pritisne.'
+    findings: 'ugotovitev'
+    speed_title: 'Hitrost nalaganja in mobilno'
+    speed_intro: 'Izmerjeno z Google PageSpeed Insights, profil „telefon, počasno 4G“ — iste številke, ki jih Google uporablja za razvrščanje.'
+    what_works: 'Kaj deluje'
+    what_to_improve: 'Kje je prostor za izboljšave'
+    nothing_to_improve: 'Nič omembe vrednega — odlično.'
+    pages_eyebrow: 'Preverjenih strani: %count%'
+    pages_title: 'Preverjene strani'
+    pages_intro: 'Izbrane iz zemljevida strani in navigacije: strani, ki jih obiskovalci vidijo najprej. Objave na blogu in pravne podstrani niso bile ocenjene.'
+    col_page: 'Stran'
+    col_title: 'Naslov'
+    col_contrast: 'Ugotovitve kontrasta'
+    col_grade: 'Ocena'
+    next_eyebrow: 'Kako naprej'
+    next_title: 'Majhni koraki, brez prenove'
+    next_text: 'Ukrepe na strani 2 lahko izvede katera koli spletna agencija ali vaš trenutni ponudnik. Če želite, seznam pregledamo skupaj: 20 minut po telefonu, brezplačno, brez prodajnega pogovora.'
+    next_promise: 'To poročilo je brezplačno in vas k ničemur ne zavezuje.'
+    sources: 'Viri: Google PageSpeed Insights (Lighthouse %lighthouse%), lastna preverjanja HTML/pravnih vidikov/vidnosti v AI, branje besedil strani z AI · %date%'
+    page_short: 'Stran'
+    cover_subtitle: 'Hitrost, dostopnost, Google in iskanje z AI, besedila, pravno obvestilo in zasebnost: sedem področij, ena skupna ocena, trije konkretni ukrepi.'
+    summary_title: 'Rezultat'
+    measures_title: 'Najpomembnejši ukrepi'
+    what_works_short: 'Hitrost podrobno'
+    pages_eyebrow_plain: 'Preverjene strani'
+    title_plain: 'Preverjanje spletne strani za {{domain}}'
+    header_plain: 'Preverjanje spletne strani · {{date}}'
+    grade_line_plain: 'Skupna ocena {{grade}} · {{grade_word}}'
+    area_grade_line: 'Ocena {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Namizje'
+    label_mobile: 'Mobilno'
+    col_lcp: 'LCP'
+    sources_plain: 'Viri: Google PageSpeed Insights (Lighthouse {{lighthouse}}), lastna preverjanja HTML/pravnih vidikov/vidnosti v AI, branje besedil strani z AI · {{date}}'
+    ai_sections_eyebrow: 'Kaj smo še opazili'
+    ai_sections_title: 'Dodatna opažanja'
+
+# ---------------------------------------------------------------- e-mail
+mail:
+    subject: 'Vaše preverjanje spletne strani za %domain%: ocena %grade% · %word%'
+    owner_subject: '[Preverjanje spletne strani] %domain% · ocena %grade% · %name% %newsletter%'
+    owner_lead_title: 'Zahtevano novo preverjanje spletne strani'
+    owner_lead: 'Stik: %name% <%email%> · %domain% · e-novice: %newsletter%'
+    owner_newsletter: 'Želi e-novice'
+    owner_areas: 'Ocene po področjih'
+    owner_errors: 'Koraki z napakami'
+    owner_footer: 'Interna kopija preverjanja #%id%. Obiskovalec je prejel enako poročilo brez te glave.'
+    greeting: 'Pozdravljeni, %name%!'
+    intro: 'Hvala za vaše zaupanje. Preverili smo %pages% strani domene %domain%: hitrost nalaganja na telefonih, dostopnost, najdljivost v Googlu in iskanju z AI, besedila, pravno obvestilo in ravnanje s piškotki.'
+    grade_line: 'Skupna ocena %grade% · %word%.'
+    measures_title: 'Kaj priporočamo spremeniti najprej:'
+    pdf_note: 'Celotno poročilo s posnetki zaslona, meritvami in vsemi ugotovitvami je priloženo kot PDF, v preprostem jeziku.'
+    offer: 'Te točke lahko izvede katera koli spletna agencija ali vaš trenutni ponudnik. Če želite, seznam pregledamo skupaj: 20 minut po telefonu, brezplačno, brez prodajnega pogovora.'
+    cta: 'Pogovorimo se'
+    cta_alt: 'ali preprosto odgovorite na to e-pošto'
+    newsletter_note: 'Označili ste polje za e-novice. Sledi ločeno sporočilo s potrditveno povezavo; prijavljeni ste šele, ko jo kliknete.'
+    footer: 'To e-pošto prejemate, ker ste zahtevali preverjanje spletne strani za %domain%. Vaše podatke uporabimo samo za to poročilo in jih po %days% dneh izbrišemo, razen če ste se prijavili na e-novice ali poslali povpraševanje.'
+    greeting_plain: 'Pozdravljeni, {{firstname}}!'
+    intro_plain: 'Hvala za vaše zaupanje. Preverili smo {{pages}} strani domene {{domain}}: hitrost na telefonih, dostopnost, najdljivost v Googlu in iskanju z AI, besedila, pravno obvestilo in obvestilo o piškotkih.'
+    short_intro: 'Tukaj je vaše preverjanje spletne strani za {{domain}}. Podrobnosti so v priloženem PDF.'
+    footer_plain: 'To e-pošto prejemate, ker ste zahtevali preverjanje spletne strani za {{domain}}. Vaše podatke uporabimo samo za to poročilo in jih po {{days}} dneh izbrišemo, razen če ste se prijavili na e-novice ali poslali povpraševanje.'
+
+# ---------------------------------------------------------------- Designer (back end)
+designer:
+    group:
+        content: 'Vsebina'
+        data: 'Podatki iz preverjanja'
+        layout: 'Postavitev'
+    ui:
+        blocks: 'Bloki'
+        structure: 'Zgradba'
+        properties: 'Lastnosti'
+        theme: 'Oblikovanje'
+        preview: 'Predogled'
+        presets: 'Naloži predlogo'
+        preset_confirm: 'Trenutno oblikovanje bo zamenjano s predlogo. Želite nadaljevati?'
+        add: 'Dodaj'
+        duplicate: 'Podvoji'
+        remove: 'Odstrani'
+        up: 'Premakni gor'
+        down: 'Premakni dol'
+        empty: 'Še ni blokov. Kliknite blok na levi ali ga povlecite sem ali pa naložite predlogo.'
+        select_hint: 'Za urejanje kliknite blok v predogledu ali v zgradbi.'
+        placeholders: 'Nadomestni znaki'
+        insert_placeholder: 'Vstavi nadomestni znak'
+        choose_image: 'Izberi sliko'
+        upload_image: 'Naloži'
+        remove_image: 'Odstrani sliko'
+        pdf_preview: 'Predogled PDF'
+        mail_preview: 'Odpri v novem zavihku'
+        export_twig: 'Kopiraj v predlogo Twig'
+        export_confirm: 'Predloga Twig (strokovni način) bo prepisana s tem oblikovanjem. Želite nadaljevati?'
+        twig_active: 'Ta konfiguracija ima kodo Twig iz naprednega načina. Ta ima prednost, zato se to oblikovanje ne uporablja. Spremeni jo lahko skrbnik.'
+        loading: 'Pripravljanje predogleda …'
+        error: 'Predogleda ni bilo mogoče pripraviti.'
+        bold: 'Krepko'
+        italic: 'Ležeče'
+        link: 'Povezava'
+        link_prompt: 'Naslov povezave (https://…)'
+        list: 'Seznam'
+        drag: 'Povlecite za razvrščanje'
+        demo_hint: 'Predogled uporablja zadnje dokončano preverjanje ali predstavitvene podatke.'
+        labels: 'Besedilo'
+        labels_hint: 'Besede, ki jih uporablja več blokov: besede za ocene, imena področij, trud in imena izmerjenih vrednosti. Kar napišete tukaj, bo pisalo v dokumentu.'
+        mode_visual: 'Vizualno'
+        mode_twig: 'Napredno (Twig)'
+        mode_label: 'Način urejanja'
+        twig_intro: 'To je celoten dokument kot koda Twig: okvir, vsak blok in vsaka beseda. Spremembe se takoj pokažejo v predogledu in se shranijo s „Shrani“. Dokler je tukaj koda, se uporablja namesto vizualnega oblikovanja.'
+        twig_generate: 'Ponovno ustvari kodo iz vizualnega oblikovanja'
+        twig_generate_confirm: 'Koda Twig bo zamenjana s trenutnim vizualnim oblikovanjem. Vaše lastne spremembe kode bodo izgubljene. Želite nadaljevati?'
+        twig_leave_confirm: 'Nazaj v vizualni način: koda Twig bo zavržena in znova bo veljalo vizualno oblikovanje. Želite nadaljevati?'
+        twig_error: 'Napaka v kodi Twig'
+        twig_refresh: 'Osveži predogled'
+    opt:
+        none: 'Brez'
+        s: 'Majhno'
+        m: 'Srednje'
+        l: 'Veliko'
+        xl: 'Zelo veliko'
+        soft: 'Svetlo'
+        primary: 'Primarna barva'
+        accent: 'Poudarna barva'
+        white: 'Belo'
+        auto: 'Samodejno (iz nastavitev)'
+        text: 'Samo ime'
+        h1: 'Naslov 1'
+        h2: 'Naslov 2'
+        h3: 'Naslov 3'
+        normal: 'Običajno'
+        muted: 'Zatemnjeno'
+        left: 'Levo'
+        center: 'Sredinsko'
+        right: 'Desno'
+        montage: 'Namizje in telefon prekrivajoče'
+        desktop: 'Samo namizje'
+        mobile: 'Samo telefon'
+        side: 'Drug ob drugem'
+        cards: 'Kartice (dva stolpca)'
+        list: 'Seznam'
+        contact: 'Kontaktna stran'
+        website: 'Spletna stran'
+        custom: 'Lasten naslov'
+        outline: 'Obrobljeno'
+        arimo: 'Arimo (kot Arial)'
+        sans: 'Brez serifov (DejaVu Sans)'
+        serif: 'S serifi (DejaVu Serif)'
+        system: 'Helvetica (samo zahodnoevropski znaki)'
+        narrow: 'Ozko'
+        wide: 'Široko'
+        '1': 'En stolpec'
+        '2': 'Dva stolpca'
+        speed: 'Hitrost'
+        accessibility: 'Dostopnost'
+        seo: 'Najdljivost v Googlu'
+        ai: 'Vidnost v iskanju z AI'
+        content: 'Vsebina in jasnost'
+        legal: 'Pravno in zasebnost'
+        mobile_area: 'Mobilno'
+        effort_small: 'majhen'
+        effort_medium: 'srednji'
+        effort_large: 'velik'
+    prop:
+        eyebrow: 'Majhna vrstica zgoraj'
+        title: 'Naslov'
+        subtitle: 'Podnaslov'
+        text: 'Besedilo'
+        html: 'Besedilo'
+        intro: 'Uvod'
+        note: 'Opomba spodaj'
+        level: 'Velikost'
+        align: 'Poravnava'
+        space: 'Razmik za'
+        bg: 'Ozadje'
+        size: 'Velikost pisave'
+        tone: 'Barva'
+        columns: 'Stolpci'
+        src: 'Slika'
+        image: 'Lastna slika'
+        width: 'Širina'
+        caption: 'Napis'
+        rounded: 'Zaobljeni robovi'
+        height: 'Višina'
+        style: 'Slog'
+        layout: 'Postavitev'
+        legend: 'Prikaži legendo ocen'
+        max: 'Največ vnosov'
+        max_issues: 'Največ ugotovitev'
+        max_good: 'Največ pozitivnih točk'
+        area: 'Področje'
+        show_grade: 'Prikaži oceno'
+        show_summary: 'Prikaži povzetek'
+        show_domain: 'Prikaži domeno'
+        show_meta: 'Prikaži strani, datum, prejemnika'
+        show_screens: 'Prikaži posnetke zaslona'
+        show_pages: 'Preverjene strani'
+        show_date: 'Datum'
+        show_for: 'Prejemnik'
+        show_effort: 'Prikaži trud'
+        show_crops: 'Prikaži označene izseke'
+        show_kpis: 'Prikaži meritve'
+        show_portrait: 'Prikaži portret'
+        show_contact: 'Prikaži kontaktno vrstico'
+        logo: 'Logotip'
+        tagline: 'Vrstica na desni'
+        label: 'Oznaka'
+        target: 'Cilj'
+        url: 'Lasten naslov'
+        alt: 'Besedilo poleg gumba'
+        promise: 'Obljuba v kontaktnem polju'
+        perf: 'Zmogljivost'
+        a11y: 'Dostopnost'
+        bp: 'Dobre prakse'
+        seo: 'SEO'
+        grade_line: 'Vrstica z oceno'
+        label_pages: 'Oznaka „Preverjene strani“'
+        label_date: 'Oznaka „Datum“'
+        label_for: 'Oznaka „Za“'
+        label_desktop: 'Oznaka namizje'
+        label_mobile: 'Oznaka mobilno'
+        label_perf: 'Oznaka zmogljivost'
+        label_a11y: 'Oznaka dostopnost'
+        label_bp: 'Oznaka dobre prakse'
+        label_seo: 'Oznaka SEO'
+        legend_title: 'Naslov legende'
+        legend_text: 'Besedilo legende'
+        works_title: 'Naslov „Kaj deluje“'
+        improve_title: 'Naslov „Prostor za izboljšave“'
+        nothing_text: 'Besedilo, ko ni ničesar za izboljšati'
+        col_page: 'Stolpec stran'
+        col_title: 'Stolpec naslov'
+        col_lcp: 'Stolpec čas nalaganja'
+        col_contrast: 'Stolpec kontrast'
+        col_grade: 'Stolpec ocena'
+        none_text: 'Beseda za „brez“'
+        badge: 'Kratka oznaka v polju'
+        max_crops: 'Največ označenih izsekov'
+        show_intro: 'Prikaži uvod'
+    theme:
+        doc_title: 'Naslov dokumenta (lastnosti PDF)'
+        page_label: 'Beseda pred številko strani'
+        grade_word: 'Beseda za oceno %s'
+        area_name: 'Področje: %s'
+        effort_word: 'Trud %s'
+        kpi_name: 'Izmerjena vrednost: %s'
+        kpi_note: 'Opomba k: %s'
+        primary: 'Primarna barva (prazno = nastavitve)'
+        accent: 'Poudarna barva (prazno = nastavitve)'
+        text: 'Barva besedila'
+        soft: 'Svetle površine'
+        font: 'Pisava'
+        radius: 'Polmer zaobljenosti'
+        margins: 'Robovi strani'
+        header: 'Glava na vsaki strani'
+        header_text: 'Besedilo glave'
+        footer: 'Noga na vsaki strani'
+        footer_text: 'Besedilo noge'
+        page_numbers: 'Številke strani'
+        outer: 'Ozadje okoli e-pošte'
+        size: 'Osnovna velikost pisave'
+    preset:
+        pdf:
+            standard: 'Standardno (naslovnica z oceno, vsa področja)'
+            cover: 'Z naslovnico (naslovnica v primarni barvi, rezultat na strani 2)'
+            compact: 'Kompaktno (ena stran)'
+        mail:
+            standard: 'Standardno (ocena, ukrepi, opomba o PDF, gumb)'
+            short: 'Kratko (ocena, opomba o PDF, gumb)'
+    block:
+        cover: {label: 'Naslovnica', desc: 'Logotip, naslov, domena, po želji ocena, ključni podatki in posnetki zaslona. Nato se začne nova stran.'}
+        heading: {label: 'Naslov', desc: 'Naslov z neobvezno majhno vrstico zgoraj.'}
+        text: {label: 'Besedilo', desc: 'Osnovno besedilo z nadomestnimi znaki, po želji na barvni površini.'}
+        image: {label: 'Slika', desc: 'Vaša lastna slika iz upravitelja datotek ali naložena.'}
+        note: {label: 'Opomba', desc: 'Majhno besedilo s stransko črto.'}
+        next_steps: {label: 'Naslednji koraki', desc: 'Vaša ponudba s kontaktnim poljem, portretom in telefonom.'}
+        signature: {label: 'Podpis', desc: 'Ime, podjetje, telefon, neobvezen portret.'}
+        grade_box: {label: 'Skupna ocena', desc: 'Velika ocena z besedo za oceno in povzetkom.'}
+        meta_cards: {label: 'Ključni podatki', desc: 'Preverjene strani, datum, prejemnik.'}
+        screenshots: {label: 'Posnetki zaslona', desc: 'Začetna stran na namizju in telefonu.'}
+        gauges: {label: 'Googlovi krogi', desc: 'Ocene PageSpeed kot krogi, po želji z meritvami.'}
+        areas: {label: 'Področja na prvi pogled', desc: 'Sedem področij z oceno in kratkim besedilom.', show_meta: 'Prikaži podrobnosti meritev'}
+        measures: {label: 'Ukrepi', desc: 'Najpomembnejši ukrepi, oštevilčeni, s trudom.'}
+        strengths: {label: 'Kaj že deluje', desc: 'Pozitivne točke kot kontrolni seznam.'}
+        area_detail: {label: 'Področje podrobno', desc: 'Eno področje z ugotovitvami in pozitivnimi točkami; dostopnost z označenimi izseki.'}
+        kpis: {label: 'Meritve hitrosti', desc: 'LCP, CLS, INP, zmogljivost, velikost strani, zahteve.'}
+        ai_sections: {label: 'Razdelki AI', desc: 'Teme, ki jih je AI našla poleg sedmih področij (npr. cene, rezervacije, zaupanje). Prikaže se le, kadar je kaj povedati.'}
+        pages_table: {label: 'Tabela strani', desc: 'Vse preverjene strani z naslovom, LCP, kontrastom in oceno.'}
+        sources: {label: 'Viri', desc: 'Navedba virov, nadomestna znaka {{lighthouse}} in {{date}}.'}
+        spacer: {label: 'Razmik', desc: 'Prazen prostor.'}
+        divider: {label: 'Ločilna črta', desc: ''}
+        page_break: {label: 'Prelom strani', desc: 'Naslednji blok se začne na novi strani.'}
+        header: {label: 'Glava', desc: 'Barvna glava z logotipom ali imenom podjetja.'}
+        button: {label: 'Gumb', desc: 'Poziv k dejanju, npr. dogovor za klic.'}
+        pdf_note: {label: 'Opomba o PDF', desc: 'Opomba o prilogi, samo kadar je priložen PDF.'}
+        newsletter_note: {label: 'Opomba o e-novicah', desc: 'Vidna samo, če je obiskovalec označil polje.'}
+        footer: {label: 'Noga', desc: 'Siv zaključek z obvestilom o zasebnosti.'}
+
+# Typography of the report language (quotation marks around quoted page text)
+format:
+    quote_open: "„"
+    quote_close: "“"

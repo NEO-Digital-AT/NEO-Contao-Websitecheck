@@ -1,0 +1,799 @@
+# NEO Website Check — Hungarian texts (front end, report, e-mail).
+# Copy to translations/neo_websitecheck.hu.yaml in your project to override single keys.
+word:
+    yes: 'igen'
+    no: 'nem'
+    none: 'nincs'
+grade:
+    1: 'Kiváló'
+    2: 'Jó'
+    3: 'Közepes'
+    4: 'Elégséges'
+    5: 'Elégtelen'
+verdict:
+    good: 'Megbízható weboldal. Semmi sürgős, néhány apróság még jobbá tenné.'
+    mid: 'Szilárd alap, de néhány pont valószínűleg megrendelésektől fosztja meg Önt. A legfontosabbakat alább találja.'
+    low: 'Egyértelműen cselekedni kell. Kezdje az alábbi három teendővel, és a weboldal ügyfeleket hozó eszközzé válik.'
+area:
+    speed: 'Betöltési sebesség'
+    accessibility: 'Akadálymentesség'
+    seo: 'Megtalálhatóság a Google-ben'
+    ai: 'Láthatóság az MI-keresőkben'
+    content: 'Tartalom és érthetőség'
+    legal: 'Jogi kérdések és adatvédelem'
+    mobile: 'Mobil'
+    unavailable: 'Ezúttal nem sikerült mérni.'
+measure:
+    effort:
+        small: 'kis ráfordítás'
+        medium: 'közepes ráfordítás'
+        large: 'nagy ráfordítás'
+
+# ---------------------------------------------------------------- speed
+speed:
+    summary:
+        good: 'A kezdőlap telefonon %lcp% mp után látható. Ez gyorsabb, mint a legtöbb weboldal.'
+        ok: 'A kezdőlap telefonon %lcp% mp alatt töltődik be. Használható, de néhány látogató távozik, mielőtt elkészülne.'
+        bad: 'A kezdőlapnak telefonon %lcp% mp kell. Sok látogató elmegy, mielőtt bármi megjelenne.'
+    meta: 'Teljesítmény: %perf%/100 · LCP %lcp% mp · CLS %cls%'
+    kpi:
+        lcp: 'Fő tartalom látható (LCP)'
+        lcp_note: 'határérték 2,5 mp'
+        cls: 'Elrendezés-elmozdulások (CLS)'
+        cls_note: 'határérték 0,1'
+        tbt: 'Blokkolt idő (TBT)'
+        tbt_note: 'határérték 200 ms'
+        inp: 'Reakció érintésre (INP)'
+        inp_note: 'határérték 200 ms'
+        perf: 'Teljesítménypontszám'
+        perf_note: '100-ból'
+        bytes: 'Oldal mérete'
+        bytes_note: 'határérték 2 MB'
+        requests: 'Kérések'
+        requests_note: 'határérték 80'
+    issue:
+        lcp:
+            title: 'A kezdőlap lassan töltődik be telefonon'
+            text: 'A fő tartalom %lcp% másodperc után jelenik meg. A Google 2,5 másodpercnél húzza meg a határt, a látogatók még hamarabb ítélnek.'
+            fix: 'Kicsinyítse le a legnagyobb képet a látható felső részen, töltse be később a szkripteket, és a szerver tömörített fájlokat küldjön. Általában egy-két óra munka.'
+        largest_image:
+            title: 'Egy kép mérete %kb% KB'
+            text: 'A(z) „%file%” fájl a kezdőlap legnehezebb eleme, és mindent késleltet, ami utána jön.'
+            fix: 'Exportálja a képet a megjelenített szélességben (általában 1200–1600 px) WebP vagy AVIF formátumban. Gyakran 80 százalékkal kisebb, látható különbség nélkül.'
+        render_blocking:
+            title: '%count% fájl blokkolja az első megjelenítést'
+            text: 'Az oldal fejlécében lévő stíluslapok vagy szkriptek teljesen betöltődnek, mielőtt bármi megjelenne.'
+            fix: 'A nem kritikus CSS-t és JavaScriptet töltse be késleltetve vagy aszinkron módon; a fejlécben csak a kritikus stílusok maradjanak.'
+        image_formats:
+            title: 'Képek régi formátumban'
+            text: 'JPEG/PNG ott, ahol a WebP vagy az AVIF 30–70 százalékkal kisebb lenne.'
+            fix: 'A tartalomkezelő rendszer szolgáltassa automatikusan a modern formátumokat (a legtöbb rendszer egyetlen beállítással megteszi).'
+        responsive_images:
+            title: 'A képek nagyobbak a megjelenítettnél'
+            text: 'A telefonok asztali méretű képeket töltenek le, majd lekicsinyítik őket.'
+            fix: 'Biztosítson több méretben képeket (srcset); a tartalomkezelő rendszer ezeket általában el tudja készíteni.'
+        unused_js:
+            title: 'Fel nem használt JavaScript'
+            text: 'Olyan szkriptek töltődnek be, amelyeket ez az oldal nem használ. Időbe és akkumulátorba kerülnek.'
+            fix: 'Távolítsa el a nem használt bővítményeket és követőkódokat; a többit csak azokon az oldalakon töltse be, ahol szükség van rájuk.'
+        ttfb:
+            title: 'A szerver lassan válaszol'
+            text: 'A szervernek %value% kell az első bájt elküldéséhez, mielőtt a böngésző bármit tehetne.'
+            fix: 'Kapcsolja be az oldal-gyorsítótárat a tartalomkezelőben, vagy kérjen gyorsabb csomagot a tárhelyszolgáltatótól.'
+        compression:
+            title: 'A fájlok tömörítés nélkül érkeznek'
+            text: 'A szöveges fájlok (HTML, CSS, JavaScript) tömörítetlenül jutnak el a böngészőig.'
+            fix: 'Kapcsolja be a gzip- vagy Brotli-tömörítést a szerveren (egy sor a szerver konfigurációjában).'
+        cls:
+            title: 'A tartalom ugrál betöltés közben (CLS %cls%)'
+            text: 'Az elemek megjelenésük után elmozdulnak, így a látogatók rossz helyre kattintanak, vagy elveszítik, hol tartottak.'
+            fix: 'Foglaljon helyet a képeknek, hirdetéseknek és betűtípusoknak (width/height attribútumok, font-display: swap).'
+        bytes:
+            title: 'A kezdőlap mérete %mb% MB'
+            text: 'Mobilkapcsolaton ez több másodpercig tart, és fogyasztja az adatkeretet.'
+            fix: 'Tömörítse a képeket és videókat; a videókat csak akkor töltse be, amikor láthatóvá válnak.'
+        console:
+            title: '%count% hiba a böngészőkonzolban'
+            text: 'A JavaScript-hibák hibás funkciókra utalnak, amelyekbe a látogatók belefuthatnak.'
+            fix: 'Ellenőriztesse a hibákat a webfejlesztővel; általában elavult bővítmények okozzák.'
+    good:
+        lcp:
+            title: 'Gyors telefonon'
+            text: 'A fő tartalom %lcp% mp után látható — a Google által elvárt 2,5 mp alatt. Ez az az alap, ami sok weboldalnál hiányzik.'
+        cls:
+            title: 'Semmi sem ugrál'
+            text: 'Az elrendezés betöltés közben stabil marad; a látogatók azonnal olvashatnak és kattinthatnak.'
+        https:
+            title: 'A HTTPS helyesen be van állítva'
+            text: 'Titkosított kapcsolat érvényes tanúsítvánnyal; a sima http átirányít a https-re.'
+        console:
+            title: 'Nincs hiba a böngészőben'
+            text: 'A böngészőkonzol tiszta — nincsenek hibás szkriptek.'
+        images:
+            title: 'A képek megfelelően érkeznek'
+            text: 'Modern formátumok és a telefonhoz, illetve asztali géphez illő méretek.'
+
+# ---------------------------------------------------------------- accessibility
+a11y:
+    summary:
+        good: 'Az automatikus tesztek szerint akadálymentes: a szövegek olvashatók, a kezelőelemek fel vannak címkézve.'
+        ok: 'Nagyrészt rendben van. %count% kontraszthiba és néhány hiányzó felirat választja el a legjobb osztályzattól.'
+        bad: 'Több akadály: %count% kontraszthiba, hiányzó feliratok vagy leírások. Ezek a többi látogatót is zavarják.'
+    meta: 'Lighthouse akadálymentesség: %score%/100 · %count% kontraszthiba'
+    issue:
+        meta_viewport:
+            title: 'A nagyítás tiltva van telefonon'
+            text: 'Az oldal megakadályozza a két ujjal történő nagyítást. A gyengénlátók nem tudják felnagyítani a szöveget.'
+            fix: 'Távolítsa el a user-scalable=no és a maximum-scale beállítást az oldal fejlécében lévő viewport címkéből – egy sor a sablonban.'
+        color_contrast:
+            title: 'Túl kevés kontrasztú szöveg (%count%×)'
+            text: 'A világos háttéren lévő világos vagy a sötéten lévő sötét szöveg napfényben nehezen olvasható, és nagyjából minden tizenkettedik férfi számára is (színlátási zavar). Előírás: 4,5:1.'
+            fix: 'Sötétítse kissé a szöveg vagy a háttér színét — általában egyetlen színérték a stíluslapban, újratervezés nélkül.'
+        image_alt:
+            title: '%count% kép leírás nélkül'
+            text: 'A képernyőolvasók és a Google nem tudják, mit ábrázolnak ezek a képek.'
+            fix: 'Adjon rövid alternatív szöveget (alt) minden tartalmi képhez; a díszítő képek üres alt attribútumot kapnak.'
+        link_name:
+            title: '%count% hivatkozás olvasható név nélkül'
+            text: 'A „tovább” típusú vagy csak ikonból álló hivatkozások semmit sem mondanak a képernyőolvasót használóknak.'
+            fix: 'Adjon minden hivatkozásnak olyan szöveget, amely megmondja, hová vezet, az ikonos hivatkozásoknak pedig aria-label-t.'
+        button_name:
+            title: '%count% gomb név nélkül'
+            text: 'A felirat nélküli ikongombokat a képernyőolvasót használók nem tudják kezelni.'
+            fix: 'Adjon aria-label-t minden ikongombhoz (pl. „Menü megnyitása”).'
+        html_has_lang:
+            title: 'Az oldal nyelve nincs megadva'
+            text: 'Nyelvi attribútum nélkül a képernyőolvasók rossz kiejtést választanak.'
+            fix: 'Állítsa be a lang="hu" (vagy az Ön nyelvének) attribútumot a <html> elemen.'
+        heading_order:
+            title: 'A címsorok szinteket ugranak át'
+            text: 'A címsorszintek (h1 → h3) kimaradnak, így a szerkezet zavaros a segítő technológiák számára.'
+            fix: 'A címsorszinteket sorrendben használja; a megjelenést CSS-sel alakítsa, ne a szint megválasztásával.'
+        label:
+            title: '%count% űrlapmező felirat nélkül'
+            text: 'A látható, hozzárendelt felirat nélküli mezőket nehéz kitölteni, és a böngészők automatikus kitöltése sem ismeri fel őket.'
+            fix: 'Adjon minden mezőhöz egy <label for> elemet, amely egyezik a mező azonosítójával (id).'
+        target_size:
+            title: '%count% túl kicsi érintési felület'
+            text: 'A 24 px-nél kisebb hivatkozásokat vagy gombokat hüvelykujjal könnyű elvéteni.'
+            fix: 'Növelje a kattintható felületet (padding) legalább 44 × 44 px-re.'
+        label_content_name_mismatch:
+            title: '%count% kezelőelem, amelynek kimondott neve eltér a feliratától'
+            text: 'Az ikongombok (keresés, nyilak, hívás) olyan akadálymentes nevet viselnek, amely nem egyezik a látható szöveggel, így a hangvezérlés és a képernyőolvasók mást mondanak be.'
+            fix: 'Az aria-label a látható szöveggel kezdődjön, vagy az ikon szövege legyen a név.'
+    good:
+        contrast:
+            title: 'A kontrasztok rendben vannak'
+            text: 'Minden ellenőrzött szöveg eléri az előírt kontrasztarányt.'
+        images:
+            title: 'A képek le vannak írva'
+            text: 'Az ellenőrzött oldalak mind a(z) %count% képének van alternatív szövege.'
+        lang:
+            title: 'A nyelv meg van adva'
+            text: 'A képernyőolvasók a megfelelő nyelven olvassák fel az oldalt.'
+        names:
+            title: 'A hivatkozásoknak és gomboknak van nevük'
+            text: 'Minden kezelőelemnek olvasható neve van; a címsorszintek sorrendben vannak.'
+        targets:
+            title: 'Elég nagyok az érintési felületek'
+            text: 'A gombok és hivatkozások hüvelykujjal is eltalálhatók.'
+
+# ---------------------------------------------------------------- seo
+seo:
+    summary:
+        good: 'A címek, leírások, címsorok és strukturált adatok rendben vannak. A Google tudja olvasni az oldalt.'
+        ok: 'Az alapok megvannak; néhány címet, leírást vagy szerkezeti részletet érdemes rendbe tenni.'
+        bad: 'Fontos alapok hiányoznak a Google számára. A keresők megtalálják az oldalt, de alig tudják, miről szól.'
+    meta: 'Lighthouse SEO: %score%/100 · %pages% ellenőrzött oldal'
+    issue:
+        title_missing:
+            title: 'Nincs oldalcím: %page%'
+            text: 'A cím a Google-találat főcíme. Ha hiányzik, a Google kitalál egyet.'
+            fix: 'Írjon legfeljebb 60 karakteres címet: mit kínál és hol (pl. „Fogorvos Győrben – Dr. Minta”).'
+        title_long:
+            title: 'Túl hosszú oldalcím: %page%'
+            text: '%length% karakter — a Google kb. 60 karakter után levágja a címeket.'
+            fix: 'Rövidítse le a címet; a legfontosabb szavak kerüljenek előre.'
+        desc_missing:
+            title: 'Nincs leírás: %page%'
+            text: 'A metaleírás a Google-találat alatti szürke szöveg. Ha hiányzik, a Google egy véletlenszerű részletet mutat.'
+            fix: 'Írjon 140–158 karaktert arról, mit kínál az oldal, és miért érdemes rákattintani.'
+        desc_long:
+            title: 'Túl hosszú leírás: %page%'
+            text: '%length% karakter — a Google kb. 160 karakter után levágja a leírásokat.'
+            fix: 'Rövidítse 140–158 karakterre.'
+        h1_missing:
+            title: 'Nincs főcím: %page%'
+            text: 'Minden oldalnak pontosan egy H1 kell, amely megnevezi a témát.'
+            fix: 'A legfontosabb címsor legyen H1.'
+        h1_multiple:
+            title: '%count% főcím ezen az oldalon: %page%'
+            text: 'Több H1 címsor elmossa, miről szól az oldal.'
+            fix: 'Oldalanként egy H1 maradjon; a többi legyen H2.'
+        noindex:
+            title: 'A kezdőlap le van tiltva a Google elől'
+            text: 'A kezdőlapon „noindex” utasítás van: a Google azt az utasítást kapja, hogy ne jelenítse meg.'
+            fix: 'Távolítsa el a noindex beállítást a tartalomkezelőben (általában egy jelölőnégyzet az oldalnál).'
+        heading_skips:
+            title: 'Átugrott címsorszintek (%count%×)'
+            text: 'Az olyan ugrások, mint a H1 → H3, a Google és a képernyőolvasók számára is áttekinthetetlenné teszik a szerkezetet.'
+            fix: 'A címsorszinteket sorrendben használja.'
+        sitemap_missing:
+            title: 'Nem található webhelytérkép'
+            text: 'A sitemap.xml egyszerre megmutatja a Google-nek az összes oldalt; nélküle az új oldalakat később találja meg.'
+            fix: 'Kapcsolja be a webhelytérképet a tartalomkezelőben, és hivatkozzon rá a robots.txt fájlban.'
+        schema:
+            title: 'Nincsenek strukturált adatok'
+            text: 'A strukturált adatok (schema.org) megmondják a Google-nek és az MI-asszisztenseknek, milyen vállalkozásról van szó, hol található és mikor van nyitva.'
+            fix: 'Adjon hozzá Organization vagy LocalBusiness adatokat névvel, címmel, telefonszámmal és nyitvatartással (a legtöbb tartalomkezelőhöz van rá bővítmény).'
+        not_crawlable:
+            title: 'Az oldal le van tiltva a keresők elől'
+            text: 'Robots-utasítások akadályozzák meg, hogy a Google indexelje az oldalt.'
+            fix: 'Ellenőrizze a robots.txt fájlt és a robots metacímkét; a nyilvános oldalaknál szüntesse meg a tiltást.'
+        link_text:
+            title: '%count% hivatkozás semmitmondó szöveggel'
+            text: 'A „Kattintson ide” vagy a „tovább” semmit sem árul el a Google-nek a céloldalról.'
+            fix: 'Használjon beszédes hivatkozásszövegeket („nyitvatartásunk”).'
+        crawlable_anchors:
+            title: 'Hivatkozások, amelyeket a Google nem tud követni'
+            text: 'Egyes hivatkozások csak JavaScripttel készülnek, és a keresők számára láthatatlanok.'
+            fix: 'A navigációhoz normál <a href> hivatkozásokat használjon.'
+        canonical:
+            title: 'Hibás canonical hivatkozás'
+            text: 'A canonical címke rossz vagy elérhetetlen címre mutat, ami megzavarhatja a Google-t.'
+            fix: 'A canonical hivatkozás magára az oldalra mutasson.'
+        hreflang:
+            title: 'Hibás nyelvi hivatkozások'
+            text: 'A nyelvi változatokhoz tartozó hreflang címkék hibákat tartalmaznak.'
+            fix: 'Javíttassa ki a hreflang címkéket (érvényes nyelvkódok, minden változat hivatkozik a többire).'
+        http_redirect:
+            title: 'A http nem irányít át a https-re'
+            text: 'Aki https nélkül írja be a címet, a titkosítatlan változatra érkezik.'
+            fix: 'Állítson be a szerveren végleges átirányítást a http-ről a https-re.'
+    good:
+        sitemap:
+            title: 'Van webhelytérkép'
+            text: '%count% oldal szerepel benne a Google számára.'
+        titles:
+            title: 'A címek és leírások megvannak'
+            text: 'Minden ellenőrzött oldalnak saját, megfelelő hosszúságú címe és leírása van.'
+        h1:
+            title: 'Oldalanként egy főcím'
+            text: 'Világos szerkezet a Google és a látogatók számára.'
+        schema:
+            title: 'Vannak strukturált adatok'
+            text: 'A Google és az MI-asszisztensek ilyen adatokat találnak: %types%.'
+        https:
+            title: 'Titkosítva és átirányítva'
+            text: 'https, átirányítással a http-ről.'
+
+# ---------------------------------------------------------------- AI visibility
+ai:
+    summary:
+        good: 'Az MI-asszisztensek el tudják olvasni és meg tudják érteni az oldalt; van összefoglaló (llms.txt).'
+        ok: 'Az MI-asszisztensek olvashatják az oldalt, de maguknak kell összerakniuk, mit kínál Ön.'
+        bad: 'Az MI-keresők alig látják az oldalt: nincs összefoglaló, a robotok le vannak tiltva, vagy nincsenek azonosítható cégadatok.'
+    meta: 'llms.txt: %llms% · %blocked% letiltott MI-robot'
+    issue:
+        llms_missing:
+            title: 'Nincs llms.txt'
+            text: 'A ChatGPT, a Perplexity és a Google MI-je egy rövid szövegfájlt keres, amely megmondja, mivel foglalkozik a vállalkozás, kinek és hol. Ha nincs, az oldalak alapján találgatnak.'
+            fix: 'Hozza létre a /llms.txt fájlt: három bekezdés (kínálat, célcsoport, hely/elérhetőség), valamint hivatkozások a legfontosabb oldalakra. Félórás munka.'
+        bots_blocked:
+            title: 'Letiltott MI-robotok: %bots%'
+            text: 'A robots.txt megtiltja ezeknek az asszisztenseknek az oldal olvasását, így nem is tudják ajánlani.'
+            fix: 'Engedélyezze a robotokat a robots.txt fájlban — vagy döntsön tudatosan amellett, hogy kimarad az MI-válaszokból.'
+        no_identity_schema:
+            title: 'A vállalkozás adatai nem géppel olvashatók'
+            text: 'Organization/LocalBusiness adatok nélkül egy asszisztens nem ismeri megbízhatóan a nevet, a címet vagy a nyitvatartást.'
+            fix: 'Adjon hozzá strukturált adatokat névvel, címmel, telefonszámmal, nyitvatartással és a kiszolgált területtel.'
+        offer_unclear:
+            title: 'A kínálat nem szerepel az első mondatokban'
+            text: 'Az MI-válaszok egy oldal első mondatait idézik. A kezdőlapon ezek nem mondják ki világosan, mit kínál Ön.'
+            fix: 'Kezdje az oldalt egy egyszerű mondattal: kik Önök, mit csinálnak, kinek és hol.'
+    good:
+        llms:
+            title: 'Van llms.txt'
+            text: 'Az MI-asszisztensek közvetlenül Öntől kapnak összefoglalót.'
+        bots:
+            title: 'Az MI-robotok engedélyezve'
+            text: 'A GPTBot, a ClaudeBot, a PerplexityBot és a Google-Extended olvashatja az oldalt.'
+        schema:
+            title: 'A vállalkozás adatai géppel olvashatók'
+            text: 'Strukturált adatok azonosítják a vállalkozást (típus: %types%).'
+        offer:
+            title: 'A kínálat már az elején szerepel'
+            text: 'Már az első mondatok megmondják, mivel foglalkozik a vállalkozás.'
+
+# ---------------------------------------------------------------- content
+content:
+    summary:
+        good: 'Öt másodpercen belül világos, mivel foglalkozik a vállalkozás, kinek, és mi a következő lépés.'
+        ok: 'Érthető, de a kínálat vagy a következő lépés lehetne világosabb; néhány kifejezés előismereteket feltételez.'
+        bad: 'A látogatók nem értik meg gyorsan, mit kínálnak, és hogyan vehetik fel a kapcsolatot. Ez megkeresésekbe kerül.'
+    meta:
+        ai: 'Az MI úgy olvasott el %pages% oldalt, mint egy első látogató'
+        heuristic: 'Szabályalapú ellenőrzés (nincs beállítva MI)'
+    issue:
+        no_cta:
+            title: 'Nincs egyértelmű következő lépés'
+            text: 'Az érdeklődő látogatók első pillantásra nem látják, hogyan hívhatnak, kérhetnek ajánlatot vagy foglalhatnak.'
+            fix: 'Helyezzen el egy feltűnő műveletet az első képernyőn: „Hívás”, „Ajánlatkérés” vagy „Foglalás” — telefonszámmal.'
+        thin:
+            title: 'Nagyon kevés szöveg (%words% szó)'
+            text: 'Ilyen kevés szövegből sem a látogatók, sem a Google nem tudja meg, mit kínál Ön.'
+            fix: 'Írja le a kínálatot, a célcsoportot és a helyszínt két-három rövid bekezdésben.'
+        phone:
+            title: 'A telefonszám nem koppintható'
+            text: 'Telefonon egy számnak koppinthatónak kell lennie (tel: hivatkozás). Itt hiányzik, vagy egyszerű szöveg.'
+            fix: 'Lássa el a telefonszámot tel:+36… hivatkozással; tegye minden oldal fejlécébe vagy láblécébe.'
+    good:
+        cta:
+            title: 'Egyértelmű következő lépés'
+            text: 'A látogatók látják, hogyan vehetik fel a kapcsolatot.'
+        length:
+            title: 'Elegendő szöveg'
+            text: '%words% szó írja le a kínálatot.'
+        phone:
+            title: 'A telefonszám koppintható'
+            text: 'Egy koppintás a telefonon, és indul a hívás.'
+
+# ---------------------------------------------------------------- legal
+legal:
+    summary:
+        good: 'Impresszum, adatvédelmi tájékoztató és hozzájáruláskezelés megvan, amennyire ez technikailag ellenőrizhető.'
+        ok: 'Impresszum és adatvédelmi tájékoztató van; a külső szolgáltatások kezelését érdemes átnézni.'
+        bad: 'Hiányzik az impresszum vagy az adatvédelmi tájékoztató, vagy követőszolgáltatások töltődnek be hozzájárulás előtt. Kérjük, nézze át jogi tanácsadójával.'
+    meta: 'Technikai ellenőrzés, nem jogi tanácsadás'
+    note: 'Ez technikai ellenőrzés: megkeresi az oldalakat és azokat a szolgáltatásokat, amelyek bármilyen hozzájárulás előtt betöltődnek. Nem jogi tanácsadás — a részleteket kérjük, ellenőriztesse jogi tanácsadójával.'
+    issue:
+        imprint:
+            title: 'Nem található impresszum'
+            text: 'Az ellenőrzött oldalakon nem találtunk impresszumoldalra mutató hivatkozást, vagy az oldal nem érhető el.'
+            fix: 'Minden oldalról (láblécből) hivatkozzon a kötelező adatokat tartalmazó impresszumoldalra.'
+        privacy:
+            title: 'Nem található adatvédelmi tájékoztató'
+            text: 'Nem találtunk adatvédelmi tájékoztatóra mutató hivatkozást, vagy az oldal nem érhető el.'
+            fix: 'Minden oldalról (láblécből) hivatkozzon az adatvédelmi tájékoztatóra; ebben minden használt szolgáltatást meg kell nevezni.'
+        tracking:
+            title: 'Követés hozzájárulás előtt: %services%'
+            text: 'Ezek a szolgáltatások már az első látogatáskor betöltődnek, mielőtt a látogató hozzájárulhatott volna. A GDPR és az elektronikus hírközlési szabályok szerint ehhez előzetes hozzájárulás kell.'
+            fix: 'Ezeket a szolgáltatásokat csak a sütisávban adott hozzájárulás után töltse be (vagy állítsa be a hozzájáruláskezelő eszközt, hogy blokkolja őket).'
+        embeds:
+            title: 'Külső szolgáltatások hozzájáruláskezelő nélkül: %services%'
+            text: 'Külső szolgáltatások töltődnek be hozzájárulási sáv nélkül. A szolgáltatástól függően hozzájárulás szükséges lehet.'
+            fix: 'A betűtípusokat tárolja a saját szerverén; a térképeket és videókat kattintásra vagy a hozzájáruláskezelőn keresztül töltse be.'
+    good:
+        imprint:
+            title: 'Van impresszum'
+            text: 'Hivatkozva és elérhető.'
+        privacy:
+            title: 'Van adatvédelmi tájékoztató'
+            text: 'Hivatkozva és elérhető.'
+        no_third_party:
+            title: 'Nincs külső szolgáltatás hozzájárulás előtt'
+            text: 'Az első látogatáskor semmi külső nem töltődik be.'
+        cmp:
+            title: 'Van hozzájáruláskezelő'
+            text: 'Találtunk sütisávot / hozzájáruláskezelő eszközt.'
+
+# ---------------------------------------------------------------- mobile
+mobile:
+    summary:
+        good: 'Illeszkedik a telefon képernyőjéhez; a gombok és a szöveg elég nagyok.'
+        ok: 'Telefonon használható; néhány érintési felület vagy betűméret túl kicsi.'
+        bad: 'Telefonon nehezen használható: nincs viewport-beállítás, túl kicsi érintési felületek, vagy a tartalom szélesebb a képernyőnél.'
+        unknown: 'Nem sikerült teljesen mérni (nincs PageSpeed-eredmény).'
+    meta: 'Viewport, érintési felületek, betűméret, tartalomszélesség'
+    issue:
+        viewport:
+            title: 'Nincs mobil viewport'
+            text: 'Telefonon az oldal lekicsinyített asztali oldalként jelenik meg.'
+            fix: 'Adja hozzá az oldal fejlécéhez: <meta name="viewport" content="width=device-width, initial-scale=1">.'
+        targets:
+            title: '%count% túl kicsi érintési felület'
+            text: 'A hivatkozások vagy gombok túl kicsik, vagy túl közel vannak egymáshoz egy hüvelykujjnak.'
+            fix: 'Növelje az érintési felületet legalább 44 × 44 px-re, és hagyjon helyet a hivatkozások között.'
+        font:
+            title: 'Túl kicsi szöveg telefonon'
+            text: 'A szöveg %value% része 12 px-nél kisebb, és telefonon nehezen olvasható.'
+            fix: 'A folyó szövegnél használjon legalább 16 px-t.'
+        width:
+            title: 'A tartalom szélesebb a képernyőnél'
+            text: 'A látogatóknak oldalra kell görgetniük.'
+            fix: 'A rögzített szélességű elemeket (táblázatok, képek, beágyazások) javítsa max-width: 100 % beállítással.'
+    good:
+        viewport:
+            title: 'Mobil viewport beállítva'
+            text: 'Az oldal alkalmazkodik a telefon képernyőjéhez.'
+        targets:
+            title: 'Az érintési felületek rendben'
+            text: 'A hivatkozások és gombok hüvelykujjal is eltalálhatók.'
+        font:
+            title: 'A szöveg olvasható'
+            text: 'A betűméretek telefonra is elég nagyok.'
+
+# ---------------------------------------------------------------- front end
+fe:
+    status_idle: 'Ellenőrzésre kész'
+    status_run: 'Ellenőrzés folyamatban …'
+    status_done: 'Az ellenőrzés befejeződött'
+    preview_idle: 'Itt jelenik meg az Ön weboldala'
+    placeholder_domain: 'az-on-cege.hu'
+    url_label: 'Az Ön weboldalának címe'
+    submit: 'Ellenőrzés most'
+    what_speed: 'Betöltési sebesség telefonon'
+    what_a11y: 'Akadálymentesség és kontrasztok'
+    what_seo: 'Google- és MI-keresés'
+    what_content: 'Szövegek és következő lépés'
+    what_legal: 'Impresszum, adatvédelem, sütik'
+    altcha_label: 'Nem vagyok robot'
+    altcha_verifying: 'Ellenőrzés …'
+    altcha_verified: 'Ellenőrizve'
+    altcha_error: 'Az ellenőrzés nem sikerült. Kérjük, töltse be újra az oldalt.'
+    altcha_wait: 'Az ellenőrzés még folyamatban van. Kérjük, várjon egy pillanatot.'
+    err_url: 'Kérjük, adjon meg egy érvényes címet, pl. az-on-cege.hu.'
+    err_limit_hour: 'Az elmúlt órában már %limit% ellenőrzést indított. Kérjük, egy óra múlva próbálja újra.'
+    err_limit: 'Ma már %limit% ellenőrzést futtatott. Kérjük, holnap próbálja újra.'
+    err_spam: 'A spamellenőrzés nem sikerült. Kérjük, töltse be újra az oldalt, és próbálja újra.'
+    err_generic: 'Valami hiba történt. Kérjük, próbálja újra egy pillanat múlva.'
+    err_failed: 'Ezt a weboldalt nem sikerült ellenőrizni (nem érhető el, vagy le van tiltva).'
+    eta: 'még kb. %s mp'
+    eta_soon: 'mindjárt kész …'
+    progress_label: 'Az ellenőrzés előrehaladása'
+    step_discover: 'Kezdőlap megnyitása, webhelytérkép és fontosabb aloldalak megkeresése'
+    step_speed_home: 'A kezdőlap mérése telefonon (Google PageSpeed)'
+    step_speed_pages: 'Az aloldalak mérése'
+    step_analyze: 'Akadálymentesség, jogi oldalak és MI-láthatóság ellenőrzése'
+    step_ai: 'A szövegek elolvasása és értékelése'
+    step_finish: 'Osztályozás és a jelentés összeállítása'
+    gate_title: 'Elkészült az eredménye'
+    gate_text: 'Hová küldhetjük? Itt azonnal látni fogja, a PDF-jelentést pedig e-mailben kapja meg.'
+    firstname: 'Keresztnév'
+    lastname: 'Vezetéknév'
+    email: 'E-mail'
+    err_firstname: 'Kérjük, adja meg a keresztnevét.'
+    err_lastname: 'Kérjük, adja meg a vezetéknevét.'
+    err_email: 'Kérjük, adjon meg egy érvényes e-mail-címet.'
+    newsletter: 'Igen, alkalmanként küldjenek nekem tippeket a web, az informatika és az MI témájában is. Megerősítés e-mailben, bármikor leiratkozhatok.'
+    optional: '(nem kötelező)'
+    gate_legal: 'Adatait kizárólag az eredmény elküldésére használjuk.'
+    privacy: 'Adatvédelmi tájékoztató'
+    gate_submit: 'Eredmény megjelenítése'
+    result_kicker: 'Eredmény:'
+    grade_label: 'Összesített osztályzat: %s'
+    mail_sent: 'Másolatot küldtünk ide: %s'
+    mail_failed: 'Az e-mailt nem sikerült elküldeni — az eredmény itt látható marad.'
+    gauge_perf: 'Teljesítmény'
+    gauge_a11y: 'Akadálymentesség'
+    gauge_bp: 'Technika'
+    gauge_seo: 'SEO'
+    measures_title: 'Mit érdemes először megváltoztatni'
+    strengths_title: 'Ami már jól működik'
+    disclaimer: 'Automatikus értékelés a Google PageSpeed Insights, saját ellenőrzéseink és egy MI-alapú szövegelemzés alapján. A PDF-jelentés képernyőképekkel együtt tartalmaz minden megállapítást.'
+    cta: 'Beszéljük meg az eredményt — díjmentesen'
+    reset: 'Másik weboldal ellenőrzése'
+
+# ---------------------------------------------------------------- report (PDF)
+report:
+    title: 'Weboldal-ellenőrzés: %domain%'
+    header: 'Weboldal-ellenőrzés'
+    page: '%n%. oldal / %total%'
+    cover_eyebrow: 'Ingyenes weboldal-ellenőrzés'
+    cover_title: 'Az Ön weboldal-ellenőrzése:'
+    grade_line: 'Összesített osztályzat: %grade% · %word%'
+    grade_short: 'Osztályzat: %grade% · %word%'
+    meta_pages: 'Ellenőrzött oldalak'
+    meta_date: 'Dátum'
+    meta_for: 'Címzett'
+    overview_eyebrow: 'Hét terület, egy összesített osztályzat'
+    overview_title: 'Áttekintés'
+    legend_title: 'Hogyan olvassa az osztályzatokat'
+    legend: 'Osztályzatok 1-től (kiváló) 5-ig (elégtelen). Az összesített osztályzat soha nem jobb, mint a leggyengébb terület osztályzata eggyel javítva.'
+    measures_eyebrow: 'Mit változtatnék meg elsőként'
+    a11y_title: 'Akadálymentesség és kontrasztok'
+    a11y_intro: 'A Lighthouse segítségével ellenőrizve (ugyanazok a tesztek, amelyeket a Google is használ) a kezdőlapon és az aloldalakon. A megjelölt részletek mutatják, hol vannak a hibák.'
+    a11y_no_findings_caption: 'Kezdőlap, telefon. Nincs megjelölt hiba.'
+    contrast_label: 'Kontraszt %ratio%:1 · előírás 4,5:1'
+    gauge_sub: '100-ból'
+    gauge_note: 'Google PageSpeed Insights, kezdőlap telefonon. 90–100 zöld, 50–89 narancs, 50 alatt piros.'
+    a11y_why_title: 'Miért fontos'
+    a11y_why: 'Nagyjából minden tizenkettedik férfi másképp látja a színeket, sokan napfényben olvasnak, és egy gombot, amelyet senki sem tud elolvasni, senki sem nyom meg.'
+    findings: 'megállapítás'
+    speed_title: 'Betöltési sebesség és mobil'
+    speed_intro: 'A Google PageSpeed Insights segítségével mérve, „telefon, lassú 4G” profillal — ugyanazokkal a számokkal, amelyeket a Google a rangsoroláshoz használ.'
+    what_works: 'Ami működik'
+    what_to_improve: 'Ahol van még tennivaló'
+    nothing_to_improve: 'Semmi említésre méltó — szép munka.'
+    pages_eyebrow: '%count% ellenőrzött oldal'
+    pages_title: 'Ellenőrzött oldalak'
+    pages_intro: 'A webhelytérképből és a navigációból kiválasztva: azok az oldalak, amelyeket a látogatók először látnak. A blogbejegyzéseket és a jogi aloldalakat nem osztályoztuk.'
+    col_page: 'Oldal'
+    col_title: 'Cím'
+    col_contrast: 'Kontraszthibák'
+    col_grade: 'Osztályzat'
+    next_eyebrow: 'Hogyan tovább'
+    next_title: 'Kis lépések, átépítés nélkül'
+    next_text: 'A 2. oldalon lévő teendőket bármely webügynökség vagy a jelenlegi szolgáltatója meg tudja valósítani. Ha szeretné, közösen átnézzük a listát: 20 perc telefonon, díjmentesen, értékesítési szándék nélkül.'
+    next_promise: 'Ez a jelentés ingyenes, és semmire sem kötelezi Önt.'
+    sources: 'Források: Google PageSpeed Insights (Lighthouse %lighthouse%), saját HTML-, jogi és MI-láthatósági ellenőrzések, az oldalszövegek MI-alapú elemzése · %date%'
+    page_short: 'Oldal'
+    cover_subtitle: 'Sebesség, akadálymentesség, Google- és MI-keresés, szövegek, impresszum és adatvédelem: hét terület, egy összesített osztályzat, három konkrét teendő.'
+    summary_title: 'Az eredmény'
+    measures_title: 'A legfontosabb teendők'
+    what_works_short: 'A sebesség részletesen'
+    pages_eyebrow_plain: 'Ellenőrzött oldalak'
+    title_plain: 'Weboldal-ellenőrzés: {{domain}}'
+    header_plain: 'Weboldal-ellenőrzés · {{date}}'
+    grade_line_plain: 'Összesített osztályzat: {{grade}} · {{grade_word}}'
+    area_grade_line: 'Osztályzat: {{area_grade}} · {{area_grade_word}}'
+    label_desktop: 'Asztali gép'
+    label_mobile: 'Mobil'
+    col_lcp: 'LCP'
+    sources_plain: 'Források: Google PageSpeed Insights (Lighthouse {{lighthouse}}), saját HTML-, jogi és MI-láthatósági ellenőrzések, az oldalszövegek MI-alapú elemzése · {{date}}'
+    ai_sections_eyebrow: 'Amit még észrevettünk'
+    ai_sections_title: 'További megfigyelések'
+
+# ---------------------------------------------------------------- e-mail
+mail:
+    subject: 'Az Ön weboldal-ellenőrzése (%domain%): osztályzat %grade% · %word%'
+    owner_subject: '[Weboldal-ellenőrzés] %domain% · osztályzat %grade% · %name% %newsletter%'
+    owner_lead_title: 'Új weboldal-ellenőrzést kértek'
+    owner_lead: 'Érdeklődő: %name% <%email%> · %domain% · hírlevél: %newsletter%'
+    owner_newsletter: 'Hírlevelet kért'
+    owner_areas: 'Osztályzatok területenként'
+    owner_errors: 'Hibás lépések'
+    owner_footer: 'A(z) #%id% ellenőrzés belső másolata. A látogató ugyanezt a jelentést kapta, ezen fejléc nélkül.'
+    greeting: 'Kedves %name%!'
+    intro: 'Köszönjük a bizalmát. A(z) %domain% %pages% oldalát ellenőriztük: betöltési sebesség telefonon, akadálymentesség, megtalálhatóság a Google-ben és az MI-keresőkben, szövegek, impresszum és sütikezelés.'
+    grade_line: 'Összesített osztályzat: %grade% · %word%.'
+    measures_title: 'Mit változtatnék meg elsőként:'
+    pdf_note: 'A teljes jelentést képernyőképekkel, mérési adatokkal és minden megállapítással PDF-ben csatoltuk, közérthető nyelven.'
+    offer: 'Ezeket a pontokat bármely webügynökség vagy a jelenlegi szolgáltatója meg tudja valósítani. Ha szeretné, közösen átnézzük a listát: 20 perc telefonon, díjmentesen, értékesítési szándék nélkül.'
+    cta: 'Beszéljük meg'
+    cta_alt: 'vagy egyszerűen válaszoljon erre az e-mailre'
+    newsletter_note: 'Ön bejelölte a hírlevél jelölőnégyzetét. Hamarosan külön e-mailt kap egy megerősítő hivatkozással; csak az arra való kattintás után lesz feliratkozva.'
+    footer: 'Azért kapja ezt az e-mailt, mert weboldal-ellenőrzést kért ehhez: %domain%. Adatait kizárólag ehhez a jelentéshez használjuk, és %days% nap után töröljük, hacsak fel nem iratkozott a hírlevélre, vagy nem küldött megkeresést.'
+    greeting_plain: 'Kedves {{firstname}}!'
+    intro_plain: 'Köszönjük a bizalmát. A(z) {{domain}} {{pages}} oldalát ellenőriztük: mobil sebesség, akadálymentesség, megtalálhatóság a Google-ben és az MI-keresőkben, szövegek, impresszum és sütitájékoztató.'
+    short_intro: 'Íme az Ön weboldal-ellenőrzése ehhez: {{domain}}. A részleteket a csatolt PDF tartalmazza.'
+    footer_plain: 'Azért kapja ezt az e-mailt, mert weboldal-ellenőrzést kért ehhez: {{domain}}. Adatait kizárólag ehhez a jelentéshez használjuk, és {{days}} nap után töröljük, hacsak fel nem iratkozott a hírlevélre, vagy nem küldött megkeresést.'
+
+# ---------------------------------------------------------------- Designer (back end)
+designer:
+    group:
+        content: 'Tartalom'
+        data: 'Adatok az ellenőrzésből'
+        layout: 'Elrendezés'
+    ui:
+        blocks: 'Blokkok'
+        structure: 'Szerkezet'
+        properties: 'Tulajdonságok'
+        theme: 'Dizájn'
+        preview: 'Előnézet'
+        presets: 'Sablon betöltése'
+        preset_confirm: 'A jelenlegi tervet a sablon váltja fel. Folytatja?'
+        add: 'Hozzáadás'
+        duplicate: 'Másolat készítése'
+        remove: 'Eltávolítás'
+        up: 'Feljebb'
+        down: 'Lejjebb'
+        empty: 'Még nincsenek blokkok. Kattintson egy blokkra bal oldalon, vagy húzza ide, esetleg töltsön be egy sablont.'
+        select_hint: 'Kattintson egy blokkra az előnézetben vagy a szerkezetben a szerkesztéshez.'
+        placeholders: 'Helyőrzők'
+        insert_placeholder: 'Helyőrző beszúrása'
+        choose_image: 'Kép kiválasztása'
+        upload_image: 'Feltöltés'
+        remove_image: 'Kép eltávolítása'
+        pdf_preview: 'PDF-előnézet'
+        mail_preview: 'Megnyitás új lapon'
+        export_twig: 'Másolás Twig-sablonba'
+        export_confirm: 'A Twig-sablon (szakértői mód) felülíródik ezzel a tervvel. Folytatja?'
+        twig_active: 'Ebben a konfigurációban haladó módból származó Twig-kód van. Ez elsőbbséget élvez, ezért ez a terv nincs használatban. Egy adminisztrátor módosíthatja.'
+        loading: 'Előnézet készül …'
+        error: 'Az előnézetet nem sikerült elkészíteni.'
+        bold: 'Félkövér'
+        italic: 'Dőlt'
+        link: 'Hivatkozás'
+        link_prompt: 'Hivatkozás címe (https://…)'
+        list: 'Lista'
+        drag: 'Húzza az átrendezéshez'
+        demo_hint: 'Az előnézet a legutóbbi befejezett ellenőrzést vagy bemutató adatokat használ.'
+        labels: 'Megfogalmazás'
+        labels_hint: 'Több blokk által használt szavak: osztályzatok szavai, területnevek, ráfordítás és a mért értékek nevei. Amit itt ír, az szerepel a dokumentumban.'
+        mode_visual: 'Vizuális'
+        mode_twig: 'Haladó (Twig)'
+        mode_label: 'Szerkesztési mód'
+        twig_intro: 'Ez a teljes dokumentum Twig-kódként: keret, minden blokk és minden szó. A módosítások azonnal megjelennek az előnézetben, és a „Mentés” gombbal tárolódnak. Amíg itt kód van, a vizuális terv helyett ez lesz használva.'
+        twig_generate: 'Kód újragenerálása a vizuális tervből'
+        twig_generate_confirm: 'A Twig-kódot a jelenlegi vizuális terv váltja fel. A saját kódmódosításai elvesznek. Folytatja?'
+        twig_leave_confirm: 'Vissza a vizuális módba: a Twig-kód elvész, és ismét a vizuális terv érvényes. Folytatja?'
+        twig_error: 'Hiba a Twig-kódban'
+        twig_refresh: 'Előnézet frissítése'
+    opt:
+        none: 'Nincs'
+        s: 'Kicsi'
+        m: 'Közepes'
+        l: 'Nagy'
+        xl: 'Extra nagy'
+        soft: 'Világos'
+        primary: 'Elsődleges szín'
+        accent: 'Kiemelőszín'
+        white: 'Fehér'
+        auto: 'Automatikus (a beállításokból)'
+        text: 'Csak név'
+        h1: '1. címsor'
+        h2: '2. címsor'
+        h3: '3. címsor'
+        normal: 'Normál'
+        muted: 'Halvány'
+        left: 'Balra'
+        center: 'Középre'
+        right: 'Jobbra'
+        montage: 'Asztali gép és telefon egymásra fedve'
+        desktop: 'Csak asztali gép'
+        mobile: 'Csak telefon'
+        side: 'Egymás mellett'
+        cards: 'Kártyák (két oszlop)'
+        list: 'Lista'
+        contact: 'Kapcsolati oldal'
+        website: 'Weboldal'
+        custom: 'Egyéni cím'
+        outline: 'Körvonalas'
+        arimo: 'Arimo (Arial-szerű)'
+        sans: 'Talpatlan (DejaVu Sans)'
+        serif: 'Talpas (DejaVu Serif)'
+        system: 'Helvetica (csak nyugat-európai karakterek – az ő, ű betűk hiányozhatnak)'
+        narrow: 'Keskeny'
+        wide: 'Széles'
+        '1': 'Egy oszlop'
+        '2': 'Két oszlop'
+        speed: 'Sebesség'
+        accessibility: 'Akadálymentesség'
+        seo: 'Megtalálhatóság a Google-ben'
+        ai: 'Láthatóság az MI-keresőkben'
+        content: 'Tartalom és érthetőség'
+        legal: 'Jogi kérdések és adatvédelem'
+        mobile_area: 'Mobil'
+        effort_small: 'kicsi'
+        effort_medium: 'közepes'
+        effort_large: 'nagy'
+    prop:
+        eyebrow: 'Kis sor felül'
+        title: 'Cím'
+        subtitle: 'Alcím'
+        text: 'Szöveg'
+        html: 'Szöveg'
+        intro: 'Bevezető'
+        note: 'Megjegyzés alul'
+        level: 'Méret'
+        align: 'Igazítás'
+        space: 'Térköz utána'
+        bg: 'Háttér'
+        size: 'Betűméret'
+        tone: 'Szín'
+        columns: 'Oszlopok'
+        src: 'Kép'
+        image: 'Egyéni kép'
+        width: 'Szélesség'
+        caption: 'Képaláírás'
+        rounded: 'Lekerekített sarkok'
+        height: 'Magasság'
+        style: 'Stílus'
+        layout: 'Elrendezés'
+        legend: 'Osztályzat-jelmagyarázat megjelenítése'
+        max: 'Legfeljebb ennyi bejegyzés'
+        max_issues: 'Legfeljebb ennyi megállapítás'
+        max_good: 'Legfeljebb ennyi pozitívum'
+        area: 'Terület'
+        show_grade: 'Osztályzat megjelenítése'
+        show_summary: 'Összefoglaló megjelenítése'
+        show_domain: 'Domain megjelenítése'
+        show_meta: 'Oldalak, dátum, címzett megjelenítése'
+        show_screens: 'Képernyőképek megjelenítése'
+        show_pages: 'Ellenőrzött oldalak'
+        show_date: 'Dátum'
+        show_for: 'Címzett'
+        show_effort: 'Ráfordítás megjelenítése'
+        show_crops: 'Megjelölt részletek megjelenítése'
+        show_kpis: 'Mérőszámok megjelenítése'
+        show_portrait: 'Portré megjelenítése'
+        show_contact: 'Elérhetőségi sor megjelenítése'
+        logo: 'Logó'
+        tagline: 'Sor a jobb oldalon'
+        label: 'Felirat'
+        target: 'Cél'
+        url: 'Egyéni cím'
+        alt: 'Szöveg a gomb mellett'
+        promise: 'Ígéret a kapcsolati dobozban'
+        perf: 'Teljesítmény'
+        a11y: 'Akadálymentesség'
+        bp: 'Bevált gyakorlatok'
+        seo: 'SEO'
+        grade_line: 'Osztályzatsor'
+        label_pages: '„Ellenőrzött oldalak” felirat'
+        label_date: '„Dátum” felirat'
+        label_for: '„Címzett” felirat'
+        label_desktop: 'Asztali gép felirata'
+        label_mobile: 'Mobil felirata'
+        label_perf: 'Teljesítmény felirata'
+        label_a11y: 'Akadálymentesség felirata'
+        label_bp: 'Bevált gyakorlatok felirata'
+        label_seo: 'SEO felirata'
+        legend_title: 'Jelmagyarázat címe'
+        legend_text: 'Jelmagyarázat szövege'
+        works_title: '„Ami működik” cím'
+        improve_title: '„Ahol van még tennivaló” cím'
+        nothing_text: 'Szöveg, ha nincs mit javítani'
+        col_page: 'Oldal oszlop'
+        col_title: 'Cím oszlop'
+        col_lcp: 'Betöltési idő oszlop'
+        col_contrast: 'Kontraszt oszlop'
+        col_grade: 'Osztályzat oszlop'
+        none_text: 'A „nincs” szó'
+        badge: 'Rövid felirat a dobozban'
+        max_crops: 'Legfeljebb ennyi megjelölt részlet'
+        show_intro: 'Bevezető megjelenítése'
+    theme:
+        doc_title: 'Dokumentum címe (PDF-tulajdonságok)'
+        page_label: 'Szó az oldalszám előtt'
+        grade_word: 'Osztályzat szava: %s'
+        area_name: 'Terület: %s'
+        effort_word: 'Ráfordítás: %s'
+        kpi_name: 'Mért érték: %s'
+        kpi_note: 'Megjegyzés ehhez: %s'
+        primary: 'Elsődleges szín (üres = beállítások)'
+        accent: 'Kiemelőszín (üres = beállítások)'
+        text: 'Szövegszín'
+        soft: 'Világos felületek'
+        font: 'Betűtípus'
+        radius: 'Sarok lekerekítése'
+        margins: 'Oldalmargók'
+        header: 'Fejléc minden oldalon'
+        header_text: 'Fejléc szövege'
+        footer: 'Lábléc minden oldalon'
+        footer_text: 'Lábléc szövege'
+        page_numbers: 'Oldalszámok'
+        outer: 'Háttér az e-mail körül'
+        size: 'Alap betűméret'
+    preset:
+        pdf:
+            standard: 'Standard (borító osztályzattal, minden terület)'
+            cover: 'Borítóoldallal (borító elsődleges színben, eredmény a 2. oldalon)'
+            compact: 'Tömör (egy oldal)'
+        mail:
+            standard: 'Standard (osztályzat, teendők, PDF-megjegyzés, gomb)'
+            short: 'Rövid (osztályzat, PDF-megjegyzés, gomb)'
+    block:
+        cover: {label: 'Borítóoldal', desc: 'Logó, cím, domain, opcionálisan osztályzat, kulcsadatok és képernyőképek. Utána új oldal kezdődik.'}
+        heading: {label: 'Címsor', desc: 'Címsor opcionális kis sorral felette.'}
+        text: {label: 'Szöveg', desc: 'Folyó szöveg helyőrzőkkel, opcionálisan színes felületen.'}
+        image: {label: 'Kép', desc: 'Saját kép a fájlkezelőből vagy feltöltve.'}
+        note: {label: 'Megjegyzés', desc: 'Kis szöveg oldalsó vonallal.'}
+        next_steps: {label: 'Következő lépések', desc: 'Az Ön ajánlata kapcsolati dobozzal, portréval és telefonszámmal.'}
+        signature: {label: 'Aláírás', desc: 'Név, cég, telefon, opcionális portré.'}
+        grade_box: {label: 'Összesített osztályzat', desc: 'Nagy osztályzat az osztályzat szavával és összefoglalóval.'}
+        meta_cards: {label: 'Kulcsadatok', desc: 'Ellenőrzött oldalak, dátum, címzett.'}
+        screenshots: {label: 'Képernyőképek', desc: 'Kezdőlap asztali gépen és telefonon.'}
+        gauges: {label: 'Google-gyűrűk', desc: 'A PageSpeed-pontszámok gyűrűként, opcionálisan mérőszámokkal.'}
+        areas: {label: 'Területek áttekintése', desc: 'A hét terület osztályzattal és rövid szöveggel.', show_meta: 'Mérési részletek megjelenítése'}
+        measures: {label: 'Teendők', desc: 'A legfontosabb teendők számozva, ráfordítással.'}
+        strengths: {label: 'Ami már jól működik', desc: 'Pozitívumok pipás listaként.'}
+        area_detail: {label: 'Terület részletesen', desc: 'Egy terület megállapításokkal és pozitívumokkal; az akadálymentesség megjelölt részletekkel.'}
+        kpis: {label: 'Sebességi mérőszámok', desc: 'LCP, CLS, INP, teljesítmény, oldalméret, kérések.'}
+        ai_sections: {label: 'MI-szakaszok', desc: 'Témák, amelyeket az MI a hét területen túl talált (pl. árak, foglalás, bizalom). Csak akkor jelenik meg, ha van mit mondani.'}
+        pages_table: {label: 'Oldalak táblázata', desc: 'Az összes ellenőrzött oldal címmel, LCP-vel, kontraszttal és osztályzattal.'}
+        sources: {label: 'Források', desc: 'Forrásmegjelölés, helyőrzők: {{lighthouse}} és {{date}}.'}
+        spacer: {label: 'Térköz', desc: 'Üres hely.'}
+        divider: {label: 'Elválasztó vonal', desc: ''}
+        page_break: {label: 'Oldaltörés', desc: 'A következő blokk új oldalon kezdődik.'}
+        header: {label: 'Fejléc', desc: 'Színes fejléc logóval vagy cégnévvel.'}
+        button: {label: 'Gomb', desc: 'Cselekvésre ösztönzés, pl. hívás egyeztetése.'}
+        pdf_note: {label: 'PDF-megjegyzés', desc: 'Utalás a mellékletre, csak ha van csatolt PDF.'}
+        newsletter_note: {label: 'Hírlevél-megjegyzés', desc: 'Csak akkor látható, ha a látogató bejelölte a jelölőnégyzetet.'}
+        footer: {label: 'Lábléc', desc: 'Szürke zárórész adatvédelmi tájékoztatással.'}
+
+# Typography of the report language (quotation marks around quoted page text)
+format:
+    quote_open: "„"
+    quote_close: "”"
