@@ -245,6 +245,8 @@ Contao's way — one root page per language — works out of the box:
 2. **Place the element on each language's page** and pick that configuration (or leave it empty: the configuration whose language matches the page is used). A page whose language has no configuration gets the bundled template in its own language — never another language's configuration.
 3. Everything follows the page language: the texts on the page, the check itself, the AI reading (written in the page language), e-mail, PDF and the newsletter sign-up. The 24-hour cache only reuses a check made in the same language.
 
+Every link is the customer's choice (contact page, privacy page, newsletter confirmation page — in the settings or per configuration); the bundle never guesses a page of your site. Without a contact page the button is left out, without a confirmation page there is no newsletter box.
+
 Bundled translations: German and English. For another language add `translations/neo_websitecheck.<lang>.yaml` to your project (findings and default wording) and adjust the words of that language's configuration in the designer; without a file the installation's default language is used.
 
 ## Customising
@@ -505,6 +507,8 @@ So, wie Contao es vorsieht – ein Startpunkt je Sprache:
 1. **Eine Konfiguration je Sprache** (*Website-Check → Konfigurationen*, Feld *Sprache*) mit E-Mail- und PDF-Gestaltung, Elementtexten, **Kontakt- und Datenschutzseite dieser Sprache** sowie **Newsletter-Verteiler, Double-Opt-in-Vorlage und Bestätigungsseite** (live aus Brevo).
 2. **Element auf der Seite der jeweiligen Sprache** einsetzen und die Konfiguration wählen (leer = die Konfiguration mit der Sprache der Seite). Gibt es für eine Sprache keine Konfiguration, kommt die mitgelieferte Vorlage in dieser Sprache – nie die Konfiguration einer anderen Sprache.
 3. Alles folgt der Seitensprache: Texte auf der Seite, KI-Lesung, E-Mail, PDF, Newsletter-Anmeldung. Der 24-Stunden-Zwischenspeicher verwendet nur einen Check derselben Sprache.
+
+Alle Links wählt der Kunde selbst (Kontakt-, Datenschutz-, Newsletter-Bestätigungsseite – in den Einstellungen oder je Konfiguration); das Bundle rät nie eine Seite. Ohne Kontaktseite entfällt der Knopf, ohne Bestätigungsseite das Newsletter-Häkchen.
 
 Mitgeliefert: Deutsch und Englisch. Für weitere Sprachen `translations/neo_websitecheck.<sprache>.yaml` im Projekt anlegen und die Wörter der Konfiguration im Designer anpassen; ohne Datei gilt die Standardsprache der Installation.
 
