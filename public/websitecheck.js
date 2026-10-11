@@ -51,6 +51,7 @@
       if (j.error === 'rate_limited') return j.window === 'hour' ? (i18n.err_limit_hour || i18n.err_limit) : i18n.err_limit;
       if (j.error === 'spam_check') return i18n.err_spam;
       if (j.error === 'failed') return i18n.err_failed;
+      if (j.error === 'unavailable') return i18n.err_unavailable || i18n.err_generic;
       return i18n.err_generic;
     }
     function altchaSolution() {

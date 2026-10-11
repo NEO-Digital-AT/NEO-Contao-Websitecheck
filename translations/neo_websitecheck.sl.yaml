@@ -438,6 +438,7 @@ fe:
     err_spam: 'Preverjanje neželene pošte ni uspelo. Prosimo, ponovno naložite stran in poskusite znova.'
     err_generic: 'Prišlo je do napake. Prosimo, poskusite znova čez trenutek.'
     err_failed: 'Te spletne strani ni bilo mogoče preveriti (ni dosegljiva ali je blokirana).'
+    err_unavailable: 'Preverjanje spletne strani trenutno ni na voljo. Poskusite znova pozneje.'
     eta: 'še približno %s s'
     eta_soon: 'skoraj končano …'
     progress_label: 'Napredek preverjanja'

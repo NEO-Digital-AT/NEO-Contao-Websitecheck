@@ -19,7 +19,7 @@
 <div class="nwc" id="{{ i }}" data-nwc data-state="idle"{% if style %} style="{{ style }}"{% endif %} data-config="{{ config|json_encode|e('html_attr') }}"
      data-i18n="{{ {
         eta: 'fe.eta'|trans, eta_soon: 'fe.eta_soon'|trans, err_url: 'fe.err_url'|trans, err_limit: 'fe.err_limit'|trans({'%limit%': config.limit}), err_limit_hour: 'fe.err_limit_hour'|trans({'%limit%': config.limitHour}),
-        err_spam: 'fe.err_spam'|trans, err_generic: 'fe.err_generic'|trans, err_failed: 'fe.err_failed'|trans, status_idle: 'fe.status_idle'|trans,
+        err_spam: 'fe.err_spam'|trans, err_generic: 'fe.err_generic'|trans, err_failed: 'fe.err_failed'|trans, err_unavailable: 'fe.err_unavailable'|trans, status_idle: 'fe.status_idle'|trans,
         status_run: 'fe.status_run'|trans, status_done: 'fe.status_done'|trans, grade_label: 'fe.grade_label'|trans, mail_sent: 'fe.mail_sent'|trans,
         mail_failed: 'fe.mail_failed'|trans, effort_small: 'measure.effort.small'|trans, effort_medium: 'measure.effort.medium'|trans, effort_large: 'measure.effort.large'|trans
      }|json_encode|e('html_attr') }}">

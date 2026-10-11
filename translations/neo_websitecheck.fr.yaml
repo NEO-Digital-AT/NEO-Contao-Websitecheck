@@ -438,6 +438,7 @@ fe:
     err_spam: 'La vérification anti-spam n’a pas abouti. Veuillez recharger la page et réessayer.'
     err_generic: 'Une erreur s’est produite. Veuillez réessayer dans un instant.'
     err_failed: 'Ce site web n’a pas pu être analysé (inaccessible ou bloqué).'
+    err_unavailable: 'Le check du site n’est pas disponible pour le moment. Veuillez réessayer plus tard.'
     eta: 'encore environ %s s'
     eta_soon: 'presque terminé …'
     progress_label: 'Progression de l’analyse'

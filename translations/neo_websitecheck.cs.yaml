@@ -438,6 +438,7 @@ fe:
     err_spam: 'Ochrana proti spamu neprošla. Načtěte prosím stránku znovu a zkuste to ještě jednou.'
     err_generic: 'Něco se pokazilo. Zkuste to prosím za chvíli znovu.'
     err_failed: 'Tento web se nepodařilo zkontrolovat (není dostupný nebo je zablokovaný).'
+    err_unavailable: 'Kontrola webu teď není k dispozici. Zkuste to prosím později.'
     eta: 'zbývá asi %s s'
     eta_soon: 'téměř hotovo …'
     progress_label: 'Průběh kontroly'

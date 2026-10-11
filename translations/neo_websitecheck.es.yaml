@@ -438,6 +438,7 @@ fe:
     err_spam: 'La comprobación antispam no se ha superado. Vuelva a cargar la página e inténtelo de nuevo.'
     err_generic: 'Algo ha fallado. Inténtelo de nuevo en un momento.'
     err_failed: 'No se ha podido analizar este sitio web (no accesible o bloqueado).'
+    err_unavailable: 'La revisión del sitio no está disponible en este momento. Inténtelo de nuevo más tarde.'
     eta: 'quedan unos %s s'
     eta_soon: 'casi listo …'
     progress_label: 'Progreso del análisis'

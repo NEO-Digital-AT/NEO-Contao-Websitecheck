@@ -438,6 +438,7 @@ fe:
     err_spam: 'A spamellenőrzés nem sikerült. Kérjük, töltse be újra az oldalt, és próbálja újra.'
     err_generic: 'Valami hiba történt. Kérjük, próbálja újra egy pillanat múlva.'
     err_failed: 'Ezt a weboldalt nem sikerült ellenőrizni (nem érhető el, vagy le van tiltva).'
+    err_unavailable: 'A weboldal-ellenőrzés jelenleg nem érhető el. Kérjük, próbálja újra később.'
     eta: 'még kb. %s mp'
     eta_soon: 'mindjárt kész …'
     progress_label: 'Az ellenőrzés előrehaladása'

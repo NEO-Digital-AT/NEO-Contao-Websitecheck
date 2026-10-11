@@ -438,6 +438,7 @@ fe:
     err_spam: 'Die Spam-Prüfung ist nicht durchgegangen. Bitte die Seite neu laden und noch einmal versuchen.'
     err_generic: 'Da ist etwas schiefgegangen. Bitte in einem Moment noch einmal versuchen.'
     err_failed: 'Diese Website konnte nicht geprüft werden (nicht erreichbar oder gesperrt).'
+    err_unavailable: 'Der Website-Check ist gerade nicht verfügbar. Bitte versuchen Sie es später noch einmal.'
     eta: 'noch etwa %s s'
     eta_soon: 'gleich fertig …'
     progress_label: 'Fortschritt der Analyse'

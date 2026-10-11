@@ -438,6 +438,7 @@ fe:
     err_spam: 'Weryfikacja antyspamowa nie powiodła się. Prosimy odświeżyć stronę i spróbować ponownie.'
     err_generic: 'Coś poszło nie tak. Prosimy spróbować ponownie za chwilę.'
     err_failed: 'Nie udało się sprawdzić tej strony (jest nieosiągalna lub zablokowana).'
+    err_unavailable: 'Sprawdzenie strony jest chwilowo niedostępne. Prosimy spróbować później.'
     eta: 'jeszcze ok. %s s'
     eta_soon: 'prawie gotowe …'
     progress_label: 'Postęp sprawdzania'

@@ -7,6 +7,7 @@ namespace Neo\WebsitecheckBundle\Controller\Api;
 use Contao\CoreBundle\Altcha\Altcha;
 use Neo\WebsitecheckBundle\Check\CheckRepository;
 use Neo\WebsitecheckBundle\Check\CheckRunner;
+use Neo\WebsitecheckBundle\Check\PageSpeedClient;
 use Neo\WebsitecheckBundle\Check\UrlNormalizer;
 use Neo\WebsitecheckBundle\Mail\ReportMailer;
 use Neo\WebsitecheckBundle\Newsletter\Subscriber;
@@ -44,6 +45,7 @@ final class CheckController
         private readonly Altcha|null $altcha = null,
         private readonly LoggerInterface|null $logger = null,
         private readonly TextProvider|null $texts = null,
+        private readonly PageSpeedClient|null $pageSpeed = null,
     ) {
     }
 
@@ -69,6 +71,14 @@ final class CheckController
             return $this->json(['error' => 'spam_check'], 400);
         }
 
+        // Without a PageSpeed key there are no measurements, screenshots or grades
+        // worth sending: refuse openly instead of producing an empty report.
+        if (null !== $this->pageSpeed && !$this->pageSpeed->isConfigured()) {
+            $this->logger?->error('Website check refused: no PageSpeed key (Website check settings → Keys and AI).');
+
+            return $this->json(['error' => 'unavailable'], 503);
+        }
+
         $ipHash = $this->ipHash($request);
 
         // Per visitor: a short window against bursts (cost, abuse), a day window on top.
@@ -82,6 +92,11 @@ final class CheckController
 
         $locale = $this->locale($request, $payload);
         $cached = $this->repository->findRecentDone($normalized['url'], $this->settings->cacheHours(), $locale);
+
+        // Never hand out a result that lacks the measurements (e.g. made while a key was missing).
+        if (null !== $cached && (empty($cached['data']['psi']['home_mobile']) || !empty($cached['data']['psi']['home_mobile']['error']))) {
+            $cached = null;
+        }
         // Configuration (texts, e-mail, PDF design) chosen by the element; falls back to the language's record.
         $config = $this->settings->db()?->config((int) ($payload['config'] ?? 0), $locale);
         $configId = (int) ($config['id'] ?? 0);

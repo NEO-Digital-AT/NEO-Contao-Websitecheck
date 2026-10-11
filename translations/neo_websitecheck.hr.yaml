@@ -438,6 +438,7 @@ fe:
     err_spam: 'Provjera protiv neželjenih poruka nije prošla. Ponovno učitajte stranicu i pokušajte opet.'
     err_generic: 'Nešto je pošlo po zlu. Pokušajte ponovno za trenutak.'
     err_failed: 'Ovu web-stranicu nije bilo moguće provjeriti (nedostupna ili blokirana).'
+    err_unavailable: 'Provjera web-stranice trenutačno nije dostupna. Pokušajte ponovno kasnije.'
     eta: 'još otprilike %s s'
     eta_soon: 'gotovo je …'
     progress_label: 'Napredak provjere'

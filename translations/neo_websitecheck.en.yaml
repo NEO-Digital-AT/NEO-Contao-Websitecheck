@@ -438,6 +438,7 @@ fe:
     err_spam: 'The spam check did not go through. Please reload the page and try again.'
     err_generic: 'Something went wrong. Please try again in a moment.'
     err_failed: 'This website could not be checked (not reachable or blocked).'
+    err_unavailable: 'The website check is not available right now. Please try again later.'
     eta: 'about %s s left'
     eta_soon: 'almost done …'
     progress_label: 'Progress of the check'

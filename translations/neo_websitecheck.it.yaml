@@ -438,6 +438,7 @@ fe:
     err_spam: 'Il controllo antispam non è andato a buon fine. Ricarichi la pagina e riprovi.'
     err_generic: 'Qualcosa è andato storto. Riprovi tra un momento.'
     err_failed: 'Non è stato possibile controllare questo sito (non raggiungibile o bloccato).'
+    err_unavailable: 'Il check del sito non è disponibile al momento. Riprovi più tardi.'
     eta: 'mancano circa %s s'
     eta_soon: 'quasi fatto …'
     progress_label: 'Avanzamento del controllo'

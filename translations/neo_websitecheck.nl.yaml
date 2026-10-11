@@ -438,6 +438,7 @@ fe:
     err_spam: 'De spamcontrole is niet gelukt. Laad de pagina opnieuw en probeer het nog eens.'
     err_generic: 'Er ging iets mis. Probeer het zo meteen opnieuw.'
     err_failed: 'Deze website kon niet worden gecontroleerd (niet bereikbaar of geblokkeerd).'
+    err_unavailable: 'De websitecheck is momenteel niet beschikbaar. Probeer het later opnieuw.'
     eta: 'nog ongeveer %s s'
     eta_soon: 'bijna klaar …'
     progress_label: 'Voortgang van de check'
