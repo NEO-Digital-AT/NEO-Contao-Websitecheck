@@ -103,14 +103,14 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
         'api_info' => ['input_field_callback' => [SettingsCallbacks::class, 'apiInfo']],
         'psi_api_key' => [
             'inputType' => 'text',
-            'eval' => ['hideInput' => true, 'maxlength' => 512, 'doNotCopy' => true, 'tl_class' => 'w50 clr'],
+            'eval' => ['hideInput' => true, 'decodeEntities' => true, 'maxlength' => 512, 'doNotCopy' => true, 'tl_class' => 'w50 clr'],
             'load_callback' => [[SettingsCallbacks::class, 'maskSecret']],
             'save_callback' => [[SettingsCallbacks::class, 'encryptSecret']],
             'sql' => "varchar(512) NOT NULL default ''",
         ],
         'ai_api_key' => [
             'inputType' => 'text',
-            'eval' => ['hideInput' => true, 'maxlength' => 512, 'doNotCopy' => true, 'tl_class' => 'w50'],
+            'eval' => ['hideInput' => true, 'decodeEntities' => true, 'maxlength' => 512, 'doNotCopy' => true, 'tl_class' => 'w50'],
             'load_callback' => [[SettingsCallbacks::class, 'maskSecret']],
             'save_callback' => [[SettingsCallbacks::class, 'encryptSecret']],
             'sql' => "varchar(512) NOT NULL default ''",

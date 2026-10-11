@@ -52,7 +52,9 @@ final class SettingsCallbacks
     /** Save callback of the key fields: an empty field or the unchanged mask keeps the stored key; a new one is stored encrypted. */
     public function encryptSecret(mixed $value, DataContainer $dc): string
     {
-        $value = trim(str_replace(self::MASK, '', (string) $value));
+        // Contao encodes "=", "&", "<" … in posted values; keys (e.g. Requesty's
+        // base64 keys ending in "=") must be stored exactly as typed.
+        $value = trim(html_entity_decode(str_replace(self::MASK, '', (string) $value), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
 
         if ('' === $value) {
             return (string) $this->db->fetchOne('SELECT '.$dc->field.' FROM tl_neo_websitecheck_settings WHERE id = ?', [(int) $dc->id]);

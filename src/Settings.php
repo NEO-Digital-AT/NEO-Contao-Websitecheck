@@ -130,7 +130,10 @@ final class Settings
             return '';
         }
 
-        return trim(null !== $this->cipher ? $this->cipher->decrypt($stored) : $stored);
+        $plain = null !== $this->cipher ? $this->cipher->decrypt($stored) : $stored;
+
+        // Keys saved earlier went through Contao's input encoding ("=" → "&#61;").
+        return trim(html_entity_decode($plain, ENT_QUOTES | ENT_HTML5, 'UTF-8'));
     }
 
     /**

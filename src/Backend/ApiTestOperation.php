@@ -40,11 +40,11 @@ final class ApiTestOperation
         $rows[] = '' === $psiKey
             ? ['PageSpeed', 'missing', 'No PageSpeed key stored.']
             // An invalid URL answers within a second: 400 "invalid value" = key accepted, "API key not valid" = key wrong.
-            : $this->probe('PageSpeed (Google API)', fn () => $this->apiClient->request('GET', 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed', ['query' => ['url' => 'not-a-url', 'key' => $psiKey], 'timeout' => 20, 'max_duration' => 25]), $secrets, [400]);
+            : $this->probe('PageSpeed (Google API) — key '.$this->fingerprint($psiKey), fn () => $this->apiClient->request('GET', 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed', ['query' => ['url' => 'not-a-url', 'key' => $psiKey], 'timeout' => 20, 'max_duration' => 25]), $secrets, [400]);
 
         $rows[] = '' === trim((string) $ai['api_key'])
             ? ['AI', 'missing', 'No AI key stored.']
-            : $this->probe('AI: '.rtrim((string) $ai['base_url'], '/').'/models', fn () => $this->apiClient->request('GET', rtrim((string) $ai['base_url'], '/').'/models', ['headers' => ['Authorization' => 'Bearer '.$ai['api_key']], 'timeout' => 20, 'max_duration' => 25]), $secrets);
+            : $this->probe('AI: '.rtrim((string) $ai['base_url'], '/').'/models — key '.$this->fingerprint((string) $ai['api_key']), fn () => $this->apiClient->request('GET', rtrim((string) $ai['base_url'], '/').'/models', ['headers' => ['Authorization' => 'Bearer '.$ai['api_key']], 'timeout' => 20, 'max_duration' => 25]), $secrets);
 
         $rows[] = '' === $brevoKey
             ? ['Brevo', 'missing', 'No Brevo key (NEO Brevo module).']
@@ -130,6 +130,12 @@ final class ApiTestOperation
         }
 
         return $text;
+    }
+
+    /** Enough to compare with the original (length, start, end), never the key itself. */
+    private function fingerprint(string $key): string
+    {
+        return sprintf('%d chars, %s…%s', mb_strlen($key), mb_substr($key, 0, 4), mb_substr($key, -2));
     }
 
     private function e(string $s): string
