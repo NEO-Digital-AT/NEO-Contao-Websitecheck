@@ -5,10 +5,13 @@
   table leave the digit 2–6 mm too high). Background, radius and border are
   repeated inline on the cell so surrounding rules such as ".areas td" cannot
   repaint it. A dash (no grade) sits low in the font, so it gets a small
-  bottom padding to look centred. Keep this structure when restyling.
+  bottom padding to look centred. Digits sit at a different height in each
+  font: the frame lifts them per font (rule "table.badge td.bn", value
+  t.badge_lift), so digit cells carry no inline padding. Keep this structure
+  when restyling.
 #}
 {% macro badge(value, size, pt, bg, ink, radius) -%}
-<table class="badge" style="border-collapse:collapse;border-radius:{{ radius|default('2mm') }};background:{{ bg }}"><tr><td style="width:{{ size }}mm;height:{{ size }}mm;padding:0 0 {{ value == '–' ? (pt * 0.073)|round(2) : 0 }}mm;border:0;border-radius:{{ radius|default('2mm') }};background:{{ bg }};text-align:center;vertical-align:middle;font-weight:bold;font-size:{{ pt }}pt;line-height:1;color:{{ ink }}">{{ value }}</td></tr></table>
+<table class="badge" style="border-collapse:collapse;border-radius:{{ radius|default('2mm') }};background:{{ bg }}"><tr><td{% if value != '–' %} class="bn"{% endif %} style="width:{{ size }}mm;height:{{ size }}mm;{% if value == '–' %}padding:0 0 {{ (pt * 0.073)|round(2) }}mm;{% endif %}border:0;border-radius:{{ radius|default('2mm') }};background:{{ bg }};text-align:center;vertical-align:middle;font-weight:bold;font-size:{{ pt }}pt;line-height:1;color:{{ ink }}">{{ value }}</td></tr></table>
 {%- endmacro %}
 
 {# Grade legend as a table (badge cell + label cell), two items per row (no wrapping inside a label); cells reset border/background so card rules do not leak in. #}

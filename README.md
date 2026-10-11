@@ -149,7 +149,7 @@ Reports go through Contao's mailer (`MAILER_DSN` in `.env`). The visitor receive
 
 ### PDF
 
-- **dompdf** (default): pure PHP, no extra service, DejaVu Sans fonts, umlauts fine. The report template is written in Dompdf-compatible HTML (tables, no flexbox).
+- **dompdf** (default): pure PHP, no extra service. Default font is **Arimo** (bundled, looks and measures like Arial, covers Latin, Greek and Cyrillic); DejaVu Sans/Serif and Helvetica are available under *Design › Font*. Dompdf converts Arimo once into `<storage_dir>/fonts`. The report template is written in Dompdf-compatible HTML (tables, no flexbox).
 - **gotenberg**: Chromium as a container (`docker run --rm -p 3000:3000 gotenberg/gotenberg:8`), renders the same template pixel-perfect with your fonts. Set `engine: gotenberg` and `gotenberg_url`.
 - **none**: no PDF; the e-mail still contains the grade and the measures.
 
@@ -280,12 +280,12 @@ The bundle stores: domain, measurement data, first name, last name, e-mail, news
 - **"Quota exceeded" from PageSpeed** – no or wrong API key; the public quota is shared with the whole world. Add your own key.
 - **Check fails at "speed_home"** – the site blocks Google's crawler, needs a login or is not reachable from the internet. The step is retried once, then skipped; the report says so.
 - **No e-mail** – check `MAILER_DSN` and the Contao log (`var/logs`); the result page shows a notice when sending failed and the back end has a re-send button.
-- **Umlauts missing in the PDF** – a custom template uses a font Dompdf does not have; keep `DejaVu Sans` or switch to Gotenberg.
+- **Umlauts missing in the PDF** – a custom template uses a font Dompdf does not have; keep Arimo or DejaVu Sans, or switch to Gotenberg. Helvetica only knows Western European characters.
 - **ALTCHA widget not visible / spam error** – ALTCHA needs HTTPS (or localhost); on Contao < 5.7 the honeypot is used automatically.
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — see [LICENSE](LICENSE). The bundled Arimo font (`resources/fonts/arimo`) is licensed under the SIL Open Font License 1.1 (`OFL.txt`).
 
 ---
 
@@ -383,7 +383,7 @@ Kosten je Check meist wenige Cent. Ohne Schlüssel läuft der Check ohne KI.
 ### E-Mail, PDF, Newsletter
 
 - Versand über Contaos Mailer (`MAILER_DSN`). Der Besucher bekommt den Bericht mit PDF; `notify_email` bekommt eine zweite E-Mail mit demselben PDF plus Name, E-Mail, Domain, Note und Newsletter-Entscheidung.
-- PDF: `dompdf` (reines PHP), `gotenberg` (Chromium-Container, `docker run --rm -p 3000:3000 gotenberg/gotenberg:8`) oder `none`.
+- PDF: `dompdf` (reines PHP; Standardschrift **Arimo**, mitgeliefert, sieht aus und läuft wie Arial; DejaVu und Helvetica unter *Design › Schrift*), `gotenberg` (Chromium-Container, `docker run --rm -p 3000:3000 gotenberg/gotenberg:8`) oder `none`.
 - Newsletter: In Brevo die Listen-ID und eine Double-Opt-in-Vorlage anlegen, IDs eintragen, `provider: brevo`. Nur bei gesetztem Häkchen ruft das Bundle den Double-Opt-in-Endpunkt auf; angemeldet ist der Besucher erst nach dem Klick auf den Bestätigungslink.
 
 ## Backend-Einstellungen und der visuelle Designer
@@ -484,9 +484,9 @@ Gespeichert werden Domain, Messdaten, Vorname, Nachname, E-Mail, Newsletter-Ents
 - **„Quota exceeded“ von PageSpeed** – kein oder falscher API-Schlüssel.
 - **Check bricht bei „speed_home“ ab** – die Seite blockiert Googles Crawler, braucht ein Login oder ist nicht erreichbar. Der Schritt wird einmal wiederholt, dann übersprungen.
 - **Keine E-Mail** – `MAILER_DSN` und `var/logs` prüfen; die Ergebnisseite zeigt einen Hinweis, das Backend hat einen Knopf „erneut senden“.
-- **Umlaute fehlen im PDF** – eigene Vorlage mit einer Schrift, die Dompdf nicht kennt; `DejaVu Sans` behalten oder Gotenberg verwenden.
+- **Umlaute fehlen im PDF** – eigene Vorlage mit einer Schrift, die Dompdf nicht kennt; Arimo oder DejaVu Sans behalten oder Gotenberg verwenden. Helvetica kennt nur westeuropäische Zeichen.
 - **ALTCHA nicht sichtbar / Spam-Fehler** – ALTCHA braucht HTTPS (oder localhost); unter Contao 5.7 greift automatisch der Honeypot.
 
 ## Lizenz
 
-MIT – siehe [LICENSE](LICENSE).
+MIT – siehe [LICENSE](LICENSE). Die mitgelieferte Schrift Arimo (`resources/fonts/arimo`) steht unter der SIL Open Font License 1.1 (`OFL.txt`).

@@ -21,6 +21,14 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  */
 final class PdfGenerator
 {
+    /** Dompdf variant key => [weight, style, file in resources/fonts/arimo] */
+    private const FONTS = [
+        'normal' => ['normal', 'normal', 'Arimo-Regular.ttf'],
+        'bold' => ['bold', 'normal', 'Arimo-Bold.ttf'],
+        'italic' => ['normal', 'italic', 'Arimo-Italic.ttf'],
+        'bold_italic' => ['bold', 'italic', 'Arimo-BoldItalic.ttf'],
+    ];
+
     public function __construct(
         private readonly ReportRenderer $renderer,
         private readonly CheckRepository $repository,
@@ -95,14 +103,41 @@ final class PdfGenerator
         $options->set('defaultFont', 'DejaVu Sans');
         $options->set('defaultPaperSize', 'a4');
         $options->set('dpi', 96);
-        $options->set('chroot', $this->settings->storageDir());
+        $fontDir = $this->settings->storageDir().'/fonts';
+        $bundledFonts = \dirname(__DIR__, 2).'/resources/fonts';
+        $options->set('fontDir', $fontDir);
+        $options->set('fontCache', $fontDir);
+        $options->set('isFontSubsettingEnabled', true);
+        $options->set('chroot', [$this->settings->storageDir(), (string) realpath($bundledFonts)]);
 
         $dompdf = new Dompdf($options);
+        $this->registerFonts($dompdf, $fontDir, $bundledFonts);
         $dompdf->loadHtml($html, 'UTF-8');
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
         return (string) $dompdf->output();
+    }
+
+    /**
+     * Makes the bundled fonts (Arimo, SIL OFL) known to Dompdf. Dompdf converts a
+     * font once into its font directory (metrics + copy); later runs find it there.
+     */
+    private function registerFonts(Dompdf $dompdf, string $fontDir, string $bundledFonts): void
+    {
+        if (!is_dir($fontDir) && !@mkdir($fontDir, 0775, true) && !is_dir($fontDir)) {
+            return;
+        }
+
+        $metrics = $dompdf->getFontMetrics();
+        $known = $metrics->getFontFamilies()['arimo'] ?? [];
+
+        foreach (self::FONTS as $variant => [$weight, $style, $file]) {
+            if (isset($known[$variant]) && is_file($known[$variant].'.ufm') && is_file($known[$variant].'.ttf')) {
+                continue;
+            }
+            $metrics->registerFont(['family' => 'Arimo', 'weight' => $weight, 'style' => $style], (string) realpath($bundledFonts.'/arimo/'.$file));
+        }
     }
 
     private function viaGotenberg(string $html): string

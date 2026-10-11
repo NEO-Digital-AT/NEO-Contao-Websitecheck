@@ -114,6 +114,8 @@ final class DesignRenderer
         $accent = $theme['accent'] ?: (string) ($brand['color_accent'] ?? '#a8f20d');
 
         $fonts = [
+            // Arimo: metric-compatible with Arial, bundled for the PDF (resources/fonts); e-mail clients fall back to Arial
+            'arimo' => "Arimo, Arial, Helvetica, sans-serif",
             'sans' => "'DejaVu Sans', Helvetica, Arial, sans-serif",
             'serif' => "'DejaVu Serif', Georgia, 'Times New Roman', serif",
             'system' => 'Helvetica, Arial, sans-serif',
@@ -149,7 +151,9 @@ final class DesignRenderer
             'primary_ink' => self::isLight($primary) ? '#1a1a1a' : '#ffffff',
             'muted' => '#6b6b7b',
             'line' => '#e3e1ea',
-            'font_family' => $fonts[$theme['font'] ?? 'sans'] ?? $fonts['sans'],
+            'font_family' => $fonts[$theme['font'] ?? 'arimo'] ?? $fonts['arimo'],
+            // bottom padding that centres digits in grade badges (measured with dev/check-pdf-badges.py)
+            'badge_lift' => ['arimo' => '.065em'][$theme['font'] ?? 'arimo'] ?? '0',
             // single quotes: also printed inside style="…" attributes
             'mono' => "'DejaVu Sans Mono', Menlo, Consolas, monospace",
             'r' => $radius[$theme['radius'] ?? 'm'] ?? $radius['m'],

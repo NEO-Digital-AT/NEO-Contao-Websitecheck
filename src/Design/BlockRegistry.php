@@ -56,7 +56,7 @@ final class BlockRegistry
             'accent' => ['type' => 'color', 'default' => ''],
             'text' => ['type' => 'color', 'default' => '#222222'],
             'soft' => ['type' => 'color', 'default' => '#f5f3fb'],
-            'font' => ['type' => 'select', 'default' => 'sans', 'options' => ['sans', 'serif', 'system']],
+            'font' => ['type' => 'select', 'default' => 'arimo', 'options' => ['arimo', 'sans', 'serif', 'system']],
             'radius' => ['type' => 'select', 'default' => 'm', 'options' => ['none', 's', 'm', 'l']],
         ];
 

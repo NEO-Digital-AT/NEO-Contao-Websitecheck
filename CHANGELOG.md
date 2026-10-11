@@ -19,6 +19,8 @@ All notable changes to this bundle are documented here. The format follows
 - **Short result on the page (default):** after the lead form the element shows only the grade with one sentence, the note that the report is on its way and the call to action; the PDF carries everything else. The full overview (scores, areas, measures, strengths) stays available per configuration ("Result on the page").
 - **Rate limit per hour:** a visitor (IP) may start two checks per hour by default (`limits.checks_per_ip_per_hour`, back end "Checks per visitor and hour"), with its own message; the day limit default is now 10.
 
+- **PDF font Arimo (looks like Arial):** bundled (SIL OFL 1.1) and the new default under *Design › Font*; it covers Latin, Greek and Cyrillic, so names and AI text with "ł", "ő" or "→" print correctly (Dompdf's built-in Helvetica, which "Arial" maps to, only knows Western European characters). DejaVu stays selectable; grade badges are centred per font.
+
 ### Fixed
 - **Privacy:** a check served from the 24-hour cache copied the source check's folder including its PDF, and that PDF (with the first visitor's name) was sent again. The copy now skips PDFs, and a PDF is only reused when it belongs to the same check.
 - **Numbers in grade badges sat 2–6 mm too high in Dompdf PDFs.** Dompdf only centres text vertically when width, height and `vertical-align: middle` are on the table cell; every badge now uses one measured macro (`_pdf_macros.html.twig`). An automatic check measured all badges in all templates (offset ≤ 0.3 mm).
