@@ -195,12 +195,15 @@ final class Settings
         return $nl;
     }
 
-    /** True when a visitor of this configuration/language can really be signed up (provider, key, list, template). */
+    /** True when a visitor of this configuration/language can really be signed up (provider, key, list, template, confirmation page). */
     public function newsletterEnabled(int $configId = 0, string $locale = ''): bool
     {
         $nl = $this->newsletterFor($configId, $locale);
 
-        return 'brevo' === $nl['provider'] && '' !== trim((string) $nl['brevo_api_key']) && (int) $nl['brevo_list_id'] > 0 && (int) $nl['brevo_template_id'] > 0;
+        // The confirmation page is the customer's choice too: without it there is no
+        // sign-up (Brevo needs it, and we never guess a page of someone else's site).
+        return 'brevo' === $nl['provider'] && '' !== trim((string) $nl['brevo_api_key']) && (int) $nl['brevo_list_id'] > 0 && (int) $nl['brevo_template_id'] > 0
+            && ((int) $nl['brevo_redirect_page'] > 0 || '' !== trim((string) $nl['brevo_redirect_url']));
     }
 
     public function dataLayer(): bool

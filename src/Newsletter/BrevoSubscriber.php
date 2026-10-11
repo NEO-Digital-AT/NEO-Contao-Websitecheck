@@ -56,7 +56,7 @@ final class BrevoSubscriber
                     'attributes' => ['VORNAME' => $firstName, 'NACHNAME' => $lastName, 'FIRSTNAME' => $firstName, 'LASTNAME' => $lastName],
                     'includeListIds' => [(int) $nl['brevo_list_id']],
                     'templateId' => (int) $nl['brevo_template_id'],
-                    'redirectionUrl' => $redirectUrl ?: ($nl['brevo_redirect_url'] ?: $this->settings->brand()['website_url'] ?: 'https://example.com'),
+                    'redirectionUrl' => $redirectUrl ?: (string) $nl['brevo_redirect_url'],
                     'updateEnabled' => true,
                 ],
                 'timeout' => 15,

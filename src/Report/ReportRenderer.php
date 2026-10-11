@@ -167,7 +167,9 @@ final class ReportRenderer
         }
 
         $date = 'de' === substr($locale, 0, 2) ? date('d.m.Y', (int) ($result['checkedAt'] ?? time())) : date('Y-m-d', (int) ($result['checkedAt'] ?? time()));
-        $contactUrl = $brand['contact_url'] ?: (string) $brand['website_url'];
+        // Only a page the customer chose: we do not know other sites' structure, so
+        // no guessing (the start page is not a contact page). Empty = no button.
+        $contactUrl = (string) $brand['contact_url'];
         $config = $this->configFor($row);
 
         return [

@@ -51,9 +51,9 @@ $l['element_config'] = ['Konfiguration', 'Welche Website-Check-Konfiguration (Te
 
 // Mehrsprachigkeit: Links und Newsletter je Konfiguration (= je Sprache); leer = globaler Wert.
 $l['links_legend'] = 'Seiten dieser Sprache';
-$l['contact_page'] = ['Kontaktseite', 'Ziel von „Ergebnis besprechen“ in Formular, E-Mail und PDF. Leer = Kontaktseite aus den Einstellungen. Das Inhaltselement kann sie mit eigener Weiterleitungsseite überschreiben.'];
-$l['privacy_page'] = ['Datenschutzseite', 'Link im Kontaktschritt des Formulars, in E-Mail und PDF. Leer = Datenschutzseite aus den Einstellungen.'];
+$l['contact_page'] = ['Kontaktseite', 'Ziel von „Ergebnis besprechen“ in Formular, E-Mail und PDF. Leer = Kontaktseite aus den Einstellungen. Das Inhaltselement kann sie mit eigener Weiterleitungsseite überschreiben. Ohne Seite (auch nicht in den Einstellungen) entfällt der Knopf – das Bundle setzt nie selbst einen Link.'];
+$l['privacy_page'] = ['Datenschutzseite', 'Link im Kontaktschritt des Formulars, in E-Mail und PDF. Leer = Datenschutzseite aus den Einstellungen. Ohne Seite erscheint kein Link – bitte unbedingt setzen.'];
 $l['newsletter_legend'] = 'Newsletter (Brevo) dieser Sprache';
 $l['nl_list_id'] = ['Brevo-Verteiler', 'Verteiler für Anmeldungen aus dem Check in dieser Sprache. Leer = Verteiler aus der Konfigurationsdatei (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Double-Opt-in-Vorlage', 'Bestätigungsmail in dieser Sprache. Leer = Vorlage aus der Konfigurationsdatei (newsletter.brevo_template_id).'];
-$l['nl_redirect_page'] = ['Bestätigungsseite', 'Seite nach dem Klick auf den Bestätigungslink. Leer = newsletter.brevo_redirect_url.'];
+$l['nl_redirect_page'] = ['Bestätigungsseite', 'Seite nach dem Klick auf den Bestätigungslink. Leer = newsletter.brevo_redirect_url. Ohne Bestätigungsseite gibt es keine Newsletter-Anmeldung.'];
