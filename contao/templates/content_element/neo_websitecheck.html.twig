@@ -44,7 +44,9 @@
   </div>
 
   <div class="nwc__main">
-    {% if text %}<div class="nwc__intro">{{ text|insert_tag|raw }}</div>{% endif %}
+    {# Head of the panel (intro text). A site can replace it in its template
+       override — e.g. eyebrow, heading and intro inside the panel. #}
+    {% block nwc_intro %}{% if text %}<div class="nwc__intro">{{ text|insert_tag|raw }}</div>{% endif %}{% endblock %}
 
     {# ---- idle: URL form ---- #}
     <form class="nwc__url" data-nwc-pane="idle" novalidate>

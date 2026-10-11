@@ -400,6 +400,11 @@ final class CheckRunner
             }
         }
 
+        // Pins for the live preview: from the desktop run when its first screen exists.
+        $deskPins = isset($data['screenshots']['desktop']) && !isset($desktop['error']);
+        $deskWidthCss = (int) ($desktop['screenshots']['viewport']['width'] ?? 1350);
+        $deskViewportCss = (int) ($desktop['screenshots']['viewport']['height'] ?? 940);
+
         // Marked excerpts for the accessibility page (contrast first) + pins for the live preview.
         if (null !== $fullSaved) {
             $n = 0;
@@ -434,7 +439,7 @@ final class CheckRunner
                         }
                     }
 
-                    if (\count($data['pins']) < 5 && $rect['top'] + $rect['height'] / 2 < $viewportCss) {
+                    if (!$deskPins && \count($data['pins']) < 5 && $rect['top'] + $rect['height'] / 2 < $viewportCss) {
                         $data['pins'][] = [
                             'x' => round(($rect['left'] + $rect['width'] / 2) / max(1, $full['width']) * 100, 1),
                             'y' => round(($rect['top'] + $rect['height'] / 2) / max(1, $viewportCss) * 100, 1),
@@ -442,6 +447,31 @@ final class CheckRunner
                             'label' => $audit['title'],
                         ];
                     }
+                }
+            }
+        }
+
+        // The live preview shows the desktop first screen, so its pins come from
+        // the desktop run (same audits, desktop layout and viewport).
+        if ($deskPins) {
+            foreach ((array) ($desktop['a11y'] ?? []) as $audit) {
+                foreach ((array) ($audit['items'] ?? []) as $item) {
+                    $rect = $item['rect'] ?? null;
+
+                    if (null === $rect || $rect['width'] <= 0 || $rect['height'] <= 0 || PageSpeedClient::isIconGlyph($item) || $rect['top'] + $rect['height'] / 2 >= $deskViewportCss) {
+                        continue;
+                    }
+
+                    if (\count($data['pins']) >= 5) {
+                        break 2;
+                    }
+
+                    $data['pins'][] = [
+                        'x' => round(($rect['left'] + $rect['width'] / 2) / max(1, $deskWidthCss) * 100, 1),
+                        'y' => round(($rect['top'] + $rect['height'] / 2) / max(1, $deskViewportCss) * 100, 1),
+                        'kind' => 'warn',
+                        'label' => (string) ($audit['title'] ?? ''),
+                    ];
                 }
             }
         }

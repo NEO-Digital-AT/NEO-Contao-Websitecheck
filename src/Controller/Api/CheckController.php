@@ -207,7 +207,8 @@ final class CheckController
     private function statusPayload(array $row): array
     {
         $progress = $this->runner->progress($row);
-        $shot = $row['data']['screenshots']['mobile']['file'] ?? null;
+        // The preview window is a desktop browser: desktop first screen, mobile as fallback.
+        $shot = $row['data']['screenshots']['desktop']['file'] ?? $row['data']['screenshots']['mobile']['file'] ?? null;
 
         return [
             'id' => (int) $row['id'],
