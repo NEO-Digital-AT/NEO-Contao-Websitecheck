@@ -53,7 +53,9 @@ $l['element_config'] = ['Konfiguracija', 'Katero konfiguracijo preverjanja splet
 $l['links_legend'] = 'Strani tega jezika';
 $l['contact_page'] = ['Kontaktna stran', 'Cilj gumba „Pogovorimo se o rezultatu“ v obrazcu, e-pošti in PDF. Prazno = kontaktna stran iz nastavitev. Vsebinski element jo lahko preglasi z lastno stranjo za preusmeritev. Brez strani (tukaj ali v nastavitvah) se gumb izpusti – modul nikoli sam ne nastavi povezave.'];
 $l['privacy_page'] = ['Stran o zasebnosti', 'Povezava v kontaktnem koraku obrazca, v e-pošti in PDF. Prazno = stran o zasebnosti iz nastavitev. Brez strani povezava ni prikazana – prosimo, nastavite jo.'];
-$l['newsletter_legend'] = 'E-novice (Brevo) tega jezika';
+$l['newsletter_legend'] = 'E-novice tega jezika';
 $l['nl_list_id'] = ['Seznam Brevo', 'Seznam za prijave iz preverjanja v tem jeziku. Prazno = seznam iz konfiguracijske datoteke (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Predloga za dvojno potrditev', 'Potrditvena e-pošta v tem jeziku. Prazno = predloga iz konfiguracijske datoteke (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Potrditvena stran', 'Stran po kliku na potrditveno povezavo. Prazno = newsletter.brevo_redirect_url. Brez potrditvene strani prijave na e-novice ni.'];
+$l['nl_list_id_contao'] = ['Kanal e-novic (Contao)', 'Kanal e-novic Contao za prijave iz preverjanja v tem jeziku.'];
+$l['nl_redirect_page_contao'] = ['Potrditvena stran', 'Stran z modulom Contao »Naročnina«: potrditvena povezava v e-sporočilu vodi tja in aktivira prijavo. Besedilo e-sporočila je iz tega modula. Brez potrditvene strani prijave na e-novice ni.'];

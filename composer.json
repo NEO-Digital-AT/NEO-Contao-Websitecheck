@@ -60,5 +60,9 @@
         "allow-plugins": {
             "contao/manager-plugin": true
         }
+    },
+    "suggest": {
+        "contao/newsletter-bundle": "Newsletter checkbox with Contao’s own double opt-in (used when the NEO Brevo module is not installed).",
+        "neo-digital/contao-brevo-bundle": "Newsletter checkbox via Brevo, with the API key from that module’s back-end settings."
     }
 }

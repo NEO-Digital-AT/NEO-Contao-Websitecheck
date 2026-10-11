@@ -12,10 +12,14 @@ final class Settings
     /**
      * @param array<string, mixed> $config
      */
+    /**
+     * @param object|null $brevoKeys the NEO Brevo module's key resolver (Neo\BrevoNewsletterBundle\Brevo\ApiKeyResolver) when that module is installed
+     */
     public function __construct(
         private readonly array $config,
         private readonly string $projectDir,
         private readonly Check\SettingsRepository|null $db = null,
+        private readonly object|null $brevoKeys = null,
     ) {
     }
 
@@ -172,15 +176,52 @@ final class Settings
     }
 
     /**
+     * The newsletter system in use: "brevo" (the NEO Brevo module is installed —
+     * its API key from the back end), "contao" (Contao's own newsletter module)
+     * or "none". "auto" (default) picks Brevo when that module is there,
+     * otherwise the Contao newsletter module.
+     */
+    public function newsletterProvider(): string
+    {
+        $wanted = (string) ($this->config['newsletter']['provider'] ?? 'auto');
+        $brevo = null !== $this->brevoKeys;
+        $contao = class_exists(\Contao\NewsletterBundle\ContaoNewsletterBundle::class);
+
+        return match ($wanted) {
+            'brevo' => $brevo ? 'brevo' : 'none',
+            'contao' => $contao ? 'contao' : 'none',
+            'none' => 'none',
+            default => $brevo ? 'brevo' : ($contao ? 'contao' : 'none'),
+        };
+    }
+
+    /** The Brevo API key as stored in the NEO Brevo module ('' without that module). */
+    public function brevoApiKey(): string
+    {
+        if (null === $this->brevoKeys || !method_exists($this->brevoKeys, 'resolve')) {
+            return '';
+        }
+
+        try {
+            return trim((string) $this->brevoKeys->resolve());
+        } catch (\Throwable) {
+            return '';
+        }
+    }
+
+    /**
      * Newsletter settings for one configuration (= one language on multilingual
-     * sites): list, double-opt-in template and confirmation page of the
-     * configuration, the config.yaml values where it leaves them empty.
+     * sites): list (Brevo list or Contao channel), double-opt-in template (Brevo)
+     * and confirmation page of the configuration, the config.yaml values where
+     * it leaves them empty.
      *
-     * @return array<string, mixed> config.yaml keys plus brevo_redirect_page (page id or 0)
+     * @return array<string, mixed> config.yaml keys plus provider, brevo_api_key and brevo_redirect_page (page id or 0)
      */
     public function newsletterFor(int $configId = 0, string $locale = ''): array
     {
-        $nl = $this->config['newsletter'] + ['brevo_redirect_page' => 0];
+        $nl = ['brevo_redirect_page' => 0] + $this->config['newsletter'];
+        $nl['provider'] = $this->newsletterProvider();
+        $nl['brevo_api_key'] = 'brevo' === $nl['provider'] ? $this->brevoApiKey() : '';
 
         if (null !== $this->db && ($configId > 0 || '' !== $locale)) {
             foreach (['nl_list_id' => 'brevo_list_id', 'nl_template_id' => 'brevo_template_id', 'nl_redirect_page' => 'brevo_redirect_page'] as $column => $key) {
@@ -201,9 +242,15 @@ final class Settings
         $nl = $this->newsletterFor($configId, $locale);
 
         // The confirmation page is the customer's choice too: without it there is no
-        // sign-up (Brevo needs it, and we never guess a page of someone else's site).
-        return 'brevo' === $nl['provider'] && '' !== trim((string) $nl['brevo_api_key']) && (int) $nl['brevo_list_id'] > 0 && (int) $nl['brevo_template_id'] > 0
-            && ((int) $nl['brevo_redirect_page'] > 0 || '' !== trim((string) $nl['brevo_redirect_url']));
+        // sign-up (Brevo needs it, Contao's activation link points there, and we
+        // never guess a page of someone else's site).
+        return match ($nl['provider']) {
+            'brevo' => '' !== $nl['brevo_api_key'] && (int) $nl['brevo_list_id'] > 0 && (int) $nl['brevo_template_id'] > 0
+                && ((int) $nl['brevo_redirect_page'] > 0 || '' !== trim((string) $nl['brevo_redirect_url'])),
+            // list = Contao newsletter channel, confirmation page = page with the subscribe module
+            'contao' => (int) $nl['brevo_list_id'] > 0 && (int) $nl['brevo_redirect_page'] > 0,
+            default => false,
+        };
     }
 
     public function dataLayer(): bool

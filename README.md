@@ -12,7 +12,7 @@ Built by [NEO Digital](https://neo-digital.at) (Erich Nigg, Graz) for its own we
 
 1. **Address field** – "Check now". Spam protection runs invisibly (ALTCHA on Contao ≥ 5.7, honeypot otherwise).
 2. **Live progress** – six steps with ticks, the remaining seconds, and a screenshot of the checked site with markers on the findings. 60–120 seconds.
-3. **Lead form** – first name, last name, e-mail (required), newsletter checkbox (optional, double opt-in via Brevo). Honest wording: no data, no result.
+3. **Lead form** – first name, last name, e-mail (required), newsletter checkbox (optional, double opt-in via the NEO Brevo module or Contao's newsletter module). Honest wording: no data, no result.
 4. **Result on the page** – overall grade (1–5), four Lighthouse scores, seven graded areas, the three most important measures with effort, what already works, a "talk about it" button.
 5. **E-mail with the PDF report** – and, if configured, a copy to you with the lead data in subject and body.
 
@@ -103,11 +103,7 @@ neo_websitecheck:
         engine: dompdf        # dompdf | gotenberg | none
         gotenberg_url: ''     # e.g. http://gotenberg:3000
     newsletter:
-        provider: none        # none | brevo
-        brevo_api_key: '%env(BREVO_API_KEY)%'
-        brevo_list_id: 0
-        brevo_template_id: 0  # double-opt-in template
-        brevo_redirect_url: 'https://example.com/newsletter/confirmed'
+        provider: auto        # auto | brevo | contao | none (auto: Brevo module if installed, else Contao newsletter)
     tracking:
         data_layer: true      # push events into window.dataLayer
 ```
@@ -153,13 +149,15 @@ Reports go through Contao's mailer (`MAILER_DSN` in `.env`). The visitor receive
 - **gotenberg**: Chromium as a container (`docker run --rm -p 3000:3000 gotenberg/gotenberg:8`), renders the same template pixel-perfect with your fonts. Set `engine: gotenberg` and `gotenberg_url`.
 - **none**: no PDF; the e-mail still contains the grade and the measures.
 
-### Newsletter (Brevo double opt-in)
+### Newsletter (double opt-in)
 
-1. In Brevo: *Contacts → Lists* → note the **list id**. *Campaigns → Templates* → create a **double-opt-in template** (type "Double opt-in confirmation"), note its id.
-2. `provider: brevo`, `brevo_list_id`, `brevo_template_id`, `brevo_redirect_url` (page shown after confirming).
-3. The checkbox text can be changed with `newsletter.label` or the translation key `fe.newsletter`.
+No API key in a configuration file or the environment — the check uses the newsletter system the site already has:
 
-Only when the visitor ticks the box, the bundle calls Brevo's double-opt-in endpoint; the visitor becomes a subscriber after clicking the confirmation link.
+- **NEO Brevo module installed** (`neo-digital/contao-brevo-bundle`): Brevo, with the API key stored in that module (*System → Settings → Brevo Newsletter*). Per configuration (= language) choose the **list**, the **double-opt-in template** (type "Double opt-in confirmation" in Brevo) and the **confirmation page** — lists and templates are read live from the account.
+- **Otherwise Contao's newsletter module** (`contao/newsletter-bundle`): per configuration choose the **newsletter channel** and the **confirmation page** — a page with Contao's *Subscribe* module. The visitor gets Contao's confirmation e-mail (text from that Subscribe module's *subscription message*, else Contao's default) and is activated when clicking the link, exactly like Contao's own sign-up.
+- Neither installed, or `provider: none`: no checkbox, everything else works.
+
+Without a confirmation page there is no checkbox. The checkbox text can be changed with `newsletter.label` or the translation key `fe.newsletter`. Only when the visitor ticks the box a sign-up is started; the visitor becomes a subscriber after clicking the confirmation link.
 
 ## Back-end settings and the visual designer
 
@@ -349,7 +347,7 @@ Entwickelt von [NEO Digital](https://neo-digital.at) (Erich Nigg, Graz) für die
 
 1. **Adressfeld** – „Jetzt prüfen“. Spam-Schutz läuft unsichtbar (ALTCHA ab Contao 5.7, sonst Honeypot).
 2. **Live-Fortschritt** – sechs Schritte mit Häkchen, Restzeit in Sekunden, Screenshot der geprüften Seite mit Markierungen an den Fundstellen. 60–120 Sekunden.
-3. **Kontaktformular** – Vorname, Nachname, E-Mail (Pflicht), Newsletter-Häkchen (freiwillig, Double-Opt-in über Brevo). Ehrlich formuliert: ohne Daten kein Ergebnis.
+3. **Kontaktformular** – Vorname, Nachname, E-Mail (Pflicht), Newsletter-Häkchen (freiwillig, Double-Opt-in über das NEO-Brevo-Modul oder Contaos Newsletter-Modul). Ehrlich formuliert: ohne Daten kein Ergebnis.
 4. **Ergebnis auf der Seite** – Gesamtnote (1–5), vier Lighthouse-Werte, sieben benotete Bereiche, die drei wichtigsten Maßnahmen mit Aufwand, was bereits passt, ein Knopf „Ergebnis besprechen“.
 5. **E-Mail mit PDF-Bericht** – und, wenn konfiguriert, eine Kopie an Sie mit den Kontaktdaten in Betreff und Text.
 
@@ -412,7 +410,7 @@ Die vollständige Beispielkonfiguration steht oben im englischen Teil (`config/c
 - `brand.*` – Name, Person, Telefon, Website, Kontakt- und Datenschutzseite, Logo (PNG/JPG), Porträt, zwei Farben.
 - `limits.*` – Checks je IP und Tag (2), Cache (24 h), Seiten (5), Aufbewahrung (90 Tage).
 - `pdf.*` – `dompdf` (Standard), `gotenberg` oder `none`.
-- `newsletter.*` – Brevo-Listen-ID, Double-Opt-in-Vorlage, Weiterleitung.
+- `newsletter.provider` – `auto` (Standard): mit installiertem NEO-Brevo-Modul Brevo (Schlüssel aus dem Modul), sonst Contaos Newsletter-Modul; `none` = kein Häkchen.
 - `tracking.data_layer` – Ereignisse in `window.dataLayer`.
 
 ### Google-PageSpeed-Schlüssel (kostenlos)
@@ -434,7 +432,7 @@ Kosten je Check meist wenige Cent. Ohne Schlüssel läuft der Check ohne KI.
 
 - Versand über Contaos Mailer (`MAILER_DSN`). Der Besucher bekommt den Bericht mit PDF; `notify_email` bekommt eine zweite E-Mail mit demselben PDF plus Name, E-Mail, Domain, Note und Newsletter-Entscheidung.
 - PDF: `dompdf` (reines PHP; Standardschrift **Arimo**, mitgeliefert, sieht aus und läuft wie Arial; DejaVu und Helvetica unter *Design › Schrift*), `gotenberg` (Chromium-Container, `docker run --rm -p 3000:3000 gotenberg/gotenberg:8`) oder `none`.
-- Newsletter: In Brevo die Listen-ID und eine Double-Opt-in-Vorlage anlegen, IDs eintragen, `provider: brevo`. Nur bei gesetztem Häkchen ruft das Bundle den Double-Opt-in-Endpunkt auf; angemeldet ist der Besucher erst nach dem Klick auf den Bestätigungslink.
+- Newsletter: kein Schlüssel in Konfigurationsdatei oder Umgebung. Mit installiertem NEO-Brevo-Modul läuft die Anmeldung über Brevo mit dem Schlüssel aus diesem Modul (Verteiler, Double-Opt-in-Vorlage und Bestätigungsseite je Konfiguration, live aus Brevo). Ohne Brevo-Modul über Contaos eigenes Newsletter-Modul: Verteiler und Bestätigungsseite (Seite mit dem Modul „Newsletter abonnieren“, dessen Text auch in der Bestätigungsmail steht). Angemeldet ist der Besucher erst nach dem Klick auf den Bestätigungslink.
 
 ## Backend-Einstellungen und der visuelle Designer
 

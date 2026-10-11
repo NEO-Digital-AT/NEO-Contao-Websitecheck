@@ -53,7 +53,9 @@ $l['element_config'] = ['Konfigurace', 'Kterou konfiguraci kontroly webu (texty,
 $l['links_legend'] = 'Stránky tohoto jazyka';
 $l['contact_page'] = ['Kontaktní stránka', 'Cíl tlačítka „Probrat výsledek“ ve formuláři, e-mailu a PDF. Prázdné = kontaktní stránka z nastavení. Obsahový prvek ji může přepsat vlastní stránkou pro přesměrování. Bez stránky (zde ani v nastavení) se tlačítko vynechá – modul nikdy sám žádný odkaz nevytváří.'];
 $l['privacy_page'] = ['Stránka o ochraně osobních údajů', 'Odkaz v kontaktním kroku formuláře, v e-mailu a v PDF. Prázdné = stránka z nastavení. Bez stránky se žádný odkaz nezobrazí – nastavte ji prosím.'];
-$l['newsletter_legend'] = 'Newsletter (Brevo) tohoto jazyka';
+$l['newsletter_legend'] = 'Newsletter tohoto jazyka';
 $l['nl_list_id'] = ['Seznam v Brevo', 'Seznam pro přihlášky z kontroly v tomto jazyce. Prázdné = seznam z konfiguračního souboru (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Šablona dvojitého potvrzení', 'Potvrzovací e-mail v tomto jazyce. Prázdné = šablona z konfiguračního souboru (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Potvrzovací stránka', 'Stránka po kliknutí na potvrzovací odkaz. Prázdné = newsletter.brevo_redirect_url. Bez potvrzovací stránky není přihlášení k newsletteru možné.'];
+$l['nl_list_id_contao'] = ['Kanál newsletteru (Contao)', 'Kanál newsletteru Contao pro přihlášky z kontroly v tomto jazyce.'];
+$l['nl_redirect_page_contao'] = ['Potvrzovací stránka', 'Stránka s modulem Contao „Přihlásit odběr“: potvrzovací odkaz v e-mailu vede tam a aktivuje přihlášku. Text e-mailu pochází z tohoto modulu. Bez potvrzovací stránky se k newsletteru nelze přihlásit.'];

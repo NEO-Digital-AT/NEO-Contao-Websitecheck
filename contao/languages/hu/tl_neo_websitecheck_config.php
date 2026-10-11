@@ -53,7 +53,9 @@ $l['element_config'] = ['Konfiguráció', 'Melyik weboldal-ellenőrzési konfigu
 $l['links_legend'] = 'Az adott nyelv oldalai';
 $l['contact_page'] = ['Kapcsolati oldal', 'A „Beszéljük meg az eredményt” célja az űrlapon, az e-mailben és a PDF-ben. Üres = a beállításokban megadott kapcsolati oldal. A tartalmi elem saját továbbítási oldallal felülírhatja. Oldal nélkül (itt vagy a beállításokban) a gomb elmarad – a csomag soha nem állít be magától hivatkozást.'];
 $l['privacy_page'] = ['Adatvédelmi oldal', 'Hivatkozás az űrlap kapcsolatfelvételi lépésében, az e-mailben és a PDF-ben. Üres = a beállításokban megadott adatvédelmi oldal. Oldal nélkül nem jelenik meg hivatkozás – kérjük, állítsa be.'];
-$l['newsletter_legend'] = 'Az adott nyelv hírlevele (Brevo)';
+$l['newsletter_legend'] = 'Az adott nyelv hírlevele';
 $l['nl_list_id'] = ['Brevo-lista', 'Lista az ezen a nyelven, az ellenőrzésből érkező feliratkozásokhoz. Üres = a konfigurációs fájlban megadott lista (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Dupla megerősítés sablonja', 'Megerősítő e-mail ezen a nyelven. Üres = a konfigurációs fájlban megadott sablon (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Megerősítő oldal', 'A megerősítő hivatkozásra kattintás után megjelenő oldal. Üres = newsletter.brevo_redirect_url. Megerősítő oldal nélkül nincs hírlevél-feliratkozás.'];
+$l['nl_list_id_contao'] = ['Hírlevélcsatorna (Contao)', 'Contao-hírlevélcsatorna az ellenőrzésből érkező feliratkozásokhoz ezen a nyelven.'];
+$l['nl_redirect_page_contao'] = ['Megerősítő oldal', 'Oldal a Contao „Feliratkozás” moduljával: az e-mailben lévő megerősítő link oda vezet, és aktiválja a feliratkozást. Az e-mail szövege ebből a modulból származik. Megerősítő oldal nélkül nincs hírlevél-feliratkozás.'];

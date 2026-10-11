@@ -53,7 +53,9 @@ $l['element_config'] = ['Configuration', 'Which website check configuration (tex
 $l['links_legend'] = 'Pages of this language';
 $l['contact_page'] = ['Contact page', 'Target of “Discuss the result” in the form, e-mail and PDF. Empty = contact page from the settings. The content element can override it with its own redirect page. Without a page (here or in the settings) the button is left out – the bundle never sets a link itself.'];
 $l['privacy_page'] = ['Privacy page', 'Link in the contact step of the form, in e-mail and PDF. Empty = privacy page from the settings. Without a page no link is shown – please set it.'];
-$l['newsletter_legend'] = 'Newsletter (Brevo) of this language';
+$l['newsletter_legend'] = 'Newsletter of this language';
 $l['nl_list_id'] = ['Brevo list', 'List for sign-ups from the check in this language. Empty = list from the configuration file (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Double opt-in template', 'Confirmation e-mail in this language. Empty = template from the configuration file (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Confirmation page', 'Page after clicking the confirmation link. Empty = newsletter.brevo_redirect_url. Without a confirmation page there is no newsletter sign-up.'];
+$l['nl_list_id_contao'] = ['Newsletter channel (Contao)', 'Contao newsletter channel for sign-ups from the check in this language.'];
+$l['nl_redirect_page_contao'] = ['Confirmation page', 'Page with Contao’s “Subscribe” module: the confirmation link in the e-mail leads there and activates the subscription. The e-mail text comes from that module. Without a confirmation page there is no newsletter sign-up.'];

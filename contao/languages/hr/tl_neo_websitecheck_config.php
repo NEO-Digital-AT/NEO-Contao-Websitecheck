@@ -53,7 +53,9 @@ $l['element_config'] = ['Konfiguracija', 'Koju konfiguraciju provjere web-strani
 $l['links_legend'] = 'Stranice ovog jezika';
 $l['contact_page'] = ['Kontaktna stranica', 'Odredište gumba „Razgovarajmo o rezultatu” u obrascu, e-mailu i PDF-u. Prazno = kontaktna stranica iz postavki. Element sadržaja to može nadjačati vlastitom stranicom za preusmjeravanje. Bez stranice (ovdje ili u postavkama) gumb se izostavlja – modul nikada sam ne postavlja poveznicu.'];
 $l['privacy_page'] = ['Stranica o privatnosti', 'Poveznica u kontaktnom koraku obrasca, u e-mailu i PDF-u. Prazno = stranica o privatnosti iz postavki. Bez stranice poveznica se ne prikazuje – molimo postavite je.'];
-$l['newsletter_legend'] = 'Newsletter (Brevo) ovog jezika';
+$l['newsletter_legend'] = 'Newsletter ovog jezika';
 $l['nl_list_id'] = ['Brevo popis', 'Popis za prijave iz provjere na ovom jeziku. Prazno = popis iz konfiguracijske datoteke (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Predložak dvostruke potvrde', 'E-mail za potvrdu na ovom jeziku. Prazno = predložak iz konfiguracijske datoteke (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Stranica potvrde', 'Stranica nakon klika na poveznicu za potvrdu. Prazno = newsletter.brevo_redirect_url. Bez stranice potvrde nema prijave na newsletter.'];
+$l['nl_list_id_contao'] = ['Kanal newslettera (Contao)', 'Contao kanal newslettera za prijave iz provjere na ovom jeziku.'];
+$l['nl_redirect_page_contao'] = ['Stranica potvrde', 'Stranica s Contao modulom „Pretplata”: poveznica za potvrdu u e-poruci vodi onamo i aktivira prijavu. Tekst e-poruke dolazi iz tog modula. Bez stranice potvrde nema prijave na newsletter.'];

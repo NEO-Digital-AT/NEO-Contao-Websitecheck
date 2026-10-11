@@ -11,8 +11,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
- * Optional newsletter opt-in via Brevo's double-opt-in endpoint: the visitor
- * only becomes a subscriber after clicking the confirmation link Brevo sends.
+ * Optional newsletter opt-in via Brevo's double-opt-in endpoint, with the API
+ * key of the NEO Brevo module (back end): the visitor only becomes a subscriber
+ * after clicking the confirmation link Brevo sends.
  * Failures are logged, never shown to the visitor (the report still arrives).
  */
 final class BrevoSubscriber
@@ -36,7 +37,7 @@ final class BrevoSubscriber
      */
     public function subscribe(string $email, string $firstName, string $lastName, int $configId = 0, string $locale = ''): bool
     {
-        if (!$this->isEnabled($configId, $locale)) {
+        if (!$this->isEnabled($configId, $locale) || 'brevo' !== $this->settings->newsletterProvider()) {
             return false;
         }
 

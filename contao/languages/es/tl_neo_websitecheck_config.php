@@ -53,7 +53,9 @@ $l['element_config'] = ['Configuración', 'Qué configuración del análisis web
 $l['links_legend'] = 'Páginas de este idioma';
 $l['contact_page'] = ['Página de contacto', 'Destino de “Comentar el resultado” en el formulario, el correo y el PDF. Vacío = página de contacto de los ajustes. El elemento de contenido puede sustituirla por su propia página de redirección. Sin página (aquí o en los ajustes) el botón no se muestra: el módulo nunca crea un enlace por su cuenta.'];
 $l['privacy_page'] = ['Página de privacidad', 'Enlace en el paso de contacto del formulario, en el correo y en el PDF. Vacío = página de privacidad de los ajustes. Sin página no se muestra ningún enlace, así que indíquela, por favor.'];
-$l['newsletter_legend'] = 'Boletín (Brevo) de este idioma';
+$l['newsletter_legend'] = 'Boletín de este idioma';
 $l['nl_list_id'] = ['Lista de Brevo', 'Lista para las altas desde el análisis en este idioma. Vacío = lista del archivo de configuración (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Plantilla de doble confirmación', 'Correo de confirmación en este idioma. Vacío = plantilla del archivo de configuración (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Página de confirmación', 'Página que se abre tras hacer clic en el enlace de confirmación. Vacío = newsletter.brevo_redirect_url. Sin página de confirmación no hay alta en el boletín.'];
+$l['nl_list_id_contao'] = ['Canal de boletín (Contao)', 'Canal de boletín de Contao para las suscripciones desde el análisis en este idioma.'];
+$l['nl_redirect_page_contao'] = ['Página de confirmación', 'Página con el módulo de Contao «Suscribirse»: el enlace de confirmación del correo lleva allí y activa la suscripción. El texto del correo procede de ese módulo. Sin página de confirmación no hay suscripción al boletín.'];

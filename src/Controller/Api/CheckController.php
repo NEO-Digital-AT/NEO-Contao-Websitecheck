@@ -9,7 +9,7 @@ use Neo\WebsitecheckBundle\Check\CheckRepository;
 use Neo\WebsitecheckBundle\Check\CheckRunner;
 use Neo\WebsitecheckBundle\Check\UrlNormalizer;
 use Neo\WebsitecheckBundle\Mail\ReportMailer;
-use Neo\WebsitecheckBundle\Newsletter\BrevoSubscriber;
+use Neo\WebsitecheckBundle\Newsletter\Subscriber;
 use Neo\WebsitecheckBundle\Settings;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
@@ -37,7 +37,7 @@ final class CheckController
         private readonly CheckRunner $runner,
         private readonly UrlNormalizer $normalizer,
         private readonly ReportMailer $mailer,
-        private readonly BrevoSubscriber $newsletter,
+        private readonly Subscriber $newsletter,
         private readonly Settings $settings,
         private readonly RouterInterface $router,
         private readonly Altcha|null $altcha = null,

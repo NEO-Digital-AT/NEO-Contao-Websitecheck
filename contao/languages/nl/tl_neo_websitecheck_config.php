@@ -53,7 +53,9 @@ $l['element_config'] = ['Configuratie', 'Welke configuratie van de websitecheck 
 $l['links_legend'] = 'Pagina’s in deze taal';
 $l['contact_page'] = ['Contactpagina', 'Doel van “Resultaat bespreken” in het formulier, de e-mail en de pdf. Leeg = contactpagina uit de instellingen. Het inhoudselement kan dit met een eigen doorverwijspagina overschrijven. Zonder pagina (hier of in de instellingen) vervalt de knop – de bundle zet nooit zelf een link.'];
 $l['privacy_page'] = ['Privacypagina', 'Link in de contactstap van het formulier, in de e-mail en in de pdf. Leeg = privacypagina uit de instellingen. Zonder pagina wordt er geen link getoond – stel deze dus in.'];
-$l['newsletter_legend'] = 'Nieuwsbrief (Brevo) in deze taal';
+$l['newsletter_legend'] = 'Nieuwsbrief in deze taal';
 $l['nl_list_id'] = ['Brevo-lijst', 'Lijst voor aanmeldingen via de check in deze taal. Leeg = lijst uit het configuratiebestand (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Template voor dubbele opt-in', 'Bevestigingsmail in deze taal. Leeg = template uit het configuratiebestand (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Bevestigingspagina', 'Pagina na het klikken op de bevestigingslink. Leeg = newsletter.brevo_redirect_url. Zonder bevestigingspagina is er geen aanmelding voor de nieuwsbrief.'];
+$l['nl_list_id_contao'] = ['Nieuwsbriefkanaal (Contao)', 'Contao-nieuwsbriefkanaal voor aanmeldingen via de check in deze taal.'];
+$l['nl_redirect_page_contao'] = ['Bevestigingspagina', 'Pagina met de Contao-module „Abonneren”: de bevestigingslink in de e-mail leidt daarheen en activeert de aanmelding. De e-mailtekst komt uit die module. Zonder bevestigingspagina is er geen aanmelding voor de nieuwsbrief.'];

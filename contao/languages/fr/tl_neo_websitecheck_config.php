@@ -53,7 +53,9 @@ $l['element_config'] = ['Configuration', 'Quelle configuration de l’analyse de
 $l['links_legend'] = 'Pages de cette langue';
 $l['contact_page'] = ['Page de contact', 'Cible de « Discuter du résultat » dans le formulaire, l’e-mail et le PDF. Vide = page de contact des paramètres. L’élément de contenu peut la remplacer par sa propre page de redirection. Sans page (ici ou dans les paramètres), le bouton est omis – l’extension ne crée jamais de lien d’elle-même.'];
 $l['privacy_page'] = ['Page de confidentialité', 'Lien dans l’étape de contact du formulaire, dans l’e-mail et le PDF. Vide = page de confidentialité des paramètres. Sans page, aucun lien n’est affiché – veuillez la définir.'];
-$l['newsletter_legend'] = 'Newsletter (Brevo) de cette langue';
+$l['newsletter_legend'] = 'Newsletter de cette langue';
 $l['nl_list_id'] = ['Liste Brevo', 'Liste pour les inscriptions issues de l’analyse dans cette langue. Vide = liste du fichier de configuration (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Modèle de double opt-in', 'E-mail de confirmation dans cette langue. Vide = modèle du fichier de configuration (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Page de confirmation', 'Page affichée après un clic sur le lien de confirmation. Vide = newsletter.brevo_redirect_url. Sans page de confirmation, pas d’inscription à la newsletter.'];
+$l['nl_list_id_contao'] = ['Liste de diffusion (Contao)', 'Liste de diffusion Contao pour les inscriptions issues de l’analyse dans cette langue.'];
+$l['nl_redirect_page_contao'] = ['Page de confirmation', 'Page contenant le module Contao « S’abonner » : le lien de confirmation de l’e-mail y mène et active l’inscription. Le texte de l’e-mail provient de ce module. Sans page de confirmation, pas d’inscription à la newsletter.'];

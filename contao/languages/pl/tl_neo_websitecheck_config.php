@@ -53,7 +53,9 @@ $l['element_config'] = ['Konfiguracja', 'Której konfiguracji analizy strony (te
 $l['links_legend'] = 'Strony w tym języku';
 $l['contact_page'] = ['Strona kontaktowa', 'Cel przycisku „Omówmy wynik” w formularzu, e-mailu i PDF. Puste = strona kontaktowa z ustawień. Element treści może to nadpisać własną stroną przekierowania. Bez strony (tutaj lub w ustawieniach) przycisk jest pomijany – moduł nigdy sam nie ustawia linku.'];
 $l['privacy_page'] = ['Strona polityki prywatności', 'Link w kroku kontaktowym formularza, w e-mailu i w PDF. Puste = strona polityki prywatności z ustawień. Bez strony link nie jest wyświetlany – prosimy ją ustawić.'];
-$l['newsletter_legend'] = 'Newsletter (Brevo) w tym języku';
+$l['newsletter_legend'] = 'Newsletter w tym języku';
 $l['nl_list_id'] = ['Lista Brevo', 'Lista dla zapisów z analizy w tym języku. Puste = lista z pliku konfiguracyjnego (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Szablon podwójnego potwierdzenia', 'E-mail potwierdzający w tym języku. Puste = szablon z pliku konfiguracyjnego (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Strona potwierdzenia', 'Strona po kliknięciu linku potwierdzającego. Puste = newsletter.brevo_redirect_url. Bez strony potwierdzenia zapis na newsletter nie jest możliwy.'];
+$l['nl_list_id_contao'] = ['Kanał newslettera (Contao)', 'Kanał newslettera Contao dla zapisów z analizy w tym języku.'];
+$l['nl_redirect_page_contao'] = ['Strona potwierdzenia', 'Strona z modułem Contao „Subskrypcja”: link potwierdzający w e-mailu prowadzi tam i aktywuje zapis. Treść e-maila pochodzi z tego modułu. Bez strony potwierdzenia nie ma zapisu do newslettera.'];

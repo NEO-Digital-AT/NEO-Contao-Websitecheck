@@ -53,7 +53,9 @@ $l['element_config'] = ['Configurazione', 'Quale configurazione del check (testi
 $l['links_legend'] = 'Pagine di questa lingua';
 $l['contact_page'] = ['Pagina di contatto', 'Destinazione di «Parliamo del risultato» nel modulo, nell’e-mail e nel PDF. Vuoto = pagina di contatto delle impostazioni. L’elemento di contenuto può sostituirla con una propria pagina di inoltro. Senza una pagina (qui o nelle impostazioni) il pulsante viene omesso – il modulo non imposta mai un link da solo.'];
 $l['privacy_page'] = ['Pagina della privacy', 'Link nel passaggio di contatto del modulo, nell’e-mail e nel PDF. Vuoto = pagina della privacy delle impostazioni. Senza una pagina non viene mostrato alcun link – La preghiamo di impostarla.'];
-$l['newsletter_legend'] = 'Newsletter (Brevo) di questa lingua';
+$l['newsletter_legend'] = 'Newsletter di questa lingua';
 $l['nl_list_id'] = ['Lista Brevo', 'Lista per le iscrizioni dal check in questa lingua. Vuoto = lista del file di configurazione (newsletter.brevo_list_id).'];
 $l['nl_template_id'] = ['Modello doppio opt-in', 'E-mail di conferma in questa lingua. Vuoto = modello del file di configurazione (newsletter.brevo_template_id).'];
 $l['nl_redirect_page'] = ['Pagina di conferma', 'Pagina mostrata dopo il clic sul link di conferma. Vuoto = newsletter.brevo_redirect_url. Senza pagina di conferma non c’è iscrizione alla newsletter.'];
+$l['nl_list_id_contao'] = ['Canale newsletter (Contao)', 'Canale newsletter di Contao per le iscrizioni dal check in questa lingua.'];
+$l['nl_redirect_page_contao'] = ['Pagina di conferma', 'Pagina con il modulo Contao «Iscrizione»: il link di conferma nell’e-mail porta lì e attiva l’iscrizione. Il testo dell’e-mail proviene da quel modulo. Senza pagina di conferma non c’è iscrizione alla newsletter.'];
