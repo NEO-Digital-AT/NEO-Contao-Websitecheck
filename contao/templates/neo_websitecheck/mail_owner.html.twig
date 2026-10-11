@@ -7,6 +7,7 @@
     <b style="color:{{ p }};">{{ 'mail.owner_lead_title'|trans }}</b><br>
     {{ first_name }} {{ last_name }} · <a href="mailto:{{ email }}" style="color:{{ p }};">{{ email }}</a><br>
     {{ result.domain }} · {{ 'report.grade_line'|trans({'%grade%': result.grade, '%word%': result.gradeWord}) }}<br>
+    {{ 'mail.owner_contact'|trans }}: {{ (contact|default(false) ? 'word.yes' : 'word.no')|trans }}<br>
     {{ 'mail.owner_newsletter'|trans }}: {{ (newsletter ? 'word.yes' : 'word.no')|trans }}
   </td></tr></table>
   <p style="margin:0 0 10px;"><b>{{ 'mail.owner_areas'|trans }}</b></p>

@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Double opt-in template', 'Confirmation e-mail in this l
 $l['nl_redirect_page'] = ['Confirmation page', 'Page after clicking the confirmation link. Empty = newsletter.brevo_redirect_url. Without a confirmation page there is no newsletter sign-up.'];
 $l['nl_list_id_contao'] = ['Newsletter channel (Contao)', 'Contao newsletter channel for sign-ups from the check in this language.'];
 $l['nl_redirect_page_contao'] = ['Confirmation page', 'Page with Contao’s “Subscribe” module: the confirmation link in the e-mail leads there and activates the subscription. The e-mail text comes from that module. Without a confirmation page there is no newsletter sign-up.'];
+$l['ask_contact'] = ['Ask for contact permission', 'Shows the optional box "You may contact me once by e-mail about this result" in the form. Wording and time are stored with the check.'];
+$l['fe_contact'] = ['Text of the "contact me once" box', ''];

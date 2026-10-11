@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'The report for %s wa
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'The report could not be sent: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Delete', 'Delete check ID %s'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Details', 'Show details of check ID %s'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['One-time contact allowed', 'The visitor allowed one e-mail about this result (wording and time stored with the check).'];

@@ -98,6 +98,9 @@
           <div class="nwc__field"><label for="{{ i }}-ln">{{ 'fe.lastname'|trans }}*</label><input id="{{ i }}-ln" name="lastname" required autocomplete="family-name" aria-describedby="{{ i }}-ln-err"><p id="{{ i }}-ln-err" class="nwc__err" hidden>{{ 'fe.err_lastname'|trans }}</p></div>
           <div class="nwc__field nwc__field--full"><label for="{{ i }}-em">{{ 'fe.email'|trans }}*</label><input id="{{ i }}-em" name="email" type="email" required autocomplete="email" aria-describedby="{{ i }}-em-err"><p id="{{ i }}-em-err" class="nwc__err" hidden>{{ 'fe.err_email'|trans }}</p></div>
         </div>
+        {% if ask_contact|default(false) %}
+          <label class="nwc__check"><input type="checkbox" id="{{ i }}-ct" name="contact" value="1"><span>{{ wc_text('fe.contact', vars, lang) }} <small>{{ 'fe.optional'|trans }}</small></span></label>
+        {% endif %}
         {% if newsletter %}
           <label class="nwc__check"><input type="checkbox" id="{{ i }}-nl" name="newsletter" value="1"><span>{{ newsletter_label ?: wc_text('fe.newsletter', vars, lang) }} <small>{{ 'fe.optional'|trans }}</small></span></label>
         {% endif %}

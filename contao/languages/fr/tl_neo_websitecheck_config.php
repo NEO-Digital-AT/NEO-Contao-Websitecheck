@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Modèle de double opt-in', 'E-mail de confirmation dans
 $l['nl_redirect_page'] = ['Page de confirmation', 'Page affichée après un clic sur le lien de confirmation. Vide = newsletter.brevo_redirect_url. Sans page de confirmation, pas d’inscription à la newsletter.'];
 $l['nl_list_id_contao'] = ['Liste de diffusion (Contao)', 'Liste de diffusion Contao pour les inscriptions issues de l’analyse dans cette langue.'];
 $l['nl_redirect_page_contao'] = ['Page de confirmation', 'Page contenant le module Contao « S’abonner » : le lien de confirmation de l’e-mail y mène et active l’inscription. Le texte de l’e-mail provient de ce module. Sans page de confirmation, pas d’inscription à la newsletter.'];
+$l['ask_contact'] = ['Demander l’autorisation de contact', 'Affiche dans le formulaire la case facultative « Vous pouvez me contacter une fois par e-mail au sujet de ce résultat ». Le libellé et l’heure sont enregistrés avec le check.'];
+$l['fe_contact'] = ['Texte de la case « contacter une fois »', ''];

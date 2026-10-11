@@ -11,6 +11,7 @@ use Neo\WebsitecheckBundle\Check\UrlNormalizer;
 use Neo\WebsitecheckBundle\Mail\ReportMailer;
 use Neo\WebsitecheckBundle\Newsletter\Subscriber;
 use Neo\WebsitecheckBundle\Settings;
+use Neo\WebsitecheckBundle\Text\TextProvider;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -42,6 +43,7 @@ final class CheckController
         private readonly RouterInterface $router,
         private readonly Altcha|null $altcha = null,
         private readonly LoggerInterface|null $logger = null,
+        private readonly TextProvider|null $texts = null,
     ) {
     }
 
@@ -134,15 +136,29 @@ final class CheckController
         }
 
         $newsletter = !empty($payload['newsletter']) && $this->settings->newsletterEnabled((int) $row['config_id'], (string) $row['locale']);
+        $contact = !empty($payload['contact']) && $this->settings->askContact((int) $row['config_id'], (string) $row['locale']);
 
         if (!$row['claimed']) {
-            $this->repository->update($id, [
+            $update = [
                 'firstname' => $first,
                 'lastname' => $last,
                 'email' => $email,
+                'contact' => $contact ? '1' : '',
                 'newsletter' => $newsletter ? '1' : '',
                 'claimed' => time(),
-            ]);
+            ];
+
+            if ($contact) {
+                // Proof of consent: the wording the visitor saw and when they agreed.
+                $data = $row['data'];
+                $data['consent']['contact'] = [
+                    'time' => time(),
+                    'text' => (string) $this->texts?->get('fe.contact', (string) $row['locale'], ['config_id' => (int) $row['config_id']]),
+                ];
+                $update['data'] = $data;
+            }
+
+            $this->repository->update($id, $update);
             $row = $this->repository->find($id);
         }
 

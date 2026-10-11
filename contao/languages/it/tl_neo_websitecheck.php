@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'Il report per %s è 
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'Non è stato possibile inviare il report: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Elimina', 'Elimina il check ID %s'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Dettagli', 'Mostra i dettagli del check ID %s'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Contatto unico consentito', 'Il visitatore ha consentito un’e-mail su questo risultato (testo e ora salvati con il check).'];

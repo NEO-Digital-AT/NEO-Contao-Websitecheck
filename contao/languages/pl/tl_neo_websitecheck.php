@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'Raport dla %s zosta�
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'Nie udało się wysłać raportu: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Usuń', 'Usuń analizę o ID %s'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Szczegóły', 'Pokaż szczegóły analizy o ID %s'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Zgoda na jednorazowy kontakt', 'Odwiedzający zgodził się na jeden e-mail w sprawie tego wyniku (treść i czas zapisane przy checku).'];

@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Predložak dvostruke potvrde', 'E-mail za potvrdu na ov
 $l['nl_redirect_page'] = ['Stranica potvrde', 'Stranica nakon klika na poveznicu za potvrdu. Prazno = newsletter.brevo_redirect_url. Bez stranice potvrde nema prijave na newsletter.'];
 $l['nl_list_id_contao'] = ['Kanal newslettera (Contao)', 'Contao kanal newslettera za prijave iz provjere na ovom jeziku.'];
 $l['nl_redirect_page_contao'] = ['Stranica potvrde', 'Stranica s Contao modulom „Pretplata”: poveznica za potvrdu u e-poruci vodi onamo i aktivira prijavu. Tekst e-poruke dolazi iz tog modula. Bez stranice potvrde nema prijave na newsletter.'];
+$l['ask_contact'] = ['Tražiti dopuštenje za kontakt', 'U obrascu prikazuje dobrovoljni okvir „Možete me jednom kontaktirati e-mailom u vezi s ovim rezultatom”. Tekst i vrijeme spremaju se uz provjeru.'];
+$l['fe_contact'] = ['Tekst okvira „jednokratni kontakt”', ''];

@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'Izvještaj za %s pon
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'Izvještaj nije bilo moguće poslati: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Izbriši', 'Izbriši provjeru ID %s'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Pojedinosti', 'Prikaži pojedinosti provjere ID %s'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Jednokratni kontakt dopušten', 'Posjetitelj je dopustio jedan e-mail u vezi s ovim rezultatom (tekst i vrijeme spremljeni uz provjeru).'];

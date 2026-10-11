@@ -132,6 +132,9 @@ final class ReportMailer
             '%newsletter%' => $this->translator->trans('1' === (string) $row['newsletter'] ? 'word.yes' : 'word.no', [], 'neo_websitecheck', $locale),
         ], 'neo_websitecheck', $locale);
 
+        $lead .= "\n".$this->translator->trans('mail.owner_contact', [], 'neo_websitecheck', $locale).': '
+            .$this->translator->trans('1' === (string) ($row['contact'] ?? '') ? 'word.yes' : 'word.no', [], 'neo_websitecheck', $locale);
+
         return $lead."\n\n".$text;
     }
 

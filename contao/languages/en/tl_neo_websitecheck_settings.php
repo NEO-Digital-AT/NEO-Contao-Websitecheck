@@ -39,3 +39,18 @@ $l['preview_mail'] = ['Preview e-mail', 'Render the report e-mail with the last 
 $l['textsButton'] = 'Edit configurations (%d)';
 $l['textsNone'] = 'No configuration yet. Create one per language: that is where you design the e-mail and the PDF report, subject, sender and the element texts. Until then the bundled templates apply.';
 $l['textsList'] = 'Existing: %s';
+
+$l['api_legend'] = 'Keys and AI';
+$l['api_info'] = 'Where the keys come from';
+$l['psi_api_key'] = ['PageSpeed key', 'Google API key for PageSpeed Insights (load-time measurement). Stored encrypted and never shown again; leave empty to keep the stored key.'];
+$l['ai_api_key'] = ['AI key', 'Key of the AI provider (e.g. Requesty) for the "through a visitor\'s eyes" review. Stored encrypted; leave empty to keep it.'];
+$l['ai_model'] = ['AI model', 'Once an AI key is known, a selection of the provider\'s models. Empty = value from the server configuration.'];
+$l['ai_base_url'] = ['AI provider address', 'OpenAI-compatible address, e.g. https://router.eu.requesty.ai/v1. Empty = server configuration.'];
+$l['apiIntro'] = 'Values entered here take precedence over the server configuration (config.yaml / environment). Whatever is empty here comes from there.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'AI';
+$l['apiModel'] = 'Model in use';
+$l['apiFromDb'] = 'stored here in the back end';
+$l['apiFromConfig'] = 'from the server configuration';
+$l['apiMissing'] = 'missing — this part of the check is skipped';
+$l['modelFromConfig'] = '– server configuration (%s) –';

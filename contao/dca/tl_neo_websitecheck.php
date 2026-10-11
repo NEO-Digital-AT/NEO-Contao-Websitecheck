@@ -63,7 +63,7 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck'] = [
         ],
     ],
     'palettes' => [
-        'default' => '{check_legend},domain,url,status,grade,created,finished;{lead_legend},firstname,lastname,email,newsletter,claimed;{result_legend},summary',
+        'default' => '{check_legend},domain,url,status,grade,created,finished;{lead_legend},firstname,lastname,email,contact,newsletter,claimed;{result_legend},summary',
     ],
     'fields' => [
         'id' => ['sql' => 'int(10) unsigned NOT NULL auto_increment'],
@@ -134,6 +134,13 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 255, 'rgxp' => 'email', 'tl_class' => 'w50'],
             'sql' => "varchar(255) NOT NULL default ''",
+        ],
+        // Visitor allowed one personal follow-up about this result (consent text and time in data.consent).
+        'contact' => [
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'eval' => ['readonly' => true, 'tl_class' => 'w50 m12'],
+            'sql' => "char(1) NOT NULL default ''",
         ],
         'newsletter' => [
             'filter' => true,

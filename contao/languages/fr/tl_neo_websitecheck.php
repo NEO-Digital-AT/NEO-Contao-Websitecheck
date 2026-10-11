@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'Le rapport pour %s a
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'Le rapport n’a pas pu être envoyé : %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Supprimer', 'Supprimer l’analyse ID %s'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Détails', 'Afficher les détails de l’analyse ID %s'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Contact unique autorisé', 'Le visiteur a autorisé un e-mail au sujet de ce résultat (libellé et heure enregistrés avec le check).'];

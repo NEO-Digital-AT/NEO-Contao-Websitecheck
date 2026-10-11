@@ -57,6 +57,8 @@ $fields['nl_list_id'] = ['inputType' => 'select', 'options_callback' => [\Neo\We
 $fields['nl_template_id'] = ['inputType' => 'select', 'options_callback' => [\Neo\WebsitecheckBundle\Newsletter\BrevoOptions::class, 'templates'], 'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'], 'sql' => 'int(10) unsigned NOT NULL default 0'];
 $fields['nl_redirect_page'] = $pageField;
 
+// Optional box "you may contact me once about this result" in the lead form.
+$fields['ask_contact'] = ['inputType' => 'checkbox', 'eval' => ['tl_class' => 'w50 m12'], 'sql' => "char(1) NOT NULL default '1'"];
 $fields['fe_result'] = ['inputType' => 'select', 'options' => ['compact', 'full'], 'reference' => &$GLOBALS['TL_LANG']['tl_neo_websitecheck_config']['fe_result_options'], 'eval' => ['tl_class' => 'w50 clr'], 'sql' => "varchar(16) NOT NULL default 'compact'"];
 
 // Texts of the front-end element (short snippets, placeholders allowed).
@@ -103,7 +105,7 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_config'] = [
             .'{pdf_design_legend},pdf_design,pdf_body;'
             .'{newsletter_legend:hide},nl_list_id,nl_template_id,nl_redirect_page;'
             .'{owner_legend:hide},mail_owner_subject;'
-            .'{element_legend:hide},fe_result,'.implode(',', TextProvider::columns('fe')).';'
+            .'{element_legend:hide},fe_result,ask_contact,'.implode(',', TextProvider::columns('fe')).';'
             .'{expert_legend:hide},owner_body',
     ],
     'fields' => $fields,

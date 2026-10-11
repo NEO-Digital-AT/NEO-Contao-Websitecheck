@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Szablon podwójnego potwierdzenia', 'E-mail potwierdzaj
 $l['nl_redirect_page'] = ['Strona potwierdzenia', 'Strona po kliknięciu linku potwierdzającego. Puste = newsletter.brevo_redirect_url. Bez strony potwierdzenia zapis na newsletter nie jest możliwy.'];
 $l['nl_list_id_contao'] = ['Kanał newslettera (Contao)', 'Kanał newslettera Contao dla zapisów z analizy w tym języku.'];
 $l['nl_redirect_page_contao'] = ['Strona potwierdzenia', 'Strona z modułem Contao „Subskrypcja”: link potwierdzający w e-mailu prowadzi tam i aktywuje zapis. Treść e-maila pochodzi z tego modułu. Bez strony potwierdzenia nie ma zapisu do newslettera.'];
+$l['ask_contact'] = ['Pytać o zgodę na kontakt', 'Pokazuje w formularzu dobrowolne pole „Możecie Państwo jednorazowo skontaktować się ze mną e-mailem”. Treść i czas są zapisywane przy checku.'];
+$l['fe_contact'] = ['Tekst pola „jednorazowy kontakt”', ''];

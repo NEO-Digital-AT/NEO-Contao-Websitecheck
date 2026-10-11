@@ -39,3 +39,18 @@ $l['preview_mail'] = ['Vista previa del correo', 'Generar el correo del informe 
 $l['textsButton'] = 'Editar configuraciones (%d)';
 $l['textsNone'] = 'Todavía no hay ninguna configuración. Cree una por idioma: ahí se diseñan el correo y el informe PDF, el asunto, el remitente y los textos del elemento. Mientras tanto se aplican las plantillas incluidas.';
 $l['textsList'] = 'Existentes: %s';
+
+$l['api_legend'] = 'Claves e IA';
+$l['api_info'] = 'De dónde vienen las claves';
+$l['psi_api_key'] = ['Clave de PageSpeed', 'Clave de la API de Google para PageSpeed Insights (medición del tiempo de carga). Se guarda cifrada y no se vuelve a mostrar; dejar vacío para conservar la clave guardada.'];
+$l['ai_api_key'] = ['Clave de IA', 'Clave del proveedor de IA (p. ej. Requesty) para la valoración «con los ojos de un visitante». Se guarda cifrada; dejar vacío para conservarla.'];
+$l['ai_model'] = ['Modelo de IA', 'En cuanto se conoce una clave de IA, selección entre los modelos del proveedor. Vacío = valor de la configuración del servidor.'];
+$l['ai_base_url'] = ['Dirección del proveedor de IA', 'Dirección compatible con OpenAI, p. ej. https://router.eu.requesty.ai/v1. Vacío = configuración del servidor.'];
+$l['apiIntro'] = 'Los valores introducidos aquí prevalecen sobre la configuración del servidor (config.yaml / entorno). Lo que aquí está vacío viene de allí.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'IA';
+$l['apiModel'] = 'Modelo en uso';
+$l['apiFromDb'] = 'guardada aquí en el back end';
+$l['apiFromConfig'] = 'de la configuración del servidor';
+$l['apiMissing'] = 'falta — esta parte del check se omite';
+$l['modelFromConfig'] = '– configuración del servidor (%s) –';

@@ -20,6 +20,17 @@ services:
             $db: '@Neo\WebsitecheckBundle\Check\SettingsRepository'
             # Optional: the NEO Brevo module's API key (back end). Absent → Contao newsletter module.
             $brevoKeys: '@?Neo\BrevoNewsletterBundle\Brevo\ApiKeyResolver'
+            $cipher: '@Neo\WebsitecheckBundle\Security\SecretCipher'
+
+    # API keys (PageSpeed, AI provider) are stored encrypted in the settings record.
+    Neo\WebsitecheckBundle\Security\SecretCipher:
+        arguments:
+            $secret: '%kernel.secret%'
+
+    Neo\WebsitecheckBundle\Check\ModelCatalog:
+        arguments:
+            $httpClient: '@neo_websitecheck.api_client'
+            $cache: '@cache.app'
 
     # Dedicated HTTP clients. Slow small-business servers exist (one tested start
     # page needed 21 s): wait up to 35 s, the slowness then shows in the report.

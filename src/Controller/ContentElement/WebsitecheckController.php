@@ -92,6 +92,7 @@ final class WebsitecheckController extends AbstractContentElementController
         // Result on the page: short (grade, one or two sentences, PDF hint) or the full overview.
         $template->set('result_mode', 'full' === ($configRow['fe_result'] ?? '') ? 'full' : 'compact');
         $template->set('newsletter', $this->settings->newsletterEnabled($configId, $lang));
+        $template->set('ask_contact', $this->settings->askContact($configId, $lang));
         $template->set('newsletter_label', (string) ($this->settings->newsletter()['label'] ?? ''));
         $template->set('altcha', null !== $this->altcha);
         $template->set('element_id', 'wc'.(int) ($model->row()['id'] ?? 0));

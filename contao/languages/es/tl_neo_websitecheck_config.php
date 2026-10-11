@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Plantilla de doble confirmación', 'Correo de confirmac
 $l['nl_redirect_page'] = ['Página de confirmación', 'Página que se abre tras hacer clic en el enlace de confirmación. Vacío = newsletter.brevo_redirect_url. Sin página de confirmación no hay alta en el boletín.'];
 $l['nl_list_id_contao'] = ['Canal de boletín (Contao)', 'Canal de boletín de Contao para las suscripciones desde el análisis en este idioma.'];
 $l['nl_redirect_page_contao'] = ['Página de confirmación', 'Página con el módulo de Contao «Suscribirse»: el enlace de confirmación del correo lleva allí y activa la suscripción. El texto del correo procede de ese módulo. Sin página de confirmación no hay suscripción al boletín.'];
+$l['ask_contact'] = ['Pedir permiso de contacto', 'Muestra en el formulario la casilla opcional «Pueden contactarme una vez por correo electrónico sobre este resultado». El texto y la hora se guardan con el check.'];
+$l['fe_contact'] = ['Texto de la casilla «contactar una vez»', ''];

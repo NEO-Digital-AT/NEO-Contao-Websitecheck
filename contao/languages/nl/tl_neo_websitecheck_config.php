@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Template voor dubbele opt-in', 'Bevestigingsmail in dez
 $l['nl_redirect_page'] = ['Bevestigingspagina', 'Pagina na het klikken op de bevestigingslink. Leeg = newsletter.brevo_redirect_url. Zonder bevestigingspagina is er geen aanmelding voor de nieuwsbrief.'];
 $l['nl_list_id_contao'] = ['Nieuwsbriefkanaal (Contao)', 'Contao-nieuwsbriefkanaal voor aanmeldingen via de check in deze taal.'];
 $l['nl_redirect_page_contao'] = ['Bevestigingspagina', 'Pagina met de Contao-module „Abonneren”: de bevestigingslink in de e-mail leidt daarheen en activeert de aanmelding. De e-mailtekst komt uit die module. Zonder bevestigingspagina is er geen aanmelding voor de nieuwsbrief.'];
+$l['ask_contact'] = ['Toestemming voor contact vragen', 'Toont in het formulier het vrijwillige vinkje „U mag mij één keer per e-mail over dit resultaat benaderen”. Tekst en tijdstip worden bij de check opgeslagen.'];
+$l['fe_contact'] = ['Tekst van het vinkje „één keer contact”', ''];

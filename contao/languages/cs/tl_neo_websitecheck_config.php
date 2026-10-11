@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Šablona dvojitého potvrzení', 'Potvrzovací e-mail v
 $l['nl_redirect_page'] = ['Potvrzovací stránka', 'Stránka po kliknutí na potvrzovací odkaz. Prázdné = newsletter.brevo_redirect_url. Bez potvrzovací stránky není přihlášení k newsletteru možné.'];
 $l['nl_list_id_contao'] = ['Kanál newsletteru (Contao)', 'Kanál newsletteru Contao pro přihlášky z kontroly v tomto jazyce.'];
 $l['nl_redirect_page_contao'] = ['Potvrzovací stránka', 'Stránka s modulem Contao „Přihlásit odběr“: potvrzovací odkaz v e-mailu vede tam a aktivuje přihlášku. Text e-mailu pochází z tohoto modulu. Bez potvrzovací stránky se k newsletteru nelze přihlásit.'];
+$l['ask_contact'] = ['Ptát se na souhlas s kontaktem', 'Zobrazí ve formuláři dobrovolné zaškrtávací pole „Můžete mě k tomuto výsledku jednou kontaktovat e-mailem“. Znění a čas se uloží ke kontrole.'];
+$l['fe_contact'] = ['Text pole „jednou kontaktovat“', ''];

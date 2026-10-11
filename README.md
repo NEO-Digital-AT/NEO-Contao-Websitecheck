@@ -12,7 +12,7 @@ Built by [NEO Digital](https://neo-digital.at) (Erich Nigg, Graz) for its own we
 
 1. **Address field** – "Check now". Spam protection runs invisibly (ALTCHA on Contao ≥ 5.7, honeypot otherwise).
 2. **Live progress** – six steps with ticks, the remaining seconds, and a screenshot of the checked site with markers on the findings. 60–120 seconds.
-3. **Lead form** – first name, last name, e-mail (required), newsletter checkbox (optional, double opt-in via the NEO Brevo module or Contao's newsletter module). Honest wording: no data, no result.
+3. **Lead form** – first name, last name, e-mail (required), permission for one follow-up e-mail (optional, wording and time stored), newsletter checkbox (optional, double opt-in via the NEO Brevo module or Contao's newsletter module). Honest wording: no data, no result.
 4. **Result on the page** – overall grade (1–5), four Lighthouse scores, seven graded areas, the three most important measures with effort, what already works, a "talk about it" button.
 5. **E-mail with the PDF report** – and, if configured, a copy to you with the lead data in subject and body.
 
@@ -108,7 +108,7 @@ neo_websitecheck:
         data_layer: true      # push events into window.dataLayer
 ```
 
-Every key is optional; the defaults above (minus the keys) are built in. Add the secrets to `.env.local`:
+Every key is optional; the defaults above (minus the keys) are built in. **Keys belong in the back end:** *Website check → Settings → Keys and AI* (PageSpeed key, AI key, AI model, provider address; keys stored encrypted). The configuration below is only the fallback for empty fields — existing values are taken over into the back end once by a migration. If you prefer the environment, add the secrets to `.env.local`:
 
 ```
 NEO_WEBSITECHECK_PSI_KEY=AIza...
@@ -121,7 +121,7 @@ BREVO_API_KEY=...
 1. Open the [Google Cloud Console](https://console.cloud.google.com/), create a project (or pick one).
 2. *APIs & Services → Library* → search **PageSpeed Insights API** → *Enable*.
 3. *APIs & Services → Credentials → Create credentials → API key*. Restrict the key to the PageSpeed Insights API (recommended).
-4. Put the key into `NEO_WEBSITECHECK_PSI_KEY`.
+4. Enter the key in *Settings → Keys and AI* (or `NEO_WEBSITECHECK_PSI_KEY`).
 
 The free quota is 25,000 queries per day; one check uses three to four queries.
 
@@ -193,7 +193,7 @@ Everything a visitor sees is edited in the back end under **NEO › Website chec
 
 **Languages the Contao way:** the content element has a **Configuration** field. *Automatic* uses the configuration whose language matches the page; or pick one explicitly (e.g. a second German configuration for a campaign). The check remembers its configuration, so the e-mail and PDF match the page the visitor used.
 
-API keys, the PDF engine and the newsletter provider stay in `config.yaml` (technical, not editorial). Non-admin groups need the module and the tables `tl_neo_websitecheck_settings` and `tl_neo_websitecheck_config`.
+The PDF engine and the newsletter provider stay in `config.yaml` (technical, not editorial); API keys and the AI model are set in the settings (config.yaml as fallback). Non-admin groups need the module and the tables `tl_neo_websitecheck_settings` and `tl_neo_websitecheck_config`.
 
 ## Local test stand (Docker)
 
@@ -292,7 +292,7 @@ The JavaScript dispatches a DOM event `neo_websitecheck` on `document` (`event.d
 | `check_start` | address submitted | `domain`, `cached` |
 | `check_gate` | result ready, lead form shown | `domain` |
 | `check_abandon` | page left while the lead form was open | `domain` |
-| `check_lead` | lead form submitted | `domain`, `newsletter` (0/1) |
+| `check_lead` | lead form submitted | `domain`, `newsletter` (0/1), `contact` (0/1) |
 | `check_result` | result shown | `domain`, `grade` |
 
 Example without GTM, sending to GA4 only after consent:

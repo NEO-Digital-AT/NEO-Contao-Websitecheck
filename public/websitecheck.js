@@ -172,11 +172,12 @@
       var btn = leadForm.querySelector('button[type="submit"]'), leadErr = $('[data-nwc-lead-err]');
       btn.disabled = true; showErr(leadErr, '');
       var nl = leadForm.elements.newsletter && leadForm.elements.newsletter.checked ? 1 : 0;
-      api('POST', cfg.claim.replace(/0(\/claim)$/, job.id + '$1'), { token: job.token, firstname: leadForm.elements.firstname.value.trim(), lastname: leadForm.elements.lastname.value.trim(), email: leadForm.elements.email.value.trim(), newsletter: nl })
+      var ct = leadForm.elements.contact && leadForm.elements.contact.checked ? 1 : 0;
+      api('POST', cfg.claim.replace(/0(\/claim)$/, job.id + '$1'), { token: job.token, firstname: leadForm.elements.firstname.value.trim(), lastname: leadForm.elements.lastname.value.trim(), email: leadForm.elements.email.value.trim(), newsletter: nl, contact: ct })
         .then(function (j) {
           btn.disabled = false;
           if (!j || j.error) { showErr(leadErr, errText(j)); return; }
-          track('check_lead', { domain: domain, newsletter: nl });
+          track('check_lead', { domain: domain, newsletter: nl, contact: ct });
           renderResult(j.result, j.mailSent, leadForm.elements.email.value.trim());
         }).catch(function () { btn.disabled = false; showErr(leadErr, i18n.err_generic); });
     });

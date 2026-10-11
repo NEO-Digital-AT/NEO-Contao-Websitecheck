@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'Zpráva pro %s byla 
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'Zprávu se nepodařilo odeslat: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Smazat', 'Smazat kontrolu ID %s'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Podrobnosti', 'Zobrazit podrobnosti kontroly ID %s'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Jednorázový kontakt povolen', 'Návštěvník povolil jeden e-mail k tomuto výsledku (znění a čas uloženy u kontroly).'];

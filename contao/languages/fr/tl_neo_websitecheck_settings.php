@@ -39,3 +39,18 @@ $l['preview_mail'] = ['Aperçu de l’e-mail', 'Générer l’e-mail de rapport 
 $l['textsButton'] = 'Modifier les configurations (%d)';
 $l['textsNone'] = 'Aucune configuration pour l’instant. Créez-en une par langue : c’est là que vous concevez l’e-mail et le rapport PDF, l’objet, l’expéditeur et les textes de l’élément. D’ici là, les templates fournis avec l’extension s’appliquent.';
 $l['textsList'] = 'Existantes : %s';
+
+$l['api_legend'] = 'Clés et IA';
+$l['api_info'] = 'Provenance des clés';
+$l['psi_api_key'] = ['Clé PageSpeed', 'Clé API Google pour PageSpeed Insights (mesure du temps de chargement). Enregistrée chiffrée et jamais réaffichée ; laisser vide pour conserver la clé enregistrée.'];
+$l['ai_api_key'] = ['Clé IA', 'Clé du fournisseur d\'IA (p. ex. Requesty) pour l\'évaluation « avec les yeux d\'un visiteur ». Enregistrée chiffrée ; laisser vide pour la conserver.'];
+$l['ai_model'] = ['Modèle IA', 'Dès qu\'une clé IA est connue, choix parmi les modèles du fournisseur. Vide = valeur de la configuration serveur.'];
+$l['ai_base_url'] = ['Adresse du fournisseur IA', 'Adresse compatible OpenAI, p. ex. https://router.eu.requesty.ai/v1. Vide = configuration serveur.'];
+$l['apiIntro'] = 'Les valeurs saisies ici priment sur la configuration serveur (config.yaml / environnement). Ce qui est vide ici en provient.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'IA';
+$l['apiModel'] = 'Modèle utilisé';
+$l['apiFromDb'] = 'enregistrée ici dans le back office';
+$l['apiFromConfig'] = 'issue de la configuration serveur';
+$l['apiMissing'] = 'manquante — cette partie du check est ignorée';
+$l['modelFromConfig'] = '– configuration serveur (%s) –';

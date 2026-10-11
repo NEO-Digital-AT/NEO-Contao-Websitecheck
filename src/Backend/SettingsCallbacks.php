@@ -12,7 +12,10 @@ use Doctrine\DBAL\Connection;
 use Contao\CoreBundle\Intl\Locales;
 use Neo\WebsitecheckBundle\Design\Presets;
 use Neo\WebsitecheckBundle\I18n\AiCatalogue;
+use Neo\WebsitecheckBundle\Check\ModelCatalog;
 use Neo\WebsitecheckBundle\Lang;
+use Neo\WebsitecheckBundle\Security\SecretCipher;
+use Neo\WebsitecheckBundle\Settings;
 use Symfony\Component\Translation\TranslatorBagInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -24,6 +27,8 @@ use Twig\Error\Error;
  */
 final class SettingsCallbacks
 {
+    private const MASK = '••••••••';
+
     public function __construct(
         private readonly Connection $db,
         private readonly Security $security,
@@ -32,7 +37,86 @@ final class SettingsCallbacks
         private readonly Locales $locales,
         private readonly AiCatalogue $catalogue,
         private readonly TranslatorInterface $translator,
+        private readonly Settings $settings,
+        private readonly SecretCipher $cipher,
+        private readonly ModelCatalog $models,
     ) {
+    }
+
+    /** Load callback of the key fields: a mask for a stored key, never the key itself. */
+    public function maskSecret(mixed $value): string
+    {
+        return '' !== (string) $value ? self::MASK : '';
+    }
+
+    /** Save callback of the key fields: an empty field or the unchanged mask keeps the stored key; a new one is stored encrypted. */
+    public function encryptSecret(mixed $value, DataContainer $dc): string
+    {
+        $value = trim(str_replace(self::MASK, '', (string) $value));
+
+        if ('' === $value) {
+            return (string) $this->db->fetchOne('SELECT '.$dc->field.' FROM tl_neo_websitecheck_settings WHERE id = ?', [(int) $dc->id]);
+        }
+
+        return $this->cipher->encrypt($value);
+    }
+
+    /**
+     * With a known AI key the model becomes a searchable selection of what the
+     * provider offers. Without a key, or when the provider is silent, it stays a
+     * text field. The stored model always stays in the list, even when the
+     * provider does not list it, so saving never loses it.
+     */
+    public function adjustModelField(DataContainer|null $dc = null): void
+    {
+        if (null === $dc || !$dc->id || 'edit' !== Input::get('act')) {
+            return;
+        }
+
+        $models = $this->models->models();
+
+        if ([] === $models) {
+            return;
+        }
+
+        $current = $this->settings->ai()['model'];
+
+        if ('' !== $current && !isset($models[$current])) {
+            $models = [$current => $current] + $models;
+        }
+
+        $field = &$GLOBALS['TL_DCA']['tl_neo_websitecheck_settings']['fields']['ai_model'];
+        $field['inputType'] = 'select';
+        $field['options'] = $models;
+        $field['eval']['chosen'] = true;
+        $field['eval']['includeBlankOption'] = true;
+        $field['eval']['blankOptionLabel'] = sprintf($GLOBALS['TL_LANG']['tl_neo_websitecheck_settings']['modelFromConfig'] ?? '%s', $this->settings->configKeys()['ai_model']);
+    }
+
+    /** Status line above the key fields: where each key currently comes from. */
+    public function apiInfo(DataContainer $dc): string
+    {
+        $lang = $GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
+        $lines = [];
+
+        foreach (['psi_api_key' => 'apiPsi', 'ai_api_key' => 'apiAi'] as $column => $label) {
+            $source = $this->settings->keySource($column);
+            $state = match ($source) {
+                'db' => $lang['apiFromDb'] ?? 'stored here',
+                'config' => $lang['apiFromConfig'] ?? 'from the server configuration',
+                default => $lang['apiMissing'] ?? 'missing',
+            };
+            $lines[] = sprintf('<li><strong>%s:</strong> %s</li>', StringUtil::specialchars($lang[$label] ?? $column), StringUtil::specialchars($state));
+        }
+
+        $ai = $this->settings->ai();
+        $lines[] = sprintf('<li><strong>%s:</strong> %s</li>', StringUtil::specialchars($lang['apiModel'] ?? 'Model'), StringUtil::specialchars('' !== $ai['model'] ? $ai['model'] : '–'));
+
+        return sprintf(
+            '<div class="widget clr"><p class="tl_help tl_tip">%s</p><ul class="tl_help">%s</ul></div>',
+            StringUtil::specialchars($lang['apiIntro'] ?? ''),
+            implode('', $lines),
+        );
     }
 
     /**

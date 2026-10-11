@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Dupla megerősítés sablonja', 'Megerősítő e-mail e
 $l['nl_redirect_page'] = ['Megerősítő oldal', 'A megerősítő hivatkozásra kattintás után megjelenő oldal. Üres = newsletter.brevo_redirect_url. Megerősítő oldal nélkül nincs hírlevél-feliratkozás.'];
 $l['nl_list_id_contao'] = ['Hírlevélcsatorna (Contao)', 'Contao-hírlevélcsatorna az ellenőrzésből érkező feliratkozásokhoz ezen a nyelven.'];
 $l['nl_redirect_page_contao'] = ['Megerősítő oldal', 'Oldal a Contao „Feliratkozás” moduljával: az e-mailben lévő megerősítő link oda vezet, és aktiválja a feliratkozást. Az e-mail szövege ebből a modulból származik. Megerősítő oldal nélkül nincs hírlevél-feliratkozás.'];
+$l['ask_contact'] = ['Kapcsolatfelvételi engedély kérése', 'Megjeleníti az űrlapon az önkéntes jelölőnégyzetet: „Egyszer felvehetik velem a kapcsolatot e-mailben”. A szöveg és az időpont az ellenőrzéssel együtt tárolódik.'];
+$l['fe_contact'] = ['Az „egyszeri kapcsolat” jelölőnégyzet szövege', ''];

@@ -39,3 +39,18 @@ $l['preview_mail'] = ['Podgląd e-maila', 'Wygeneruj e-mail z raportem na podsta
 $l['textsButton'] = 'Edytuj konfiguracje (%d)';
 $l['textsNone'] = 'Brak konfiguracji. Należy utworzyć jedną dla każdego języka: tam projektuje się e-mail i raport PDF, temat, nadawcę oraz teksty elementu. Do tego czasu obowiązują szablony dołączone do modułu.';
 $l['textsList'] = 'Istniejące: %s';
+
+$l['api_legend'] = 'Klucze i AI';
+$l['api_info'] = 'Skąd pochodzą klucze';
+$l['psi_api_key'] = ['Klucz PageSpeed', 'Klucz API Google do PageSpeed Insights (pomiar czasu ładowania). Zapisywany zaszyfrowany i nigdy więcej nie wyświetlany; puste pole = zapisany klucz zostaje.'];
+$l['ai_api_key'] = ['Klucz AI', 'Klucz dostawcy AI (np. Requesty) do oceny „oczami odwiedzającego”. Zapisywany zaszyfrowany; puste pole = zostaje.'];
+$l['ai_model'] = ['Model AI', 'Gdy klucz AI jest znany, wybór spośród modeli dostawcy. Puste = wartość z konfiguracji serwera.'];
+$l['ai_base_url'] = ['Adres dostawcy AI', 'Adres zgodny z OpenAI, np. https://router.eu.requesty.ai/v1. Puste = konfiguracja serwera.'];
+$l['apiIntro'] = 'Wartości wpisane tutaj mają pierwszeństwo przed konfiguracją serwera (config.yaml / środowisko). To, co tu jest puste, pochodzi stamtąd.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'AI';
+$l['apiModel'] = 'Używany model';
+$l['apiFromDb'] = 'zapisany tutaj w panelu';
+$l['apiFromConfig'] = 'z konfiguracji serwera';
+$l['apiMissing'] = 'brak — ta część checku zostaje pominięta';
+$l['modelFromConfig'] = '– konfiguracja serwera (%s) –';

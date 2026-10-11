@@ -39,3 +39,18 @@ $l['preview_mail'] = ['E-mail bekijken', 'De rapportmail genereren met de laatst
 $l['textsButton'] = 'Configuraties bewerken (%d)';
 $l['textsNone'] = 'Nog geen configuratie. Maak er één per taal aan: daar geeft u de e-mail en het pdf-rapport vorm en stelt u onderwerp, afzender en de teksten van het element in. Tot die tijd gelden de meegeleverde templates.';
 $l['textsList'] = 'Bestaand: %s';
+
+$l['api_legend'] = 'Sleutels en AI';
+$l['api_info'] = 'Waar de sleutels vandaan komen';
+$l['psi_api_key'] = ['PageSpeed-sleutel', 'Google API-sleutel voor PageSpeed Insights (laadtijdmeting). Versleuteld opgeslagen en nooit meer getoond; leeg laten = opgeslagen sleutel blijft.'];
+$l['ai_api_key'] = ['AI-sleutel', 'Sleutel van de AI-aanbieder (bijv. Requesty) voor de beoordeling „door de ogen van een bezoeker”. Versleuteld opgeslagen; leeg laten = blijft.'];
+$l['ai_model'] = ['AI-model', 'Zodra een AI-sleutel bekend is, een keuze uit de modellen van de aanbieder. Leeg = waarde uit de serverconfiguratie.'];
+$l['ai_base_url'] = ['Adres van de AI-aanbieder', 'OpenAI-compatibel adres, bijv. https://router.eu.requesty.ai/v1. Leeg = serverconfiguratie.'];
+$l['apiIntro'] = 'Hier ingevulde waarden gaan voor de serverconfiguratie (config.yaml / omgeving). Wat hier leeg is, komt daarvandaan.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'AI';
+$l['apiModel'] = 'Gebruikt model';
+$l['apiFromDb'] = 'hier in de back-end opgeslagen';
+$l['apiFromConfig'] = 'uit de serverconfiguratie';
+$l['apiMissing'] = 'ontbreekt — dit deel van de check vervalt';
+$l['modelFromConfig'] = '– serverconfiguratie (%s) –';

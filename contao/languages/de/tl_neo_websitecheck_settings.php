@@ -39,3 +39,18 @@ $l['preview_mail'] = ['Vorschau E-Mail', 'Berichts-E-Mail mit dem letzten fertig
 $l['textsButton'] = 'Konfigurationen bearbeiten (%d)';
 $l['textsNone'] = 'Noch keine Konfiguration. Legen Sie je Sprache eine an: Dort gestalten Sie E-Mail und PDF-Bericht, Betreff, Absender und die Texte des Elements. Bis dahin gelten die mitgelieferten Vorlagen.';
 $l['textsList'] = 'Vorhanden: %s';
+
+$l['api_legend'] = 'Schlüssel und KI';
+$l['api_info'] = 'Woher die Schlüssel kommen';
+$l['psi_api_key'] = ['PageSpeed-Schlüssel', 'Google-API-Schlüssel für PageSpeed Insights (Ladezeit-Messung). Wird verschlüsselt gespeichert und nie wieder angezeigt; leer lassen = gespeicherter Schlüssel bleibt.'];
+$l['ai_api_key'] = ['KI-Schlüssel', 'Schlüssel des KI-Anbieters (z. B. Requesty) für die Bewertung „mit den Augen eines Besuchers“. Verschlüsselt gespeichert; leer lassen = bleibt.'];
+$l['ai_model'] = ['KI-Modell', 'Sobald ein KI-Schlüssel bekannt ist, zur Auswahl aus den Modellen des Anbieters. Leer = Wert aus der Server-Konfiguration.'];
+$l['ai_base_url'] = ['Adresse des KI-Anbieters', 'OpenAI-kompatible Adresse, z. B. https://router.eu.requesty.ai/v1. Leer = Server-Konfiguration.'];
+$l['apiIntro'] = 'Hier eingetragene Werte gelten vor der Server-Konfiguration (config.yaml / Umgebung). Was hier leer ist, kommt von dort.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'KI';
+$l['apiModel'] = 'Modell in Verwendung';
+$l['apiFromDb'] = 'hier im Backend gespeichert';
+$l['apiFromConfig'] = 'aus der Server-Konfiguration';
+$l['apiMissing'] = 'fehlt — dieser Teil des Checks entfällt';
+$l['modelFromConfig'] = '– Server-Konfiguration (%s) –';

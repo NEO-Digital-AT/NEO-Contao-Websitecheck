@@ -39,3 +39,18 @@ $l['preview_mail'] = ['Náhled e-mailu', 'Vytvořit e-mail se zprávou s posledn
 $l['textsButton'] = 'Upravit konfigurace (%d)';
 $l['textsNone'] = 'Zatím žádná konfigurace. Vytvořte jednu pro každý jazyk: tam navrhnete e-mail a PDF zprávu, předmět, odesílatele a texty prvku. Do té doby platí šablony dodané s modulem.';
 $l['textsList'] = 'Existující: %s';
+
+$l['api_legend'] = 'Klíče a AI';
+$l['api_info'] = 'Odkud klíče pocházejí';
+$l['psi_api_key'] = ['Klíč PageSpeed', 'Klíč Google API pro PageSpeed Insights (měření rychlosti načítání). Ukládá se šifrovaně a už se nezobrazí; prázdné pole = uložený klíč zůstane.'];
+$l['ai_api_key'] = ['Klíč AI', 'Klíč poskytovatele AI (např. Requesty) pro hodnocení „očima návštěvníka“. Ukládá se šifrovaně; prázdné pole = zůstane.'];
+$l['ai_model'] = ['Model AI', 'Jakmile je klíč AI znám, výběr z modelů poskytovatele. Prázdné = hodnota z konfigurace serveru.'];
+$l['ai_base_url'] = ['Adresa poskytovatele AI', 'Adresa kompatibilní s OpenAI, např. https://router.eu.requesty.ai/v1. Prázdné = konfigurace serveru.'];
+$l['apiIntro'] = 'Hodnoty zadané zde mají přednost před konfigurací serveru (config.yaml / prostředí). Co je zde prázdné, přichází odtamtud.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'AI';
+$l['apiModel'] = 'Použitý model';
+$l['apiFromDb'] = 'uloženo zde v administraci';
+$l['apiFromConfig'] = 'z konfigurace serveru';
+$l['apiMissing'] = 'chybí — tato část kontroly se vynechá';
+$l['modelFromConfig'] = '– konfigurace serveru (%s) –';

@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'Het rapport voor %s 
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'Het rapport kon niet worden verstuurd: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Verwijderen', 'Check ID %s verwijderen'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Details', 'Details van check ID %s tonen'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Eenmalig contact toegestaan', 'De bezoeker heeft één e-mail over dit resultaat toegestaan (tekst en tijdstip bij de check opgeslagen).'];

@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Predloga za dvojno potrditev', 'Potrditvena e-pošta v 
 $l['nl_redirect_page'] = ['Potrditvena stran', 'Stran po kliku na potrditveno povezavo. Prazno = newsletter.brevo_redirect_url. Brez potrditvene strani prijave na e-novice ni.'];
 $l['nl_list_id_contao'] = ['Kanal e-novic (Contao)', 'Kanal e-novic Contao za prijave iz preverjanja v tem jeziku.'];
 $l['nl_redirect_page_contao'] = ['Potrditvena stran', 'Stran z modulom Contao »Naročnina«: potrditvena povezava v e-sporočilu vodi tja in aktivira prijavo. Besedilo e-sporočila je iz tega modula. Brez potrditvene strani prijave na e-novice ni.'];
+$l['ask_contact'] = ['Vprašaj za dovoljenje za stik', 'V obrazcu prikaže prostovoljno potrditveno polje »Glede tega rezultata me lahko enkrat kontaktirate po e-pošti«. Besedilo in čas se shranita ob preverjanju.'];
+$l['fe_contact'] = ['Besedilo polja »enkratni stik«', ''];

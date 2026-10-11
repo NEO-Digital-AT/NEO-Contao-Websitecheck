@@ -35,6 +35,7 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
         'onload_callback' => [
             [SettingsCallbacks::class, 'ensureRow'],
             [SettingsCallbacks::class, 'redirectToEditView'],
+            [SettingsCallbacks::class, 'adjustModelField'],
         ],
         'sql' => ['keys' => ['id' => 'primary']],
     ],
@@ -58,7 +59,8 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
             .'{design_legend},logo,logo_dark,portrait,color_primary,color_accent;'
             .'{texts_legend},texts_info;'
             .'{mail_legend},from_name,from_email,reply_to,notify_email;'
-            .'{limits_legend},checks_per_ip_hour,checks_per_ip,cache_hours,retention_days,max_pages',
+            .'{limits_legend},checks_per_ip_hour,checks_per_ip,cache_hours,retention_days,max_pages;'
+            .'{api_legend},api_info,psi_api_key,ai_api_key,ai_model,ai_base_url',
     ],
     'fields' => [
         'id' => ['sql' => 'int(10) unsigned NOT NULL auto_increment'],
@@ -94,5 +96,28 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
         'cache_hours' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
         'retention_days' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
         'max_pages' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
+
+        // API keys: stored encrypted (SecretCipher), never shown again — a mask
+        // stands for a stored key, an empty field or the mask keeps it. Empty in
+        // the back end = config.yaml / environment (status line api_info).
+        'api_info' => ['input_field_callback' => [SettingsCallbacks::class, 'apiInfo']],
+        'psi_api_key' => [
+            'inputType' => 'text',
+            'eval' => ['hideInput' => true, 'maxlength' => 512, 'doNotCopy' => true, 'tl_class' => 'w50 clr'],
+            'load_callback' => [[SettingsCallbacks::class, 'maskSecret']],
+            'save_callback' => [[SettingsCallbacks::class, 'encryptSecret']],
+            'sql' => "varchar(512) NOT NULL default ''",
+        ],
+        'ai_api_key' => [
+            'inputType' => 'text',
+            'eval' => ['hideInput' => true, 'maxlength' => 512, 'doNotCopy' => true, 'tl_class' => 'w50'],
+            'load_callback' => [[SettingsCallbacks::class, 'maskSecret']],
+            'save_callback' => [[SettingsCallbacks::class, 'encryptSecret']],
+            'sql' => "varchar(512) NOT NULL default ''",
+        ],
+        // A text field until a key is known; then adjustModelField() turns it into
+        // a searchable selection of the models the provider really offers.
+        'ai_model' => ['inputType' => 'text', 'eval' => ['maxlength' => 128, 'decodeEntities' => true, 'tl_class' => 'w50 clr'], 'sql' => "varchar(128) NOT NULL default ''"],
+        'ai_base_url' => ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'rgxp' => 'url', 'decodeEntities' => true, 'tl_class' => 'w50'], 'sql' => "varchar(255) NOT NULL default ''"],
     ],
 ];

@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Double-Opt-in-Vorlage', 'Bestätigungsmail in dieser Sp
 $l['nl_redirect_page'] = ['Bestätigungsseite', 'Seite nach dem Klick auf den Bestätigungslink. Leer = newsletter.brevo_redirect_url. Ohne Bestätigungsseite gibt es keine Newsletter-Anmeldung.'];
 $l['nl_list_id_contao'] = ['Newsletter-Verteiler (Contao)', 'Contao-Newsletter-Verteiler für Anmeldungen aus dem Check in dieser Sprache.'];
 $l['nl_redirect_page_contao'] = ['Bestätigungsseite', 'Seite mit dem Contao-Modul „Newsletter abonnieren“: Der Bestätigungslink in der E-Mail führt dorthin und schaltet die Anmeldung frei. Den E-Mail-Text nimmt der Check aus diesem Modul. Ohne Bestätigungsseite gibt es keine Newsletter-Anmeldung.'];
+$l['ask_contact'] = ['Kontakterlaubnis abfragen', 'Zeigt im Formular das freiwillige Häkchen „Sie dürfen mich einmal per E-Mail zu diesem Ergebnis kontaktieren“. Wortlaut und Zeitpunkt werden beim Check gespeichert.'];
+$l['fe_contact'] = ['Text des Häkchens „einmal kontaktieren“', ''];

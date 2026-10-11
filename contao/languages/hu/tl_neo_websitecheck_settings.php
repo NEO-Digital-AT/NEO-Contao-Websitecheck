@@ -39,3 +39,18 @@ $l['preview_mail'] = ['E-mail-előnézet', 'A jelentés-e-mail elkészítése a 
 $l['textsButton'] = 'Konfigurációk szerkesztése (%d)';
 $l['textsNone'] = 'Még nincs konfiguráció. Hozzon létre nyelvenként egyet: ott tervezheti meg az e-mailt és a PDF-jelentést, a tárgyat, a feladót és az elem szövegeit. Addig a csomagban lévő sablonok érvényesek.';
 $l['textsList'] = 'Meglévők: %s';
+
+$l['api_legend'] = 'Kulcsok és MI';
+$l['api_info'] = 'Honnan jönnek a kulcsok';
+$l['psi_api_key'] = ['PageSpeed-kulcs', 'Google API-kulcs a PageSpeed Insightshoz (betöltési idő mérése). Titkosítva tárolva, többé nem jelenik meg; üresen hagyva a tárolt kulcs marad.'];
+$l['ai_api_key'] = ['MI-kulcs', 'Az MI-szolgáltató kulcsa (pl. Requesty) a „látogató szemével” értékeléshez. Titkosítva tárolva; üresen hagyva marad.'];
+$l['ai_model'] = ['MI-modell', 'Amint ismert egy MI-kulcs, választás a szolgáltató modelljei közül. Üres = a szerverkonfiguráció értéke.'];
+$l['ai_base_url'] = ['Az MI-szolgáltató címe', 'OpenAI-kompatibilis cím, pl. https://router.eu.requesty.ai/v1. Üres = szerverkonfiguráció.'];
+$l['apiIntro'] = 'Az itt megadott értékek elsőbbséget élveznek a szerverkonfigurációval (config.yaml / környezet) szemben. Ami itt üres, onnan jön.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'MI';
+$l['apiModel'] = 'Használt modell';
+$l['apiFromDb'] = 'itt, az adminban tárolva';
+$l['apiFromConfig'] = 'a szerverkonfigurációból';
+$l['apiMissing'] = 'hiányzik — az ellenőrzés e része kimarad';
+$l['modelFromConfig'] = '– szerverkonfiguráció (%s) –';

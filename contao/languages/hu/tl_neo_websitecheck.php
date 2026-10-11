@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'A(z) %s jelentését
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'A jelentést nem sikerült elküldeni: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Törlés', 'A(z) %s azonosítójú ellenőrzés törlése'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Részletek', 'A(z) %s azonosítójú ellenőrzés részleteinek megjelenítése'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Egyszeri kapcsolatfelvétel engedélyezve', 'A látogató engedélyezett egy e-mailt az eredménnyel kapcsolatban (szöveg és időpont az ellenőrzésnél tárolva).'];

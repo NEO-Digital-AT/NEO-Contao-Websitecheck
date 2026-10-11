@@ -59,3 +59,5 @@ $l['nl_template_id'] = ['Modello doppio opt-in', 'E-mail di conferma in questa l
 $l['nl_redirect_page'] = ['Pagina di conferma', 'Pagina mostrata dopo il clic sul link di conferma. Vuoto = newsletter.brevo_redirect_url. Senza pagina di conferma non c’è iscrizione alla newsletter.'];
 $l['nl_list_id_contao'] = ['Canale newsletter (Contao)', 'Canale newsletter di Contao per le iscrizioni dal check in questa lingua.'];
 $l['nl_redirect_page_contao'] = ['Pagina di conferma', 'Pagina con il modulo Contao «Iscrizione»: il link di conferma nell’e-mail porta lì e attiva l’iscrizione. Il testo dell’e-mail proviene da quel modulo. Senza pagina di conferma non c’è iscrizione alla newsletter.'];
+$l['ask_contact'] = ['Chiedere il permesso di contatto', 'Mostra nel modulo la casella facoltativa «Potete contattarmi una volta via e-mail riguardo a questo risultato». Testo e ora vengono salvati con il check.'];
+$l['fe_contact'] = ['Testo della casella «contattare una volta»', ''];

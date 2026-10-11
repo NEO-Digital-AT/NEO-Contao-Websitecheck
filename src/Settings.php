@@ -20,6 +20,7 @@ final class Settings
         private readonly string $projectDir,
         private readonly Check\SettingsRepository|null $db = null,
         private readonly object|null $brevoKeys = null,
+        private readonly Security\SecretCipher|null $cipher = null,
     ) {
     }
 
@@ -44,9 +45,10 @@ final class Settings
         return (string) $this->config['user_agent'];
     }
 
+    /** PageSpeed key: back end (encrypted) first, config.yaml / environment as fallback. */
     public function pageSpeedKey(): string
     {
-        return trim((string) $this->config['pagespeed']['api_key']);
+        return $this->secret('psi_api_key') ?: trim((string) $this->config['pagespeed']['api_key']);
     }
 
     public function pageSpeedTimeout(): int
@@ -54,15 +56,81 @@ final class Settings
         return (int) $this->config['pagespeed']['timeout'];
     }
 
-    /** @return array{base_url: string, api_key: string, model: string, max_tokens: int, timeout: int, send_screenshot: bool} */
+    /**
+     * AI provider: address, model and key from the back end first, config.yaml /
+     * environment for whatever is left empty there.
+     *
+     * @return array{base_url: string, api_key: string, model: string, max_tokens: int, timeout: int, send_screenshot: bool}
+     */
     public function ai(): array
     {
-        return $this->config['ai'];
+        $ai = $this->config['ai'];
+        $baseUrl = rtrim($this->db?->string('ai_base_url') ?? '', '/');
+        $model = $this->db?->string('ai_model') ?? '';
+        $key = $this->secret('ai_api_key');
+
+        if ('' !== $baseUrl) {
+            $ai['base_url'] = $baseUrl;
+        }
+
+        if ('' !== $model) {
+            $ai['model'] = $model;
+        }
+
+        if ('' !== $key) {
+            $ai['api_key'] = $key;
+        }
+
+        return $ai;
     }
 
     public function aiEnabled(): bool
     {
-        return '' !== trim((string) $this->config['ai']['api_key']) && '' !== trim((string) $this->config['ai']['model']);
+        $ai = $this->ai();
+
+        return '' !== trim((string) $ai['api_key']) && '' !== trim((string) $ai['model']);
+    }
+
+    /**
+     * Where a key comes from, for the back-end status line: "db" (stored in the
+     * back end), "config" (config.yaml / environment) or "" (missing).
+     */
+    public function keySource(string $column): string
+    {
+        if ('' !== $this->secret($column)) {
+            return 'db';
+        }
+
+        $fallback = match ($column) {
+            'psi_api_key' => $this->config['pagespeed']['api_key'],
+            'ai_api_key' => $this->config['ai']['api_key'],
+            default => '',
+        };
+
+        return '' !== trim((string) $fallback) ? 'config' : '';
+    }
+
+    /** The config.yaml / environment values, for the one-time takeover into the back end. @return array{psi_api_key: string, ai_api_key: string, ai_model: string, ai_base_url: string} */
+    public function configKeys(): array
+    {
+        return [
+            'psi_api_key' => trim((string) $this->config['pagespeed']['api_key']),
+            'ai_api_key' => trim((string) $this->config['ai']['api_key']),
+            'ai_model' => trim((string) $this->config['ai']['model']),
+            'ai_base_url' => rtrim(trim((string) $this->config['ai']['base_url']), '/'),
+        ];
+    }
+
+    /** A key stored encrypted in the settings record, decrypted ('' when unset or undecryptable). */
+    private function secret(string $column): string
+    {
+        $stored = $this->db?->string($column) ?? '';
+
+        if ('' === $stored) {
+            return '';
+        }
+
+        return trim(null !== $this->cipher ? $this->cipher->decrypt($stored) : $stored);
     }
 
     /**
@@ -251,6 +319,14 @@ final class Settings
             'contao' => (int) $nl['brevo_list_id'] > 0 && (int) $nl['brevo_redirect_page'] > 0,
             default => false,
         };
+    }
+
+    /** Whether the lead form offers the box "you may contact me once" (per configuration, on without one). */
+    public function askContact(int $configId = 0, string $locale = ''): bool
+    {
+        $config = $this->db?->config($configId, $locale);
+
+        return null === $config || '1' === (string) ($config['ask_contact'] ?? '1');
     }
 
     public function dataLayer(): bool

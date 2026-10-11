@@ -188,6 +188,7 @@ final class ReportRenderer
             'last_name' => (string) $row['lastname'],
             'email' => (string) $row['email'],
             'newsletter' => '1' === (string) $row['newsletter'],
+            'contact' => '1' === (string) ($row['contact'] ?? ''),
             'retention_days' => $this->settings->retentionDays(),
             // Placeholder values for wc_text() ({{firstname}}, {{domain}}, …).
             'vars' => [

@@ -39,3 +39,18 @@ $l['preview_mail'] = ['Predogled e-pošte', 'Ustvari e-pošto s poročilom z zad
 $l['textsButton'] = 'Uredi konfiguracije (%d)';
 $l['textsNone'] = 'Konfiguracije še ni. Ustvarite eno za vsak jezik: tam oblikujete e-pošto in poročilo PDF, zadevo, pošiljatelja in besedila elementa. Do takrat veljajo priložene predloge.';
 $l['textsList'] = 'Obstoječe: %s';
+
+$l['api_legend'] = 'Ključi in UI';
+$l['api_info'] = 'Od kod prihajajo ključi';
+$l['psi_api_key'] = ['Ključ PageSpeed', 'Ključ Google API za PageSpeed Insights (merjenje hitrosti nalaganja). Shranjen šifrirano in nikoli več prikazan; prazno polje = shranjeni ključ ostane.'];
+$l['ai_api_key'] = ['Ključ UI', 'Ključ ponudnika UI (npr. Requesty) za oceno »skozi oči obiskovalca«. Shranjen šifrirano; prazno polje = ostane.'];
+$l['ai_model'] = ['Model UI', 'Ko je ključ UI znan, izbira med modeli ponudnika. Prazno = vrednost iz konfiguracije strežnika.'];
+$l['ai_base_url'] = ['Naslov ponudnika UI', 'Naslov, združljiv z OpenAI, npr. https://router.eu.requesty.ai/v1. Prazno = konfiguracija strežnika.'];
+$l['apiIntro'] = 'Vrednosti, vnesene tukaj, imajo prednost pred konfiguracijo strežnika (config.yaml / okolje). Kar je tukaj prazno, pride od tam.';
+$l['apiPsi'] = 'PageSpeed';
+$l['apiAi'] = 'UI';
+$l['apiModel'] = 'Uporabljeni model';
+$l['apiFromDb'] = 'shranjeno tukaj v zaledju';
+$l['apiFromConfig'] = 'iz konfiguracije strežnika';
+$l['apiMissing'] = 'manjka — ta del preverjanja odpade';
+$l['modelFromConfig'] = '– konfiguracija strežnika (%s) –';

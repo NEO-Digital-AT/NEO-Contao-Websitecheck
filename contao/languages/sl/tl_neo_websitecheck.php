@@ -26,3 +26,4 @@ $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendDone'] = 'Poročilo za %s je b
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['resendFailed'] = 'Poročila ni bilo mogoče poslati: %s';
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['delete'] = ['Izbriši', 'Izbriši preverjanje ID %s'];
 $GLOBALS['TL_LANG']['tl_neo_websitecheck']['show'] = ['Podrobnosti', 'Prikaži podrobnosti preverjanja ID %s'];
+$GLOBALS['TL_LANG']['tl_neo_websitecheck']['contact'] = ['Enkratni stik dovoljen', 'Obiskovalec je dovolil eno e-sporočilo glede tega rezultata (besedilo in čas shranjena ob preverjanju).'];

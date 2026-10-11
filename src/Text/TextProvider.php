@@ -34,6 +34,7 @@ final class TextProvider
         'fe.gate_title' => ['column' => 'fe_gate_title', 'long' => false, 'params' => []],
         'fe.gate_text' => ['column' => 'fe_gate_text', 'long' => true, 'params' => []],
         'fe.gate_legal' => ['column' => 'fe_gate_legal', 'long' => true, 'params' => []],
+        'fe.contact' => ['column' => 'fe_contact', 'long' => true, 'params' => []],
         'fe.newsletter' => ['column' => 'fe_newsletter', 'long' => true, 'params' => []],
         'fe.gate_submit' => ['column' => 'fe_gate_submit', 'long' => false, 'params' => []],
         'fe.disclaimer' => ['column' => 'fe_disclaimer', 'long' => true, 'params' => []],
