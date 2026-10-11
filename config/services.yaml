@@ -34,11 +34,17 @@ services:
 
     # Dedicated HTTP clients. Slow small-business servers exist (one tested start
     # page needed 21 s): wait up to 35 s, the slowness then shows in the report.
-    neo_websitecheck.site_client:
+    # Visitors choose the address: never let it (or a redirect / DNS answer) reach
+    # loopback, private networks or cloud metadata — every hop is checked.
+    neo_websitecheck.site_client.inner:
         class: Symfony\Contracts\HttpClient\HttpClientInterface
         factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
         arguments:
             - { timeout: 30, max_duration: 35, max_redirects: 5 }
+
+    neo_websitecheck.site_client:
+        class: Symfony\Component\HttpClient\NoPrivateNetworkHttpClient
+        arguments: ['@neo_websitecheck.site_client.inner']
 
     neo_websitecheck.api_client:
         class: Symfony\Contracts\HttpClient\HttpClientInterface

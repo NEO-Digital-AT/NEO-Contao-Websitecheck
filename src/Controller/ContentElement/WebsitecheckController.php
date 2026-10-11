@@ -62,6 +62,12 @@ final class WebsitecheckController extends AbstractContentElementController
             $contactUrl = trim($this->insertTagParser->replaceInline($elementUrl)) ?: $contactUrl;
         }
 
+        // A bare anchor ("#contact") would resolve against Contao's <base href> (the
+        // site root) and leave the page: prefix it with the current page's address.
+        if (str_starts_with($contactUrl, '#')) {
+            $contactUrl = $this->pageUrl((int) ($this->getPageModel()?->id ?? 0)).$contactUrl;
+        }
+
         // No inline colours: the element ships a neutral look and is themed with
         // the --nwc-* custom properties in the site's stylesheet (inline values
         // would beat the theme). The brand colours style PDF and e-mail only.

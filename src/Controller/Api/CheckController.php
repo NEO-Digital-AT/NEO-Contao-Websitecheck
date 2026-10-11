@@ -81,7 +81,7 @@ final class CheckController
         }
 
         $locale = $this->locale($request, $payload);
-        $cached = $this->repository->findRecentDone($normalized['domain'], $this->settings->cacheHours(), $locale);
+        $cached = $this->repository->findRecentDone($normalized['url'], $this->settings->cacheHours(), $locale);
         // Configuration (texts, e-mail, PDF design) chosen by the element; falls back to the language's record.
         $config = $this->settings->db()?->config((int) ($payload['config'] ?? 0), $locale);
         $configId = (int) ($config['id'] ?? 0);

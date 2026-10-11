@@ -125,7 +125,7 @@ final class CheckRepository
      *
      * @return array<string, mixed>|null
      */
-    public function findRecentDone(string $domain, int $hours, string $locale = ''): array|null
+    public function findRecentDone(string $url, int $hours, string $locale = ''): array|null
     {
         if ($hours <= 0) {
             return null;
@@ -136,8 +136,8 @@ final class CheckRepository
         $lang = \Neo\WebsitecheckBundle\Lang::primary($locale);
 
         $row = $this->db->fetchAssociative(
-            'SELECT * FROM tl_neo_websitecheck WHERE domain = ? AND status = ? AND finished > ? AND (? = \'\' OR SUBSTRING_INDEX(REPLACE(LOWER(locale), \'_\', \'-\'), \'-\', 1) = ?) ORDER BY finished DESC LIMIT 1',
-            [$domain, self::STATUS_DONE, time() - $hours * 3600, $lang, $lang],
+            'SELECT * FROM tl_neo_websitecheck WHERE url = ? AND status = ? AND finished > ? AND (? = \'\' OR SUBSTRING_INDEX(REPLACE(LOWER(locale), \'_\', \'-\'), \'-\', 1) = ?) ORDER BY finished DESC LIMIT 1',
+            [$url, self::STATUS_DONE, time() - $hours * 3600, $lang, $lang],
         );
 
         return false === $row ? null : $this->hydrate($row);
