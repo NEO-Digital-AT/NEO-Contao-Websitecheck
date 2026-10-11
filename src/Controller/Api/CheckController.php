@@ -79,7 +79,7 @@ final class CheckController
         }
 
         $locale = $this->locale($request, $payload);
-        $cached = $this->repository->findRecentDone($normalized['domain'], $this->settings->cacheHours());
+        $cached = $this->repository->findRecentDone($normalized['domain'], $this->settings->cacheHours(), $locale);
         // Configuration (texts, e-mail, PDF design) chosen by the element; falls back to the language's record.
         $config = $this->settings->db()?->config((int) ($payload['config'] ?? 0), $locale);
         $configId = (int) ($config['id'] ?? 0);
@@ -133,7 +133,7 @@ final class CheckController
             return $this->json(['error' => 'not_ready'] + $this->statusPayload($row), 409);
         }
 
-        $newsletter = !empty($payload['newsletter']) && $this->settings->newsletterEnabled();
+        $newsletter = !empty($payload['newsletter']) && $this->settings->newsletterEnabled((int) $row['config_id'], (string) $row['locale']);
 
         if (!$row['claimed']) {
             $this->repository->update($id, [
@@ -162,7 +162,7 @@ final class CheckController
 
         if ($newsletter && empty($row['data']['newsletterDone'])) {
             // the address of the first claim, never one sent with a later request for the same check
-            if ($this->newsletter->subscribe((string) $row['email'], (string) $row['firstname'], (string) $row['lastname'])) {
+            if ($this->newsletter->subscribe((string) $row['email'], (string) $row['firstname'], (string) $row['lastname'], (int) $row['config_id'], (string) $row['locale'])) {
                 $data = $this->repository->find($id)['data'];
                 $data['newsletterDone'] = true;
                 $this->repository->update($id, ['data' => $data]);

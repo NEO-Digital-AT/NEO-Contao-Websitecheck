@@ -46,8 +46,10 @@ final class WebsitecheckController extends AbstractContentElementController
         // Configuration: the one picked in the element (core "module" column) or the one matching the page language.
         $configRow = $this->settings->db()?->config((int) ($model->row()['module'] ?? 0), $lang);
         $configId = (int) ($configRow['id'] ?? 0);
-        $contactUrl = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
-        $privacyUrl = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
+        // Multilingual sites: contact and privacy page of this language's configuration
+        // first, then the global ones from the settings / config.yaml.
+        $contactUrl = $this->pageUrl((int) ($configRow['contact_page'] ?? 0)) ?: $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
+        $privacyUrl = $this->pageUrl((int) ($configRow['privacy_page'] ?? 0)) ?: $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
 
         // Core "url" field: {{link_url::42}} from the page picker or a typed address
         $elementUrl = trim((string) ($model->row()['url'] ?? ''));
@@ -85,7 +87,7 @@ final class WebsitecheckController extends AbstractContentElementController
         $template->set('config_id', $configId);
         // Result on the page: short (grade, one or two sentences, PDF hint) or the full overview.
         $template->set('result_mode', 'full' === ($configRow['fe_result'] ?? '') ? 'full' : 'compact');
-        $template->set('newsletter', $this->settings->newsletterEnabled());
+        $template->set('newsletter', $this->settings->newsletterEnabled($configId, $lang));
         $template->set('newsletter_label', (string) ($this->settings->newsletter()['label'] ?? ''));
         $template->set('altcha', null !== $this->altcha);
         $template->set('element_id', 'wc'.(int) ($model->row()['id'] ?? 0));

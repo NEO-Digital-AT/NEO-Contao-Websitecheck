@@ -41,7 +41,7 @@ final class AiReviewer
         }
 
         $ai = $this->settings->ai();
-        $language = 'de' === substr($locale, 0, 2) ? 'German (Sie-Form, Austrian/German business tone)' : 'English';
+        $language = self::languageName($locale);
 
         $corpus = '';
 
@@ -284,5 +284,25 @@ final class AiReviewer
         }
 
         return \array_slice($out, 0, 5);
+    }
+
+    /** Report language for the prompt: the check's page language, German with the formal address. */
+    private static function languageName(string $locale): string
+    {
+        $code = str_replace('-', '_', strtolower($locale));
+
+        if ('de' === substr($code, 0, 2)) {
+            return 'German (Sie-Form, Austrian/German business tone)';
+        }
+
+        if (class_exists(\Locale::class)) {
+            $name = \Locale::getDisplayLanguage($code, 'en');
+
+            if ('' !== $name && strtolower($name) !== $code) {
+                return $name.' (formal, polite business tone)';
+            }
+        }
+
+        return 'English';
     }
 }

@@ -103,7 +103,10 @@ final class SettingsRepository
                     $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck_config WHERE language = ? ORDER BY id ASC LIMIT 1', [$language]);
                 }
 
-                if (false === $row) {
+                // No configuration in another language: a German page must not get the
+                // English texts and designs just because only an English configuration
+                // exists. Only without a language (console, previews) the first one is used.
+                if (false === $row && '' === $language) {
                     $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck_config ORDER BY id ASC LIMIT 1');
                 }
             } catch (DbalException) {

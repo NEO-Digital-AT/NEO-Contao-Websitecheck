@@ -237,6 +237,16 @@ The check is a resumable step machine (`discover → speed_home → speed_pages 
 
 Results are cached for `cache_hours`: a second visitor entering the same domain gets the stored result immediately (and still has to leave their data). Screenshots and PDFs live in `var/neo-websitecheck/<id>/`, outside the web root; the live preview serves them through a token-protected route.
 
+## Multilingual sites
+
+Contao's way — one root page per language — works out of the box:
+
+1. **One configuration per language** (*Website check → Configurations*, field *Language*). Each holds the e-mail and PDF design, the element texts, the **contact and privacy page of that language** and the **newsletter list, double-opt-in template and confirmation page** (live from Brevo).
+2. **Place the element on each language's page** and pick that configuration (or leave it empty: the configuration whose language matches the page is used). A page whose language has no configuration gets the bundled template in its own language — never another language's configuration.
+3. Everything follows the page language: the texts on the page, the check itself, the AI reading (written in the page language), e-mail, PDF and the newsletter sign-up. The 24-hour cache only reuses a check made in the same language.
+
+Bundled translations: German and English. For another language add `translations/neo_websitecheck.<lang>.yaml` to your project (findings and default wording) and adjust the words of that language's configuration in the designer; without a file the installation's default language is used.
+
 ## Customising
 
 - **Templates:** copy any file from `contao/templates/` of the bundle to `templates/` of your project and adapt it: the element (`content_element/neo_websitecheck.html.twig`, the AJAX flow stays intact as long as the `data-nwc-*` hooks remain), a designer block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), the frames (`pdf_frame`, `mail_frame`) or the operator copy (`mail_owner`). Without a saved design, report and e-mail use the bundled *Standard* template in the check's language. Templates receive `result`, `areas`, `brand`, `images`, `crops`, `date`, `vars`, and blocks additionally `block` (its properties) and `t` (theme).
@@ -487,6 +497,16 @@ php vendor/bin/contao-console neo:websitecheck:run --url=https://example.com --l
 Der Check ist ein wiederaufnehmbarer Schrittablauf (`discover → speed_home → speed_pages → analyze → ai → finish`). Jeder Schritt ist kurz genug für einen HTTP-Request: Der Browser des Besuchers fragt alle zwei Sekunden den Status ab, und der Request, der den Check untätig vorfindet, führt den nächsten Schritt aus. Das funktioniert auch auf Shared Hosting. Zusätzlich treibt der Contao-Cron (minütlich) abgebrochene Checks weiter und löscht täglich alles, was älter als `retention_days` ist. Wer einen echten Worker will, ruft `neo:websitecheck:run` per Cron auf.
 
 Ergebnisse werden `cache_hours` lang gespeichert: Wer dieselbe Domain noch einmal eingibt, bekommt das gespeicherte Ergebnis sofort (und muss trotzdem seine Daten hinterlassen). Screenshots und PDFs liegen in `var/neo-websitecheck/<id>/`, außerhalb des Web-Roots.
+
+## Mehrsprachige Websites
+
+So, wie Contao es vorsieht – ein Startpunkt je Sprache:
+
+1. **Eine Konfiguration je Sprache** (*Website-Check → Konfigurationen*, Feld *Sprache*) mit E-Mail- und PDF-Gestaltung, Elementtexten, **Kontakt- und Datenschutzseite dieser Sprache** sowie **Newsletter-Verteiler, Double-Opt-in-Vorlage und Bestätigungsseite** (live aus Brevo).
+2. **Element auf der Seite der jeweiligen Sprache** einsetzen und die Konfiguration wählen (leer = die Konfiguration mit der Sprache der Seite). Gibt es für eine Sprache keine Konfiguration, kommt die mitgelieferte Vorlage in dieser Sprache – nie die Konfiguration einer anderen Sprache.
+3. Alles folgt der Seitensprache: Texte auf der Seite, KI-Lesung, E-Mail, PDF, Newsletter-Anmeldung. Der 24-Stunden-Zwischenspeicher verwendet nur einen Check derselben Sprache.
+
+Mitgeliefert: Deutsch und Englisch. Für weitere Sprachen `translations/neo_websitecheck.<sprache>.yaml` im Projekt anlegen und die Wörter der Konfiguration im Designer anpassen; ohne Datei gilt die Standardsprache der Installation.
 
 ## Anpassen
 

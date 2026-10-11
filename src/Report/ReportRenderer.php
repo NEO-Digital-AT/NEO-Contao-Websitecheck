@@ -138,8 +138,10 @@ final class ReportRenderer
         $locale = (string) ($row['locale'] ?: 'en');
         $brand = $this->settings->brand();
         $brand['name'] = $brand['name'] ?: $this->siteTitle();
-        $brand['contact_url'] = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
-        $brand['privacy_url'] = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
+        // Pages of the check's configuration (= its language) before the global ones.
+        $configPages = $this->settings->db()?->config((int) ($row['config_id'] ?? 0), $locale) ?? [];
+        $brand['contact_url'] = $this->pageUrl((int) ($configPages['contact_page'] ?? 0)) ?: $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
+        $brand['privacy_url'] = $this->pageUrl((int) ($configPages['privacy_page'] ?? 0)) ?: $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
         // Logos and the portrait are shown small (header 7–10 mm, portrait 22 mm): embed them
         // downscaled, a camera-size portrait would otherwise add megabytes to every e-mail and PDF.
         $brand['logo_data'] = $this->dataUri($this->projectFile((string) $brand['logo']), 600);

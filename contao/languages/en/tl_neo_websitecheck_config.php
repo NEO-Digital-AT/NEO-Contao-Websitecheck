@@ -48,3 +48,12 @@ $l['preview_pdf'] = ['PDF preview', 'Open the designed report as PDF'];
 $l['preview_mail'] = ['E-mail preview', 'Open the designed e-mail in the browser'];
 $l['automatic'] = 'Automatic (by page language)';
 $l['element_config'] = ['Configuration', 'Which website check configuration (texts, e-mail, PDF) this element uses. Automatic = the one matching the language of this page.'];
+
+// Multilingual sites: links and newsletter per configuration (= per language); empty = global value.
+$l['links_legend'] = 'Pages of this language';
+$l['contact_page'] = ['Contact page', 'Target of “Discuss the result” in the form, e-mail and PDF. Empty = contact page from the settings. The content element can override it with its own redirect page.'];
+$l['privacy_page'] = ['Privacy page', 'Link in the contact step of the form, in e-mail and PDF. Empty = privacy page from the settings.'];
+$l['newsletter_legend'] = 'Newsletter (Brevo) of this language';
+$l['nl_list_id'] = ['Brevo list', 'List for sign-ups from the check in this language. Empty = list from the configuration file (newsletter.brevo_list_id).'];
+$l['nl_template_id'] = ['Double opt-in template', 'Confirmation e-mail in this language. Empty = template from the configuration file (newsletter.brevo_template_id).'];
+$l['nl_redirect_page'] = ['Confirmation page', 'Page after clicking the confirmation link. Empty = newsletter.brevo_redirect_url.'];

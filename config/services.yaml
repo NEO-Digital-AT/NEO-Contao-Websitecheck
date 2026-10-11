@@ -52,6 +52,13 @@ services:
         arguments:
             $httpClient: '@neo_websitecheck.api_client'
 
+    # Live Brevo lists/templates for the newsletter fields of a configuration (DCA callbacks).
+    Neo\WebsitecheckBundle\Newsletter\BrevoOptions:
+        public: true
+        arguments:
+            $httpClient: '@neo_websitecheck.api_client'
+            $cache: '@cache.app'
+
     # ALTCHA is optional: Contao provides the service from 5.7 on; older
     # versions fall back to honeypot + minimum fill time (+ the IP limit).
     Neo\WebsitecheckBundle\Controller\Api\CheckController:

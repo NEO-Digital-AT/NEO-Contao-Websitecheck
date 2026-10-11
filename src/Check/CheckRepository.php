@@ -125,15 +125,19 @@ final class CheckRepository
      *
      * @return array<string, mixed>|null
      */
-    public function findRecentDone(string $domain, int $hours): array|null
+    public function findRecentDone(string $domain, int $hours, string $locale = ''): array|null
     {
         if ($hours <= 0) {
             return null;
         }
 
+        // Only a check in the same language can be reused: summaries, measures and
+        // the AI reading are written in the language of the page it ran on.
+        $lang = substr(strtolower($locale), 0, 2);
+
         $row = $this->db->fetchAssociative(
-            'SELECT * FROM tl_neo_websitecheck WHERE domain = ? AND status = ? AND finished > ? ORDER BY finished DESC LIMIT 1',
-            [$domain, self::STATUS_DONE, time() - $hours * 3600],
+            'SELECT * FROM tl_neo_websitecheck WHERE domain = ? AND status = ? AND finished > ? AND (? = \'\' OR LEFT(locale, 2) = ?) ORDER BY finished DESC LIMIT 1',
+            [$domain, self::STATUS_DONE, time() - $hours * 3600, $lang, $lang],
         );
 
         return false === $row ? null : $this->hydrate($row);

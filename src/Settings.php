@@ -171,9 +171,36 @@ final class Settings
         return $this->config['newsletter'];
     }
 
-    public function newsletterEnabled(): bool
+    /**
+     * Newsletter settings for one configuration (= one language on multilingual
+     * sites): list, double-opt-in template and confirmation page of the
+     * configuration, the config.yaml values where it leaves them empty.
+     *
+     * @return array<string, mixed> config.yaml keys plus brevo_redirect_page (page id or 0)
+     */
+    public function newsletterFor(int $configId = 0, string $locale = ''): array
     {
-        return 'none' !== $this->config['newsletter']['provider'];
+        $nl = $this->config['newsletter'] + ['brevo_redirect_page' => 0];
+
+        if (null !== $this->db && ($configId > 0 || '' !== $locale)) {
+            foreach (['nl_list_id' => 'brevo_list_id', 'nl_template_id' => 'brevo_template_id', 'nl_redirect_page' => 'brevo_redirect_page'] as $column => $key) {
+                $value = (int) $this->db->configValue($configId, $locale, $column);
+
+                if ($value > 0) {
+                    $nl[$key] = $value;
+                }
+            }
+        }
+
+        return $nl;
+    }
+
+    /** True when a visitor of this configuration/language can really be signed up (provider, key, list, template). */
+    public function newsletterEnabled(int $configId = 0, string $locale = ''): bool
+    {
+        $nl = $this->newsletterFor($configId, $locale);
+
+        return 'brevo' === $nl['provider'] && '' !== trim((string) $nl['brevo_api_key']) && (int) $nl['brevo_list_id'] > 0 && (int) $nl['brevo_template_id'] > 0;
     }
 
     public function dataLayer(): bool
