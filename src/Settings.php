@@ -91,7 +91,7 @@ final class Settings
     public function brand(): array
     {
         $brand = $this->config['brand'];
-        $brand['logo_dark'] = '';
+        $brand['logo_dark'] = (string) ($brand['logo_dark'] ?? '');
         $brand['contact_page'] = 0;
         $brand['privacy_page'] = 0;
 

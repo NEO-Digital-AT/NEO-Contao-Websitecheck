@@ -41,6 +41,7 @@ All notable changes to this bundle are documented here. The format follows
 - PDF layout: area details, strengths and AI sections are now rows of card pairs. A whole area used to be one table row, which Dompdf cannot split, so long areas jumped to the next page and left nearly empty pages. Headings stay with their first row.
 - Findings without tailored wording showed Lighthouse's Markdown code marks; they are removed, and "zoom blocked" (meta-viewport) has its own plain wording.
 - A second claim of the same check could subscribe a different address to the newsletter; the address of the first claim is used now.
+- Logo and portrait were embedded at full size in every e-mail and PDF (a camera portrait made a 2.2 MB PDF); they are downscaled now (0.6 MB). New config key `brand.logo_dark` for the e-mail header.
 
 ### Fixed
 - JSON endpoints (`start`, `claim`) answered 400 for visitors with any cookie: Contao's request-token check applied to them. Routes now set `_token_check: false` and the script sends `X-Requested-With`.

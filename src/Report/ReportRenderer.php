@@ -140,9 +140,11 @@ final class ReportRenderer
         $brand['name'] = $brand['name'] ?: $this->siteTitle();
         $brand['contact_url'] = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
         $brand['privacy_url'] = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
-        $brand['logo_data'] = $this->dataUri($this->projectFile((string) $brand['logo']));
-        $brand['logo_dark_data'] = $this->dataUri($this->projectFile((string) $brand['logo_dark'])) ?? $brand['logo_data'];
-        $brand['portrait_data'] = $this->dataUri($this->projectFile((string) $brand['portrait']));
+        // Logos and the portrait are shown small (header 7–10 mm, portrait 22 mm): embed them
+        // downscaled, a camera-size portrait would otherwise add megabytes to every e-mail and PDF.
+        $brand['logo_data'] = $this->dataUri($this->projectFile((string) $brand['logo']), 600);
+        $brand['logo_dark_data'] = $this->dataUri($this->projectFile((string) $brand['logo_dark']), 600) ?? $brand['logo_data'];
+        $brand['portrait_data'] = $this->dataUri($this->projectFile((string) $brand['portrait']), 320);
 
         $dir = isset($row['_demo_dir']) ? (string) $row['_demo_dir'] : $this->repository->dir((int) $row['id']);
         $images = [];
@@ -271,7 +273,7 @@ final class ReportRenderer
         }
     }
 
-    private function dataUri(string $path): string|null
+    private function dataUri(string $path, int $maxWidth = 0): string|null
     {
         if ('' === trim($path, '/') || !is_file($path)) {
             return null;
@@ -290,6 +292,37 @@ final class ReportRenderer
             return null;
         }
 
-        return 'data:'.$mime.';base64,'.base64_encode((string) file_get_contents($path));
+        $binary = (string) file_get_contents($path);
+
+        if ($maxWidth > 0 && \in_array($mime, ['image/png', 'image/jpeg', 'image/webp'], true) && \function_exists('imagecreatefromstring')) {
+            $img = @imagecreatefromstring($binary);
+
+            if (false !== $img && imagesx($img) > $maxWidth) {
+                $scaled = imagescale($img, $maxWidth, -1, IMG_BICUBIC);
+
+                if (false !== $scaled) {
+                    ob_start();
+
+                    // PNG keeps transparency (logos), photos become JPEG
+                    if ('image/png' === $mime) {
+                        imagealphablending($scaled, false);
+                        imagesavealpha($scaled, true);
+                        imagepng($scaled, null, 9);
+                    } else {
+                        imagejpeg($scaled, null, 85);
+                        $mime = 'image/jpeg';
+                    }
+
+                    $binary = (string) ob_get_clean();
+                    imagedestroy($scaled);
+                }
+            }
+
+            if (false !== $img) {
+                imagedestroy($img);
+            }
+        }
+
+        return 'data:'.$mime.';base64,'.base64_encode($binary);
     }
 }

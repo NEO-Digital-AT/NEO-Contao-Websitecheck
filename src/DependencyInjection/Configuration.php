@@ -61,6 +61,7 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('contact_url')->defaultValue('')->info('Fallback link for the "talk about it" button when the element has no redirect page.')->end()
                         ->scalarNode('privacy_url')->defaultValue('')->info('Link to the privacy policy shown under the lead form.')->end()
                         ->scalarNode('logo')->defaultValue('')->info('PNG/JPG logo path relative to the project dir (e.g. files/theme/logo.png) for PDF and e-mail.')->end()
+                        ->scalarNode('logo_dark')->defaultValue('')->info('Logo for dark backgrounds (e-mail header, dark cover), relative to the project dir.')->end()
                         ->scalarNode('portrait')->defaultValue('')->info('Optional portrait photo path for the "what happens next" box.')->end()
                         ->scalarNode('color_primary')->defaultValue('#1f1b3a')->end()
                         ->scalarNode('color_accent')->defaultValue('#b4f04b')->end()
