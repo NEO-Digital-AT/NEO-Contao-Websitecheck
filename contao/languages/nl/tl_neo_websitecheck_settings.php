@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'hier in de back-end opgeslagen';
 $l['apiFromConfig'] = 'uit de serverconfiguratie';
 $l['apiMissing'] = 'ontbreekt — dit deel van de check vervalt';
 $l['modelFromConfig'] = '– serverconfiguratie (%s) –';
+$l['test_api'] = ['Verbindingen testen', ''];

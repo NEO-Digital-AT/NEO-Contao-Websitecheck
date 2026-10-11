@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'spremljeno ovdje u administraciji';
 $l['apiFromConfig'] = 'iz konfiguracije poslužitelja';
 $l['apiMissing'] = 'nedostaje — ovaj dio provjere se preskače';
 $l['modelFromConfig'] = '– konfiguracija poslužitelja (%s) –';
+$l['test_api'] = ['Provjeri veze', ''];

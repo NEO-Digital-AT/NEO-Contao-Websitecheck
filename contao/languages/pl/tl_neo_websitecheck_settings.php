@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'zapisany tutaj w panelu';
 $l['apiFromConfig'] = 'z konfiguracji serwera';
 $l['apiMissing'] = 'brak — ta część checku zostaje pominięta';
 $l['modelFromConfig'] = '– konfiguracja serwera (%s) –';
+$l['test_api'] = ['Sprawdź połączenia', ''];

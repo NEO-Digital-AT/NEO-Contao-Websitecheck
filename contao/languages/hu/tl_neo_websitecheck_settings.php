@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'itt, az adminban tárolva';
 $l['apiFromConfig'] = 'a szerverkonfigurációból';
 $l['apiMissing'] = 'hiányzik — az ellenőrzés e része kimarad';
 $l['modelFromConfig'] = '– szerverkonfiguráció (%s) –';
+$l['test_api'] = ['Kapcsolatok tesztelése', ''];

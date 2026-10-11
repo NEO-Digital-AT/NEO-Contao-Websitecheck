@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'uloženo zde v administraci';
 $l['apiFromConfig'] = 'z konfigurace serveru';
 $l['apiMissing'] = 'chybí — tato část kontroly se vynechá';
 $l['modelFromConfig'] = '– konfigurace serveru (%s) –';
+$l['test_api'] = ['Otestovat připojení', ''];

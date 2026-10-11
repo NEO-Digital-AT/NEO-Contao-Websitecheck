@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'enregistrée ici dans le back office';
 $l['apiFromConfig'] = 'issue de la configuration serveur';
 $l['apiMissing'] = 'manquante — cette partie du check est ignorée';
 $l['modelFromConfig'] = '– configuration serveur (%s) –';
+$l['test_api'] = ['Tester les connexions', ''];

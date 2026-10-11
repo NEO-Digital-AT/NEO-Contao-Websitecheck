@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'guardada aquí en el back end';
 $l['apiFromConfig'] = 'de la configuración del servidor';
 $l['apiMissing'] = 'falta — esta parte del check se omite';
 $l['modelFromConfig'] = '– configuración del servidor (%s) –';
+$l['test_api'] = ['Probar conexiones', ''];

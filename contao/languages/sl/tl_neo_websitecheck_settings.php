@@ -54,3 +54,4 @@ $l['apiFromDb'] = 'shranjeno tukaj v zaledju';
 $l['apiFromConfig'] = 'iz konfiguracije strežnika';
 $l['apiMissing'] = 'manjka — ta del preverjanja odpade';
 $l['modelFromConfig'] = '– konfiguracija strežnika (%s) –';
+$l['test_api'] = ['Preveri povezave', ''];

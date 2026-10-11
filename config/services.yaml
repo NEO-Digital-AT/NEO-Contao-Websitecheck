@@ -114,6 +114,11 @@ services:
     Neo\WebsitecheckBundle\Backend\PreviewOperation:
         public: true
 
+    Neo\WebsitecheckBundle\Backend\ApiTestOperation:
+        public: true
+        arguments:
+            $apiClient: '@neo_websitecheck.api_client'
+
     Neo\WebsitecheckBundle\Backend\DesignerOperation:
         public: true
 

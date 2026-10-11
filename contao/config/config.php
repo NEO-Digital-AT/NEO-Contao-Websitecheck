@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Neo\WebsitecheckBundle\Backend\DesignerOperation;
+use Neo\WebsitecheckBundle\Backend\ApiTestOperation;
 use Neo\WebsitecheckBundle\Backend\PreviewOperation;
 use Neo\WebsitecheckBundle\Backend\ResendOperation;
 use Neo\WebsitecheckBundle\Widget\DesignerWidget;
@@ -22,6 +23,7 @@ $GLOBALS['BE_MOD']['neo']['neo_websitecheck_settings'] = [
     'tables' => ['tl_neo_websitecheck_settings', 'tl_neo_websitecheck_config'],
     'preview_pdf' => [PreviewOperation::class, 'pdf'],
     'preview_mail' => [PreviewOperation::class, 'mail'],
+    'test_api' => [ApiTestOperation::class, '__invoke'],
     'designer_preview' => [DesignerOperation::class, 'preview'],
     'designer_pdf' => [DesignerOperation::class, 'pdf'],
     'designer_preset' => [DesignerOperation::class, 'preset'],

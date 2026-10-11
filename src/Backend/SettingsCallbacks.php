@@ -262,7 +262,7 @@ final class SettingsCallbacks
     {
         $lang = $GLOBALS['TL_LANG']['tl_neo_websitecheck_settings'];
 
-        foreach (['preview_pdf', 'preview_mail'] as $key) {
+        foreach (['preview_pdf', 'preview_mail', 'test_api'] as $key) {
             $buttons[$key] = sprintf('<a href="%s" class="tl_submit" target="_blank" rel="noopener">%s</a>', Backend::addToUrl('key='.$key, true, ['act', 'id']), StringUtil::specialchars($lang[$key][0] ?? $key));
         }
 
