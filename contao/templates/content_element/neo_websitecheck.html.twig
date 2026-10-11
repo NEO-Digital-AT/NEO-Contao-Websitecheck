@@ -6,7 +6,9 @@
     idle   → URL form
     run    → progress (steps, remaining seconds, live screenshot with markers)
     gate   → first name / last name / e-mail (+ optional newsletter)
-    result → grade, four scores, measures, strengths, call to action
+    result → grade with a short summary and the PDF hint (result_mode "compact",
+             the default) or additionally scores, areas, measures and strengths
+             ("full"); the PDF always carries the complete report
   Behaviour lives in bundles/neowebsitecheck/websitecheck.js; this template
   only renders markup and hands over the configuration as JSON.
   Override: copy to templates/content_element/neo_websitecheck.html.twig.
@@ -16,7 +18,7 @@
 {% set i = element_id %}
 <div class="nwc" id="{{ i }}" data-nwc data-state="idle"{% if style %} style="{{ style }}"{% endif %} data-config="{{ config|json_encode|e('html_attr') }}"
      data-i18n="{{ {
-        eta: 'fe.eta'|trans, eta_soon: 'fe.eta_soon'|trans, err_url: 'fe.err_url'|trans, err_limit: 'fe.err_limit'|trans({'%limit%': config.limit}),
+        eta: 'fe.eta'|trans, eta_soon: 'fe.eta_soon'|trans, err_url: 'fe.err_url'|trans, err_limit: 'fe.err_limit'|trans({'%limit%': config.limit}), err_limit_hour: 'fe.err_limit_hour'|trans({'%limit%': config.limitHour}),
         err_spam: 'fe.err_spam'|trans, err_generic: 'fe.err_generic'|trans, err_failed: 'fe.err_failed'|trans, status_idle: 'fe.status_idle'|trans,
         status_run: 'fe.status_run'|trans, status_done: 'fe.status_done'|trans, grade_label: 'fe.grade_label'|trans, mail_sent: 'fe.mail_sent'|trans,
         mail_failed: 'fe.mail_failed'|trans, effort_small: 'measure.effort.small'|trans, effort_medium: 'measure.effort.medium'|trans, effort_large: 'measure.effort.large'|trans
@@ -104,12 +106,13 @@
     </div>
 
     {# ---- result ---- #}
-    <div class="nwc__result" data-nwc-pane="result" hidden tabindex="-1" aria-labelledby="{{ i }}-res-title">
+    <div class="nwc__result nwc__result--{{ result_mode }}" data-nwc-pane="result" data-nwc-mode="{{ result_mode }}" hidden tabindex="-1" aria-labelledby="{{ i }}-res-title">
       <div class="nwc__reshead">
         <div><span class="nwc__kicker">{{ 'fe.result_kicker'|trans }}</span><h3 id="{{ i }}-res-title" class="nwc__h"><span data-nwc-domain></span></h3></div>
         <p class="nwc__sent" data-nwc-sent></p>
       </div>
       <div class="nwc__grade" data-nwc-gradebox><span class="nwc__gradenum" data-nwc-grade>–</span><div><b data-nwc-gradeword></b><p data-nwc-verdict></p></div></div>
+      {% if result_mode == 'full' %}
       <div class="nwc__gauges">
         <div class="nwc__gauge" data-g="perf" style="--p:0"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52"></circle><circle cx="60" cy="60" r="52"></circle></svg><b>–</b><span>{{ 'fe.gauge_perf'|trans }}</span></div>
         <div class="nwc__gauge" data-g="a11y" style="--p:0"><svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="52"></circle><circle cx="60" cy="60" r="52"></circle></svg><b>–</b><span>{{ 'fe.gauge_a11y'|trans }}</span></div>
@@ -125,6 +128,7 @@
         <p class="nwc__blocklabel">{{ 'fe.strengths_title'|trans }}</p>
         <ul class="nwc__strengths" data-nwc-strengths></ul>
       </div>
+      {% endif %}
       <p class="nwc__disc">{{ wc_text('fe.disclaimer', vars, lang) }}</p>
       <div class="nwc__cta">
         {% if contact_url %}<a class="nwc__btn nwc__btn--primary" href="{{ contact_url }}"><span>{{ wc_text('fe.cta', vars, lang) }}</span></a>{% endif %}

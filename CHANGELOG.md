@@ -16,6 +16,9 @@ All notable changes to this bundle are documented here. The format follows
 
 - **The AI prepares the report:** it receives the marked screenshot excerpts cut from Google's measurement (now up to eight candidates), picks the two or three that matter most for the business and writes a plain caption for each. It may add one or two sections of its own for topics the seven areas do not cover (prices, booking, trust, service area, emergency service …); the new PDF block **AI sections** renders them and is part of all PDF templates. Default `ai.max_tokens` raised to 3000.
 
+- **Short result on the page (default):** after the lead form the element shows only the grade with one sentence, the note that the report is on its way and the call to action; the PDF carries everything else. The full overview (scores, areas, measures, strengths) stays available per configuration ("Result on the page").
+- **Rate limit per hour:** a visitor (IP) may start two checks per hour by default (`limits.checks_per_ip_per_hour`, back end "Checks per visitor and hour"), with its own message; the day limit default is now 10.
+
 ### Fixed
 - **Privacy:** a check served from the 24-hour cache copied the source check's folder including its PDF, and that PDF (with the first visitor's name) was sent again. The copy now skips PDFs, and a PDF is only reused when it belongs to the same check.
 - **Numbers in grade badges sat 2–6 mm too high in Dompdf PDFs.** Dompdf only centres text vertically when width, height and `vertical-align: middle` are on the table cell; every badge now uses one measured macro (`_pdf_macros.html.twig`). An automatic check measured all badges in all templates (offset ≤ 0.3 mm).
@@ -37,6 +40,7 @@ All notable changes to this bundle are documented here. The format follows
 - The public status API passed the internal error text (server paths, host names) to the browser; it now only reports that the check failed.
 - PDF layout: area details, strengths and AI sections are now rows of card pairs. A whole area used to be one table row, which Dompdf cannot split, so long areas jumped to the next page and left nearly empty pages. Headings stay with their first row.
 - Findings without tailored wording showed Lighthouse's Markdown code marks; they are removed, and "zoom blocked" (meta-viewport) has its own plain wording.
+- A second claim of the same check could subscribe a different address to the newsletter; the address of the first claim is used now.
 
 ### Fixed
 - JSON endpoints (`start`, `claim`) answered 400 for visitors with any cookie: Contao's request-token check applied to them. Routes now set `_token_check: false` and the script sends `X-Requested-With`.

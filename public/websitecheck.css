@@ -150,6 +150,11 @@
 .nwc__measures small{display:inline-block;margin-top:4px;font-family:var(--nwc-font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--nwc-muted)}
 .nwc__disc{margin:16px 0 0;font-size:.8rem;color:var(--nwc-muted);line-height:1.5}
 .nwc__cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px;align-items:center}
+/* short result: as compact as the lead form, the PDF carries the details */
+.nwc__result--compact .nwc__grade{margin:14px 0 12px}
+.nwc__result--compact .nwc__disc{margin-top:0}
+.nwc__result--compact .nwc__cta{gap:6px 16px}
+.nwc__result--compact .nwc__btn--ghost{min-height:44px;padding:0 4px;border-color:transparent;text-decoration:underline;text-underline-offset:3px;font-weight:500}
 
 @media (prefers-reduced-motion:reduce){
   .nwc *{animation:none!important;transition:none!important}

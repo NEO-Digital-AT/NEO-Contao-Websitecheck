@@ -10,7 +10,9 @@ $l['mail_design_legend'] = 'Design the e-mail';
 $l['pdf_legend'] = 'PDF report';
 $l['pdf_design_legend'] = 'Design the PDF report';
 $l['owner_legend'] = 'Your copy';
-$l['element_legend'] = 'Texts of the element on the page';
+$l['element_legend'] = 'The element on the page';
+$l['fe_result'] = ['Result on the page', 'Short: grade, one short sentence and the hint to the PDF. Full: additionally scores, all areas, measures and strengths. The PDF always has everything.'];
+$l['fe_result_options'] = ['compact' => 'Short (recommended)', 'full' => 'Full'];
 $l['expert_legend'] = 'Internal copy as Twig template';
 
 $l['title'] = ['Name', 'Internal name, e.g. “German” or “English – hotels”.'];

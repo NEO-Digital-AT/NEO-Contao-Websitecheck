@@ -433,6 +433,7 @@ fe:
     altcha_error: 'Verification failed. Please reload the page.'
     altcha_wait: 'Verification is still running. Please wait a moment.'
     err_url: 'Please enter a valid address, e.g. your-company.com.'
+    err_limit_hour: 'You have already started %limit% checks in the last hour. Please try again in an hour.'
     err_limit: 'You have already run %limit% checks today. Please try again tomorrow.'
     err_spam: 'The spam check did not go through. Please reload the page and try again.'
     err_generic: 'Something went wrong. Please try again in a moment.'

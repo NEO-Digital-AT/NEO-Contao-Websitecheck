@@ -48,7 +48,7 @@
     function errText(j) {
       if (!j) return i18n.err_generic;
       if (j.error === 'invalid_url') return i18n.err_url;
-      if (j.error === 'rate_limited') return i18n.err_limit;
+      if (j.error === 'rate_limited') return j.window === 'hour' ? (i18n.err_limit_hour || i18n.err_limit) : i18n.err_limit;
       if (j.error === 'spam_check') return i18n.err_spam;
       if (j.error === 'failed') return i18n.err_failed;
       return i18n.err_generic;
@@ -186,7 +186,15 @@
       var box = $('[data-nwc-gradebox]');
       $('[data-nwc-grade]').textContent = r.grade || '–';
       $('[data-nwc-gradeword]').textContent = fmt(i18n.grade_label, r.grade) + (r.gradeWord ? ' · ' + r.gradeWord : '');
-      $('[data-nwc-verdict]').textContent = r.summary || r.verdict || '';
+      var compact = panes.result.getAttribute('data-nwc-mode') !== 'full';
+      // short view: at most two sentences of the summary, the PDF has the rest
+      var summary = r.summary || r.verdict || '';
+      if (compact) {
+        // one sentence; a second one only if both together stay short
+        var parts = summary.match(/[^.!?]+[.!?]+(\s|$)/g);
+        if (parts && parts.length > 1) summary = (parts[0] + parts[1]).length <= 170 ? (parts[0] + parts[1]).trim() : parts[0].trim();
+      }
+      $('[data-nwc-verdict]').textContent = summary;
       box.className = 'nwc__grade is-' + (r.verdictKey || 'mid');
       var sent = $('[data-nwc-sent]');
       sent.textContent = mailSent ? fmt(i18n.mail_sent, email) : i18n.mail_failed;
@@ -199,30 +207,30 @@
         b.textContent = v;
         if (reduce) g.style.setProperty('--p', v); else { g.style.setProperty('--p', 0); requestAnimationFrame(function () { requestAnimationFrame(function () { g.style.setProperty('--p', v); }); }); }
       });
-      var areas = $('[data-nwc-areas]'); areas.innerHTML = '';
-      (r.areas || []).forEach(function (a) {
+      var areas = $('[data-nwc-areas]'); if (areas) areas.innerHTML = '';
+      (areas ? r.areas || [] : []).forEach(function (a) {
         var li = document.createElement('li');
         li.innerHTML = '<span class="nwc__chip is-' + (a.grade || 0) + '">' + (a.grade || '–') + '</span><div><b></b><span></span></div>';
         li.querySelector('b').textContent = a.label; li.querySelector('div span').textContent = a.summary;
         areas.appendChild(li);
       });
-      var mw = $('[data-nwc-measures-wrap]'), ml = $('[data-nwc-measures]'); ml.innerHTML = '';
-      (r.measures || []).forEach(function (m, idx) {
+      var mw = $('[data-nwc-measures-wrap]'), ml = $('[data-nwc-measures]'); if (ml) ml.innerHTML = '';
+      (ml ? r.measures || [] : []).forEach(function (m, idx) {
         var li = document.createElement('li');
         li.innerHTML = '<i aria-hidden="true">' + (idx + 1) + '</i><div><b></b><span></span><br><small></small></div>';
         li.querySelector('b').textContent = m.title; li.querySelector('span').textContent = m.text;
         li.querySelector('small').textContent = i18n['effort_' + (m.effort || 'small')] || '';
         ml.appendChild(li);
       });
-      mw.hidden = !(r.measures && r.measures.length);
-      var sw = $('[data-nwc-strengths-wrap]'), sl = $('[data-nwc-strengths]'); sl.innerHTML = '';
-      (r.strengths || []).forEach(function (s) {
+      if (mw) mw.hidden = !(r.measures && r.measures.length);
+      var sw = $('[data-nwc-strengths-wrap]'), sl = $('[data-nwc-strengths]'); if (sl) sl.innerHTML = '';
+      (sl ? r.strengths || [] : []).forEach(function (s) {
         var li = document.createElement('li');
         li.innerHTML = '<i aria-hidden="true">✓</i><div><b></b><span></span></div>';
         li.querySelector('b').textContent = s.title; li.querySelector('span').textContent = s.text;
         sl.appendChild(li);
       });
-      sw.hidden = !(r.strengths && r.strengths.length);
+      if (sw) sw.hidden = !(r.strengths && r.strengths.length);
       setState('result');
       track('check_result', { domain: domain, grade: r.grade });
       panes.result.focus({ preventScroll: true });

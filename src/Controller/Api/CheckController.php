@@ -69,8 +69,13 @@ final class CheckController
 
         $ipHash = $this->ipHash($request);
 
+        // Per visitor: a short window against bursts (cost, abuse), a day window on top.
+        if ($this->repository->countForIp($ipHash, 3600) >= $this->settings->checksPerIpPerHour()) {
+            return $this->json(['error' => 'rate_limited', 'window' => 'hour', 'limit' => $this->settings->checksPerIpPerHour()], 429);
+        }
+
         if ($this->repository->countForIp($ipHash, 86400) >= $this->settings->checksPerIpPerDay()) {
-            return $this->json(['error' => 'rate_limited', 'limit' => $this->settings->checksPerIpPerDay()], 429);
+            return $this->json(['error' => 'rate_limited', 'window' => 'day', 'limit' => $this->settings->checksPerIpPerDay()], 429);
         }
 
         $locale = $this->locale($request, $payload);
@@ -156,7 +161,8 @@ final class CheckController
         }
 
         if ($newsletter && empty($row['data']['newsletterDone'])) {
-            if ($this->newsletter->subscribe($email, $first, $last)) {
+            // the address of the first claim, never one sent with a later request for the same check
+            if ($this->newsletter->subscribe((string) $row['email'], (string) $row['firstname'], (string) $row['lastname'])) {
                 $data = $this->repository->find($id)['data'];
                 $data['newsletterDone'] = true;
                 $this->repository->update($id, ['data' => $data]);

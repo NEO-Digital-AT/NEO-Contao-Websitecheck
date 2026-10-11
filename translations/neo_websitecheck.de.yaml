@@ -433,6 +433,7 @@ fe:
     altcha_error: 'Die Prüfung ist fehlgeschlagen. Bitte die Seite neu laden.'
     altcha_wait: 'Die Prüfung läuft noch. Bitte einen Moment warten.'
     err_url: 'Bitte geben Sie eine gültige Adresse ein, z. B. ihre-firma.at.'
+    err_limit_hour: 'Sie haben in der letzten Stunde schon %limit% Checks gestartet. Bitte versuchen Sie es in einer Stunde wieder.'
     err_limit: 'Sie haben heute schon %limit% Checks gestartet. Bitte versuchen Sie es morgen wieder.'
     err_spam: 'Die Spam-Prüfung ist nicht durchgegangen. Bitte die Seite neu laden und noch einmal versuchen.'
     err_generic: 'Da ist etwas schiefgegangen. Bitte in einem Moment noch einmal versuchen.'

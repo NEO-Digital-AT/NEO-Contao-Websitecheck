@@ -44,8 +44,8 @@ final class WebsitecheckController extends AbstractContentElementController
 
         $brand = $this->settings->brand();
         // Configuration: the one picked in the element (core "module" column) or the one matching the page language.
-        $config = $this->settings->db()?->config((int) ($model->row()['module'] ?? 0), $lang);
-        $configId = (int) ($config['id'] ?? 0);
+        $configRow = $this->settings->db()?->config((int) ($model->row()['module'] ?? 0), $lang);
+        $configId = (int) ($configRow['id'] ?? 0);
         $contactUrl = $this->pageUrl((int) $brand['contact_page']) ?: (string) $brand['contact_url'];
         $privacyUrl = $this->pageUrl((int) $brand['privacy_page']) ?: (string) $brand['privacy_url'];
 
@@ -74,6 +74,7 @@ final class WebsitecheckController extends AbstractContentElementController
             'altchaMax' => null !== $this->altcha ? $this->altcha->getRangeMax() : 0,
             'lang' => $lang,
             'limit' => $this->settings->checksPerIpPerDay(),
+            'limitHour' => $this->settings->checksPerIpPerHour(),
             'dataLayer' => $this->settings->dataLayer(),
             'contactUrl' => $contactUrl,
             'config' => $configId,
@@ -87,6 +88,8 @@ final class WebsitecheckController extends AbstractContentElementController
         $template->set('style', $style);
         $template->set('vars', ['company' => (string) $brand['name'], 'owner' => (string) $brand['owner_name'], 'phone' => (string) $brand['phone'], 'website' => (string) $brand['website_url'], 'days' => (string) $this->settings->retentionDays(), 'config_id' => $configId]);
         $template->set('config_id', $configId);
+        // Result on the page: short (grade, one or two sentences, PDF hint) or the full overview.
+        $template->set('result_mode', 'full' === ($configRow['fe_result'] ?? '') ? 'full' : 'compact');
         $template->set('newsletter', $this->settings->newsletterEnabled());
         $template->set('newsletter_label', (string) ($this->settings->newsletter()['label'] ?? ''));
         $template->set('altcha', null !== $this->altcha);

@@ -10,7 +10,9 @@ $l['mail_design_legend'] = 'E-Mail gestalten';
 $l['pdf_legend'] = 'PDF-Bericht';
 $l['pdf_design_legend'] = 'PDF-Bericht gestalten';
 $l['owner_legend'] = 'Ihre Kopie';
-$l['element_legend'] = 'Texte des Elements auf der Seite';
+$l['element_legend'] = 'Das Element auf der Seite';
+$l['fe_result'] = ['Ergebnis auf der Seite', 'Kurzfassung: Note, ein kurzer Satz und der Hinweis auf das PDF. Ausführlich: zusätzlich Messwerte, alle Bereiche, Maßnahmen und Stärken. Das PDF enthält immer alles.'];
+$l['fe_result_options'] = ['compact' => 'Kurzfassung (empfohlen)', 'full' => 'Ausführlich'];
 $l['expert_legend'] = 'Interne Kopie als Twig-Vorlage';
 
 $l['title'] = ['Bezeichnung', 'Interner Name, z. B. „Deutsch“ oder „Englisch – Hotels“.'];

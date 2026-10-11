@@ -129,6 +129,11 @@ final class Settings
         return $brand;
     }
 
+    public function checksPerIpPerHour(): int
+    {
+        return $this->db?->int('checks_per_ip_hour') ?: (int) $this->config['limits']['checks_per_ip_per_hour'];
+    }
+
     public function checksPerIpPerDay(): int
     {
         return $this->db?->int('checks_per_ip') ?: (int) $this->config['limits']['checks_per_ip_per_day'];

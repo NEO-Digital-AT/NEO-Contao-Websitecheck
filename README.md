@@ -94,7 +94,8 @@ neo_websitecheck:
         color_primary: '#2a025f'
         color_accent: '#a8f20d'
     limits:
-        checks_per_ip_per_day: 2
+        checks_per_ip_per_hour: 2
+        checks_per_ip_per_day: 10
         cache_hours: 24       # same domain again → stored result, no new measurement
         max_pages: 5
         retention_days: 90    # checks incl. lead data, screenshots and PDFs are deleted after this
@@ -169,14 +170,14 @@ Everything a visitor sees is edited in the back end under **NEO › Website chec
 - **Who sends the report:** company/agency, contact person, phone, website, contact page (target of the "talk about it" buttons), privacy policy page.
 - **Design:** logo (PNG/JPG/SVG), logo for dark backgrounds, portrait photo, primary and accent colour.
 - **E-mail:** default sender name and address, reply-to, copy address for the operator.
-- **Limits:** checks per visitor and day, cache hours, retention days, pages per check.
+- **Limits:** checks per visitor and hour (default 2) and day (default 10), cache hours, retention days, pages per check.
 
 **Configurations (one per language or use case):** "Edit configurations" opens the list. Each configuration has a name, a language and:
 
 - **E-mail:** subject, sender, reply-to, and the **e-mail designer**.
 - **PDF report:** file name with placeholders (`website-check-{{domain}}-{{date}}.pdf`) and the **PDF designer**.
 - **Your copy:** subject of the operator copy.
-- **Texts of the element on the page:** labels of the form, lead form and result.
+- **The element on the page:** short result (grade, one sentence, PDF hint; default) or the full overview, and the labels of form, lead form and result.
 - **Internal copy (administrators only):** an optional Twig template for the operator copy.
 
 **The designer** (same for e-mail and PDF) has three panes:
@@ -394,14 +395,14 @@ Alles, was ein Besucher sieht, wird im Backend unter **NEO › Website-Check Ein
 - **Wer den Bericht verschickt:** Firma/Agentur, Ansprechperson, Telefon, Website, Kontaktseite (Ziel der Knöpfe „Ergebnis besprechen“), Datenschutzseite.
 - **Design:** Logo (PNG/JPG/SVG), Logo für dunklen Hintergrund, Porträtfoto, Haupt- und Akzentfarbe.
 - **E-Mail:** Standard-Absender, Antwortadresse, Kopie an den Betreiber.
-- **Grenzen:** Checks je Besucher und Tag, Zwischenspeicher, Aufbewahrung, Seiten je Check.
+- **Grenzen:** Checks je Besucher und Stunde (Standard 2) und Tag (Standard 10), Zwischenspeicher, Aufbewahrung, Seiten je Check.
 
 **Konfigurationen (eine je Sprache oder Einsatz):** „Konfigurationen bearbeiten“ öffnet die Liste. Jede Konfiguration hat einen Namen, eine Sprache und:
 
 - **E-Mail:** Betreff, Absender, Antwortadresse und den **E-Mail-Designer**.
 - **PDF-Bericht:** Dateiname mit Platzhaltern (`website-check-{{domain}}-{{date}}.pdf`) und den **PDF-Designer**.
 - **Ihre Kopie:** Betreff der Kopie an den Betreiber.
-- **Texte des Elements auf der Seite:** Beschriftungen von Formular, Kontaktformular und Ergebnis.
+- **Das Element auf der Seite:** Kurzfassung des Ergebnisses (Note, ein Satz, Hinweis aufs PDF; Standard) oder die ausführliche Übersicht, dazu die Beschriftungen von Formular, Kontaktformular und Ergebnis.
 - **Interne Kopie (nur Administratoren):** optionale Twig-Vorlage für die Kopie an den Betreiber.
 
 **Der Designer** (gleich für E-Mail und PDF) hat drei Bereiche:

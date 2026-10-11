@@ -47,6 +47,9 @@ $fields = [
     'pdf_body' => ['inputType' => 'textarea', 'save_callback' => [[SettingsCallbacks::class, 'validateTwig']], 'eval' => ['rte' => 'ace|twig', 'allowHtml' => true, 'preserveTags' => true, 'decodeEntities' => true, 'class' => 'monospace', 'rows' => 24, 'tl_class' => 'clr'], 'sql' => 'mediumtext NULL'],
 ];
 
+// How much of the result the element shows on the page (the PDF always has everything).
+$fields['fe_result'] = ['inputType' => 'select', 'options' => ['compact', 'full'], 'reference' => &$GLOBALS['TL_LANG']['tl_neo_websitecheck_config']['fe_result_options'], 'eval' => ['tl_class' => 'w50 clr'], 'sql' => "varchar(16) NOT NULL default 'compact'"];
+
 // Texts of the front-end element (short snippets, placeholders allowed).
 foreach (TextProvider::KEYS as $key => $def) {
     if (!str_starts_with($key, 'fe.')) {
@@ -89,7 +92,7 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_config'] = [
             .'{pdf_legend},pdf_filename;'
             .'{pdf_design_legend},pdf_design,pdf_body;'
             .'{owner_legend:hide},mail_owner_subject;'
-            .'{element_legend:hide},'.implode(',', TextProvider::columns('fe')).';'
+            .'{element_legend:hide},fe_result,'.implode(',', TextProvider::columns('fe')).';'
             .'{expert_legend:hide},owner_body',
     ],
     'fields' => $fields,
