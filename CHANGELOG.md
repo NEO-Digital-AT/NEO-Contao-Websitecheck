@@ -27,6 +27,8 @@ All notable changes to this bundle are documented here. The format follows
 - Google rings in the PDF were missing (Dompdf ignores inline SVG): the ring is now an SVG image with the number centred on top.
 - The *Standard* template printed "At a glance" twice; areas of a grade-less area showed "Grade – · –".
 - Screenshots in the report were Google's thumbnails (250 px mobile, 500 px desktop). The first screen is now cut from the full-page capture in full resolution (412 px / 1350 px).
+- The idle overlay text in the preview window ("Your website appears here") had 4.3:1 contrast; the overlay is darker now (6.4:1).
+- The ALTCHA widget no longer shows a visible box in the form; it still verifies in the background.
 - Marked excerpts skipped nothing: icon-font glyphs ("cleaning_services", "search") were cut out and listed as examples. They are now left out, at most two excerpts per audit are taken and overlapping excerpts are skipped.
 - The cover repeated the logo already shown in the header line.
 - **Google measured only the loading speed:** the four categories were sent as `category[0]=…`, which PageSpeed ignores, so accessibility, best practices and SEO came back empty and were graded 5. The parameter is now repeated as Google expects. A category that is missing anyway counts as "not measured", never as 0.

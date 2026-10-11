@@ -39,7 +39,7 @@
 .nwc-os__skeleton .s-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:4%}
 .nwc-os__skeleton .s-cards i{height:22px}
 .nwc-os__shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}
-.nwc-os__idle{position:absolute;inset:0;display:grid;place-items:center;background:rgba(13,11,22,.55);color:#fff;font-size:.9rem;text-align:center;padding:12px}
+.nwc-os__idle{position:absolute;inset:0;display:grid;place-items:center;background:rgba(13,11,22,.66);color:#fff;font-size:.9rem;text-align:center;padding:12px}
 .nwc[data-state="run"] .nwc-os__idle,.nwc[data-state="gate"] .nwc-os__idle,.nwc[data-state="result"] .nwc-os__idle{display:none}
 .nwc-os__beam{position:absolute;left:0;right:0;top:-12%;height:12%;background:linear-gradient(180deg,transparent,rgba(180,240,75,.45));opacity:0;pointer-events:none}
 .nwc[data-state="run"] .nwc-os__beam{opacity:1;animation:nwcBeam 2.6s ease-in-out infinite}
@@ -70,7 +70,9 @@
 .nwc__btn[disabled]{opacity:.6;cursor:progress}
 .nwc__err{margin:10px 0 0;font-size:.88rem;color:#ffd1d4}
 .nwc__hp{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
-.nwc__altcha{display:block;margin-top:10px;--altcha-color-base:transparent;--altcha-color-text:var(--nwc-muted);--altcha-color-border:var(--nwc-border);--altcha-border-radius:10px;font-size:.8rem}
+/* ALTCHA solves its puzzle in the background (auto="onload"); the widget itself stays out of sight
+   and out of the tab order. A failed verification shows the normal error text under the field. */
+.nwc__altcha{display:none}
 .nwc__what{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-wrap:wrap;gap:8px 18px}
 .nwc__what li{display:inline-flex;align-items:center;gap:8px;font-size:.88rem;color:var(--nwc-muted)}
 .nwc__what li::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--nwc-accent)}
