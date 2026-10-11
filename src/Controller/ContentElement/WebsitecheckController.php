@@ -56,15 +56,10 @@ final class WebsitecheckController extends AbstractContentElementController
             $contactUrl = trim($this->insertTagParser->replaceInline($elementUrl)) ?: $contactUrl;
         }
 
+        // No inline colours: the element ships a neutral look and is themed with
+        // the --nwc-* custom properties in the site's stylesheet (inline values
+        // would beat the theme). The brand colours style PDF and e-mail only.
         $style = '';
-
-        if ('' !== (string) $brand['color_accent']) {
-            $style .= '--nwc-accent:'.$brand['color_accent'].';';
-        }
-
-        if ('' !== (string) $brand['color_primary']) {
-            $style .= '--nwc-bg:'.$brand['color_primary'].';--nwc-bg-2:'.$brand['color_primary'].';';
-        }
 
         $config = [
             'start' => $this->router->generate('neo_websitecheck_start'),

@@ -110,8 +110,8 @@ final class DesignRenderer
     public static function theme(array $theme, array $context): array
     {
         $brand = (array) ($context['brand'] ?? []);
-        $primary = $theme['primary'] ?: (string) ($brand['color_primary'] ?? '#2a025f');
-        $accent = $theme['accent'] ?: (string) ($brand['color_accent'] ?? '#a8f20d');
+        $primary = $theme['primary'] ?: (string) ($brand['color_primary'] ?? '#1f2328');
+        $accent = $theme['accent'] ?: (string) ($brand['color_accent'] ?? '#0969da');
 
         $fonts = [
             // Arimo: metric-compatible with Arial, bundled for the PDF (resources/fonts); e-mail clients fall back to Arial

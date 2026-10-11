@@ -19,8 +19,8 @@ $l['privacy_page'] = ['Datenschutzseite', 'Wird unter dem Kontaktformular verlin
 $l['logo'] = ['Logo', 'PNG, JPG oder SVG für den Berichtskopf und die E-Mail. Dunkel auf hellem Grund.'];
 $l['logo_dark'] = ['Logo für dunklen Hintergrund', 'Optionale Variante für den farbigen E-Mail-Kopf; leer = Logo oben.'];
 $l['portrait'] = ['Porträtfoto', 'Optional, erscheint im Kasten „So geht es weiter“ und in der E-Mail-Signatur.'];
-$l['color_primary'] = ['Hauptfarbe', 'Überschriften, Kästen, E-Mail-Kopf (Hex, z. B. 2a025f).'];
-$l['color_accent'] = ['Akzentfarbe', 'Noten-Badges, Knöpfe, Marker (Hex, z. B. a8f20d).'];
+$l['color_primary'] = ['Hauptfarbe', 'PDF und E-Mail: Überschriften, Kästen, E-Mail-Kopf (Hex, z. B. 1f2328). Das Element auf der Website gestaltet das Theme-CSS (Variablen --nwc-*).'];
+$l['color_accent'] = ['Akzentfarbe', 'PDF und E-Mail: Knöpfe, Marker, Linien (Hex, z. B. 0969da).'];
 $l['texts_info'] = ['Konfigurationen', ''];
 $l['from_name'] = ['Absendername', 'Leer = Firmenname.'];
 $l['from_email'] = ['Absenderadresse', 'Leer = config.yaml oder die Contao-Admin-Adresse.'];

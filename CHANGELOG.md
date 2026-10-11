@@ -19,6 +19,7 @@ All notable changes to this bundle are documented here. The format follows
 - **Short result on the page (default):** after the lead form the element shows only the grade with one sentence, the note that the report is on its way and the call to action; the PDF carries everything else. The full overview (scores, areas, measures, strengths) stays available per configuration ("Result on the page").
 - **Rate limit per hour:** a visitor (IP) may start two checks per hour by default (`limits.checks_per_ip_per_hour`, back end "Checks per visitor and hour"), with its own message; the day limit default is now 10.
 
+- **Neutral base design:** the element ships a light, brand-free look and is styled only through `--nwc-*` custom properties (all colours, including field borders, errors, preview frame, skeleton, tick icon); the controller no longer writes the brand colours inline, so a theme can restyle it without `!important`. Default brand colours for PDF and e-mail are now graphite `#1f2328` and blue `#0969da` (were dark violet and lime). README: *Styling the element*.
 - **PDF font Arimo (looks like Arial):** bundled (SIL OFL 1.1) and the new default under *Design › Font*; it covers Latin, Greek and Cyrillic, so names and AI text with "ł", "ő" or "→" print correctly (Dompdf's built-in Helvetica, which "Arial" maps to, only knows Western European characters). DejaVu stays selectable; grade badges are centred per font.
 
 ### Fixed

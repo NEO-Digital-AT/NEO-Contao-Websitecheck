@@ -241,9 +241,37 @@ Results are cached for `cache_hours`: a second visitor entering the same domain 
 
 - **Templates:** copy any file from `contao/templates/` of the bundle to `templates/` of your project and adapt it: the element (`content_element/neo_websitecheck.html.twig`, the AJAX flow stays intact as long as the `data-nwc-*` hooks remain), a designer block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), the frames (`pdf_frame`, `mail_frame`) or the operator copy (`mail_owner`). Without a saved design, report and e-mail use the bundled *Standard* template in the check's language. Templates receive `result`, `areas`, `brand`, `images`, `crops`, `date`, `vars`, and blocks additionally `block` (its properties) and `t` (theme).
 - **PDF badges:** use the `badge()` macro from `_pdf_macros.html.twig` for numbers in coloured boxes; Dompdf only centres text vertically with that structure.
-- **Styles:** the element uses CSS custom properties (`--nwc-bg`, `--nwc-accent`, `--nwc-fg`, `--nwc-radius`, …). Override them on `.content-neo-websitecheck .nwc` in your theme.
+- **Styles — neutral by default, designed by you.** Element, PDF and e-mail ship a neutral, brand-free base design. The element on the page takes **no colours from the configuration**; it is styled only by CSS custom properties, which you override in your theme (see *Styling the element*). PDF and e-mail take their colours from `brand.color_primary` / `brand.color_accent` (default: graphite `#1f2328` and blue `#0969da`) and are designed in the back-end designer.
 - **Texts:** the words of e-mail and PDF are edited in the designer. `translations/neo_websitecheck.{en,de}.yaml` holds the prefilled template words, the texts of the check findings and the back end; override single keys in your project's `translations/` folder (for example to deliver findings in another language).
 - **Grading:** `Check\Grader` holds the scoring; `Check\CheckRunner` the steps. Decorate or replace the services as usual in Symfony.
+
+## Styling the element
+
+`public/websitecheck.css` only sets a light, neutral base. Every colour, radius and font is a custom property on `.nwc`; override them in your stylesheet, for example a dark theme:
+
+```css
+.content-neo-websitecheck .nwc {
+  --nwc-bg: #102a43; --nwc-bg-2: #163a5c;          /* panel (gradient from bg-2 to bg) */
+  --nwc-fg: #fff; --nwc-muted: #c9d6e3;             /* text, secondary text (≥ 4.5:1 on bg) */
+  --nwc-card: rgb(255 255 255 / .05); --nwc-border: rgb(255 255 255 / .14); --nwc-faint: rgb(255 255 255 / .14);
+  --nwc-accent: #ffb000; --nwc-accent-ink: #102a43; /* buttons, progress, focus */
+  --nwc-ring: rgb(255 176 0 / .25); --nwc-glow: rgb(255 176 0 / .45);
+  --nwc-field-bg: rgb(0 0 0 / .3); --nwc-field-border: rgb(255 255 255 / .45); --nwc-placeholder: #9fb3c8;
+  --nwc-err: #ffd1d4;                               /* error text and invalid field border */
+  --nwc-good: #7bd88f; --nwc-warn: #ffb020; --nwc-bad: #ff6b73; --nwc-grade-ink: #102a43;
+  --nwc-sent-bg: rgb(123 216 143 / .14); --nwc-sent-border: rgb(123 216 143 / .45);
+  --nwc-failed-bg: rgb(255 107 115 / .14); --nwc-failed-border: rgb(255 107 115 / .5);
+  --nwc-os-chrome: #0b1b2b; --nwc-os-ink: #c9d6e3; /* browser frame of the preview */
+  --nwc-skel: #e6e9ed; --nwc-skel-hue: #c9d1d9;     /* placeholder page in the preview */
+  --nwc-idle: rgb(11 27 43 / .66);                  /* overlay "Your website appears here" */
+  --nwc-check-icon: url("data:image/svg+xml,…");    /* tick in finished steps, colour = accent-ink */
+  --nwc-shadow: none; --nwc-os-shadow: 0 30px 60px -30px rgb(0 0 0 / .8);
+  --nwc-radius: 22px; --nwc-radius-s: 12px;
+  --nwc-font-display: inherit; --nwc-font-mono: ui-monospace, monospace;
+}
+```
+
+Keep text at 4.5:1 and field borders at 3:1 against the panel. For a different layout, override the template `content_element/neo_websitecheck.html.twig` (keep the `data-nwc*` attributes the script uses).
 
 ## Analytics events
 
@@ -464,7 +492,7 @@ Ergebnisse werden `cache_hours` lang gespeichert: Wer dieselbe Domain noch einma
 
 - **Vorlagen:** Dateien aus `contao/templates/` des Bundles nach `templates/` im Projekt kopieren und anpassen: das Element (`content_element/neo_websitecheck.html.twig`, der AJAX-Ablauf bleibt erhalten, solange die `data-nwc-*`-Haken bleiben), einen Designer-Block (`neo_websitecheck/blocks/pdf/cover.html.twig` …), die Rahmen (`pdf_frame`, `mail_frame`) oder die Kopie an den Betreiber (`mail_owner`). Ohne gespeicherte Gestaltung nutzen Bericht und E-Mail die mitgelieferte Vorlage *Standard* in der Sprache des Checks.
 - **Noten-Kästchen im PDF:** das Makro `badge()` aus `_pdf_macros.html.twig` verwenden; nur mit dieser Struktur zentriert Dompdf die Ziffer senkrecht.
-- **Stile:** CSS-Variablen (`--nwc-bg`, `--nwc-accent`, `--nwc-fg`, `--nwc-radius`, …) auf `.content-neo-websitecheck .nwc` überschreiben.
+- **Stile — neutral ausgeliefert, gestaltet beim Kunden.** Element, PDF und E-Mail kommen in einem neutralen Grunddesign ohne Marke. Das Element auf der Seite übernimmt **keine Farben aus der Konfiguration**, es wird nur über CSS-Variablen gestaltet (`--nwc-bg`, `--nwc-fg`, `--nwc-accent`, `--nwc-err`, … — vollständige Liste und Beispiel im englischen Teil unter *Styling the element*), die das Theme auf `.content-neo-websitecheck .nwc` überschreibt. PDF und E-Mail nehmen `brand.color_primary` / `brand.color_accent` (Standard: Graphit `#1f2328`, Blau `#0969da`) und werden im Designer gestaltet. Text ≥ 4,5:1, Feldränder ≥ 3:1 zur Fläche halten.
 - **Texte:** Die Wörter von E-Mail und PDF bearbeitet man im Designer. `translations/neo_websitecheck.{en,de}.yaml` enthält die Vorbelegung der Vorlagen, die Texte der Check-Befunde und das Backend; einzelne Schlüssel im Projekt unter `translations/` überschreiben (z. B. für Befunde in einer weiteren Sprache).
 
 ## Tracking-Ereignisse
