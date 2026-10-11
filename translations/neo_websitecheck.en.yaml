@@ -792,3 +792,8 @@ designer:
         pdf_note: {label: 'PDF note', desc: 'Note on the attachment, only when a PDF is attached.'}
         newsletter_note: {label: 'Newsletter note', desc: 'Only visible when the visitor ticked the box.'}
         footer: {label: 'Footer', desc: 'Grey closing with privacy note.'}
+
+# Typography of the report language (quotation marks around quoted page text)
+format:
+    quote_open: "“"
+    quote_close: "”"

@@ -12,6 +12,7 @@ use Contao\CoreBundle\InsertTag\InsertTagParser;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\PageModel;
+use Neo\WebsitecheckBundle\I18n\PendingTranslations;
 use Neo\WebsitecheckBundle\Settings;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,6 +31,7 @@ final class WebsitecheckController extends AbstractContentElementController
         private readonly RouterInterface $router,
         private readonly ContentUrlGenerator $urlGenerator,
         private readonly InsertTagParser $insertTagParser,
+        private readonly PendingTranslations $pendingTranslations,
         private readonly Altcha|null $altcha = null,
     ) {
     }
@@ -41,6 +43,8 @@ final class WebsitecheckController extends AbstractContentElementController
 
         $page = $request->attributes->get('pageModel');
         $lang = $page instanceof PageModel ? (string) $page->language : ($request->getLocale() ?: 'en');
+        // A language without translation file gets its texts translated after this response.
+        $this->pendingTranslations->request($lang);
 
         $brand = $this->settings->brand();
         // Configuration: the one picked in the element (core "module" column) or the one matching the page language.

@@ -792,3 +792,8 @@ designer:
         pdf_note: {label: 'PDF-Hinweis', desc: 'Hinweis auf den Anhang, nur wenn ein PDF dabei ist.'}
         newsletter_note: {label: 'Newsletter-Hinweis', desc: 'Nur sichtbar, wenn der Besucher das Häkchen gesetzt hat.'}
         footer: {label: 'Fußzeile', desc: 'Grauer Abschluss mit Datenschutzhinweis.'}
+
+# Typografie der Berichtssprache (Anführungszeichen um zitierte Stellen)
+format:
+    quote_open: "„"
+    quote_close: "“"

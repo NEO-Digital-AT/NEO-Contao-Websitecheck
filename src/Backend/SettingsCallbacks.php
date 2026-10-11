@@ -9,7 +9,12 @@ use Contao\DataContainer;
 use Contao\Input;
 use Contao\StringUtil;
 use Doctrine\DBAL\Connection;
+use Contao\CoreBundle\Intl\Locales;
 use Neo\WebsitecheckBundle\Design\Presets;
+use Neo\WebsitecheckBundle\I18n\AiCatalogue;
+use Neo\WebsitecheckBundle\Lang;
+use Symfony\Component\Translation\TranslatorBagInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Environment;
 use Twig\Error\Error;
@@ -24,6 +29,9 @@ final class SettingsCallbacks
         private readonly Security $security,
         private readonly Presets $presets,
         private readonly Environment $twig,
+        private readonly Locales $locales,
+        private readonly AiCatalogue $catalogue,
+        private readonly TranslatorInterface $translator,
     ) {
     }
 
@@ -72,6 +80,13 @@ final class SettingsCallbacks
         }
 
         $locale = (string) ($row['language'] ?: 'en');
+
+        // New language without translation file: translate the texts first, so the
+        // prefilled designs below already come in this language (once, a few seconds).
+        if ($this->translator instanceof TranslatorBagInterface && $this->catalogue->isMissing($this->translator, $locale)) {
+            $this->catalogue->generate($this->translator, $locale);
+        }
+
         $update = [];
 
         foreach (['mail_design' => 'mail', 'pdf_design' => 'pdf'] as $column => $kind) {
@@ -197,21 +212,34 @@ final class SettingsCallbacks
      */
     public function languageOptions(): array
     {
-        $languages = ['de' => 'Deutsch', 'en' => 'English'];
+        // Every language Contao knows (translated names), the languages of this
+        // site's root pages first — no language is special to the bundle.
+        $all = $this->locales->getLanguages();
+        $site = [];
 
         try {
             foreach ($this->db->fetchFirstColumn("SELECT DISTINCT language FROM tl_page WHERE type = 'root'") as $language) {
-                $code = substr((string) $language, 0, 2);
+                $code = Lang::primary((string) $language);
 
-                if ('' !== $code && !isset($languages[$code])) {
-                    $languages[$code] = strtoupper($code);
+                if ('' !== $code) {
+                    $site[$code] = $all[$code] ?? strtoupper($code);
                 }
             }
         } catch (\Throwable) {
             // tl_page not available (should not happen inside Contao)
         }
 
-        return $languages;
+        $options = $site;
+
+        foreach ($all as $code => $name) {
+            $code = Lang::primary((string) $code);
+
+            if ('' !== $code && !isset($options[$code])) {
+                $options[$code] = $name;
+            }
+        }
+
+        return $options;
     }
 
     /**

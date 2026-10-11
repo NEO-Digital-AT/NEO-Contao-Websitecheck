@@ -8,7 +8,10 @@ use Neo\WebsitecheckBundle\Check\Analyzer\AiVisibilityAnalyzer;
 use Neo\WebsitecheckBundle\Check\Analyzer\HtmlAnalyzer;
 use Neo\WebsitecheckBundle\Check\Analyzer\LegalAnalyzer;
 use Neo\WebsitecheckBundle\Settings;
+use Neo\WebsitecheckBundle\I18n\AiCatalogue;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Translation\TranslatorBagInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * The check as a resumable step machine. Each step is short enough to run
@@ -41,6 +44,8 @@ final class CheckRunner
         private readonly AiReviewer $aiReviewer,
         private readonly Grader $grader,
         private readonly Settings $settings,
+        private readonly AiCatalogue $catalogue,
+        private readonly TranslatorInterface $translator,
         private readonly LoggerInterface|null $logger = null,
     ) {
     }
@@ -563,6 +568,12 @@ final class CheckRunner
 
     private function finish(array $data, string $locale): array
     {
+        // Findings and measures in the check's language, also where the bundle ships
+        // no translation file (translated once by the AI, see AiCatalogue).
+        if ($this->translator instanceof TranslatorBagInterface && $this->catalogue->isMissing($this->translator, $locale)) {
+            $this->catalogue->generate($this->translator, $locale);
+        }
+
         $data['_result'] = $this->grader->grade($data, $locale);
 
         return $data;

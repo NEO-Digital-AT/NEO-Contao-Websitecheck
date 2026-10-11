@@ -166,7 +166,7 @@ final class ReportRenderer
             }
         }
 
-        $date = 'de' === substr($locale, 0, 2) ? date('d.m.Y', (int) ($result['checkedAt'] ?? time())) : date('Y-m-d', (int) ($result['checkedAt'] ?? time()));
+        $date = $this->formatDate((int) ($result['checkedAt'] ?? time()), $locale);
         // Only a page the customer chose: we do not know other sites' structure, so
         // no guessing (the start page is not a contact page). Empty = no button.
         $contactUrl = (string) $brand['contact_url'];
@@ -181,7 +181,7 @@ final class ReportRenderer
             'images' => $images,
             'crops' => $crops,
             'locale' => $locale,
-            'lang' => substr($locale, 0, 2),
+            'lang' => \Neo\WebsitecheckBundle\Lang::primary($locale) ?: 'en',
             'date' => $date,
             'contact_url' => $contactUrl,
             'first_name' => (string) $row['firstname'],
@@ -328,5 +328,20 @@ final class ReportRenderer
         }
 
         return 'data:'.$mime.';base64,'.base64_encode($binary);
+    }
+
+    /** Date in the report language's own format (Intl), ISO without intl. */
+    private function formatDate(int $timestamp, string $locale): string
+    {
+        if (class_exists(\IntlDateFormatter::class)) {
+            $formatter = new \IntlDateFormatter(str_replace('-', '_', $locale), \IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE);
+            $out = $formatter->format($timestamp);
+
+            if (false !== $out) {
+                return $out;
+            }
+        }
+
+        return date('Y-m-d', $timestamp);
     }
 }

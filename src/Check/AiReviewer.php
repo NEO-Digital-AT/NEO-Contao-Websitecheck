@@ -286,23 +286,9 @@ final class AiReviewer
         return \array_slice($out, 0, 5);
     }
 
-    /** Report language for the prompt: the check's page language, German with the formal address. */
+    /** Report language for the prompt: the check's page language, formal business tone in any language. */
     private static function languageName(string $locale): string
     {
-        $code = str_replace('-', '_', strtolower($locale));
-
-        if ('de' === substr($code, 0, 2)) {
-            return 'German (Sie-Form, Austrian/German business tone)';
-        }
-
-        if (class_exists(\Locale::class)) {
-            $name = \Locale::getDisplayLanguage($code, 'en');
-
-            if ('' !== $name && strtolower($name) !== $code) {
-                return $name.' (formal, polite business tone)';
-            }
-        }
-
-        return 'English';
+        return \Neo\WebsitecheckBundle\Lang::englishName($locale).' (formal, polite business tone; use the formal form of address where the language has one)';
     }
 }

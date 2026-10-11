@@ -10,6 +10,7 @@ services:
             - ../src/ContaoManager/
             - ../src/NeoWebsitecheckBundle.php
             - ../src/Check/Result/
+            - ../src/Lang.php
 
     # Processed bundle configuration as a typed value object.
     Neo\WebsitecheckBundle\Settings:
@@ -107,3 +108,21 @@ services:
 
     Neo\WebsitecheckBundle\Text\TextProvider:
         public: true
+
+    # Languages without a translation file: the AI translates the visitor-facing
+    # texts once (AiCatalogue); the decorator serves them for this bundle's
+    # domain only. Project translation files always win.
+    Neo\WebsitecheckBundle\I18n\AiCatalogue:
+        public: true
+        arguments:
+            $httpClient: '@neo_websitecheck.api_client'
+
+    Neo\WebsitecheckBundle\I18n\TranslatorDecorator:
+        decorates: translator
+        arguments:
+            $inner: '@.inner'
+            $catalogue: '@Neo\WebsitecheckBundle\I18n\AiCatalogue'
+
+    Neo\WebsitecheckBundle\Command\TranslateCommand:
+        arguments:
+            $projectDir: '%kernel.project_dir%'

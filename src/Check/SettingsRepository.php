@@ -88,7 +88,7 @@ final class SettingsRepository
      */
     public function config(int $id = 0, string $language = ''): array|null
     {
-        $language = substr($language, 0, 2);
+        $language = \Neo\WebsitecheckBundle\Lang::primary($language);
         $key = $id.'|'.$language;
 
         if (!\array_key_exists($key, $this->texts)) {
@@ -100,7 +100,7 @@ final class SettingsRepository
                 }
 
                 if (false === $row && '' !== $language) {
-                    $row = $this->db->fetchAssociative('SELECT * FROM tl_neo_websitecheck_config WHERE language = ? ORDER BY id ASC LIMIT 1', [$language]);
+                    $row = $this->db->fetchAssociative("SELECT * FROM tl_neo_websitecheck_config WHERE SUBSTRING_INDEX(REPLACE(LOWER(language), '_', '-'), '-', 1) = ? ORDER BY id ASC LIMIT 1", [$language]);
                 }
 
                 // No configuration in another language: a German page must not get the

@@ -294,7 +294,7 @@ final class CheckController
     {
         $lang = strtolower(trim((string) ($payload['lang'] ?? '')));
 
-        if (1 === preg_match('/^[a-z]{2}(-[a-z]{2})?$/', $lang)) {
+        if (1 === preg_match('/^[a-z]{2,3}(?:[-_][a-z0-9]{2,8}){0,3}$/', $lang) && \strlen($lang) <= 32) {
             return $lang;
         }
 

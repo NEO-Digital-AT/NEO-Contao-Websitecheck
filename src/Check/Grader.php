@@ -322,7 +322,8 @@ final class Grader
         foreach ($home['a11y'] as $id => $audit) {
             $items = [];
 
-            [$open, $close] = str_starts_with($this->locale, 'de') ? ['„', '“'] : ['“', '”'];
+            // Quotation marks of the report language (catalogue keys, no language special-cased in code).
+            [$open, $close] = [$this->t('format.quote_open'), $this->t('format.quote_close')];
 
             foreach ($audit['items'] as $item) {
                 // icon-font ligatures ("cleaning_services") are not what the visitor reads
@@ -823,6 +824,17 @@ final class Grader
 
     private function num(float $value, int $decimals): string
     {
-        return 'de' === substr($this->locale, 0, 2) ? number_format($value, $decimals, ',', '.') : number_format($value, $decimals, '.', ',');
+        if (class_exists(\NumberFormatter::class)) {
+            $formatter = new \NumberFormatter(str_replace('-', '_', $this->locale), \NumberFormatter::DECIMAL);
+            $formatter->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $decimals);
+            $formatter->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
+            $out = $formatter->format($value);
+
+            if (false !== $out) {
+                return $out;
+            }
+        }
+
+        return number_format($value, $decimals, '.', ',');
     }
 }

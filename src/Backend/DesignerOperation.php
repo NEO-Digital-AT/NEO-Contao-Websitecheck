@@ -193,7 +193,7 @@ final class DesignerOperation
     {
         $lang = strtolower(trim($lang));
 
-        return preg_match('/^[a-z]{2}$/', $lang) ? $lang : ((string) $this->request()->getLocale() ?: 'en');
+        return preg_match('/^[a-z]{2,3}(?:[-_][a-z0-9]{2,8}){0,3}$/', $lang) ? $lang : ((string) $this->request()->getLocale() ?: 'en');
     }
 
     private function request(): Request

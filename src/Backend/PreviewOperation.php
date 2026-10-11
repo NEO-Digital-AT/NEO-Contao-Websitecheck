@@ -74,7 +74,7 @@ final class PreviewOperation
         $locale = $request?->getLocale() ?: 'en';
         $forced = strtolower(trim((string) $request?->query->get('lang', '')));
 
-        if (preg_match('/^[a-z]{2}$/', $forced)) {
+        if (preg_match('/^[a-z]{2,3}(?:[-_][a-z0-9]{2,8}){0,3}$/', $forced)) {
             $locale = $forced;
         }
 

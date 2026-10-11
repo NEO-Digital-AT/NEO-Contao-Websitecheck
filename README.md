@@ -247,7 +247,7 @@ Contao's way — one root page per language — works out of the box:
 
 Every link is the customer's choice (contact page, privacy page, newsletter confirmation page — in the settings or per configuration); the bundle never guesses a page of your site. Without a contact page the button is left out, without a confirmation page there is no newsletter box.
 
-Bundled translations: German and English. For another language add `translations/neo_websitecheck.<lang>.yaml` to your project (findings and default wording) and adjust the words of that language's configuration in the designer; without a file the installation's default language is used.
+**Any language, none special-cased.** The configuration's language list offers every language Contao knows. Translation files ship for German and English as defaults; for every other language the configured AI translates the visitor-facing texts (findings, measures, form, report, e-mail) once — automatically when a configuration in that language is saved, when a page in that language first shows the element (after the response) or at the latest before the first check is graded; it takes a few seconds and costs about a cent. `php bin/console neo:websitecheck:translate <lang> --export` writes them to `translations/neo_websitecheck.<lang>.yaml` for review — a project file always wins. Dates and numbers follow the language's own format (Intl). Without AI settings the installation's default language is used.
 
 ## Customising
 
@@ -510,7 +510,7 @@ So, wie Contao es vorsieht – ein Startpunkt je Sprache:
 
 Alle Links wählt der Kunde selbst (Kontakt-, Datenschutz-, Newsletter-Bestätigungsseite – in den Einstellungen oder je Konfiguration); das Bundle rät nie eine Seite. Ohne Kontaktseite entfällt der Knopf, ohne Bestätigungsseite das Newsletter-Häkchen.
 
-Mitgeliefert: Deutsch und Englisch. Für weitere Sprachen `translations/neo_websitecheck.<sprache>.yaml` im Projekt anlegen und die Wörter der Konfiguration im Designer anpassen; ohne Datei gilt die Standardsprache der Installation.
+**Jede Sprache, keine als Sonderfall.** Die Sprachauswahl der Konfiguration bietet alle Sprachen, die Contao kennt. Sprachdateien liegen für Deutsch und Englisch als Vorbelegung bei; für jede andere Sprache übersetzt die eingestellte KI die Besucher-Texte (Befunde, Maßnahmen, Formular, Bericht, E-Mail) einmalig – automatisch beim Speichern einer Konfiguration in dieser Sprache, beim ersten Aufruf einer Seite dieser Sprache (nach dem Ausliefern) und spätestens vor der Benotung des ersten Checks; das dauert Sekunden und kostet rund einen Cent. `php bin/console neo:websitecheck:translate <sprache> --export` legt sie als `translations/neo_websitecheck.<sprache>.yaml` zum Korrigieren ab – eine Projektdatei hat immer Vorrang. Datum und Zahlen im Format der jeweiligen Sprache (Intl). Ohne KI-Einstellungen gilt die Standardsprache der Installation.
 
 ## Anpassen
 

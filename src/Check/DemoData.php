@@ -36,11 +36,11 @@ final class DemoData
 
     public function firstName(string $locale): string
     {
-        return 'de' === substr($locale, 0, 2) ? 'Maria' : 'Jane';
+        return 'Maria';
     }
 
     public function lastName(string $locale): string
     {
-        return 'de' === substr($locale, 0, 2) ? 'Muster' : 'Doe';
+        return 'Example';
     }
 }

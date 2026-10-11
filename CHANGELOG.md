@@ -5,6 +5,7 @@ All notable changes to this bundle are documented here. The format follows
 [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
+- **Language-independent:** no language is special-cased any more. The configuration offers every language Contao knows; languages are matched by their primary subtag; three-letter codes and regional variants (`fil`, `de-CH`, `zh-Hant`) are accepted everywhere (`locale` column widened to 32 characters); dates and numbers use the language's own format (Intl); quotation marks come from the catalogue; the AI reading has no German special case. For languages without translation file the configured AI translates the visitor-facing texts once (AiCatalogue, served by a translator decorator for this bundle's domain only); new console command `neo:websitecheck:translate <lang> [--force] [--export]`.
 
 ### Changed
 - **Visual designer for e-mail and PDF** replaces the long list of text fields: blocks (cover, heading, text, image, grade, rings, areas, measures, area detail, pages table, next steps, signature, page break …) added by click or drag and drop, reordered in the structure, edited in a properties panel with placeholders, rich text and image upload; theme settings (colours, font, radius, margins, header/footer); live preview; ready-made templates per language; real PDF of the draft. Stored as JSON and rendered through one Twig partial per block (overridable).
