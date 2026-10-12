@@ -229,6 +229,8 @@ final class PageSpeedClient
                     'height' => (int) ($full['screenshot']['height'] ?? 0),
                 ] : null,
                 'nodes' => \is_array($full) ? (array) ($full['nodes'] ?? []) : [],
+                // the full-page capture shows a different layout than the visitor's screen
+                'stretched' => \is_array($full) && self::isStretched($audits, (array) ($full['nodes'] ?? []), (int) ($lr['configSettings']['screenEmulation']['height'] ?? ('desktop' === $strategy ? 940 : 823))),
                 // emulated screen (CSS px) to cut the first screen out of the full-page capture
                 'viewport' => [
                     'width' => (int) ($lr['configSettings']['screenEmulation']['width'] ?? ('desktop' === $strategy ? 1350 : 412)),
@@ -236,6 +238,55 @@ final class PageSpeedClient
                 ],
             ],
         ];
+    }
+
+    /**
+     * Lighthouse takes the full-page screenshot by resizing the window to the
+     * whole page height. Sections sized in viewport units (a hero with
+     * height: 100vh) then grow to thousands of pixels and the first screen of
+     * that capture shows an empty background instead of what a visitor sees.
+     * Detected by comparing where the elements of the first screen sat during
+     * the run (boundingRect) with where they sit in the capture (node map).
+     *
+     * @param array<string, mixed>                $audits
+     * @param array<string, array<string, mixed>> $nodes
+     */
+    public static function isStretched(array $audits, array $nodes, int $viewportHeight): bool
+    {
+        if ([] === $nodes || $viewportHeight <= 0) {
+            return false;
+        }
+
+        $shifts = [];
+        $walk = static function (mixed $value) use (&$walk, &$shifts, $nodes, $viewportHeight): void {
+            if (!\is_array($value)) {
+                return;
+            }
+
+            if ('node' === ($value['type'] ?? null) && isset($value['lhId'], $value['boundingRect']['top'], $nodes[$value['lhId']]['top'])) {
+                $rect = $value['boundingRect'];
+
+                if ((float) ($rect['height'] ?? 0) > 0 && $rect['top'] >= 0 && $rect['top'] < $viewportHeight) {
+                    $shifts[(string) $value['lhId']] = abs((float) $nodes[$value['lhId']]['top'] - (float) $rect['top']);
+                }
+            }
+
+            foreach ($value as $child) {
+                $walk($child);
+            }
+        };
+
+        foreach ($audits as $audit) {
+            $walk($audit['details'] ?? null);
+        }
+
+        if ([] === $shifts) {
+            return false;
+        }
+
+        sort($shifts);
+
+        return $shifts[intdiv(\count($shifts), 2)] > $viewportHeight * 0.25;
     }
 
     /**

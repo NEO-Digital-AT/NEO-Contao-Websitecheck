@@ -50,6 +50,7 @@
 .nwc-os__skeleton .s-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:4%}
 .nwc-os__skeleton .s-cards i{height:22px}
 .nwc-os__shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.nwc-os__shot[hidden]{display:none}
 .nwc-os__idle{position:absolute;inset:0;display:grid;place-items:center;background:var(--nwc-idle);color:#fff;font-size:.9rem;text-align:center;padding:12px}
 .nwc[data-state="run"] .nwc-os__idle,.nwc[data-state="gate"] .nwc-os__idle,.nwc[data-state="result"] .nwc-os__idle{display:none}
 .nwc-os__beam{position:absolute;left:0;right:0;top:-12%;height:12%;background:linear-gradient(180deg,transparent,var(--nwc-glow));opacity:0;pointer-events:none}

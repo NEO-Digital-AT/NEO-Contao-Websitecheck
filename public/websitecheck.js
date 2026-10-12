@@ -15,7 +15,7 @@
     var urlForm = panes.idle, leadForm = $('[data-nwc-lead]');
     var statusEl = $('[data-nwc-status]'), urlEl = $('[data-nwc-url]'), view = $('[data-nwc-view]'), shot = $('[data-nwc-shot]'), pinsEl = $('[data-nwc-pins]');
     var etaEl = $('[data-nwc-eta]'), bar = $('.nwc__progress'), runErr = $('[data-nwc-run-err]');
-    var job = null, domain = '', pollTimer = 0, etaTimer = 0, etaLeft = 0, lensRaf = 0, lensT = 0, lensLast = 0, shotShown = false, pinsShown = {};
+    var job = null, domain = '', pollTimer = 0, etaTimer = 0, etaLeft = 0, lensRaf = 0, lensT = 0, lensLast = 0, shotShown = false, shotTries = 0, pinsShown = {};
 
     function fmt(s, v) { return String(s || '').replace('%s', v).replace('%d', v); }
     function track(name, params) {
@@ -96,7 +96,13 @@
         if (!li) return;
         li.className = s.state === 'done' ? 'is-done' : s.state === 'run' ? 'is-run' : '';
       });
-      if (j.screenshot && !shotShown) { shotShown = true; shot.src = j.screenshot; shot.hidden = false; }
+      // shown only once loaded: a failed load (file not there yet) never shows a broken image, the next poll retries
+      if (j.screenshot && !shotShown && shotTries < 5) {
+        shotShown = true; shotTries++;
+        shot.onload = function () { shot.hidden = false; };
+        shot.onerror = function () { shot.hidden = true; shot.removeAttribute('src'); shotShown = false; };
+        shot.src = j.screenshot;
+      }
       (j.pins || []).forEach(function (p, idx) {
         if (pinsShown[idx]) return;
         pinsShown[idx] = true;
@@ -154,7 +160,7 @@
         if (!j || j.error) { showErr(err, errText(j)); return; }
         job = { id: j.id, token: j.token };
         domain = j.domain || domain;
-        shotShown = false; pinsShown = {}; pinsEl.innerHTML = ''; shot.hidden = true; shot.removeAttribute('src');
+        shotShown = false; shotTries = 0; pinsShown = {}; pinsEl.innerHTML = ''; shot.hidden = true; shot.removeAttribute('src');
         $$('[data-nwc-domain]').forEach(function (x) { x.textContent = domain; });
         urlEl.textContent = domain;
         showErr(runErr, '');

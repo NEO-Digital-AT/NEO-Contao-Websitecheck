@@ -370,9 +370,11 @@ final class CheckRunner
 
         $full = $mobile['screenshots']['full'];
         $viewport = $mobile['screenshots']['viewport'] ?? ['width' => 412, 'height' => 823];
-        // first screen in full resolution from the full-page capture; Google's thumbnail only as a fallback
-        $final = null !== $full && '' !== $full['data'] ? $this->screenshots->saveFirstScreen($id, 'home-mobile', $full['data'], (int) ($full['width'] ?: $viewport['width']), (int) $viewport['height'], 900) : null;
-        $final ??= $this->screenshots->saveDataUrl($id, 'home-mobile', $mobile['screenshots']['final'], 0, 900);
+        // first screen in full resolution from the full-page capture; Google's end-of-load
+        // screenshot when there is none or when it shows a stretched layout (100vh heroes)
+        $mobileStretched = (bool) ($mobile['screenshots']['stretched'] ?? false);
+        $final = null !== $full && '' !== $full['data'] && !$mobileStretched ? $this->screenshots->saveFirstScreen($id, 'home-mobile', $full['data'], (int) ($full['width'] ?: $viewport['width']), (int) $viewport['height'], 900) : null;
+        $final ??= $this->screenshots->saveDataUrl($id, 'home-mobile', $mobile['screenshots']['final'], (int) $viewport['width'], 900);
 
         if (null !== $final) {
             $data['screenshots']['mobile'] = $final;
@@ -392,8 +394,9 @@ final class CheckRunner
         if (!isset($desktop['error'])) {
             $deskFull = $desktop['screenshots']['full'] ?? null;
             $deskViewport = $desktop['screenshots']['viewport'] ?? ['width' => 1350, 'height' => 940];
-            $deskFinal = null !== $deskFull && '' !== $deskFull['data'] ? $this->screenshots->saveFirstScreen($id, 'home-desktop', $deskFull['data'], (int) ($deskFull['width'] ?: $deskViewport['width']), (int) $deskViewport['height'], 1400) : null;
-            $deskFinal ??= $this->screenshots->saveDataUrl($id, 'home-desktop', $desktop['screenshots']['final'], 0, 1400);
+            $deskStretched = (bool) ($desktop['screenshots']['stretched'] ?? false);
+            $deskFinal = null !== $deskFull && '' !== $deskFull['data'] && !$deskStretched ? $this->screenshots->saveFirstScreen($id, 'home-desktop', $deskFull['data'], (int) ($deskFull['width'] ?: $deskViewport['width']), (int) $deskViewport['height'], 1400) : null;
+            $deskFinal ??= $this->screenshots->saveDataUrl($id, 'home-desktop', $desktop['screenshots']['final'], (int) $deskViewport['width'], 1400);
 
             if (null !== $deskFinal) {
                 $data['screenshots']['desktop'] = $deskFinal;
@@ -441,10 +444,14 @@ final class CheckRunner
                         }
                     }
 
-                    if (!$deskPins && \count($data['pins']) < 5 && $rect['top'] + $rect['height'] / 2 < $viewportCss) {
+                    // pins sit on the first screen: on Google's own screenshot (stretched layout)
+                    // they need the positions measured during the run, not the capture's
+                    $pin = $mobileStretched ? ($item['rect'] ?? null) : $rect;
+
+                    if (!$deskPins && \count($data['pins']) < 5 && \is_array($pin) && $pin['width'] > 0 && $pin['top'] + $pin['height'] / 2 < $viewportCss) {
                         $data['pins'][] = [
-                            'x' => round(($rect['left'] + $rect['width'] / 2) / max(1, $full['width']) * 100, 1),
-                            'y' => round(($rect['top'] + $rect['height'] / 2) / max(1, $viewportCss) * 100, 1),
+                            'x' => round(($pin['left'] + $pin['width'] / 2) / max(1, (int) ($full['width'] ?: $viewport['width'])) * 100, 1),
+                            'y' => round(($pin['top'] + $pin['height'] / 2) / max(1, $viewportCss) * 100, 1),
                             'kind' => 'warn',
                             'label' => $audit['title'],
                         ];
@@ -456,7 +463,8 @@ final class CheckRunner
         // The live preview shows the desktop first screen, so its pins come from
         // the desktop run (same audits, desktop layout and viewport).
         if ($deskPins) {
-            $deskNodes = (array) ($desktop['screenshots']['nodes'] ?? []);
+            // a stretched capture was not used for the first screen: positions from the run
+            $deskNodes = ($deskStretched ?? false) ? [] : (array) ($desktop['screenshots']['nodes'] ?? []);
 
             foreach ((array) ($desktop['a11y'] ?? []) as $audit) {
                 foreach ((array) ($audit['items'] ?? []) as $item) {
