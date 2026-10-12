@@ -67,6 +67,8 @@ services:
     Neo\WebsitecheckBundle\Report\PdfGenerator:
         arguments:
             $httpClient: '@neo_websitecheck.api_client'
+            $projectDir: '%kernel.project_dir%'
+            $uploadPath: '%contao.upload_path%'
 
     Neo\WebsitecheckBundle\Newsletter\BrevoSubscriber:
         arguments:

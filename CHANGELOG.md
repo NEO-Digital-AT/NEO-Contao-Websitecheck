@@ -7,6 +7,9 @@ All notable changes to this bundle are documented here. The format follows
 ## [Unreleased]
 - **Language-independent:** no language is special-cased any more. The configuration offers every language Contao knows; languages are matched by their primary subtag; three-letter codes and regional variants (`fil`, `de-CH`, `zh-Hant`) are accepted everywhere (`locale` column widened to 32 characters); dates and numbers use the language's own format (Intl); quotation marks come from the catalogue; the AI reading has no German special case. For languages without translation file the configured AI translates the visitor-facing texts once (AiCatalogue, served by a translator decorator for this bundle's domain only); new console command `neo:websitecheck:translate <lang> [--force] [--export]`.
 
+### Added
+- **Own fonts and images in the PDF (Dompdf):** custom templates may load TrueType fonts and images from the Contao files directory with a relative path (`url('files/…/Brand.ttf')`, `<img src="files/…">`). The files directory is added to Dompdf's allowed paths; nothing else outside the storage directory is readable.
+
 ### Fixed
 - **PDF designer in the dark back-end theme:** the designer follows Contao's dark mode (`html[data-color-scheme="dark"]`); buttons, lists and fields no longer show light text on white. In both themes every text reaches at least 4.5:1 and every control border 3:1 (WCAG 2.1 AA); all colours are `--nwd-*` variables.
 

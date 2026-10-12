@@ -34,6 +34,8 @@ final class PdfGenerator
         private readonly CheckRepository $repository,
         private readonly Settings $settings,
         private readonly HttpClientInterface $httpClient,
+        private readonly string $projectDir = '',
+        private readonly string $uploadPath = 'files',
     ) {
     }
 
@@ -108,9 +110,25 @@ final class PdfGenerator
         $options->set('fontDir', $fontDir);
         $options->set('fontCache', $fontDir);
         $options->set('isFontSubsettingEnabled', true);
-        $options->set('chroot', [$this->settings->storageDir(), (string) realpath($bundledFonts)]);
+        $chroot = [$this->settings->storageDir(), (string) realpath($bundledFonts)];
+
+        // Templates may use fonts and images from the Contao files directory with a
+        // relative path, e.g. url('files/fonts/Brand.ttf') or <img src="files/logo.png">.
+        $filesDir = '' !== $this->projectDir ? realpath($this->projectDir.'/'.$this->uploadPath) : false;
+
+        if (false !== $filesDir) {
+            $chroot[] = $filesDir;
+        }
+
+        $options->set('chroot', $chroot);
 
         $dompdf = new Dompdf($options);
+
+        if (false !== $filesDir) {
+            $dompdf->setProtocol('file://');
+            $dompdf->setBasePath(rtrim((string) realpath($this->projectDir), '/').'/');
+        }
+
         $this->registerFonts($dompdf, $fontDir, $bundledFonts);
         $dompdf->loadHtml($html, 'UTF-8');
         $dompdf->setPaper('A4', 'portrait');
