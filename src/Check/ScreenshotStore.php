@@ -129,18 +129,17 @@ final class ScreenshotStore
         }
 
         $pad = (int) ($padding * $scale);
-        $cx = max(0, $x - $pad);
-        $cy = max(0, $y - $pad);
-        $cw = min($sw - $cx, $w + 2 * $pad);
-        $ch = min($sh - $cy, $h + 2 * $pad);
 
-        // Keep a readable minimum excerpt even for tiny elements.
-        $minW = min($sw, (int) (480 * $scale));
-
-        if ($cw < $minW) {
-            $cx = max(0, min($cx - (int) (($minW - $cw) / 2), $sw - $minW));
-            $cw = $minW;
-        }
+        // Every excerpt has the same aspect ratio (height = width × 0.4), centred
+        // on the marked element, so excerpts line up in the report and on the page.
+        $aspect = 0.4;
+        $minW = min($sw, (int) (480 * $scale));   // readable minimum excerpt
+        $cw = min($sw, (int) ceil(max($w + 2 * $pad, $minW)));
+        // The padding gives way first; only an element taller than the frame
+        // itself makes the excerpt taller.
+        $ch = min($sh, max((int) round($cw * $aspect), $h + 2 * (int) (12 * $scale)));
+        $cx = (int) max(0, min($x + $w / 2 - $cw / 2, $sw - $cw));
+        $cy = (int) max(0, min($y + $h / 2 - $ch / 2, $sh - $ch));
 
         $crop = $this->cropRaw($img, $cx, $cy, $cw, $ch);
         imagedestroy($img);

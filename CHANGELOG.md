@@ -10,6 +10,9 @@ All notable changes to this bundle are documented here. The format follows
 ### Added
 - **Own fonts and images in the PDF (Dompdf):** custom templates may load TrueType fonts and images from the Contao files directory with a relative path (`url('files/…/Brand.ttf')`, `<img src="files/…">`). The files directory is added to Dompdf's allowed paths; nothing else outside the storage directory is readable.
 
+### Changed
+- **Marked excerpts share one format:** every excerpt is cut at 5 : 2 (height = width × 0.4), centred on the marked element, so excerpts line up in the report and on the result page. The padding gives way first; only an element taller than the frame makes an excerpt taller. Applies to new checks.
+
 ### Fixed
 - **PDF designer in the dark back-end theme:** the designer follows Contao's dark mode (`html[data-color-scheme="dark"]`); buttons, lists and fields no longer show light text on white. In both themes every text reaches at least 4.5:1 and every control border 3:1 (WCAG 2.1 AA); all colours are `--nwd-*` variables.
 
