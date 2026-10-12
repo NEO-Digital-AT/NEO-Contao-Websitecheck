@@ -414,11 +414,13 @@ final class CheckRunner
 
             $tops = [];
 
+            $mobileNodes = (array) ($mobile['screenshots']['nodes'] ?? []);
+
             foreach ($mobile['a11y'] as $auditId => $audit) {
                 $perAudit = 0;
 
                 foreach ($audit['items'] as $item) {
-                    $rect = $item['rect'] ?? null;
+                    $rect = self::screenRect($item, $mobileNodes);
 
                     if (null === $rect || $rect['width'] <= 0 || $rect['height'] <= 0 || $rect['top'] + $rect['height'] > $coveredCss || PageSpeedClient::isIconGlyph($item)) {
                         continue;
@@ -454,9 +456,11 @@ final class CheckRunner
         // The live preview shows the desktop first screen, so its pins come from
         // the desktop run (same audits, desktop layout and viewport).
         if ($deskPins) {
+            $deskNodes = (array) ($desktop['screenshots']['nodes'] ?? []);
+
             foreach ((array) ($desktop['a11y'] ?? []) as $audit) {
                 foreach ((array) ($audit['items'] ?? []) as $item) {
-                    $rect = $item['rect'] ?? null;
+                    $rect = self::screenRect($item, $deskNodes);
 
                     if (null === $rect || $rect['width'] <= 0 || $rect['height'] <= 0 || PageSpeedClient::isIconGlyph($item) || $rect['top'] + $rect['height'] / 2 >= $deskViewportCss) {
                         continue;
@@ -667,5 +671,36 @@ final class CheckRunner
         }
 
         return implode("\n", $lines);
+    }
+
+    /**
+     * Where a finding sits ON THE FULL-PAGE SCREENSHOT. Lighthouse measures the
+     * audit nodes (boundingRect) at another moment than the screenshot: for the
+     * capture it stretches the viewport to the page height, so full-height
+     * sections move and overlays such as a cookie banner may be gone. The
+     * screenshot carries its own node map (lhId => rect) — use that; a node the
+     * map does not list, or lists without size, is not visible on the image and
+     * gets no marker. Without a map (older Lighthouse) the audit rect is used.
+     *
+     * @param array<string, mixed>                $item
+     * @param array<string, array<string, mixed>> $nodes
+     *
+     * @return array{top: int, left: int, width: int, height: int}|null
+     */
+    private static function screenRect(array $item, array $nodes): array|null
+    {
+        $lhId = (string) ($item['lhId'] ?? '');
+
+        if ([] === $nodes || '' === $lhId) {
+            return $item['rect'] ?? null;
+        }
+
+        $r = $nodes[$lhId] ?? null;
+
+        if (!\is_array($r) || (int) ($r['width'] ?? 0) <= 0 || (int) ($r['height'] ?? 0) <= 0) {
+            return null;
+        }
+
+        return ['top' => (int) $r['top'], 'left' => (int) $r['left'], 'width' => (int) $r['width'], 'height' => (int) $r['height']];
     }
 }
