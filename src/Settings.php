@@ -214,6 +214,16 @@ final class Settings
         return $this->db?->int('checks_per_ip') ?: (int) $this->config['limits']['checks_per_ip_per_day'];
     }
 
+    public function checksTotalPerHour(): int
+    {
+        return $this->db?->int('checks_total_hour') ?: (int) ($this->config['limits']['checks_total_per_hour'] ?? 20);
+    }
+
+    public function checksTotalPerDay(): int
+    {
+        return $this->db?->int('checks_total_day') ?: (int) ($this->config['limits']['checks_total_per_day'] ?? 60);
+    }
+
     public function cacheHours(): int
     {
         // 0 in the back end means "from config"; the YAML may legitimately be 0.

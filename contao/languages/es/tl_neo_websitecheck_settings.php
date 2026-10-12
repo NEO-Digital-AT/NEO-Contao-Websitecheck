@@ -11,7 +11,7 @@ $l['mail_legend'] = 'Correo electrónico';
 $l['limits_legend'] = 'Límites';
 
 $l['brand_name'] = ['Empresa / agencia', 'Aparece en la cabecera del informe, en el correo y en la firma. Vacío = título del sitio web.'];
-$l['owner_name'] = ['Persona de contacto', 'La persona que firma el informe, p. ej. "Erich Nigg".'];
+$l['owner_name'] = ['Persona de contacto', 'La persona que firma el informe, p. ej. "Juan Pérez".'];
 $l['phone'] = ['Teléfono', 'Aparece en el informe y en la firma del correo.'];
 $l['website_url'] = ['Sitio web', 'Su sitio web, p. ej. https://example.com'];
 $l['contact_page'] = ['Página de contacto', 'Destino de los botones "Comentar el resultado" en el informe, el correo y el elemento (el elemento puede sustituirla).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'de la configuración del servidor';
 $l['apiMissing'] = 'falta — esta parte del check se omite';
 $l['modelFromConfig'] = '– configuración del servidor (%s) –';
 $l['test_api'] = ['Probar conexiones', ''];
+$l['checks_total_hour'] = ['Nuevos checks en total por hora', 'Todos los visitantes juntos; protege el presupuesto de IA del uso automatizado. Los resultados en caché no cuentan. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Nuevos checks en total por día', 'Todos los visitantes juntos. 0 = config.yaml (60).'];

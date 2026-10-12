@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Limits';
 
 $l['brand_name'] = ['Company / agency', 'Shown in the report header, the e-mail and the signature. Empty = website title.'];
-$l['owner_name'] = ['Contact person', 'The person who signs the report, e.g. "Erich Nigg".'];
+$l['owner_name'] = ['Contact person', 'The person who signs the report, e.g. "John Smith".'];
 $l['phone'] = ['Phone', 'Shown in the report and the e-mail signature.'];
 $l['website_url'] = ['Website', 'Your website, e.g. https://example.com'];
 $l['contact_page'] = ['Contact page', 'Target of the "talk about the result" buttons in the report, the e-mail and the element (the element may override it).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'from the server configuration';
 $l['apiMissing'] = 'missing — this part of the check is skipped';
 $l['modelFromConfig'] = '– server configuration (%s) –';
 $l['test_api'] = ['Test connections', ''];
+$l['checks_total_hour'] = ['New checks in total per hour', 'All visitors together; protects the AI budget from automated use. Cached results do not count. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['New checks in total per day', 'All visitors together. 0 = config.yaml (60).'];

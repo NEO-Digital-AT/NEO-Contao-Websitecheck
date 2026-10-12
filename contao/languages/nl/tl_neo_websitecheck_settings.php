@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Limieten';
 
 $l['brand_name'] = ['Bedrijf / bureau', 'Verschijnt in de kop van het rapport, in de e-mail en in de ondertekening. Leeg = titel van de website.'];
-$l['owner_name'] = ['Contactpersoon', 'De persoon die het rapport ondertekent, bijv. “Erich Nigg”.'];
+$l['owner_name'] = ['Contactpersoon', 'De persoon die het rapport ondertekent, bijv. “Jan Jansen”.'];
 $l['phone'] = ['Telefoon', 'Verschijnt in het rapport en in de ondertekening van de e-mail.'];
 $l['website_url'] = ['Website', 'Uw website, bijv. https://example.com'];
 $l['contact_page'] = ['Contactpagina', 'Doel van de knoppen “resultaat bespreken” in het rapport, de e-mail en het element (het element kan dit overschrijven).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'uit de serverconfiguratie';
 $l['apiMissing'] = 'ontbreekt — dit deel van de check vervalt';
 $l['modelFromConfig'] = '– serverconfiguratie (%s) –';
 $l['test_api'] = ['Verbindingen testen', ''];
+$l['checks_total_hour'] = ['Nieuwe checks totaal per uur', 'Alle bezoekers samen; beschermt het AI-budget tegen geautomatiseerd gebruik. Gecachte resultaten tellen niet. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Nieuwe checks totaal per dag', 'Alle bezoekers samen. 0 = config.yaml (60).'];

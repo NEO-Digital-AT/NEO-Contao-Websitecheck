@@ -2,7 +2,7 @@
 
 **A free website check as a lead magnet.** A visitor enters a domain, the bundle measures the site with Google PageSpeed Insights, runs its own HTML, legal and AI-visibility checks, optionally lets an AI read the pages like a first-time visitor, grades everything with school grades and sends a six-page PDF report by e-mail — in exchange for first name, last name and e-mail address.
 
-Built by [NEO Digital](https://neo-digital.at) (Erich Nigg, Graz) for its own website and released under the MIT license so any agency, freelancer or consultant can run it on their Contao site.
+Built for a production Contao website and released under the MIT license so any agency, freelancer or consultant can run it on their Contao site.
 
 *Deutsche Fassung weiter unten: [Deutsch](#neo-website-check-für-contao-5-deutsch).*
 
@@ -80,17 +80,17 @@ neo_websitecheck:
     mail:
         from_email: 'office@example.com'   # empty = Contao admin e-mail
         from_name: 'Example Agency'
-        reply_to: 'erich@example.com'
-        notify_email: 'erich@example.com' # your copy with the lead data; empty = none
+        reply_to: 'office@example.com'
+        notify_email: 'office@example.com' # your copy with the lead data; empty = none
     brand:
         name: 'Example Agency'
-        owner_name: 'Erich Nigg'
+        owner_name: 'Max Mustermann'
         phone: '+43 316 123456'
         website_url: 'https://example.com'
         contact_url: 'https://example.com/contact'
         privacy_url: 'https://example.com/privacy'
         logo: 'files/theme/logo.png'       # PNG/JPG for PDF and e-mail (SVG is not supported by Dompdf)
-        portrait: 'files/theme/erich.jpg'  # optional, "what happens next" box
+        portrait: 'files/theme/portrait.jpg'  # optional, "what happens next" box
         color_primary: '#2a025f'
         color_accent: '#a8f20d'
     limits:
@@ -341,7 +341,7 @@ MIT — see [LICENSE](LICENSE). The bundled Arimo font (`resources/fonts/arimo`)
 
 **Ein kostenloser Website-Check als Lead-Magnet.** Ein Besucher gibt seine Domain ein, das Bundle misst die Seite mit Google PageSpeed Insights, prüft HTML, Rechtliches und KI-Sichtbarkeit selbst, lässt optional eine KI die Seiten wie einen neuen Besucher lesen, benotet alles mit Schulnoten und schickt einen sechsseitigen PDF-Bericht per E-Mail – im Tausch gegen Vorname, Nachname und E-Mail-Adresse.
 
-Entwickelt von [NEO Digital](https://neo-digital.at) (Erich Nigg, Graz) für die eigene Website, als MIT-Lizenz freigegeben, damit jede Agentur, jeder Freelancer und Berater es auf der eigenen Contao-Seite einsetzen kann.
+Entwickelt für eine produktive Contao-Website, als MIT-Lizenz freigegeben, damit jede Agentur, jeder Freelancer und Berater es auf der eigenen Contao-Seite einsetzen kann.
 
 ## Was der Besucher sieht
 

@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Limites';
 
 $l['brand_name'] = ['Entreprise / agence', 'Affiché dans l’en-tête du rapport, dans l’e-mail et dans la signature. Vide = titre du site web.'];
-$l['owner_name'] = ['Interlocuteur', 'La personne qui signe le rapport, p. ex. « Erich Nigg ».'];
+$l['owner_name'] = ['Interlocuteur', 'La personne qui signe le rapport, p. ex. « Jean Dupont ».'];
 $l['phone'] = ['Téléphone', 'Affiché dans le rapport et dans la signature de l’e-mail.'];
 $l['website_url'] = ['Site web', 'Votre site web, p. ex. https://example.com'];
 $l['contact_page'] = ['Page de contact', 'Cible des boutons « discuter du résultat » dans le rapport, l’e-mail et l’élément (l’élément peut la remplacer).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'issue de la configuration serveur';
 $l['apiMissing'] = 'manquante — cette partie du check est ignorée';
 $l['modelFromConfig'] = '– configuration serveur (%s) –';
 $l['test_api'] = ['Tester les connexions', ''];
+$l['checks_total_hour'] = ['Nouveaux checks au total par heure', 'Tous les visiteurs ensemble ; protège le budget IA contre l’usage automatisé. Les résultats en cache ne comptent pas. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Nouveaux checks au total par jour', 'Tous les visiteurs ensemble. 0 = config.yaml (60).'];

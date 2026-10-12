@@ -59,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
             .'{design_legend},logo,logo_dark,portrait,color_primary,color_accent;'
             .'{texts_legend},texts_info;'
             .'{mail_legend},from_name,from_email,reply_to,notify_email;'
-            .'{limits_legend},checks_per_ip_hour,checks_per_ip,cache_hours,retention_days,max_pages;'
+            .'{limits_legend},checks_per_ip_hour,checks_per_ip,checks_total_hour,checks_total_day,cache_hours,retention_days,max_pages;'
             .'{api_legend},api_info,psi_api_key,ai_api_key,ai_model,ai_base_url',
     ],
     'fields' => [
@@ -93,6 +93,8 @@ $GLOBALS['TL_DCA']['tl_neo_websitecheck_settings'] = [
         // --- limits --------------------------------------------------------
         'checks_per_ip_hour' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
         'checks_per_ip' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
+        'checks_total_hour' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
+        'checks_total_day' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
         'cache_hours' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
         'retention_days' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],
         'max_pages' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'tl_class' => 'w25'], 'sql' => 'int(10) unsigned NOT NULL default 0'],

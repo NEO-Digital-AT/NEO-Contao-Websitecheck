@@ -189,7 +189,7 @@ seo:
         title_missing:
             title: 'Kein Seitentitel auf %page%'
             text: 'Der Titel ist die Überschrift im Google-Ergebnis. Fehlt er, erfindet Google einen.'
-            fix: 'Einen Titel mit bis zu 60 Zeichen schreiben: was Sie anbieten, wo (z. B. „Zahnarzt in Graz – Dr. Beispiel“).'
+            fix: 'Einen Titel mit bis zu 60 Zeichen schreiben: was Sie anbieten, wo (z. B. „Zahnarzt in Musterstadt – Dr. Beispiel“).'
         title_long:
             title: 'Seitentitel zu lang auf %page%'
             text: '%length% Zeichen, Google schneidet Titel nach etwa 60 ab.'

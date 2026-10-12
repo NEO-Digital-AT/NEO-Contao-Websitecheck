@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Limity';
 
 $l['brand_name'] = ['Firma / agentura', 'Zobrazí se v záhlaví zprávy, v e-mailu a v podpisu. Prázdné = název webu.'];
-$l['owner_name'] = ['Kontaktní osoba', 'Osoba, která zprávu podepisuje, např. „Erich Nigg“.'];
+$l['owner_name'] = ['Kontaktní osoba', 'Osoba, která zprávu podepisuje, např. „Jan Novák“.'];
 $l['phone'] = ['Telefon', 'Zobrazí se ve zprávě a v podpisu e-mailu.'];
 $l['website_url'] = ['Web', 'Váš web, např. https://example.com'];
 $l['contact_page'] = ['Kontaktní stránka', 'Cíl tlačítek „probrat výsledek“ ve zprávě, v e-mailu a v prvku (prvek ji může přepsat).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'z konfigurace serveru';
 $l['apiMissing'] = 'chybí — tato část kontroly se vynechá';
 $l['modelFromConfig'] = '– konfigurace serveru (%s) –';
 $l['test_api'] = ['Otestovat připojení', ''];
+$l['checks_total_hour'] = ['Nové kontroly celkem za hodinu', 'Všichni návštěvníci dohromady; chrání rozpočet AI před automatizovaným použitím. Výsledky z mezipaměti se nepočítají. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Nové kontroly celkem za den', 'Všichni návštěvníci dohromady. 0 = config.yaml (60).'];

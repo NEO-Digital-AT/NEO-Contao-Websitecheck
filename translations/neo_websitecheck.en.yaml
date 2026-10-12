@@ -189,7 +189,7 @@ seo:
         title_missing:
             title: 'No page title on %page%'
             text: 'The title is the headline in Google results. Without it Google invents one.'
-            fix: 'Write a title of up to 60 characters: what you offer, where (e.g. "Dentist in Graz – Dr. Example").'
+            fix: 'Write a title of up to 60 characters: what you offer, where (e.g. "Dentist in Springfield – Dr. Example").'
         title_long:
             title: 'Page title too long on %page%'
             text: '%length% characters — Google cuts titles after about 60.'

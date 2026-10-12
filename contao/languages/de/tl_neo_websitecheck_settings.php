@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-Mail';
 $l['limits_legend'] = 'Grenzen';
 
 $l['brand_name'] = ['Firma / Agentur', 'Steht im Kopf des Berichts, in der E-Mail und in der Signatur. Leer = Titel der Website.'];
-$l['owner_name'] = ['Ansprechperson', 'Die Person, die den Bericht unterschreibt, z. B. „Erich Nigg“.'];
+$l['owner_name'] = ['Ansprechperson', 'Die Person, die den Bericht unterschreibt, z. B. „Max Mustermann“.'];
 $l['phone'] = ['Telefon', 'Steht im Bericht und in der E-Mail-Signatur.'];
 $l['website_url'] = ['Website', 'Ihre Website, z. B. https://example.com'];
 $l['contact_page'] = ['Kontaktseite', 'Ziel der Knöpfe „Ergebnis besprechen“ in Bericht, E-Mail und Element (das Element kann sie überschreiben).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'aus der Server-Konfiguration';
 $l['apiMissing'] = 'fehlt — dieser Teil des Checks entfällt';
 $l['modelFromConfig'] = '– Server-Konfiguration (%s) –';
 $l['test_api'] = ['Verbindung prüfen', ''];
+$l['checks_total_hour'] = ['Neue Checks gesamt je Stunde', 'Alle Besucher zusammen; schützt das KI-Budget vor automatisierten Abrufen. Gespeicherte Ergebnisse zählen nicht. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Neue Checks gesamt je Tag', 'Alle Besucher zusammen. 0 = config.yaml (60).'];

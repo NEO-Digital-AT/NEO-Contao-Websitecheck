@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Ograničenja';
 
 $l['brand_name'] = ['Tvrtka / agencija', 'Prikazuje se u zaglavlju izvještaja, u e-mailu i potpisu. Prazno = naslov web-stranice.'];
-$l['owner_name'] = ['Kontakt osoba', 'Osoba koja potpisuje izvještaj, npr. „Erich Nigg”.'];
+$l['owner_name'] = ['Kontakt osoba', 'Osoba koja potpisuje izvještaj, npr. „Ivan Horvat”.'];
 $l['phone'] = ['Telefon', 'Prikazuje se u izvještaju i u potpisu e-maila.'];
 $l['website_url'] = ['Web-stranica', 'Vaša web-stranica, npr. https://example.com'];
 $l['contact_page'] = ['Kontaktna stranica', 'Odredište gumba „razgovarajmo o rezultatu” u izvještaju, e-mailu i elementu (element ga može nadjačati).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'iz konfiguracije poslužitelja';
 $l['apiMissing'] = 'nedostaje — ovaj dio provjere se preskače';
 $l['modelFromConfig'] = '– konfiguracija poslužitelja (%s) –';
 $l['test_api'] = ['Provjeri veze', ''];
+$l['checks_total_hour'] = ['Nove provjere ukupno po satu', 'Svi posjetitelji zajedno; štiti proračun za UI od automatizirane upotrebe. Spremljeni rezultati se ne broje. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Nove provjere ukupno po danu', 'Svi posjetitelji zajedno. 0 = config.yaml (60).'];

@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Korlátok';
 
 $l['brand_name'] = ['Cég / ügynökség', 'Megjelenik a jelentés fejlécében, az e-mailben és az aláírásban. Üres = a weboldal címe.'];
-$l['owner_name'] = ['Kapcsolattartó', 'A jelentést aláíró személy, pl. „Erich Nigg”.'];
+$l['owner_name'] = ['Kapcsolattartó', 'A jelentést aláíró személy, pl. „Kovács János”.'];
 $l['phone'] = ['Telefon', 'Megjelenik a jelentésben és az e-mail aláírásában.'];
 $l['website_url'] = ['Weboldal', 'Az Ön weboldala, pl. https://example.com'];
 $l['contact_page'] = ['Kapcsolati oldal', 'A „Beszéljünk az eredményről” gombok célja a jelentésben, az e-mailben és az elemben (az elem felülírhatja).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'a szerverkonfigurációból';
 $l['apiMissing'] = 'hiányzik — az ellenőrzés e része kimarad';
 $l['modelFromConfig'] = '– szerverkonfiguráció (%s) –';
 $l['test_api'] = ['Kapcsolatok tesztelése', ''];
+$l['checks_total_hour'] = ['Új ellenőrzések összesen óránként', 'Minden látogató együtt; védi az MI-keretet az automatizált használattól. A gyorsítótárazott eredmények nem számítanak. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Új ellenőrzések összesen naponta', 'Minden látogató együtt. 0 = config.yaml (60).'];

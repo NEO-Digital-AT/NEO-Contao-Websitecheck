@@ -11,7 +11,7 @@ $l['mail_legend'] = 'E-mail';
 $l['limits_legend'] = 'Limity';
 
 $l['brand_name'] = ['Firma / agencja', 'Wyświetlana w nagłówku raportu, w e-mailu i w podpisie. Puste = tytuł witryny.'];
-$l['owner_name'] = ['Osoba kontaktowa', 'Osoba, która podpisuje raport, np. „Erich Nigg”.'];
+$l['owner_name'] = ['Osoba kontaktowa', 'Osoba, która podpisuje raport, np. „Jan Kowalski”.'];
 $l['phone'] = ['Telefon', 'Wyświetlany w raporcie i w podpisie e-maila.'];
 $l['website_url'] = ['Strona internetowa', 'Państwa strona, np. https://example.com'];
 $l['contact_page'] = ['Strona kontaktowa', 'Cel przycisków „Omówmy wynik” w raporcie, w e-mailu i w elemencie (element może to nadpisać).'];
@@ -55,3 +55,5 @@ $l['apiFromConfig'] = 'z konfiguracji serwera';
 $l['apiMissing'] = 'brak — ta część checku zostaje pominięta';
 $l['modelFromConfig'] = '– konfiguracja serwera (%s) –';
 $l['test_api'] = ['Sprawdź połączenia', ''];
+$l['checks_total_hour'] = ['Nowe checki łącznie na godzinę', 'Wszyscy odwiedzający razem; chroni budżet AI przed automatycznym użyciem. Wyniki z pamięci podręcznej się nie liczą. 0 = config.yaml (20).'];
+$l['checks_total_day'] = ['Nowe checki łącznie na dzień', 'Wszyscy odwiedzający razem. 0 = config.yaml (60).'];

@@ -155,6 +155,15 @@ final class CheckRepository
         return false === $row ? null : $this->hydrate($row);
     }
 
+    /** New (not cached) checks of all visitors within the last $seconds — these are the ones that cost. */
+    public function countFresh(int $seconds): int
+    {
+        return (int) $this->db->fetchOne(
+            'SELECT COUNT(*) FROM tl_neo_websitecheck WHERE source_id = 0 AND created > ?',
+            [time() - $seconds],
+        );
+    }
+
     public function countForIp(string $ipHash, int $seconds): int
     {
         return (int) $this->db->fetchOne(

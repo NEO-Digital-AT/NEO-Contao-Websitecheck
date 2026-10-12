@@ -67,7 +67,7 @@ final class CheckController
             return $this->json(['error' => 'invalid_url'], 400);
         }
 
-        if (!$this->spamCheckPassed($payload)) {
+        if (!$this->spamCheckPassed($payload) || $this->isAutomatedClient($request)) {
             return $this->json(['error' => 'spam_check'], 400);
         }
 
@@ -96,6 +96,17 @@ final class CheckController
         // Never hand out a result that lacks the measurements (e.g. made while a key was missing).
         if (null !== $cached && (empty($cached['data']['psi']['home_mobile']) || !empty($cached['data']['psi']['home_mobile']['error']))) {
             $cached = null;
+        }
+
+        // Budget guard: new checks of ALL visitors together (scripts that solve the
+        // spam check and rotate addresses would otherwise run up the AI costs).
+        if (null === $cached && (
+            $this->repository->countFresh(3600) >= $this->settings->checksTotalPerHour()
+            || $this->repository->countFresh(86400) >= $this->settings->checksTotalPerDay()
+        )) {
+            $this->logger?->warning('Website check refused: overall limit of new checks reached (settings → limits).');
+
+            return $this->json(['error' => 'unavailable'], 503);
         }
         // Configuration (texts, e-mail, PDF design) chosen by the element; falls back to the language's record.
         $config = $this->settings->db()?->config((int) ($payload['config'] ?? 0), $locale);
@@ -312,6 +323,15 @@ final class CheckController
         $started = (int) ($payload['started'] ?? 0);
 
         return $started > 0 && (time() * 1000 - $started) > 1500;
+    }
+
+    /** Scripts and headless browsers announce themselves more often than not. */
+    private function isAutomatedClient(Request $request): bool
+    {
+        $ua = (string) $request->headers->get('User-Agent', '');
+
+        return '' === trim($ua)
+            || 1 === preg_match('/headlesschrome|phantomjs|selenium|puppeteer|playwright|\\bbot\\b|crawler|spider|scrapy|curl\\/|wget|python|go-http|node-fetch|axios|okhttp|java\\/|libwww|httpclient/i', $ua);
     }
 
     private function ipHash(Request $request): string
