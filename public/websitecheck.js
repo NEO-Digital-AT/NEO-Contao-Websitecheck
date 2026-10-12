@@ -119,8 +119,8 @@
     }
     function addResetButton() {
       if (runErr.nextElementSibling && runErr.nextElementSibling.hasAttribute('data-nwc-reset')) return;
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'nwc__btn nwc__btn--ghost'; b.setAttribute('data-nwc-reset', '');
-      b.textContent = $('[data-nwc-reset]', panes.result).textContent; b.style.marginTop = '12px';
+      // a copy of the result's reset button, so a customised template keeps its markup
+      var b = $('[data-nwc-reset]', panes.result).cloneNode(true); b.style.marginTop = '12px';
       b.addEventListener('click', reset); runErr.parentNode.insertBefore(b, runErr.nextSibling);
     }
     function finishRun() {

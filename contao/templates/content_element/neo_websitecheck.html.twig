@@ -54,7 +54,7 @@
       <div class="nwc__bar">
         <span class="nwc__proto" aria-hidden="true">https://</span>
         <input id="{{ i }}-url" name="url" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="{{ 'fe.placeholder_domain'|trans }}" aria-describedby="{{ i }}-url-err" required>
-        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ wc_text('fe.submit', vars, lang) }}</span></button>
+        {% block nwc_submit_button %}<button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ wc_text('fe.submit', vars, lang) }}</span></button>{% endblock %}
       </div>
       <p id="{{ i }}-url-err" class="nwc__err" role="status" hidden></p>
       {# Honeypot for installations without ALTCHA; invisible for people. #}
@@ -106,7 +106,7 @@
         {% endif %}
         <p class="nwc__legal">{{ wc_text('fe.gate_legal', vars, lang) }}{% if privacy_url %} <a href="{{ privacy_url }}">{{ 'fe.privacy'|trans }}</a>{% endif %}</p>
         <p class="nwc__err" role="status" data-nwc-lead-err hidden></p>
-        <button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ wc_text('fe.gate_submit', vars, lang) }}</span></button>
+        {% block nwc_gate_button %}<button type="submit" class="nwc__btn nwc__btn--primary"><span>{{ wc_text('fe.gate_submit', vars, lang) }}</span></button>{% endblock %}
       </form>
     </div>
 
@@ -136,8 +136,10 @@
       {% endif %}
       <p class="nwc__disc">{{ wc_text('fe.disclaimer', vars, lang) }}</p>
       <div class="nwc__cta">
+        {% block nwc_cta_buttons %}
         {% if contact_url %}<a class="nwc__btn nwc__btn--primary" href="{{ contact_url }}"><span>{{ wc_text('fe.cta', vars, lang) }}</span></a>{% endif %}
         <button type="button" class="nwc__btn nwc__btn--ghost" data-nwc-reset>{{ 'fe.reset'|trans }}</button>
+        {% endblock %}
       </div>
     </div>
   </div>

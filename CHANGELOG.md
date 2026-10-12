@@ -10,6 +10,9 @@ All notable changes to this bundle are documented here. The format follows
 ### Added
 - **Own fonts and images in the PDF (Dompdf):** custom templates may load TrueType fonts and images from the Contao files directory with a relative path (`url('files/…/Brand.ttf')`, `<img src="files/…">`). The files directory is added to Dompdf's allowed paths; nothing else outside the storage directory is readable.
 
+### Added
+- **Button blocks in the element template:** `nwc_submit_button`, `nwc_gate_button` and `nwc_cta_buttons`, so a site can use its own button markup (e.g. with icons) without copying the whole template. The extra reset button after a failed check is now a copy of the result's reset button and keeps that markup.
+
 ### Changed
 - **Marked excerpts share one format:** every excerpt is cut at 5 : 2 (height = width × 0.4), centred on the marked element, so excerpts line up in the report and on the result page. The padding gives way first; only an element taller than the frame makes an excerpt taller. Applies to new checks.
 
