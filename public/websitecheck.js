@@ -58,6 +58,14 @@
       var input = urlForm.querySelector('input[name="altcha"]');
       return input && input.value ? input.value : '';
     }
+    // A solution is accepted once (replay protection): after every start request the
+    // widget solves a fresh challenge, so a second check works without reloading.
+    function renewAltcha() {
+      var w = urlForm.querySelector('altcha-widget');
+      if (!w || typeof w.reset !== 'function') return;
+      w.reset();
+      if (typeof w.verify === 'function') w.verify();
+    }
     function waitForAltcha(ms) {
       if (!cfg.challenge) return Promise.resolve('');
       return new Promise(function (resolve) {
@@ -142,6 +150,7 @@
         return api('POST', cfg.start, { url: input.value.trim(), altcha: altcha, lang: cfg.lang, config: cfg.config || 0, website: urlForm.elements.website ? urlForm.elements.website.value : '', started: urlForm.elements.started.value });
       }).then(function (j) {
         btn.disabled = false;
+        renewAltcha();
         if (!j || j.error) { showErr(err, errText(j)); return; }
         job = { id: j.id, token: j.token };
         domain = j.domain || domain;
@@ -155,7 +164,7 @@
         setEta(j.eta || 90);
         renderProgress(j);
         if (j.status === 'done') { finishRun(); } else { pollTimer = setTimeout(poll, 300); }
-      }).catch(function () { btn.disabled = false; showErr(err, i18n.err_generic); });
+      }).catch(function () { btn.disabled = false; renewAltcha(); showErr(err, i18n.err_generic); });
     });
     urlForm.elements.started.value = String(Date.now());
 

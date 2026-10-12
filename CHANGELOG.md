@@ -17,6 +17,7 @@ All notable changes to this bundle are documented here. The format follows
 - **Marked excerpts share one format:** every excerpt is cut at 5 : 2 (height = width × 0.4), centred on the marked element, so excerpts line up in the report and on the result page. The padding gives way first; only an element taller than the frame makes an excerpt taller. Applies to new checks.
 
 ### Fixed
+- **Second check without reloading failed the spam check:** an ALTCHA solution is accepted once, but "Check another website" sent the used one again. The widget now solves a fresh challenge after every start request.
 - **Designer missing after "Save":** Contao's back end swaps the page with Turbo after saving, so the designer never started and only the plain Twig field was left. It now also starts on `turbo:load`, each designer independently; if one fails, it shows the cause in place instead of an empty area. Invalid UTF-8 in a text no longer empties the designer's configuration.
 - **PDF designer in the dark back-end theme:** the designer follows Contao's dark mode (`html[data-color-scheme="dark"]`); buttons, lists and fields no longer show light text on white. In both themes every text reaches at least 4.5:1 and every control border 3:1 (WCAG 2.1 AA); all colours are `--nwd-*` variables.
 
