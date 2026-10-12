@@ -157,13 +157,18 @@ final class CheckRunner
         $total = array_sum($expected);
         $elapsedTotal = 0.0;
 
+        // "step" is the last FINISHED step (advance() writes it only when the step is
+        // over); the lock marks the next one as being worked on. So: everything up to
+        // "step" is done, the one after it runs — locked or about to be picked up.
+        $locked = (int) $row['locked_until'] > time();
+
         foreach (self::STEPS as $i => $key) {
-            if ($done || $i < $currentIndex || ($i === $currentIndex && 0 === (int) $row['locked_until'])) {
+            if ($done || $i <= $currentIndex) {
                 $state = 'done';
                 $elapsedTotal += $expected[$key];
-            } elseif ($i === $currentIndex || ($i === $currentIndex + 1 && 0 === (int) $row['locked_until'])) {
+            } elseif ($i === $currentIndex + 1) {
                 $state = 'run';
-                $inStep = (int) $row['locked_until'] > 0 ? max(0, time() - (int) $row['step_started']) : 0;
+                $inStep = $locked ? max(0, time() - (int) $row['step_started']) : 0;
                 $remaining += max(0, $expected[$key] - $inStep);
                 $elapsedTotal += min($expected[$key], $inStep);
             } else {
