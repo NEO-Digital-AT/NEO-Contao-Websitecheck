@@ -8,6 +8,7 @@ use Contao\CoreBundle\Framework\ContaoFramework;
 use Contao\CoreBundle\Routing\ContentUrlGenerator;
 use Contao\PageModel;
 use Neo\WebsitecheckBundle\Check\CheckRepository;
+use Neo\WebsitecheckBundle\Design\BlockRegistry;
 use Neo\WebsitecheckBundle\Design\DesignRenderer;
 use Neo\WebsitecheckBundle\Design\Presets;
 use Neo\WebsitecheckBundle\Settings;
@@ -51,9 +52,9 @@ final class ReportRenderer
     public function renderMail(array $row, string $template): string
     {
         return match ($template) {
-            'mail_visitor' => $this->render('', $row, 'mail_body', 'mail_design', 'mail'),
-            'mail_owner' => $this->render('@Contao/neo_websitecheck/mail_owner.html.twig', $row, 'owner_body', null, null),
-            default => $this->render('@Contao/neo_websitecheck/'.$template.'.html.twig', $row, null, null, null),
+            'mail_visitor' => $this->render('', $row, 'mail_body', 'mail_design', 'mail', true),
+            'mail_owner' => $this->render('@Contao/neo_websitecheck/mail_owner.html.twig', $row, 'owner_body', null, null, true),
+            default => $this->render('@Contao/neo_websitecheck/'.$template.'.html.twig', $row, null, null, null, true),
         };
     }
 
@@ -69,6 +70,10 @@ final class ReportRenderer
         return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($kind, $design, $row, $markers): string {
             $context = $this->context($row);
             $context += $context['vars'];
+
+            if (BlockRegistry::KIND_MAIL === $kind) {
+                $context = $this->forMail($context);
+            }
 
             return $this->designs->render($kind, $design, $context, $markers);
         });
@@ -219,11 +224,15 @@ final class ReportRenderer
      * uses a file template. {{firstname}} etc. work in Twig sources as plain
      * placeholders because the vars are exposed at top level.
      */
-    private function render(string $template, array $row, string|null $twigColumn, string|null $designColumn, string|null $kind): string
+    private function render(string $template, array $row, string|null $twigColumn, string|null $designColumn, string|null $kind, bool $mail = false): string
     {
-        return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($template, $row, $twigColumn, $designColumn, $kind): string {
+        return $this->inLocale((string) ($row['locale'] ?: 'en'), function () use ($template, $row, $twigColumn, $designColumn, $kind, $mail): string {
             $context = $this->context($row);
             $context += $context['vars'];
+
+            if ($mail) {
+                $context = $this->forMail($context);
+            }
             $config = (array) ($context['config'] ?? []);
 
             if (null !== $twigColumn && '' !== trim((string) ($config[$twigColumn] ?? ''))) {
@@ -238,6 +247,36 @@ final class ReportRenderer
 
             return $this->twig->render($template, $context);
         });
+    }
+
+    /**
+     * Mail programs (Outlook, Gmail …) show no SVG images. For e-mails an SVG logo
+     * is replaced by a PNG with the same name next to it (logo.svg → logo.png);
+     * without one the templates show the company name instead of a broken image.
+     *
+     * @param array<string, mixed> $context
+     *
+     * @return array<string, mixed>
+     */
+    private function forMail(array $context): array
+    {
+        $brand = (array) ($context['brand'] ?? []);
+
+        foreach (['logo' => 'logo_data', 'logo_dark' => 'logo_dark_data'] as $pathKey => $dataKey) {
+            $path = (string) ($brand[$pathKey] ?? '');
+
+            if ('svg' !== strtolower(pathinfo($path, PATHINFO_EXTENSION))) {
+                continue;
+            }
+
+            $png = $this->projectFile((string) preg_replace('/\.svg$/i', '.png', $path));
+            $brand[$dataKey] = is_file($png) ? $this->dataUri($png, 600) : null;
+        }
+
+        $brand['logo_dark_data'] ??= $brand['logo_data'] ?? null;
+        $context['brand'] = $brand;
+
+        return $context;
     }
 
     /** Absolute URL of a back-end picked page, '' when unset or unpublished. */

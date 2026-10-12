@@ -54,8 +54,8 @@ final class ReportMailer
             ->from($from)
             ->to(new Address((string) $row['email'], trim($row['firstname'].' '.$row['lastname'])))
             ->subject($subject)
-            ->html($html)
             ->text($this->plain($row, $locale, false, $html));
+        $email->html(self::inlineImages($email, $html));
 
         $config = $this->renderer->configFor($row);
         $replyTo = trim((string) ($config['mail_reply_to'] ?? '')) ?: $this->settings->mail()['reply_to'];
@@ -78,8 +78,8 @@ final class ReportMailer
                 ->to($notify)
                 ->replyTo(new Address((string) $row['email'], trim($row['firstname'].' '.$row['lastname'])))
                 ->subject($this->texts->get('mail.owner_subject', $locale, $vars + ['firstname' => trim($row['firstname'].' '.$row['lastname'])]))
-                ->html($this->renderer->renderMail($row, 'mail_owner'))
                 ->text($this->plain($row, $locale, true, $html));
+            $copy->html(self::inlineImages($copy, $this->renderer->renderMail($row, 'mail_owner')));
 
             if (null !== $pdfPath) {
                 $copy->attachFromPath($pdfPath, basename($pdfPath), 'application/pdf');
@@ -139,6 +139,39 @@ final class ReportMailer
     }
 
     /** Readable text version of an HTML e-mail: block ends become line breaks, links keep their address. */
+    /**
+     * Turns embedded images (src="data:image/…;base64,…") into inline attachments
+     * referenced by cid:. Outlook, Gmail and most other mail programs show no
+     * data: images at all — silently, without a "blocked images" notice.
+     * Identical images (a logo used twice) are attached once.
+     */
+    public static function inlineImages(Email $email, string $html): string
+    {
+        $seen = [];
+
+        return (string) preg_replace_callback(
+            '#(\bsrc\s*=\s*)(["\'])data:(image/(?:png|jpe?g|gif|webp|svg\+xml));base64,([A-Za-z0-9+/=\s]+)\2#i',
+            static function (array $m) use ($email, &$seen): string {
+                $binary = base64_decode(preg_replace('/\s+/', '', $m[4]) ?? '', true);
+
+                if (false === $binary || '' === $binary) {
+                    return $m[0];
+                }
+
+                $key = md5($binary);
+
+                if (!isset($seen[$key])) {
+                    $ext = ['image/png' => 'png', 'image/jpeg' => 'jpg', 'image/jpg' => 'jpg', 'image/gif' => 'gif', 'image/webp' => 'webp', 'image/svg+xml' => 'svg'][strtolower($m[3])] ?? 'img';
+                    $seen[$key] = 'img'.(\count($seen) + 1).'-'.substr($key, 0, 8).'.'.$ext;
+                    $email->embed($binary, $seen[$key], strtolower($m[3]));
+                }
+
+                return $m[1].$m[2].'cid:'.$seen[$key].$m[2];
+            },
+            $html,
+        );
+    }
+
     public static function htmlToText(string $html): string
     {
         $html = (string) preg_replace('#<(head|style|script|title)\b.*?</\1>#is', '', $html);
