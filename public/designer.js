@@ -517,11 +517,33 @@
     if (cfg.isAdmin && twigTa) {
       // stored Twig code means the advanced mode is what goes out: open it there
       applyMode(twigTa.value.trim() ? 'twig' : 'visual');
-      // Ace is created on domready; resize once it exists
+      // Ace is created on domready (full load) or right after a Turbo page swap; resize once it exists
       window.addEventListener('load', function () { if (mode === 'twig') applyMode('twig'); });
+      setTimeout(function () { if (mode === 'twig') applyMode('twig'); }, 400);
     }
   }
 
-  function boot() { document.querySelectorAll('[data-nwd]').forEach(init); }
+  // Each designer starts on its own: one failing must not take the other down, and a
+  // failure is shown in place (with its cause) instead of leaving an empty area.
+  function safeInit(root) {
+    try { init(root); } catch (e) {
+      if (window.console) console.error('[nwd]', e);
+      var box = document.createElement('div');
+      box.className = 'nwd-warn';
+      box.setAttribute('role', 'alert');
+      box.textContent = 'Designer: ' + (e && e.message ? e.message : String(e)) + (e && e.stack ? ' @ ' + String(e.stack).split('\n').slice(1, 2).join('').trim() : '');
+      root.appendChild(box);
+    }
+  }
+  // Contao's back end swaps pages with Turbo (e.g. after "Save"): DOMContentLoaded does
+  // not fire again and this file is not re-run, so boot on turbo:load as well. Each
+  // designer is started once (data-nwd-ready).
+  function boot() {
+    document.querySelectorAll('[data-nwd]:not([data-nwd-ready])').forEach(function (root) {
+      root.setAttribute('data-nwd-ready', '');
+      safeInit(root);
+    });
+  }
+  document.addEventListener('turbo:load', boot);
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();

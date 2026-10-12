@@ -91,8 +91,9 @@ class DesignerWidget extends Widget
             $this->strId,
             $this->strName,
             $this->strId,
-            StringUtil::specialchars(null === $value ? '' : (string) json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)),
-            str_replace('</', '<\/', (string) json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG)),
+            StringUtil::specialchars(null === $value ? '' : (string) json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE)),
+            // one broken byte in a text must not make the whole configuration unreadable (empty designer)
+            str_replace('</', '<\/', (string) json_encode($config, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_INVALID_UTF8_SUBSTITUTE)),
         );
     }
 
