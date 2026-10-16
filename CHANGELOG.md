@@ -7,7 +7,7 @@ All notable changes to this bundle are documented here. The format follows
 ## [Unreleased]
 
 ### Changed
-- **License changed from MIT to a commercial license** (see `LICENSE`). Use on a public website requires a license from NEO Digital; testing on non-public installations stays free. Copies obtained earlier under MIT keep that license.
+- **License changed from MIT to an own license** (see `LICENSE`): free on any number of websites with the credit "NEO Website Check: NEO Digital" (link to neo-digital.at) in the legal notice; no redistribution, resale or offering as own product/service. Copies obtained earlier under MIT keep that license.
 - **Language-independent:** no language is special-cased any more. The configuration offers every language Contao knows; languages are matched by their primary subtag; three-letter codes and regional variants (`fil`, `de-CH`, `zh-Hant`) are accepted everywhere (`locale` column widened to 32 characters); dates and numbers use the language's own format (Intl); quotation marks come from the catalogue; the AI reading has no German special case. For languages without translation file the configured AI translates the visitor-facing texts once (AiCatalogue, served by a translator decorator for this bundle's domain only); new console command `neo:websitecheck:translate <lang> [--force] [--export]`.
 
 ### Added

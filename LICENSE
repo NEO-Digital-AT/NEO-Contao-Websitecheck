@@ -14,34 +14,43 @@ DEUTSCH
    räumt ein Nutzungsrecht ein.
 
 2. Nutzungsrecht
-   Die Nutzung in einer öffentlich erreichbaren Website setzt eine gültige
-   Lizenz von NEO Digital voraus. Umfang (Anzahl der Websites, Laufzeit,
-   Updates, Support) ergibt sich aus Angebot bzw. Lizenzvereinbarung.
-   Ohne Lizenz ist die Software nur zum Testen auf nicht öffentlichen
-   Entwicklungs- und Testinstallationen erlaubt.
+   NEO Digital räumt ein unentgeltliches, nicht ausschließliches und nicht
+   übertragbares Recht ein, die Software auf beliebig vielen Websites
+   einzusetzen.
+
+   Bedingung: Im Impressum jeder Website, auf der die Software öffentlich
+   läuft, steht der Hinweis „NEO Website Check: NEO Digital" mit einem Link auf
+   https://neo-digital.at. Fehlt der Hinweis, erlischt das Nutzungsrecht für
+   diese Website.
+
+   Ein Einsatz ohne diesen Hinweis sowie Updates, Support oder andere
+   Bedingungen setzen eine gesonderte Vereinbarung mit NEO Digital voraus.
 
 3. Erlaubt ist
-   a) die Installation und Einrichtung im lizenzierten Umfang;
+   a) die Installation und Einrichtung nach Ziffer 2;
    b) die Anpassung von Konfiguration, Vorlagen, Stylesheets und Texten sowie
-      Änderungen am Code für die eigenen lizenzierten Installationen;
-   c) für Agenturen die Installation für ihre Kunden im lizenzierten Umfang.
+      Änderungen am Code für die eigenen Installationen;
+   c) für Agenturen die Installation für ihre Kunden nach Ziffer 2.
 
 4. Nicht erlaubt ist
    a) die Weitergabe, Veröffentlichung, Vermietung oder der Verkauf der
-      Software oder veränderter Fassungen;
+      Software oder veränderter Fassungen, ausgenommen die Installation nach
+      Ziffer 3 c;
    b) die Vergabe von Unterlizenzen;
    c) das Anbieten der Software oder wesentlicher Teile davon als eigenes
       Produkt oder als Dienst für Dritte;
    d) das Entfernen oder Verändern von Urheber- und Lizenzhinweisen.
 
 5. Fremdkomponenten
-   Mitgelieferte oder vorausgesetzte Komponenten Dritter (z. B. Contao, Symfony, Dompdf, die Schrift Arimo (SIL Open Font License 1.1)) unterliegen ihren eigenen Lizenzen.
+   Mitgelieferte oder vorausgesetzte Komponenten Dritter (z. B. Contao, Symfony, Dompdf, die Schrift Arimo (SIL Open Font License 1.1))
+   unterliegen ihren eigenen Lizenzen.
 
 6. Gewährleistung und Haftung
-   Die Software wird im vorliegenden Zustand bereitgestellt. Die Haftung für
-   leichte Fahrlässigkeit ist ausgeschlossen, soweit gesetzlich zulässig;
-   ausgenommen sind Personenschäden. Für Antworten des KI-Modells und für
-   Kosten beim gewählten KI-Anbieter übernimmt NEO Digital keine Haftung.
+   Die Software wird unentgeltlich und im vorliegenden Zustand
+   bereitgestellt. Die Haftung für leichte Fahrlässigkeit ist ausgeschlossen,
+   soweit gesetzlich zulässig; ausgenommen sind Personenschäden. Für Inhalte
+   externer Dienste (z. B. Antworten eines KI-Modells) und für Kosten bei
+   gewählten Drittanbietern übernimmt NEO Digital keine Haftung.
 
 7. Recht und Gerichtsstand
    Es gilt österreichisches Recht unter Ausschluss der Verweisungsnormen und
@@ -60,20 +69,26 @@ ENGLISH
    grants a right of use.
 
 2. Right of use
-   Use on a publicly accessible website requires a valid license from
-   NEO Digital. Its scope (number of websites, term, updates, support) is
-   defined by the offer or license agreement. Without a license, the software
-   may only be used for testing on non-public development and staging
-   installations.
+   NEO Digital grants a free, non-exclusive and non-transferable right to
+   use the software on any number of websites.
+
+   Condition: the legal notice (Impressum / imprint) of every website on which
+   the software runs publicly contains the credit "NEO Website Check: NEO Digital"
+   linking to https://neo-digital.at. Without the credit, the right of use
+   for that website ends.
+
+   Use without the credit, as well as updates, support or other terms,
+   requires a separate agreement with NEO Digital.
 
 3. You may
-   a) install and configure the software within the licensed scope;
+   a) install and configure the software under section 2;
    b) adapt configuration, templates, stylesheets and texts and modify the
-      code for your own licensed installations;
-   c) as an agency, install it for your clients within the licensed scope.
+      code for your own installations;
+   c) as an agency, install it for your clients under section 2.
 
 4. You may not
-   a) distribute, publish, rent or sell the software or modified versions;
+   a) distribute, publish, rent or sell the software or modified versions,
+      except installing it under section 3 c;
    b) grant sublicenses;
    c) offer the software or substantial parts of it as your own product or as
       a service to third parties;
@@ -84,10 +99,11 @@ ENGLISH
    are subject to their own licenses.
 
 6. Warranty and liability
-   The software is provided as is. Liability for slight negligence is
-   excluded to the extent permitted by law; personal injury is excepted.
-   NEO Digital is not liable for answers produced by the AI model or for
-   costs incurred with the chosen AI provider.
+   The software is provided free of charge and as is. Liability for slight
+   negligence is excluded to the extent permitted by law; personal injury is
+   excepted. NEO Digital is not liable for content from external services
+   (e.g. answers of an AI model) or for costs incurred with chosen third-party
+   providers.
 
 7. Governing law and venue
    Austrian law applies, excluding its conflict-of-law rules and the
