@@ -2,7 +2,7 @@
 
 **A free website check as a lead magnet.** A visitor enters a domain, the bundle measures the site with Google PageSpeed Insights, runs its own HTML, legal and AI-visibility checks, optionally lets an AI read the pages like a first-time visitor, grades everything with school grades and sends a six-page PDF report by e-mail — in exchange for first name, last name and e-mail address.
 
-Built for a production Contao website and released under the MIT license so any agency, freelancer or consultant can run it on their Contao site.
+Built for a production Contao website. Commercial license — see [License](#license).
 
 *Deutsche Fassung weiter unten: [Deutsch](#neo-website-check-für-contao-5-deutsch).*
 
@@ -51,7 +51,7 @@ composer require neo-digital/contao-websitecheck-bundle
 php vendor/bin/contao-console contao:migrate
 ```
 
-Until the package is on Packagist, add the repository to your `composer.json` first:
+Add the package repository you received with your license to your `composer.json` first:
 
 ```json
 {
@@ -333,7 +333,7 @@ contao:
 
 ## License
 
-MIT — see [LICENSE](LICENSE). The bundled Arimo font (`resources/fonts/arimo`) is licensed under the SIL Open Font License 1.1 (`OFL.txt`).
+Commercial software, all rights reserved. Use on a public website requires a license from NEO Digital; testing on non-public development installations is allowed without one. Redistribution, resale and offering it as your own product or service are not permitted. Full terms: [LICENSE](LICENSE). Licensing: [neo-digital.at](https://neo-digital.at). The bundled Arimo font (`resources/fonts/arimo`) is licensed under the SIL Open Font License 1.1 (`OFL.txt`).
 
 ---
 
@@ -341,7 +341,7 @@ MIT — see [LICENSE](LICENSE). The bundled Arimo font (`resources/fonts/arimo`)
 
 **Ein kostenloser Website-Check als Lead-Magnet.** Ein Besucher gibt seine Domain ein, das Bundle misst die Seite mit Google PageSpeed Insights, prüft HTML, Rechtliches und KI-Sichtbarkeit selbst, lässt optional eine KI die Seiten wie einen neuen Besucher lesen, benotet alles mit Schulnoten und schickt einen sechsseitigen PDF-Bericht per E-Mail – im Tausch gegen Vorname, Nachname und E-Mail-Adresse.
 
-Entwickelt für eine produktive Contao-Website, als MIT-Lizenz freigegeben, damit jede Agentur, jeder Freelancer und Berater es auf der eigenen Contao-Seite einsetzen kann.
+Entwickelt für eine produktive Contao-Website. Kommerzielle Lizenz, siehe [Lizenz](#lizenz).
 
 ## Was der Besucher sieht
 
@@ -386,7 +386,7 @@ composer require neo-digital/contao-websitecheck-bundle
 php vendor/bin/contao-console contao:migrate
 ```
 
-Solange das Paket nicht auf Packagist liegt, zuerst das Repository in die `composer.json` eintragen:
+Zuerst das mit der Lizenz erhaltene Paket-Repository in die `composer.json` eintragen:
 
 ```json
 {
@@ -554,4 +554,4 @@ Backend und Standardtexte liegen in Deutsch, Englisch, Französisch, Niederländ
 
 ## Lizenz
 
-MIT – siehe [LICENSE](LICENSE). Die mitgelieferte Schrift Arimo (`resources/fonts/arimo`) steht unter der SIL Open Font License 1.1 (`OFL.txt`).
+Kommerzielle Software, alle Rechte vorbehalten. Der Einsatz auf einer öffentlichen Website setzt eine Lizenz von NEO Digital voraus; zum Testen auf nicht öffentlichen Entwicklungsinstallationen ist keine nötig. Weitergabe, Weiterverkauf und das Anbieten als eigenes Produkt oder als Dienst sind nicht erlaubt. Vollständige Bedingungen: [LICENSE](LICENSE). Lizenzen: [neo-digital.at](https://neo-digital.at). Die mitgelieferte Schrift Arimo (`resources/fonts/arimo`) steht unter der SIL Open Font License 1.1 (`OFL.txt`).
